@@ -1,12 +1,11 @@
 import React from 'react';
 
+import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
 
+import { poppins, unbounded } from '@/app/fonts';
 import { StoreProvider } from '@/app/lib/StoreProvider';
-import { Web3Modal } from '@/shared/web3Modal';
-
-const inter = Inter({ subsets: ['latin'] });
+import { Web3Modal } from '@/shared/Web3Modal';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -28,7 +27,7 @@ export default function RootLayout({
     <html lang="en">
       {/*<StoreProvider>*/}
       <Web3Modal>
-        <body className={inter.className}>{children}</body>
+        <body className={clsx(unbounded.variable, poppins.variable)}>{children}</body>
       </Web3Modal>
       {/*</StoreProvider>*/}
     </html>

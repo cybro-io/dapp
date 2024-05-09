@@ -1,0 +1,83 @@
+@import 'src/app/styles/variables.scss';
+
+.root {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 8px;
+  font-family: $unbounded-font;
+  // Adding a transparent border by default to prevent changing the size on hover
+  border: 1px solid transparent;
+  font-weight: 900;
+  line-height: 120%;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: all 0.3s;
+
+  &:active, &:active > * {
+    opacity: 0.8;
+  }
+}
+
+.primary {
+  background: linear-gradient(90deg, #F0D025 0%, #FFF627 50.42%, #F0D025 100%);
+  color: #0B0C1B;
+
+  svg {
+    fill: #0B0C1B;
+  }
+
+  &:hover {
+    box-shadow: 0 0 30px 0 rgba(251, 255, 58, 0.60);
+  }
+
+  &:disabled {
+    background: linear-gradient(0deg, #9B8E00 0%, #9B8E00 100%)
+  }
+}
+
+.secondary {
+  background: #1A1B25;
+  color: #FFFFFF;
+
+  svg {
+    fill: #FFFFFF;
+  }
+
+  &:hover {
+    border: 1px solid #FBFF3A;
+  }
+
+  &:disabled {
+    background: #252525;
+    color: #666666;
+
+    svg {
+      fill: #666666;
+    }
+  }
+}
+
+.large {
+  font-size: 16px;
+  padding: 25px 42px;
+  border-radius: 16px;
+}
+
+.medium {
+  font-size: 14px;
+  padding: 18px 22px;
+  border-radius: 12px;
+}
+
+.small {
+  gap: 6px;
+  font-weight: 800;
+  font-size: 12px;
+  padding: 12px 14px;
+  border-radius: 8px;
+}
+
+.iconContainer {
+  display: flex;
+}
