@@ -16,7 +16,7 @@ const nextConfig = {
     return config;
   },
   sassOptions: {
-    prependData: `@import "${path.resolve(__dirname, 'src/app/styles/variables.scss')}";`,
+    prependData: `@import "${path.resolve(__dirname, 'src/shared/styles/variables.scss')}";`,
   },
 };
 

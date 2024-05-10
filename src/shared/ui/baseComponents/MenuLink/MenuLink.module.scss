@@ -1,0 +1,23 @@
+.root {
+  display: inline;
+  padding: 2px 4px;
+  font-family: $unbounded-font;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: #FFFFFF;
+
+  &:hover {
+    color: #FBFF3A;
+  }
+}
+
+.selected {
+  color: #0B0C1B;
+  background-color: #FFFFFF;
+}
+
+.disabled {
+
+}

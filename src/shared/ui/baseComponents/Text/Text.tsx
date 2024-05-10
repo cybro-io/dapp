@@ -1,0 +1,35 @@
+import React from 'react';
+
+import clsx from 'clsx';
+
+import { ComponentWithProps } from '@/shared/types';
+
+import { TextView } from './const';
+import styles from './Text.module.scss';
+
+type TextProps = {
+  children: React.ReactNode;
+  textView?: TextView;
+};
+
+export const Text: ComponentWithProps<TextProps> = ({
+  children,
+  textView = TextView.Paragraph,
+  className,
+}) => {
+  switch (textView) {
+    case TextView.H1:
+      return <h1 className={clsx(styles.h1, className)}>{children}</h1>;
+    case TextView.H2:
+      return <h2 className={clsx(styles.h2, className)}>{children}</h2>;
+    case TextView.H3:
+      return <h3 className={clsx(styles.h3, className)}>{children}</h3>;
+    case TextView.H4:
+      return <h4 className={clsx(styles.h4, className)}>{children}</h4>;
+    case TextView.H5:
+      return <h5 className={clsx(styles.h5, className)}>{children}</h5>;
+    case TextView.Paragraph:
+    default:
+      return <p className={clsx(styles.paragraph, className)}>{children}</p>;
+  }
+};

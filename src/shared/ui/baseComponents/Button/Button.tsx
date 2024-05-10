@@ -2,35 +2,35 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { ButtonSize, ButtonView } from '@/shared/Button/const';
 import { ComponentWithProps } from '@/shared/types';
 
 import styles from './Button.module.scss';
+import { ButtonSize, ButtonView } from './const';
 
 type ButtonProps = {
   children: React.ReactNode;
+  onClick?: () => void;
   view?: ButtonView;
   size?: ButtonSize;
-  disabled?: boolean;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
-};
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const Button: ComponentWithProps<ButtonProps> = ({
   children,
+  onClick,
   view = ButtonView.Primary,
   size = ButtonSize.Medium,
-  disabled = false,
   startIcon,
   endIcon,
   className,
+  ...props
 }) => {
-  console.log(endIcon, 'endIcon');
-
   return (
     <button
       className={clsx(styles.root, styles[view], styles[size], className)}
-      disabled={disabled}
+      onClick={onClick}
+      {...props}
     >
       {!!startIcon && <div className={styles.iconContainer}>{startIcon}</div>}
       <span>{children}</span>

@@ -4,8 +4,8 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 
 import { poppins, unbounded } from '@/app/fonts';
-import { StoreProvider } from '@/app/lib/StoreProvider';
-import { Web3Modal } from '@/shared/Web3Modal';
+
+import styles from './layout.module.scss';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -25,11 +25,7 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      {/*<StoreProvider>*/}
-      <Web3Modal>
-        <body className={clsx(unbounded.variable, poppins.variable)}>{children}</body>
-      </Web3Modal>
-      {/*</StoreProvider>*/}
+      <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>{children}</body>
     </html>
   );
 }

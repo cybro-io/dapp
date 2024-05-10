@@ -1,0 +1,58 @@
+.root {
+
+}
+
+.button {
+  display: flex;
+  flex-direction: row;
+  font-family: $poppins-font;
+  font-weight: 500;
+  color: #FFFFFF;
+  border: 1px solid transparent;
+  outline: none;
+  align-items: center;
+
+  &:hover {
+    border: 1px solid #FFFFFF;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.rounded {
+  padding: 8px 16px;
+  font-size: 12px;
+  line-height: 150%;
+  background: #1a1b25;
+  border: 1px solid #3a3b45;
+  border-radius: 500px;
+  gap: 6px;
+
+  .arrow svg {
+    fill: #FFFFFF;
+  }
+}
+
+.flat {
+  padding: 8px;
+  font-size: 14px;
+  line-height: 120%;
+  background: #000000;
+  border-radius: 10px;
+  gap: 8px;
+
+  .arrow svg {
+    opacity: 0.3;
+  }
+}
+
+.arrow {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+}
+
+.isOpened {
+  transform: rotate(180deg);
+}
