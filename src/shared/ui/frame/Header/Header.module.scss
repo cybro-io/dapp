@@ -2,3 +2,84 @@
   padding: 8px 24px;
   background-color: rgb(255 255 255 / 5%);
 }
+
+.navbar {
+  padding: 0;
+  background-color: transparent;
+
+  header {
+    height: auto;
+    padding: 0;
+    max-width: $desktop-large-width;
+  }
+}
+
+.leftContainer {
+  gap: 10px;
+  flex-grow: 0!important;
+}
+
+.desktopMenu {
+  display: none;
+}
+
+.burgerButton {
+  transform: rotate(0deg);
+
+  &.menuOpened {
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(90deg);
+  }
+}
+
+.languageDropdown {
+  display: none;
+}
+
+.darkModeSwitch {
+  display: none;
+}
+
+@include tablet {
+  .root {
+    padding: 12px 16px;
+  }
+
+  .languageDropdown {
+    display: block;
+  }
+
+  .darkModeSwitch {
+    display: block;
+  }
+}
+
+
+@include desktop {
+  .root {
+    padding: 26px 16px;
+  }
+
+  .desktopMenu {
+    display: flex;
+    gap: 7px;
+    width: 100%;
+  }
+
+  .burgerButton {
+    display: none;
+  }
+
+  .menuContainer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 32px;
+  }
+}
+
+@media screen and (width >= 1060px) {
+  .desktopMenu {
+    gap: 16px;
+  }
+}

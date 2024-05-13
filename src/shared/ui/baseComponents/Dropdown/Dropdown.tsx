@@ -4,7 +4,7 @@ import React from 'react';
 
 import {
   Dropdown as NextUIDropdown,
-  DropdownItem,
+  DropdownItem as NextUIDropdownItem,
   DropdownMenu,
   DropdownTrigger,
 } from '@nextui-org/dropdown';
@@ -16,9 +16,11 @@ import { ComponentWithProps } from '@/shared/types';
 
 import { DropdownView } from './const';
 import styles from './Dropdown.module.scss';
+import { DropdownItem } from './types';
 
 type DropdownProps = {
-  buttonContent: string | React.ReactNode;
+  items: DropdownItem[];
+  buttonContent?: string | React.ReactNode;
   viewType?: DropdownView;
 };
 
@@ -28,36 +30,19 @@ const DropdownViewToArrow: Record<DropdownView, React.FC> = {
 };
 
 export const Dropdown: ComponentWithProps<DropdownProps> = ({
+  items,
   buttonContent,
   viewType = DropdownView.Rounded,
+  className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
   const ArrowIcon = DropdownViewToArrow[viewType];
 
-  const items = [
-    {
-      key: 'new',
-      label: <p>Hello</p>,
-    },
-    {
-      key: 'copy',
-      label: 'Copy link',
-    },
-    {
-      key: 'edit',
-      label: 'Edit file',
-    },
-    {
-      key: 'delete',
-      label: 'Delete file',
-    },
-  ];
-
   return (
-    <NextUIDropdown onOpenChange={setIsOpened}>
+    <NextUIDropdown className={clsx(className)} onOpenChange={setIsOpened}>
       <DropdownTrigger>
         <button className={clsx(styles.button, styles[viewType])}>
-          {buttonContent}
+          {buttonContent ?? items[0].label}
           <div className={clsx(styles.arrow, isOpened && styles.isOpened)}>
             <ArrowIcon />
           </div>
@@ -65,13 +50,13 @@ export const Dropdown: ComponentWithProps<DropdownProps> = ({
       </DropdownTrigger>
       <DropdownMenu aria-label="Dynamic Actions" items={items}>
         {item => (
-          <DropdownItem
+          <NextUIDropdownItem
             key={item.key}
             color={item.key === 'delete' ? 'danger' : 'default'}
             className={item.key === 'delete' ? 'text-danger' : ''}
           >
             {item.label}
-          </DropdownItem>
+          </NextUIDropdownItem>
         )}
       </DropdownMenu>
     </NextUIDropdown>

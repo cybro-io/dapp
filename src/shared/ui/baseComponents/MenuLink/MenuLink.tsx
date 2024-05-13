@@ -21,8 +21,8 @@ export const MenuLink: ComponentWithProps<MenuLinkProps> = ({ href, className, c
   const isSelected = React.useMemo(() => pathname === href, []);
 
   return (
-    <li className={clsx(styles.root, isSelected && styles.selected, className)}>
-      <Link href={href}>{children}</Link>
-    </li>
+    <Link className={clsx(styles.root, isSelected && styles.selected, className)} href={href}>
+      {children}
+    </Link>
   );
 };

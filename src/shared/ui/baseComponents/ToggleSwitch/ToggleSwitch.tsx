@@ -8,8 +8,17 @@ import { ComponentWithProps } from '@/shared/types';
 
 import styles from './ToggleSwitch.module.scss';
 
-type ToggleSwitchProps = {} & SwitchProps;
+type ToggleSwitchProps = {
+  test?: string;
+} & SwitchProps;
 
-export const ToggleSwitch: ComponentWithProps<ToggleSwitchProps> = ({ className, ...props }) => {
-  return <Switch className={clsx(className)} {...props}></Switch>;
+export const ToggleSwitch: ComponentWithProps<ToggleSwitchProps> = ({
+  test,
+  className,
+  ...props
+}) => {
+  console.log(test, 'test');
+  // console.log(startContent, 'sc');
+  // console.log(endContent, 'ec');
+  return <Switch className={clsx(className)} {...props} />;
 };
