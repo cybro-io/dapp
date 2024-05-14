@@ -17,8 +17,5 @@ export const ToggleSwitch: ComponentWithProps<ToggleSwitchProps> = ({
   className,
   ...props
 }) => {
-  console.log(test, 'test');
-  // console.log(startContent, 'sc');
-  // console.log(endContent, 'ec');
   return <Switch className={clsx(className)} {...props} />;
 };

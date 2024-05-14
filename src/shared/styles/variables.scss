@@ -1,11 +1,11 @@
-$accent: var(--nextui-accent);
-$background-light: var(--nextui-background-light);
-$background-dark: var(--nextui-background-dark);
-$background-default: var(--nextui-background);
-$text-secondary: var(--nextui-text-secondary);
-$text-grey: var(--nextui-text-grey);
-$text-test: var(--nextui-text-test);
-$text-default: var(--nextui-text);
+$accent: hsl(var(--nextui-accent));
+$background-light: hsl(var(--nextui-background-light));
+$background-dark: hsl(var(--nextui-background-dark));
+$background-default: hsl(var(--nextui-background));
+$text-secondary: hsl(var(--nextui-text-secondary));
+$text-grey: hsl(var(--nextui-text-grey));
+$text-default: hsl(var(--nextui-text));
+$border-default: hsl(var(--nextui-border));
 
 $poppins-font: var(--font-poppins), sans-serif;
 $unbounded-font: var(--font-unbounded), sans-serif;

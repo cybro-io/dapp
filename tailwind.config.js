@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 const { nextui } = require('@nextui-org/react');
+const { red } = require('next/dist/lib/picocolors');
 
 module.exports = {
   content: [
@@ -17,15 +18,17 @@ module.exports = {
           colors: {
             accent: '#F9F93E',
             background: {
-              light: 'rgba(255, 255, 255, 0.05)',
+              light: '#1D1E2A',
               dark: '#020206',
-              DEFAULT: '#11121A',
+              DEFAULT: '#020206',
             },
             text: {
               secondary: '#0B0C1B',
-              grey: 'rgba(0, 0, 0, 0.60)',
-              test: '#FFFFFF',
+              grey: '#8E8E94',
               DEFAULT: '#FFFFFF',
+            },
+            border: {
+              DEFAULT: '#11121A',
             },
           },
         },

@@ -87,6 +87,10 @@ a {
   background-color: transparent;
 }
 
+a, button {
+  transition: all 0.3s ease-in-out;
+}
+
 /**
  * 1. Remove the bottom border in Chrome 57-
  * 2. Add the correct text decoration in Chrome, Edge, IE, Opera, and Safari.
