@@ -1,0 +1,28 @@
+.root {
+
+}
+
+.heading {
+  font-family: $unbounded-font;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 120%;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.highlight {
+  color: $accent;
+}
+
+.outerContainer {
+  padding: 24px;
+}
+
+.innerContainer {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  gap: 12px;
+  align-items: center;
+}

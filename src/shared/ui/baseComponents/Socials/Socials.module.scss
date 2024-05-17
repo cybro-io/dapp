@@ -1,0 +1,16 @@
+.root {
+  display: flex;
+  gap: 12px;
+}
+
+.social {
+  width: 44px;
+  height: 44px;
+  padding: 10px;
+  background-color: $background-light;
+  border-radius: 10px;
+
+  svg {
+    fill: white;
+  }
+}

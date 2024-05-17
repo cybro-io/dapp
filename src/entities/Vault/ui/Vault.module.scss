@@ -1,0 +1,68 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: $background-dark;
+  border-radius: 20px;
+  gap: 16px;
+}
+
+.title {
+  display: flex;
+  flex-direction: row;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.titleText {
+  font-family: $unbounded-font;font-size: 18px;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: $text-default;
+}
+
+.details {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $border-light;
+  border-radius: 12px;
+}
+
+.detailsSection {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  //justify-content: space-between;
+}
+
+.detailsTop {
+  padding: 16px 16px 12px;
+  border-bottom: 1px solid $border-light;
+}
+
+.detailsBottom {
+  padding: 12px 16px 16px;
+}
+
+.detailsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: start;
+}
+
+.detailsTitle {
+  font-family: $poppins-font;
+  font-size: 12px!important;
+  font-weight: 500!important;
+  line-height: 150% !important;
+  text-transform: initial!important;
+  color: $text-grey!important;
+}
+
+.detailsValue {
+  font-family: $unbounded-font;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 150%;
+  color: $text-default;
+}

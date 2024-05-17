@@ -18,9 +18,9 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({ children }) => {
       <Header className={styles.header} />
       <main className={styles.main}>
         <div className={styles.mainContent}>{children}</div>
-        <div className={styles.logoBottomContainer}>
-          <Image className={styles.logoBottom} src={'CybroBg.svg'} alt={'Cybro Logo, black'} fill />
-        </div>
+        {/*<div className={styles.logoBottomContainer}>*/}
+        {/*  <Image className={styles.logoBottom} src={'CybroBgBlack.svg'} alt={'Cybro Logo, black'} fill />*/}
+        {/*</div>*/}
       </main>
       <Footer className={styles.footer} />
     </React.Fragment>

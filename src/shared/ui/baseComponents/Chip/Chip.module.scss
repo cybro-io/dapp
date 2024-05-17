@@ -1,0 +1,27 @@
+.root {
+  display: inline;
+  padding: 4px 10px;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  color: $text-default;
+  background-color: $background-light;
+  border-radius: 20px;
+}
+
+.lg {
+  padding: 4px 14px;
+  font-size: 20px;
+  font-weight: 500;
+  line-height: 150%;
+}
+
+.accent {
+  color: $text-black;
+  background-color: $accent;
+}
+
+.outlined {
+  background-color: transparent;
+  border: 1px solid $border-white;
+}

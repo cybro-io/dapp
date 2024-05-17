@@ -7,6 +7,8 @@
 .footerContainer {
   display: flex;
   flex-direction: column;
+  margin: auto;
+  max-width: $app-max-width;
 }
 
 .section {

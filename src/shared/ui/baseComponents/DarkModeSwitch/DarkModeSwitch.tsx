@@ -17,9 +17,18 @@ export const DarkModeSwitch: ComponentWithProps<DarkModeSwitchProps> = ({ classN
   return (
     <ToggleSwitch
       className={clsx(styles.root, className)}
-      test={'test'}
-      startContent={<DarkIcon />}
-      endContent={<LightIcon />}
+      size={'lg'}
+      color={'default'}
+      startContent={
+        <p>
+          <DarkIcon height={20} width={20} />
+        </p>
+      }
+      endContent={
+        <p>
+          <LightIcon height={20} width={20} />
+        </p>
+      }
     />
   );
 };

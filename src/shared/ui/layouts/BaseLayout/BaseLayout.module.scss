@@ -4,15 +4,20 @@
 }
 
 .mainContent {
+  margin: auto;
   padding-right: 24px;
   padding-left: 24px;
+  max-width: $app-max-width;
 }
 
 .main {
   position: relative;
   flex: 1;
-  padding-bottom: 60px;
-  overflow: hidden;
+  padding-bottom: 100px;
+  background-image: url("/CybroBgBlack.svg");
+  background-repeat: no-repeat;
+  background-position: bottom;
+  background-size: 100%;
 }
 
 .footer {
@@ -31,7 +36,40 @@
 }
 
 .logoBottom {
-  object-fit: fill; /* Ensures the image covers the area */
+  object-fit: fill;
   width: 100%;
   min-height: 100%;
+}
+
+@media screen and (width >= 500px) {
+  .main {
+    padding-bottom: 150px;
+  }
+}
+
+@media screen and (width >= 800px) {
+  .main {
+    padding-bottom: 200px;
+  }
+}
+
+@include desktop {
+  .main {
+    padding-bottom: 230px;
+  }
+
+  .mainContent {
+    padding-right: 0;
+    padding-left: 0;
+  }
+
+  .header {
+    margin-bottom: 0;
+  }
+}
+
+@media screen and (width >= 1250px) {
+  .main {
+    padding-bottom: 280px;
+  }
 }

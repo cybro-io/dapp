@@ -25,10 +25,18 @@ module.exports = {
             text: {
               secondary: '#0B0C1B',
               grey: '#8E8E94',
+              black: '#000000',
               DEFAULT: '#FFFFFF',
             },
             border: {
+              white: '#FFFFFF',
+              light: '#3A3B45',
               DEFAULT: '#11121A',
+            },
+            status: {
+              good: '#04E000',
+              warning: '#F9E727',
+              danger: '#FF3D6C',
             },
           },
         },

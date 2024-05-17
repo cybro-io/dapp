@@ -1,0 +1,86 @@
+.root {
+  display: flex;
+  flex-direction: row;
+  padding: 12px;
+  background: repeating-linear-gradient(
+                  135deg,
+                  $background-dark,
+                  $background-dark 10px,
+                  #11121A 10px,
+                  #11121A 20px
+  );
+  gap: 14px;
+}
+
+.container {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  width: 100%;
+}
+
+.top {
+  display: flex;
+  flex-direction: row;
+  font-family: $unbounded-font;
+  font-size: 20px;
+  font-weight: 500;
+  color: $text-default;
+  gap: 20px;
+}
+
+.title {
+  color: $text-default;
+}
+
+.progressBarContainer {
+  width: 100%;
+  height: 12px;
+}
+
+.progressBar {
+  display: flex;
+  flex-direction: row;
+  width: 100%;
+  height: 12px;
+  gap: 4px
+}
+
+.bar {
+  height: 100%;
+  background-color: red;
+  border-radius: 10px;
+}
+
+.danger {
+  width: 26.32%;
+  background: repeating-linear-gradient(
+                  135deg,
+                  rgba(255 61 108 / 15%),
+                  rgba(255 61 108 / 15%) 3px,
+                  $status-danger 3px,
+                  $status-danger 5px,
+  );
+}
+
+.warning {
+  width: 52.63%;
+  background: repeating-linear-gradient(
+                  135deg,
+                  rgba(249 231 39 / 15%),
+                  rgba(249 231 39 / 15%) 3px,
+                  $status-warning 3px,
+                  $status-warning 5px,
+  );
+}
+
+.good {
+  width: 21.05%;
+  background: repeating-linear-gradient(
+                  135deg,
+                  rgb(2 224 0 / 15%),
+                  rgb(2 224 0 / 15%) 3px,
+                  $status-good 3px,
+                  $status-good 5px,
+  );
+}

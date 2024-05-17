@@ -6,3 +6,7 @@ export * from './MenuLink';
 export * from './Text';
 export * from './DarkModeSwitch';
 export * from './LanguageChange';
+export * from './Chip';
+export * from './TrustScore';
+export * from './Link';
+export * from './Socials';

@@ -1,56 +1,61 @@
 .root {
   padding: 8px 24px;
   background-color: rgb(255 255 255 / 5%);
-}
 
-.navbar {
-  padding: 0;
-  background-color: transparent;
+  .logo {
+    width: 92px;
+    height: 11px;
+  }
 
-  header {
-    height: auto;
+  .navbar {
     padding: 0;
-    max-width: $desktop-large-width;
+    background-color: transparent;
+
+    header {
+      height: auto;
+      padding: 0;
+      max-width: $app-max-width;
+    }
   }
-}
 
-.leftContainer {
-  gap: 10px;
-  flex-grow: 0!important;
-}
-
-.desktopMenu {
-  display: none;
-}
-
-.burgerButton {
-  transform: rotate(0deg);
-
-  &.menuOpened {
-    transition: transform 0.3s ease-in-out;
-    transform: rotate(90deg);
+  .leftContainer {
+    gap: 10px;
+    flex-grow: 0 !important;
   }
-}
 
-.languageDropdown {
-  display: none;
-}
+  .desktopMenu {
+    display: none;
+  }
 
-.darkModeSwitch {
-  display: none;
+  .burgerButton {
+    transform: rotate(0deg);
+
+    &.menuOpened {
+      transition: transform 0.3s ease-in-out;
+      transform: rotate(90deg);
+    }
+  }
+
+  .languageDropdown {
+    display: none;
+  }
+
+  .darkModeSwitch {
+    display: none;
+  }
 }
 
 @include tablet {
   .root {
     padding: 12px 16px;
-  }
 
-  .languageDropdown {
-    display: block;
-  }
+    .languageDropdown {
+      display: block;
+    }
 
-  .darkModeSwitch {
-    display: block;
+    .darkModeSwitch {
+      display: block;
+    }
   }
 }
 
@@ -58,23 +63,28 @@
 @include desktop {
   .root {
     padding: 26px 16px;
-  }
 
-  .desktopMenu {
-    display: flex;
-    gap: 7px;
-    width: 100%;
-  }
+    .logo {
+      width: 150px;
+      height: 18px;
+    }
 
-  .burgerButton {
-    display: none;
-  }
+    .desktopMenu {
+      display: flex;
+      gap: 7px;
+      width: 100%;
+    }
 
-  .menuContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 32px;
+    .burgerButton {
+      display: none;
+    }
+
+    .menuContainer {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 32px;
+    }
   }
 }
 

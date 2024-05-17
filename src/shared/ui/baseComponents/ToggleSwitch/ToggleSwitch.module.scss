@@ -1,0 +1,9 @@
+.root {
+  span {
+    background-color: $background-default;
+
+    span {
+      background-color: $background-dark;
+    }
+  }
+}

@@ -15,7 +15,7 @@ import clsx from 'clsx';
 
 import MenuIcon from '@/shared/assets/icons/menu.svg';
 import { ComponentWithProps } from '@/shared/types';
-import { Button, ButtonSize, LanguageChange, Logo, MenuLink, ToggleSwitch } from '@/shared/ui';
+import { Button, ButtonSize, DarkModeSwitch, LanguageChange, Logo, MenuLink } from '@/shared/ui';
 
 import styles from './Header.module.scss';
 
@@ -58,7 +58,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             />
             <NavbarBrand>
-              <Logo height={11} width={92} />
+              <Logo className={styles.logo} />
             </NavbarBrand>
           </NavbarContent>
 
@@ -76,7 +76,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
             <LanguageChange />
           </NavbarItem>
           <NavbarItem className={styles.darkModeSwitch}>
-            <ToggleSwitch />
+            <DarkModeSwitch />
           </NavbarItem>
           <NavbarItem>
             <Button size={ButtonSize.Small}>Connect Wallet</Button>

@@ -4,15 +4,23 @@ $background-dark: hsl(var(--nextui-background-dark));
 $background-default: hsl(var(--nextui-background));
 $text-secondary: hsl(var(--nextui-text-secondary));
 $text-grey: hsl(var(--nextui-text-grey));
+$text-black: hsl(var(--nextui-text-black));
 $text-default: hsl(var(--nextui-text));
 $border-default: hsl(var(--nextui-border));
+$border-light: hsl(var(--nextui-border-light));
+$border-white: hsl(var(--nextui-border-white));
+$status-good: hsl(var(--nextui-status-good));
+$status-warning: hsl(var(--nextui-status-warning));
+$status-danger: hsl(var(--nextui-status-danger));
 
 $poppins-font: var(--font-poppins), sans-serif;
 $unbounded-font: var(--font-unbounded), sans-serif;
 
 $tablet-width: 768px;
-$desktop-width: 1024px;
-$desktop-large-width: 1200px;
+$desktop-width-large: 1280px;
+$desktop-width: 1100px;
+
+$app-max-width: 1680px;
 
 @mixin tablet {
   @media (min-width: #{$tablet-width}) {

@@ -1,0 +1,60 @@
+.top {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 24px;
+}
+
+.heading {
+  margin: auto;
+}
+
+.chip {
+  margin: auto;
+}
+
+.vaults {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+@media screen and (width >= 700px) {
+  .vaults {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .joinBanner {
+    display: none;
+  }
+}
+
+@include desktop {
+  .root {
+    padding-right: 100px;
+    padding-left: 100px;
+  }
+
+  .vaults {
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+
+  .chip {
+    display: none;
+  }
+
+  .top {
+    margin-bottom: 20px;
+  }
+
+  .heading {
+    margin-right: auto;
+    margin-left: 0;
+    font-size: 25px;
+    font-weight: 700;
+    line-height: 120%;
+    text-align: left;
+    text-transform: uppercase;
+  }
+}
