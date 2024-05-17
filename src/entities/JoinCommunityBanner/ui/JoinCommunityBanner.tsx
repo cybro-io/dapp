@@ -16,6 +16,10 @@ export const JoinCommunityBanner: ComponentWithProps<JoinCommunityBannerProps> =
     <div className={clsx(styles.root, className)}>
       <div className={styles.outerContainer}>
         <div className={styles.innerContainer}>
+          <div className={styles.cornerTopLeft} />
+          <div className={styles.cornerTopRight} />
+          <div className={styles.cornerBottomLeft} />
+          <div className={styles.cornerBottomRight} />
           <Text className={styles.heading}>
             Join the <span className={styles.highlight}>community</span>
           </Text>

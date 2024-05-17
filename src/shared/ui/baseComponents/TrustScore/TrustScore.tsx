@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import { ComponentWithProps } from '@/shared/types';
 import { Text } from '@/shared/ui';
 
-import DangerIcon from './assets/danger.svg';
+import DangerIcon from './assets/icons/danger.svg';
 import styles from './TrustScore.module.scss';
 
 type TrustScoreProps = {};
@@ -15,6 +15,10 @@ type TrustScoreProps = {};
 export const TrustScore: ComponentWithProps<TrustScoreProps> = props => {
   return (
     <div className={clsx(styles.root)}>
+      <div className={styles.cornerTopLeft} />
+      <div className={styles.cornerTopRight} />
+      <div className={styles.cornerBottomLeft} />
+      <div className={styles.cornerBottomRight} />
       <div>
         <DangerIcon />
       </div>

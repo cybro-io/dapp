@@ -5,6 +5,15 @@
   letter-spacing: 0.48px;
   text-transform: uppercase;
   color: $text-grey;
+  transition: all 0.3s ease-in-out;
+
+  &:hover {
+    color: $text-default;
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
 }
 
 .tooltipContainer {
@@ -13,8 +22,32 @@
   gap: 8px;
 }
 
-.text, .tooltipContainer {
+.tooltipText {
+  font-family: $unbounded-font;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.48px;
+  text-transform: uppercase;
+  color: $text-grey;
+}
+
+.tooltipContainer {
+  transition: all 0.3s ease-in-out;
+  cursor: pointer;
+
   &:hover {
-    color: $text-default;
+    .tooltipText {
+      color: $text-default;
+      transition: all 0.3s ease-in-out;
+    }
+
+    svg {
+      transition: all 0.3s ease-in-out;
+      fill: $text-default;
+    }
+  }
+
+  &:active {
+    opacity: 0.7;
   }
 }

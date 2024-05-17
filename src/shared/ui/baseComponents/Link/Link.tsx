@@ -38,7 +38,7 @@ export const Link: ComponentWithProps<LinkProps> = ({
       return (
         <Tooltip className={styles.contentContainer} content={tooltipContent}>
           <div className={styles.tooltipContainer}>
-            <p className={clsx(styles.text, className)}>{children}</p>
+            <p className={clsx(styles.tooltipText, className)}>{children}</p>
             <InfoIcon />
           </div>
         </Tooltip>

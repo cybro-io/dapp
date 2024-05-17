@@ -13,4 +13,16 @@
   svg {
     fill: white;
   }
+
+  &:hover {
+    background-color: $accent;
+
+    svg {
+      fill: $text-black;
+    }
+  }
+
+  &:active {
+    opacity: 0.7;
+  }
 }

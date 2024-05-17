@@ -20,6 +20,11 @@
   gap: 24px;
 }
 
+.joinBanner {
+  width: calc(100% + (24px * 2));
+  margin-left: -24px;
+}
+
 @media screen and (width >= 700px) {
   .vaults {
     grid-template-columns: 1fr 1fr;
