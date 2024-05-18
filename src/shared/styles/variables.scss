@@ -34,6 +34,12 @@ $app-max-width: 1680px;
   }
 }
 
+@mixin desktopLarge {
+  @media (min-width: #{$desktop-width-large}) {
+    @content;
+  }
+}
+
 @mixin tabletOnly {
   @media (min-width: #{$tablet-width}) and (max-width: #{$desktop-width - 1px}) {
     @content;

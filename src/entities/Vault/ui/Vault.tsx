@@ -12,9 +12,9 @@ import styles from './Vault.module.scss';
 
 type VaultProps = {};
 
-export const Vault: ComponentWithProps<VaultProps> = props => {
+export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
   return (
-    <div className={clsx(styles.root)}>
+    <div className={clsx(styles.root, className)}>
       <div className={styles.titleContainer}>
         <div className={styles.title}>
           <div>

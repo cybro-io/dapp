@@ -1,0 +1,63 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.title {
+  font-family: $unbounded-font;
+  font-size: 25px;
+  font-weight: 700;
+  line-height: 120%;
+  text-align: center;
+  text-transform: uppercase;
+}
+
+.dark {
+  background:
+          url('../assets/img/DarkBannerBg.png') no-repeat center 70%,
+          repeating-linear-gradient(
+                  135deg,
+                  $background-dark,
+                  $background-dark 50px,
+                  #11121A 50px,
+                  #11121A 100px
+  );
+  background-size: 250px 224px, auto;
+}
+
+.accent {
+  background-color: $accent;
+}
+
+.big {
+  padding: 34px 50% 18px 34px;
+  align-items: start;
+  clip-path: polygon(
+                  5% 0%, 100% 0%, 100% 10%, 100% 90%, 95% 100%, 10% 100%, 0% 100%, 0% 10%
+  );
+
+  .title {
+    text-align: left;
+    color: $text-black;
+    max-width: 210px;
+  }
+
+  .description {
+    color: $text-black;
+  }
+}
+
+.big.accent {
+  background-image: url('../assets/img/AccentBannerBg.png');
+  background-repeat: no-repeat;
+  background-position: 95% bottom;
+  background-size: 335px 335px;
+}
+
+.small {
+  padding: 12px 26px;
+  clip-path: polygon(
+                  10% 0%, 100% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 100%, 0% 10%
+  );
+}

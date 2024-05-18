@@ -16,6 +16,7 @@
 }
 
 .outerContainer {
+  height: 100%;
   padding: 24px;
 }
 
@@ -23,7 +24,9 @@
   position: relative;
   display: flex;
   flex-direction: column;
+  height: 100%;
   padding: 16px;
+  justify-content: center;
   gap: 12px;
   align-items: center;
 }
