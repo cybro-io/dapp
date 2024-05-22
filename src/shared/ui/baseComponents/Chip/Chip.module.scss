@@ -4,8 +4,8 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 150%;
-  color: $text-default;
-  background-color: $background-light;
+  color: $text-white-body100;
+  background-color: $background-chips;
   border-radius: 20px;
 }
 
@@ -17,11 +17,11 @@
 }
 
 .accent {
-  color: $text-black;
-  background-color: $accent;
+  color: $text-black-body100;
+  background-color: $background-accentBold;
 }
 
 .outlined {
   background-color: transparent;
-  border: 1px solid $border-white;
+  border: 1px solid $stroke-whiteBorder;
 }

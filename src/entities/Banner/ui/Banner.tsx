@@ -1,9 +1,9 @@
-import React, { ReactElement } from 'react';
+import React from 'react';
 
 import clsx from 'clsx';
 
 import { ComponentWithProps } from '@/shared/types';
-import { Link, LinkView, Text } from '@/shared/ui';
+import { Link, LinkView, Text, TextView } from '@/shared/ui';
 
 import { BannerSize, BannerViewType } from '../const';
 
@@ -29,14 +29,29 @@ export const Banner: ComponentWithProps<BannerProps> = ({
   size = BannerSize.Big,
   className,
 }) => {
-  const title = typeof Title === 'string' ? <Text className={styles.title}>{Title}</Text> : Title;
+  const title =
+    typeof Title === 'string' ? (
+      <Text textView={TextView.H3} className={styles.title}>
+        {Title}
+      </Text>
+    ) : (
+      Title
+    );
 
   return (
     <div className={clsx(styles.root, styles[viewType], styles[size], className)}>
       {title}
-      {description && <Text className={styles.description}>{description}</Text>}
+      {description && (
+        <Text textView={TextView.P3} className={styles.description}>
+          {description}
+        </Text>
+      )}
       {Button}
-      {caption && <Link viewType={captionType}>{caption}</Link>}
+      {caption && (
+        <Link className={styles.caption} viewType={captionType}>
+          {caption}
+        </Link>
+      )}
     </div>
   );
 };

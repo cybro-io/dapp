@@ -18,16 +18,20 @@
           url('../assets/img/DarkBannerBg.png') no-repeat center 70%,
           repeating-linear-gradient(
                   135deg,
-                  $background-dark,
-                  $background-dark 50px,
-                  #11121A 50px,
-                  #11121A 100px
+                  $background-modal,
+                  $background-modal 50px,
+                  $background-window 50px,
+                  $background-window 100px
   );
   background-size: 250px 224px, auto;
 }
 
 .accent {
-  background-color: $accent;
+  background-color: $text-accent-yellow;
+}
+
+.caption {
+  color: $text-black-body100;
 }
 
 .big {
@@ -39,12 +43,13 @@
 
   .title {
     text-align: left;
-    color: $text-black;
+    color: $text-black-heading;
     max-width: 210px;
   }
 
   .description {
-    color: $text-black;
+    max-width: 215px;
+    color: $text-black-body60;
   }
 }
 

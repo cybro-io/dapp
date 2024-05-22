@@ -14,7 +14,7 @@ type TextProps = {
 
 export const Text: ComponentWithProps<TextProps> = ({
   children,
-  textView = TextView.Paragraph,
+  textView = TextView.P1,
   className,
 }) => {
   switch (textView) {
@@ -28,8 +28,7 @@ export const Text: ComponentWithProps<TextProps> = ({
       return <h4 className={clsx(styles.h4, styles.root, className)}>{children}</h4>;
     case TextView.H5:
       return <h5 className={clsx(styles.h5, styles.root, className)}>{children}</h5>;
-    case TextView.Paragraph:
     default:
-      return <p className={clsx(styles.paragraph, styles.root, className)}>{children}</p>;
+      return <p className={clsx(styles[textView], styles.root, className)}>{children}</p>;
   }
 };

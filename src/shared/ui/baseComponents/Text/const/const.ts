@@ -4,5 +4,11 @@ export enum TextView {
   H3 = 'h3',
   H4 = 'h4',
   H5 = 'h5',
-  Paragraph = 'paragraph',
+  P1 = 'p1',
+  P2 = 'p2',
+  P3 = 'p3',
+  C1 = 'c1',
+  C2 = 'c2',
+  C3 = 'c3',
+  C4 = 'c4',
 }

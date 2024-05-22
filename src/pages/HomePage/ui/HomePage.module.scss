@@ -6,7 +6,7 @@
   .heroSection {
     display: block;
     padding: 110px 130px 100px;
-    background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, #11121A 100%),
+    background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
     url('/HeroBg.png') right no-repeat,
     url('/RectBg.svg') repeat,
     url('/CybroBgGrey.svg') top / 100% no-repeat;
@@ -23,7 +23,7 @@
   }
 
   .accent {
-    color: $accent;
+    color: $text-accent-logoYellow;
   }
 
   .headingBackground {
@@ -31,7 +31,7 @@
     padding-left: 10px;
     background: linear-gradient(148deg, rgb(255 255 255 / 10%) 3.15%, rgb(107 109 121 / 7%) 96.78%);
     border-radius: 10px;
-    backdrop-filter: blur(45.04934310913086px);
+    backdrop-filter: blur(45px);
   }
 
   .headingBackgroundTop {
@@ -42,7 +42,7 @@
       position: absolute;
       width: 229px;
       height: 134px;
-      background-color: $accent;
+      background-color: $text-accent-logoYellow;
       opacity: 0.24;
       filter: blur(65px)
     }

@@ -4,22 +4,16 @@
   font-weight: 400;
   letter-spacing: 0.48px;
   text-transform: uppercase;
-  color: $text-grey;
+  color: $link-defaultLabel;
   transition: all 0.3s ease-in-out;
 
   &:hover {
-    color: $text-default;
+    color: $link-hoverLabel;
   }
 
   &:active {
     opacity: 0.7;
   }
-}
-
-.tooltipContainer {
-  display: flex;
-  align-items: center;
-  gap: 8px;
 }
 
 .tooltipText {
@@ -28,22 +22,25 @@
   font-weight: 400;
   letter-spacing: 0.48px;
   text-transform: uppercase;
-  color: $text-grey;
+  color: $link-defaultLabel;
 }
 
 .tooltipContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
   transition: all 0.3s ease-in-out;
   cursor: pointer;
 
   &:hover {
     .tooltipText {
-      color: $text-default;
+      color: $link-hoverLabel;
       transition: all 0.3s ease-in-out;
     }
 
     svg {
       transition: all 0.3s ease-in-out;
-      fill: $text-default;
+      fill: $link-hoverLabel;
     }
   }
 

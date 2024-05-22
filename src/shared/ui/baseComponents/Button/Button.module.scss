@@ -19,40 +19,42 @@
 }
 
 .primary {
-  color: #0B0C1B;
-  background: linear-gradient(90deg, #F0D025 0%, #FFF627 50.42%, #F0D025 100%);
+  color: $button-primary-defaultLabel;
+  background: $button-primary-defaultBg;
 
   svg {
-    fill: #0B0C1B;
+    fill: $button-primary-defaultLabel;
   }
 
   &:hover {
+    background: $button-primary-hoverBg;
     box-shadow: 0 0 30px 0 rgb(251 255 58 / 60%);
   }
 
   &:disabled {
-    background: linear-gradient(0deg, #9B8E00 0%, #9B8E00 100%)
+    color: $button-primary-disabledLabel;
+    background: $button-primary-disabledBg;
   }
 }
 
 .secondary {
-  color: #FFFFFF;
-  background: #1A1B25;
+  color: $button-secondary-defaultLabel;
+  background: $button-secondary-defaultBg;
 
   svg {
-    fill: #FFFFFF;
+    fill: $button-secondary-defaultLabel;
   }
 
   &:hover {
-    border: 1px solid #FBFF3A;
+    border: 1px solid $button-secondary-hoverStroke;
   }
 
   &:disabled {
-    color: #666666;
-    background: #252525;
+    color: $button-secondary-disabledLabel;
+    background: $button-secondary-disabledBg;
 
     svg {
-      fill: #666666;
+      fill: $button-secondary-disabledLabel;
     }
   }
 }

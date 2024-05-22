@@ -4,22 +4,22 @@
 }
 
 .social {
+  display: flex;
   width: 44px;
   height: 44px;
   padding: 10px;
-  background-color: $background-light;
+  background-color: $button-secondary-defaultBg;
+  border: 1px solid transparent;
   border-radius: 10px;
+  align-items: center;
 
   svg {
-    fill: white;
+    fill: $text-white-body100;
   }
 
   &:hover {
-    background-color: $accent;
-
-    svg {
-      fill: $text-black;
-    }
+    background-color: $button-secondary-hoverBg;
+    border: 1px solid $button-secondary-hoverStroke;
   }
 
   &:active {

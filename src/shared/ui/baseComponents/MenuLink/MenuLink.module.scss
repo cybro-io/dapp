@@ -6,16 +6,16 @@
   font-weight: 400;
   letter-spacing: 0.5px;
   text-transform: uppercase;
-  color: #FFFFFF;
+  color: $menu-defaultLabel;
 
-  &:hover {
-    color: #FBFF3A;
+  &:hover:not(.selected) {
+    color: $menu-hoverLabel;
   }
 }
 
 .selected {
-  color: #0B0C1B;
-  background-color: #FFFFFF;
+  color: $menu-selectedLabel;
+  background-color: $menu-selectedBg;
 }
 
 .disabled {

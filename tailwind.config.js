@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
 const { nextui } = require('@nextui-org/react');
-const { red } = require('next/dist/lib/picocolors');
 
 module.exports = {
   content: [
@@ -16,27 +15,90 @@ module.exports = {
       themes: {
         light: {
           colors: {
-            accent: '#F9F93E',
             background: {
-              light: '#1D1E2A',
-              dark: '#020206',
-              DEFAULT: '#020206',
+              window: '#11121A',
+              modal: '#020206',
+              card: '#000000',
+              tableRow: '#1A1B25',
+              chips: '#24252E',
+              bgBlur: 'rgba(0, 0, 0, 0.50)',
+              accentBold: '#F9E727',
+              white: '#FFFFFF',
+              tooltip: 'rgba(255, 255, 255, 0.30)',
+              header: 'rgb(255 255 255 / .5)',
             },
             text: {
-              secondary: '#0B0C1B',
-              grey: '#8E8E94',
-              black: '#000000',
-              DEFAULT: '#FFFFFF',
+              white: {
+                heading: '#FFFFFF',
+                body100: '#FFFFFF',
+                body80: 'rgba(255, 255, 255, 0.80)',
+                body60: 'rgba(255, 255, 255, 0.60)',
+                body40: 'rgba(255, 255, 255, 0.40)',
+              },
+              black: {
+                heading: '#000000',
+                body100: '#000000',
+                body60: 'rgba(0, 0, 0, 0.60)',
+              },
+              accent: {
+                logoYellow: '#FBFF3A',
+                yellow: '#F9E727',
+              },
             },
-            border: {
-              white: '#FFFFFF',
-              light: '#3A3B45',
-              DEFAULT: '#11121A',
+            trustScore: {
+              green: {
+                100: '#04E000',
+                15: 'rgba(4, 224, 0, 0.15)',
+              },
+              yellow: {
+                100: '#F9E727',
+                15: 'rgba(249, 231, 39, 0.15)',
+              },
+              red: {
+                100: '#FF3D6C',
+                15: 'rgba(255, 61, 108, 0.15)',
+              },
             },
-            status: {
-              good: '#04E000',
-              warning: '#F9E727',
-              danger: '#FF3D6C',
+            error: {
+              label: '#FF3D6C',
+              bg: '#5F192A',
+            },
+            button: {
+              primary: {
+                defaultLabel: '#0B0C1B',
+                hoverLabel: '#0B0C1B',
+                disabledBg: '#9B8E00',
+                disabledLabel: '#0B0C1B',
+              },
+              secondary: {
+                defaultBg: '#1A1B25',
+                defaultLabel: '#FFFFFF',
+                hoverBg: '#1A1B25',
+                hoverLabel: '#FFFFFF',
+                hoverStroke: '#F9E727',
+                disabledBg: '#252525',
+                disabledLabel: '#666666',
+              },
+            },
+            stroke: {
+              cardHover: '#F9E727',
+              tableBorder: '#3A3B45',
+              whiteBorder: '#FFFFFF',
+            },
+            link: {
+              disabled: {
+                disabledLabel: '#666666',
+              },
+              link: {
+                defaultLabel: '#B3B5C0',
+                hoverLabel: '#B3B5C0',
+              },
+              menu: {
+                defaultLabel: '#FFFFFF',
+                hoverLabel: '#F9E727',
+                selectedLabel: '#0B0C1B',
+                disabledLabel: '#0B0C1B',
+              },
             },
           },
         },

@@ -18,7 +18,6 @@ export const Chip: ComponentWithProps<ChipProps> = ({
   viewType = ChipViewType.Default,
   children,
   className,
-  ...props
 }) => {
   return (
     <div className={clsx(styles.root, styles[size], styles[viewType], className)}>{children}</div>
