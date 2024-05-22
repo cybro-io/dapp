@@ -43,9 +43,53 @@
   .darkModeSwitch {
     display: none;
   }
+
+  .connectWalletDesktop {
+    display: none;
+  }
+}
+
+.menuLinkMobile.menuLinkMobile {
+  font-size: 20px;
+}
+
+.mobileMenu.mobileMenu {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  padding: 55px 24px 45px;
+  background-color: $background-window;
+}
+
+.mobileMenuTop.mobileMenuTop {
+  gap: 35px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+
+.mobileMenuBottom {
+  display: flex;
+  flex-direction: column;
+  gap: 30px;
+}
+
+.mobileMenuSettings.mobileMenuSettings {
+  display: flex;
+  justify-content: space-between;
+}
+
+.connectWalletMobile.connectWalletMobile {
+  width: 100%;
+  justify-content: center;
 }
 
 @include tablet {
+  .mobileMenuSettings.mobileMenuSettings {
+    display: none;
+  }
+
   .root {
     padding: 12px 16px;
 
@@ -63,6 +107,14 @@
 @include desktop {
   .root {
     padding: 26px 16px;
+
+    .connectWalletDesktop {
+      display: flex;
+    }
+
+    .settingsButton {
+      display: none;
+    }
 
     .logo {
       width: 150px;

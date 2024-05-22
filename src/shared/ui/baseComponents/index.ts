@@ -11,3 +11,4 @@ export * from './TrustScore';
 export * from './Link';
 export * from './Socials';
 export * from './Web3Modal';
+export * from './IconButton';

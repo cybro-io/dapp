@@ -13,9 +13,20 @@ import {
 } from '@nextui-org/react';
 import clsx from 'clsx';
 
+import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
+import SettingsIcon from '@/shared/assets/icons/settings.svg';
 import { ComponentWithProps } from '@/shared/types';
-import { Button, ButtonSize, DarkModeSwitch, LanguageChange, Logo, MenuLink } from '@/shared/ui';
+import {
+  Button,
+  ButtonSize,
+  DarkModeSwitch,
+  IconButton,
+  LanguageChange,
+  Logo,
+  MenuLink,
+  Socials,
+} from '@/shared/ui';
 
 import styles from './Header.module.scss';
 
@@ -53,7 +64,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
         <div className={styles.menuContainer}>
           <NavbarContent className={styles.leftContainer}>
             <NavbarMenuToggle
-              icon={MenuIcon}
+              icon={isMenuOpen ? CloseIcon : MenuIcon}
               className={clsx(styles.burgerButton, isMenuOpen && styles.menuOpened, 'text-default')}
               aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
             />
@@ -79,16 +90,31 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
             <DarkModeSwitch />
           </NavbarItem>
           <NavbarItem>
-            <Button size={ButtonSize.Small}>Connect Wallet</Button>
+            <Button className={styles.connectWalletDesktop} size={ButtonSize.Small}>
+              Connect Wallet
+            </Button>
+            <IconButton className={styles.settingsButton} icon={<SettingsIcon />} />
           </NavbarItem>
         </NavbarContent>
 
-        <NavbarMenu>
-          {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item.title}-${index}`}>
-              <MenuLink href={item.href}>{item.title}</MenuLink>
-            </NavbarMenuItem>
-          ))}
+        <NavbarMenu className={clsx(styles.mobileMenu)}>
+          <div className={styles.mobileMenuTop}>
+            {menuItems.map((item, index) => (
+              <NavbarMenuItem className={styles.mobileMenuList} key={`${item.title}-${index}`}>
+                <MenuLink className={styles.menuLinkMobile} href={item.href}>
+                  {item.title}
+                </MenuLink>
+              </NavbarMenuItem>
+            ))}
+            <Socials />
+          </div>
+          <div className={styles.mobileMenuBottom}>
+            <div className={styles.mobileMenuSettings}>
+              <DarkModeSwitch />
+              <LanguageChange />
+            </div>
+            <Button className={styles.connectWalletMobile}>Connect Wallet</Button>
+          </div>
         </NavbarMenu>
       </Navbar>
     </header>
