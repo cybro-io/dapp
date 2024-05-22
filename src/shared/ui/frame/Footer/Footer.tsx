@@ -24,7 +24,7 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <div className={styles.logoContainer}>
             <Logo height={17} width={138} />
           </div>
-          <p className={styles.slogan}>dApp, offering you multiple earning paths on Blast</p>
+          <p className={styles.slogan}>Your AI copilot for yield farming</p>
           <Button className={styles.buyButton} endIcon={<ArrowIcon />}>
             Buy cybro tokens
           </Button>
@@ -33,19 +33,23 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <p className={styles.sectionHeading}>Follow us</p>
           <ul className={clsx(styles.sectionList)}>
             <li className={clsx(styles.socialItem, styles.sectionItem)}>
-              <Link className={styles.socialLink} href="https://google.com" target="_blank">
+              <Link className={styles.socialLink} href="https://x.com/Cybro_io" target="_blank">
                 <TwitterIcon />
                 <span>Twitter</span>
               </Link>
             </li>
             <li className={clsx(styles.socialItem, styles.sectionItem)}>
-              <Link className={styles.socialLink} href="https://google.com" target="_blank">
+              <Link
+                className={styles.socialLink}
+                href="https://discord.com/invite/xFMGDQPhrB"
+                target="_blank"
+              >
                 <DiscordIcon />
                 <span>Discord</span>
               </Link>
             </li>
             <li className={clsx(styles.socialItem, styles.sectionItem)}>
-              <Link className={styles.socialLink} href="https://google.com" target="_blank">
+              <Link className={styles.socialLink} href="https://t.me/cybro_io" target="_blank">
                 <TelegramIcon />
                 <span>Telegram</span>
               </Link>

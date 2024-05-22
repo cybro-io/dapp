@@ -36,7 +36,7 @@ export const Link: ComponentWithProps<LinkProps> = ({
 
     case LinkView.Tooltip:
       return (
-        <Tooltip className={styles.contentContainer} content={tooltipContent}>
+        <Tooltip className={styles.contentContainer} content={tooltipContent || 'Some content'}>
           <div className={styles.tooltipContainer}>
             <p className={clsx(styles.tooltipText, className)}>{children}</p>
             <InfoIcon />

@@ -4,20 +4,20 @@
 }
 
 .mainContent {
-  margin: auto;
   padding-right: 24px;
   padding-left: 24px;
-  max-width: $app-max-width;
 }
 
 .main {
   position: relative;
   flex: 1;
+  margin: auto;
   padding-bottom: 100px;
   background-image: url("/CybroBgBlack.svg");
   background-repeat: no-repeat;
   background-position: bottom;
   background-size: 100%;
+  max-width: $app-max-width;
 }
 
 .footer {

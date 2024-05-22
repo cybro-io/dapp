@@ -41,6 +41,10 @@
     svg {
       transition: all 0.3s ease-in-out;
       fill: $link-hoverLabel;
+
+      path {
+        fill: $text-black-body100
+      }
     }
   }
 

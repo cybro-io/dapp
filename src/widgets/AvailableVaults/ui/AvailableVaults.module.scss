@@ -37,6 +37,10 @@
   display: none;
 }
 
+.smallBannerButton {
+  justify-content: center;
+}
+
 @media screen and (width >= 700px) {
   .vaults {
     grid-template-columns: 1fr 1fr;
