@@ -1,0 +1,220 @@
+.tabs {
+  margin-bottom: 16px;
+
+  > div {
+    background-color: $button-secondary-defaultBg;
+  }
+}
+
+.activeTab {
+  background-color: $background-card;
+}
+
+.calculator {
+  margin-bottom: 16px;
+  background-color: $background-card;
+  border: 1px solid $stroke-tableBorder;
+  border-radius: 20px;
+}
+
+.userInfo {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  background-color: $background-chips;
+  border-radius: 20px;
+}
+
+.userInput {
+  padding: 16px;
+}
+
+.availableFunds {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  background-color: $text-accent-logoYellow;
+  border-radius: 20px;
+
+  .title {
+    font-weight: 500;
+    line-height: 150%;
+    text-transform: initial;
+    color: $text-black-body100;
+  }
+
+  .value {
+    margin-bottom: 5px;
+    font-weight: 500;
+    color: $text-black-body100;
+  }
+
+  .equal {
+    color: $text-black-body60;
+  }
+}
+
+.currentToken {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+
+  .title {
+    margin-bottom: 5px;
+    line-height: 150%;
+    text-transform: initial;
+  }
+
+  .value {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+
+  .tokenValue {
+    display: flex;
+    flex-direction: column;
+  }
+
+  .network {
+    text-transform: initial;
+    color: $text-white-body40;
+  }
+
+  .iconContainer {
+    svg {
+      width: 28px;
+      height: 24px;
+    }
+  }
+}
+
+.label {
+  margin-bottom: 6px;
+}
+
+.inputContainer {
+  display: flex;
+  margin-bottom: 8px;
+  padding-top: 8px;
+  padding-bottom: 8px;
+  border-bottom: 1px dashed $stroke-tableBorder;
+  align-items: center;
+  gap: 24px;
+
+  .input {
+    font-family: $unbounded-font;
+    font-size: 20px;
+    line-height: 24px;
+    color: $text-white-body100;
+    background-color: transparent;
+    outline: none;
+  }
+
+  .equal {
+    font-family: $poppins-font;
+    font-size: 13px;
+    font-weight: 500;
+    line-height: 150%;
+    white-space: nowrap;
+    color: $text-white-body60;
+  }
+}
+
+.percentButtons {
+  display: flex;
+  justify-content: space-between;
+  gap: 4px;
+}
+
+.percentButton {
+  width: 100%;
+  padding: 4px 10px;
+  font-family: $poppins-font;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 150%;
+  color: $text-white-body100;
+  background-color: $background-chips;
+  border: 1px solid transparent;
+  border-radius: 20px;
+
+  &:hover {
+    border: 1px solid $stroke-whiteBorder;
+  }
+
+  &:active {
+    opacity: 0.8;
+  }
+}
+
+.projectedYield {
+  margin-bottom: 16px;
+}
+
+.tabsContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.weeklyApyPercents {
+  font-weight: 700;
+}
+
+.yieldTabs {
+  margin-bottom: 16px;
+
+  > div {
+    background-color: $button-secondary-defaultBg;
+  }
+}
+
+.yieldContainer {
+  padding: 16px;
+  background-color: $background-window;
+  border-radius: 20px;
+}
+
+.yieldTitle {
+  margin-bottom: 8px;
+  text-transform: initial;
+  color: $text-white-body60;
+}
+
+.yieldValuesContainer {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 12px;
+
+  .profit {
+    line-height: 24px;
+  }
+
+  .actualProfit {
+    font-size: 14px;
+    color: $text-white-body60;
+  }
+}
+
+.yieldPercents {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+
+.balanceAfter {
+  margin-bottom: 18px;
+  font-weight: 500;
+  color: $text-white-body80;
+}
+
+.balanceAfterValue {
+  font-weight: 700;
+  color: $text-white-body100;
+}
+
+.depositButton {
+  width: 100%;
+  justify-content: center;
+}

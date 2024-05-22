@@ -1,0 +1,93 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid $stroke-tableBorder;
+  border-radius: 12px;
+}
+
+.firstRow {
+  border-bottom: 1px solid $stroke-tableBorder;
+}
+
+.detailsItem {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  align-items: start;
+}
+
+.detailsTitle {
+  font-family: $poppins-font;
+  font-size: 12px !important;
+  font-weight: 500 !important;
+  line-height: 150% !important;
+  text-transform: initial !important;
+  color: $text-white-body60 !important;
+}
+
+.detailsValue {
+  font-family: $unbounded-font;
+  font-size: 16px;
+  font-weight: 300;
+  line-height: 150%;
+  color: $text-white-body100;
+}
+
+.row {
+  display: grid;
+}
+
+.full {
+  .firstRow {
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    padding: 24px 24px 14px;
+  }
+
+  .secondRow {
+    grid-template-columns: 1fr 1fr 1fr;
+    padding: 14px 24px 24px;
+  }
+}
+
+.card {
+  .firstRow {
+    padding: 16px 16px 12px;
+  }
+
+  .secondRow {
+    padding: 12px 16px 16px;
+    border-bottom: 1px solid $stroke-tableBorder;
+  }
+
+  .thirdRow {
+    padding: 12px 16px;
+  }
+
+  .weeklyApyValue {
+    font-weight: 700;
+    color: $text-accent-yellow;
+  }
+
+  .row {
+    grid-template-columns: 1fr 1fr;
+
+    &:last-child {
+      border-bottom: none;
+    }
+  }
+}
+
+.overallInvestmentValue, .yourDepositValue, .availableFundsValue, .earningsMonthlyValue {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  font-size: 22px;
+  font-weight: 600;
+}
+
+.tetherIconContainer {
+  svg {
+    width: 28px;
+    height: 24px;
+  }
+}

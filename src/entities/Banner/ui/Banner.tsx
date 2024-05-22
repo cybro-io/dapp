@@ -5,16 +5,17 @@ import clsx from 'clsx';
 import { ComponentWithProps } from '@/shared/types';
 import { Link, LinkView, Text, TextView } from '@/shared/ui';
 
-import { BannerSize, BannerViewType } from '../const';
+import { BannerColor, BannerSize, BannerViewType } from '../const';
 
 import styles from './Banner.module.scss';
 
 type BannerProps = {
   Title: React.ReactNode | string;
   description?: string;
-  Button: React.ReactNode;
+  Button?: React.ReactNode;
   caption?: string;
   captionType?: LinkView;
+  color?: BannerColor;
   viewType?: BannerViewType;
   size?: BannerSize;
 };
@@ -25,7 +26,8 @@ export const Banner: ComponentWithProps<BannerProps> = ({
   Button,
   caption,
   captionType = LinkView.Link,
-  viewType = BannerViewType.Dark,
+  viewType = BannerViewType.Desktop,
+  color = BannerColor.Dark,
   size = BannerSize.Big,
   className,
 }) => {
@@ -39,7 +41,7 @@ export const Banner: ComponentWithProps<BannerProps> = ({
     );
 
   return (
-    <div className={clsx(styles.root, styles[viewType], styles[size], className)}>
+    <div className={clsx(styles.root, styles[viewType], styles[color], styles[size], className)}>
       {title}
       {description && (
         <Text textView={TextView.P3} className={styles.description}>

@@ -2,7 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { Banner, BannerSize, BannerViewType } from '@/entities/Banner';
+import { Banner, BannerColor, BannerSize, BannerViewType } from '@/entities/Banner';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
@@ -31,7 +31,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             return (
               <React.Fragment>
                 <Banner
-                  viewType={BannerViewType.Dark}
+                  color={BannerColor.Dark}
                   size={BannerSize.Small}
                   className={styles.smallBanner}
                   Title={
@@ -55,7 +55,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             return (
               <React.Fragment>
                 <Banner
-                  viewType={BannerViewType.Accent}
+                  color={BannerColor.Accent}
                   size={BannerSize.Big}
                   className={styles.bigBanner}
                   Title="Become &nbsp; the CYBRO Evangelist"

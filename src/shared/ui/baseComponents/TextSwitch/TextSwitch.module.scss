@@ -1,0 +1,49 @@
+.toggleContainer {
+  position: relative;
+  display: flex;
+  width: 100%;
+  height: 60px;
+  padding: 4px;
+  background-color: $button-secondary-defaultBg;
+  border-radius: 16px;
+  overflow: hidden;
+  cursor: pointer;
+}
+
+.button {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex: 1;
+  padding: 10px 20px;
+  font-family: $unbounded-font;
+  font-size: 14px;
+  font-weight: 900;
+  line-height: 120%;
+  text-align: center;
+  text-transform: uppercase;
+  color: $button-secondary-defaultLabel;
+  transition: color 0.3s;
+  align-items: center;
+  justify-content: center;
+}
+
+.active {
+  color: $text-white-body100;
+}
+
+.inactive {
+  color: $button-secondary-defaultLabel;
+}
+
+.slider {
+  position: absolute;
+  top: 4px;
+  bottom: 4px;
+  z-index: 0;
+  width: calc(100% / var(--num-options) - 8px); /* Dynamic width based on number of options */
+  height: calc(100% - 8px);
+  background-color: $background-card;
+  border-radius: 12px;
+  transition: transform 0.3s;
+}

@@ -1,0 +1,57 @@
+.vaultStatsDesktop {
+  display: none;
+}
+
+.vaultStatsContainer {
+  margin-bottom: 40px;
+}
+
+.historicalApyData {
+  margin-bottom: 40px;
+}
+
+.safetyScoreDetails {
+  margin-bottom: 40px;
+}
+
+.extendedVaultDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 50px;
+
+  .description {
+    color: $text-white-body80;
+  }
+
+  .button {
+    margin-right: auto;
+  }
+}
+
+.yieldButton {
+  width: 100%;
+  justify-content: center;
+}
+
+@media screen and (width >= 600px) {
+  .vaultStatsMobile {
+    display: none;
+  }
+
+  .vaultStatsDesktop {
+    display: block;
+  }
+
+  .safetyScoreDetails {
+    display: none;
+  }
+
+  .extendedVaultDescription {
+    display: none;
+  }
+
+  .yieldCalculator {
+    display: none;
+  }
+}

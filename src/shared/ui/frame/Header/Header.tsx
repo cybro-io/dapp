@@ -42,7 +42,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
     },
     {
       title: 'Dashboard',
-      href: '/2',
+      href: '/dashboard',
     },
     {
       title: 'Staking',

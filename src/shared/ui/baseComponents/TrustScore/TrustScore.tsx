@@ -10,11 +10,16 @@ import { Text } from '@/shared/ui';
 import DangerIcon from './assets/icons/danger.svg';
 import styles from './TrustScore.module.scss';
 
-type TrustScoreProps = {};
+type TrustScoreProps = {
+  isBordered?: boolean;
+};
 
-export const TrustScore: ComponentWithProps<TrustScoreProps> = props => {
+export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
+  isBordered = true,
+  className,
+}) => {
   return (
-    <div className={clsx(styles.root)}>
+    <div className={clsx(styles.root, !isBordered && styles.notBordered, className)}>
       <div className={styles.cornerTopLeft} />
       <div className={styles.cornerTopRight} />
       <div className={styles.cornerBottomLeft} />

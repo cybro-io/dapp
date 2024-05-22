@@ -2,10 +2,14 @@
   display: none;
 }
 
+.availableVaults {
+  padding-top: 20px;
+}
+
 @include desktop {
   .heroSection {
     display: block;
-    padding: 110px 130px 100px;
+    padding: 130px 130px 100px;
     background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
     url('/HeroBg.png') right no-repeat,
     url('/RectBg.svg') repeat,
@@ -61,5 +65,9 @@
     display: flex;
     gap: 24px;
     align-items: center;
+  }
+
+  .availableVaults {
+    padding-top: 0;
   }
 }

@@ -1,0 +1,162 @@
+.heroSection {
+  display: flex;
+  flex-direction: column;
+  padding-top: 40px;
+  padding-bottom: 40px;
+  background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
+  url('/HeroBgMobile.png') -30px center / auto 100% no-repeat,
+  url('/RectBg.svg') repeat,
+  url('/CybroBgGrey.svg') 0 30px / 100% no-repeat;
+  justify-content: center;
+  align-items: center;
+}
+
+.accent {
+  color: $text-accent-yellow;
+}
+
+.tetherContainer {
+  margin-bottom: 24px;
+
+  svg {
+    width: 58px;
+    height: 50px;
+  }
+}
+
+.heading.heading {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.headingBackground {
+  padding-right: 10px;
+  padding-left: 10px;
+  background: linear-gradient(148deg, rgb(255 255 255 / 10%) 3.15%, rgb(107 109 121 / 7%) 96.78%);
+  border-radius: 10px;
+  backdrop-filter: blur(45px);
+}
+
+.headingBackgroundTop {
+  position: relative;
+
+  &::before {
+    content: '';
+    position: absolute;
+    left: 0;
+    width: 63px;
+    height: 37px;
+    background-color: $text-accent-logoYellow;
+    opacity: 0.7;
+    filter: blur(36px)
+  }
+}
+
+.desktopDescription {
+  display: none;
+}
+
+.description.description {
+  margin-bottom: 12px;
+  text-align: center;
+}
+
+.chipsContainer {
+  display: flex;
+  gap: 6px;
+}
+
+.chip.chip {
+  padding: 4px 10px;
+  font-size: 13px;
+}
+
+@media screen and (width >= 600px) {
+  .mobileDescription {
+    display: none;
+  }
+
+  .desktopDescription {
+    display: block;
+  }
+
+  .description {
+    max-width: 550px;
+  }
+
+  .headingBackgroundTop {
+    &::before {
+      width: 80px;
+      height: 45px;
+      filter: blur(50px);
+    }
+  }
+
+  .chip.chip {
+    padding: 4px 14px;
+    font-size: initial;
+  }
+}
+
+@include desktop {
+  .main {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding-right: 38px;
+    padding-left: 38px;
+
+  }
+
+  .rightContent {
+    padding-left: 38px;
+  }
+
+  .leftContent {
+    padding-right: 38px;
+    border-right: 1px solid $stroke-tableBorder;
+  }
+
+  .heroSection {
+    padding-top: 32px;
+    padding-bottom: 95px;
+    background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
+    url('/HeroBg.png') right 0 no-repeat,
+    url('/RectBg.svg') repeat,
+    url('/CybroBgGrey.svg') top / 100% no-repeat;
+  }
+
+  .tetherContainer {
+    margin-bottom: 18px;
+
+    svg {
+      width: 87px;
+      height: 66px;
+    }
+  }
+
+  .heading {
+    margin-bottom: 20px;
+  }
+
+  .headingBackgroundTop {
+    &::before {
+      left: initial;
+      width: 229px;
+      height: 134px;
+      opacity: 0.24;
+      filter: blur(65px)
+    }
+  }
+
+  .description.description {
+    margin-bottom: 24px;
+    font-size: 16px;
+    max-width: 690px;
+  }
+
+  .calculatorContainer {
+    padding: 24px;
+    background-color: $background-modal;
+    border-radius: 0 0 30px 30px;
+  }
+}

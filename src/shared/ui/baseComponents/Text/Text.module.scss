@@ -3,11 +3,13 @@
 }
 
 .h1, .h2, .h3, .h4, .h5 {
+  margin: 0;
   font-family: $unbounded-font;
   line-height: 120%;
 }
 
 .p1, .p2, .p3 {
+  margin: 0;
   font-family: $poppins-font;
 }
 
@@ -88,4 +90,16 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 150%;
+}
+
+@media screen and (width <= 800px) {
+  .h1 {
+    font-size: 45px;
+  }
+}
+
+@media screen and (width <= 600px) {
+  .h1 {
+    font-size: 25px;
+  }
 }

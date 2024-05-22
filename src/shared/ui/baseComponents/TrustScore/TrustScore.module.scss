@@ -119,3 +119,15 @@
                   $trustScore-green-100 5px,
   );
 }
+
+.notBordered {
+  padding: 0;
+  background: transparent;
+
+  .cornerTopLeft,
+  .cornerTopRight,
+  .cornerBottomLeft,
+  .cornerBottomRight {
+    display: none;
+  }
+}

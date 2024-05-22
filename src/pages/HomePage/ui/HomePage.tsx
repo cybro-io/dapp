@@ -32,7 +32,7 @@ export const HomePage: ComponentWithProps<HomePageProps> = props => {
         </div>
       </section>
 
-      <AvailableVaults />
+      <AvailableVaults className={styles.availableVaults} />
     </React.Fragment>
   );
 };
