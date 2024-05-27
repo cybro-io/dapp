@@ -26,6 +26,7 @@ import {
   Logo,
   MenuLink,
   Socials,
+  Text,
 } from '@/shared/ui';
 
 import styles from './Header.module.scss';
@@ -59,64 +60,62 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
   ];
 
   return (
-    <header className={clsx(styles.root, className)}>
-      <Navbar className={clsx(styles.navbar)} onMenuOpenChange={setIsMenuOpen}>
-        <div className={styles.menuContainer}>
-          <NavbarContent className={styles.leftContainer}>
-            <NavbarMenuToggle
-              icon={isMenuOpen ? CloseIcon : MenuIcon}
-              className={clsx(styles.burgerButton, isMenuOpen && styles.menuOpened, 'text-default')}
-              aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
-            />
-            <NavbarBrand>
-              <Logo className={styles.logo} />
-            </NavbarBrand>
-          </NavbarContent>
-
-          <NavbarContent className={styles.desktopMenu}>
-            {menuItems.map((item, index) => (
-              <NavbarMenuItem key={`${item.title}-${index}`}>
-                <MenuLink href={item.href}>{item.title}</MenuLink>
-              </NavbarMenuItem>
-            ))}
-          </NavbarContent>
-        </div>
-
-        <NavbarContent justify="end">
-          <NavbarItem className={styles.languageDropdown}>
-            <LanguageChange />
-          </NavbarItem>
-          <NavbarItem className={styles.darkModeSwitch}>
-            <DarkModeSwitch />
-          </NavbarItem>
-          <NavbarItem>
-            <Button className={styles.connectWalletDesktop} size={ButtonSize.Small}>
-              Connect Wallet
-            </Button>
-            <IconButton className={styles.settingsButton} icon={<SettingsIcon />} />
-          </NavbarItem>
+    <Navbar className={clsx(styles.navbar, className)} onMenuOpenChange={setIsMenuOpen}>
+      <div className={styles.menuContainer}>
+        <NavbarContent className={styles.leftContainer}>
+          <NavbarMenuToggle
+            icon={isMenuOpen ? CloseIcon : MenuIcon}
+            className={clsx(styles.burgerButton, isMenuOpen && styles.menuOpened, 'text-default')}
+            aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
+          />
+          <NavbarBrand>
+            <Logo className={styles.logo} />
+          </NavbarBrand>
         </NavbarContent>
 
-        <NavbarMenu className={clsx(styles.mobileMenu)}>
-          <div className={styles.mobileMenuTop}>
-            {menuItems.map((item, index) => (
-              <NavbarMenuItem className={styles.mobileMenuList} key={`${item.title}-${index}`}>
-                <MenuLink className={styles.menuLinkMobile} href={item.href}>
-                  {item.title}
-                </MenuLink>
-              </NavbarMenuItem>
-            ))}
-            <Socials />
+        <NavbarContent className={styles.desktopMenu}>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem key={`${item.title}-${index}`}>
+              <MenuLink href={item.href}>{item.title}</MenuLink>
+            </NavbarMenuItem>
+          ))}
+        </NavbarContent>
+      </div>
+
+      <NavbarContent justify="end">
+        <NavbarItem className={styles.languageDropdown}>
+          <LanguageChange />
+        </NavbarItem>
+        <NavbarItem className={styles.darkModeSwitch}>
+          <DarkModeSwitch />
+        </NavbarItem>
+        <NavbarItem>
+          <Button className={styles.connectWalletDesktop} size={ButtonSize.Small}>
+            Connect Wallet
+          </Button>
+          <IconButton className={styles.settingsButton} icon={<SettingsIcon />} />
+        </NavbarItem>
+      </NavbarContent>
+
+      <NavbarMenu className={clsx(styles.mobileMenu)}>
+        <div className={styles.mobileMenuTop}>
+          {menuItems.map((item, index) => (
+            <NavbarMenuItem className={styles.mobileMenuList} key={`${item.title}-${index}`}>
+              <MenuLink className={styles.menuLinkMobile} href={item.href}>
+                {item.title}
+              </MenuLink>
+            </NavbarMenuItem>
+          ))}
+          <Socials />
+        </div>
+        <div className={styles.mobileMenuBottom}>
+          <div className={styles.mobileMenuSettings}>
+            <DarkModeSwitch />
+            <LanguageChange />
           </div>
-          <div className={styles.mobileMenuBottom}>
-            <div className={styles.mobileMenuSettings}>
-              <DarkModeSwitch />
-              <LanguageChange />
-            </div>
-            <Button className={styles.connectWalletMobile}>Connect Wallet</Button>
-          </div>
-        </NavbarMenu>
-      </Navbar>
-    </header>
+          <Button className={styles.connectWalletMobile}>Connect Wallet</Button>
+        </div>
+      </NavbarMenu>
+    </Navbar>
   );
 };

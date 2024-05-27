@@ -1,52 +1,47 @@
-.root {
+.logo {
+  width: 92px;
+  height: 11px;
+}
+
+.navbar.navbar {
   padding: 8px 24px;
   background-color: $background-header;
 
-  .logo {
-    width: 92px;
-    height: 11px;
-  }
-
-  .navbar {
+  header {
+    height: auto;
     padding: 0;
-    background-color: transparent;
-
-    header {
-      height: auto;
-      padding: 0;
-      max-width: $app-max-width;
-    }
+    max-width: $app-max-width;
   }
+}
 
-  .leftContainer {
-    gap: 10px;
-    flex-grow: 0 !important;
+.leftContainer {
+  gap: 10px;
+  flex-grow: 0 !important;
+}
+
+.desktopMenu.desktopMenu {
+  display: none;
+}
+
+.burgerButton {
+  transform: rotate(0deg);
+
+  &.menuOpened {
+    transition: transform 0.3s ease-in-out;
+    transform: rotate(90deg);
   }
+}
 
-  .desktopMenu {
-    display: none;
-  }
+.languageDropdown {
+  display: none;
+}
 
-  .burgerButton {
-    transform: rotate(0deg);
+.darkModeSwitch {
+  display: none;
+}
 
-    &.menuOpened {
-      transition: transform 0.3s ease-in-out;
-      transform: rotate(90deg);
-    }
-  }
-
-  .languageDropdown {
-    display: none;
-  }
-
-  .darkModeSwitch {
-    display: none;
-  }
-
-  .connectWalletDesktop {
-    display: none;
-  }
+.connectWalletDesktop {
+  display: none;
 }
 
 .menuLinkMobile.menuLinkMobile {
@@ -90,7 +85,7 @@
     display: none;
   }
 
-  .root {
+  .navbar.navbar {
     padding: 12px 16px;
 
     .languageDropdown {
@@ -105,7 +100,7 @@
 
 
 @include desktop {
-  .root {
+  .navbar.navbar {
     padding: 26px 16px;
 
     .connectWalletDesktop {
