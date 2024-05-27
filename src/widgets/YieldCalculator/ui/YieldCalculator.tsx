@@ -34,8 +34,6 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({ clas
   const [active, setActive] = React.useState<string | number>(tabs[0].key);
   const [value, setValue] = React.useState<number>(0);
 
-  const onTypeChange = () => React.useCallback(() => {}, []);
-
   return (
     <div className={clsx(styles.root, className)}>
       <Tabs className={styles.tabs} onSelectionChange={setActive} fullWidth size="lg">
