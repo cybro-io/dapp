@@ -6,6 +6,27 @@
   box-sizing: border-box;
 }
 
+* {
+  scroll-behavior: smooth;
+
+  ::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+  }
+
+  ::-webkit-scrollbar-track {
+    background: rgb(46 46 46);
+    border-radius: 14px;
+  }
+
+  ::-webkit-scrollbar-thumb {
+    background: rgb(249 231 39 / 70%);
+    -webkit-border-radius: 14px;
+    -moz-border-radius: 14px;
+    border-radius: 14px;
+  }
+}
+
 /*! normalize.css v8.0.1 | MIT License | github.com/necolas/normalize.css */
 
 /* Document
@@ -30,6 +51,7 @@ html {
 
 body {
   margin: 0;
+  overflow: auto;
 }
 
 /**
