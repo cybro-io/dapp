@@ -15,24 +15,26 @@ type VaultProps = {};
 
 export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
   return (
-    <div className={clsx(styles.root, className)}>
-      <div className={styles.titleContainer}>
-        <div className={styles.title}>
-          <div>
-            <TetherIcon />
+    <Link className={clsx(styles.link)} href={'/vaults/1'}>
+      <div className={clsx(styles.root, className)}>
+        <div className={styles.titleContainer}>
+          <div className={styles.title}>
+            <div className={styles.iconContainer}>
+              <TetherIcon />
+            </div>
+            <Text textView={TextView.H4} className={styles.titleText}>
+              Stable Growth USDC Vault
+            </Text>
           </div>
-          <Text textView={TextView.H4} className={styles.titleText}>
-            Stable Growth USDC Vault
-          </Text>
+          <div className={styles.chipsContainer}>
+            <Chip className={styles.chip}>Low Risk</Chip>
+            <Chip className={styles.chip}>Low Risk</Chip>
+          </div>
         </div>
-        <div className={styles.chipsContainer}>
-          <Chip>Low Risk</Chip>
-          <Chip>Low Risk</Chip>
-        </div>
+        <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={'1’100k'} provider={'Details'} />
+        <TrustScore />
+        <Link viewType={LinkView.Tooltip}>How trust score counts</Link>
       </div>
-      <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={'1’100k'} provider={'Details'} />
-      <TrustScore />
-      <Link viewType={LinkView.Tooltip}>How trust score counts</Link>
-    </div>
+    </Link>
   );
 };

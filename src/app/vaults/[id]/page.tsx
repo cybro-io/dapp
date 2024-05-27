@@ -1,14 +1,14 @@
 import React from 'react';
 
-import DashboardPage from '@/pages/DashboardPage';
+import VaultPage from '@/pages/VaultPage';
 import { BaseLayout } from '@/shared/ui';
 
 type pageProps = {};
 
-export default function Dashboard() {
+export default function Vault() {
   return (
     <BaseLayout>
-      <DashboardPage />
+      <VaultPage />
     </BaseLayout>
   );
 }

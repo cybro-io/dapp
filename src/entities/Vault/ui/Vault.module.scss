@@ -1,3 +1,17 @@
+.link {
+  border: 1px solid transparent;
+  border-radius: 20px;
+
+  &:hover {
+    border: 1px solid $stroke-cardHover;
+  }
+}
+
+.iconContainer {
+  width: 38px;
+  height: 38px;
+}
+
 .root {
   display: flex;
   flex-direction: column;
@@ -12,8 +26,23 @@
   flex-direction: row;
   gap: 10px;
   margin-bottom: 12px;
+  align-items: center;
 }
 
 .titleText {
   text-transform: uppercase;
+}
+
+.chipsContainer {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+
+.chip {
+  font-family: $poppins-font;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  text-transform: initial;
 }

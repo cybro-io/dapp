@@ -44,7 +44,9 @@ export const Link: ComponentWithProps<LinkProps> = ({
         >
           <div className={clsx(styles.tooltipContainer, className)}>
             <p className={clsx(styles.tooltipText, textClassName)}>{children}</p>
-            <InfoIcon />
+            <div>
+              <InfoIcon />
+            </div>
           </div>
         </Tooltip>
       );

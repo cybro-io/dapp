@@ -71,6 +71,10 @@
   font-size: 13px;
 }
 
+.rightContent {
+  display: none;
+}
+
 @media screen and (width >= 600px) {
   .mobileDescription {
     display: none;
@@ -95,6 +99,14 @@
   .chip.chip {
     padding: 4px 14px;
     font-size: initial;
+  }
+
+  .rightContent {
+    display: block;
+  }
+
+  .yieldBanner {
+    margin-bottom: 20px;
   }
 }
 
@@ -159,4 +171,8 @@
     background-color: $background-modal;
     border-radius: 0 0 30px 30px;
   }
+}
+
+@include desktop {
+
 }

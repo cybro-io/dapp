@@ -6,16 +6,13 @@ import { Tooltip } from '@nextui-org/react';
 import clsx from 'clsx';
 import {
   CartesianGrid,
-  LabelList,
   Legend,
-  Line,
-  LineChart,
   ResponsiveContainer,
   Scatter,
   ScatterChart,
   XAxis,
   YAxis,
-  ZAxis,
+  ScatterProps,
 } from 'recharts';
 
 import { ComponentWithProps } from '@/shared/types';
@@ -26,24 +23,38 @@ import styles from './HistoricalApyData.module.scss';
 type HistoricalApyDataProps = {};
 
 const data = [
-  { name: 'Jan', uv: 35000, percent: '10%' },
-  { name: 'Feb', uv: 40000, percent: '12%' },
-  { name: 'Mar', uv: 37500, percent: '11.5%' },
-  { name: 'Apr', uv: 42500, percent: '14.5%' },
-  { name: 'May', uv: 46000, percent: '16%' },
-  { name: 'Jan', uv: 35000, percent: '10%' },
-  { name: 'Feb', uv: 40000, percent: '12%' },
-  { name: 'Mar', uv: 37500, percent: '11.5%' },
-  { name: 'Apr', uv: 42500, percent: '14.5%' },
-  { name: 'May', uv: 46000, percent: '16%' },
+  { x: 'Jan', y: 35000, percent: '10%', index: 0 },
+  { x: 'Feb', y: 40000, percent: '12%', index: 1 },
+  { x: 'Mar', y: 38500, percent: '11.5%', index: 2 },
+  { x: 'Apr', y: 45000, percent: '14.5%', index: 3 },
+  { x: 'May', y: 53500, percent: '16%', index: 4 },
+  { x: 'Jun', y: 35000, percent: '10%', index: 5 },
+  { x: 'Jul', y: 40000, percent: '12%', index: 6 },
+  { x: 'Aug', y: 38500, percent: '11.5%', index: 7 },
+  { x: 'Sep', y: 45000, percent: '14.5%', index: 8 },
+  { x: 'Oct', y: 48000, percent: '16%', index: 9 },
 ];
 
-const CustomDot = (props: any) => {
+const CustomDotWithLine: ScatterProps['shape'] = (props: any) => {
   const { cx, cy, payload } = props;
+  const isGold = payload.index % 2 === 0;
+  const fillColor = isGold ? 'transparent' : '#24252E';
+  const strokeColor = isGold ? '#F9E727' : '#3A3B45';
+  const lineStroke = 'rgba(255, 255, 255, 0.5)';
+
   return (
     <g>
-      <circle cx={cx} cy={cy} r={6} stroke="#C1A33B" strokeWidth={2} fill="transparent" />
-      <text x={cx} y={cy - 10} textAnchor="middle" fill="#fff" fontSize={10}>
+      <line
+        x1={cx}
+        y1={cy + 11}
+        x2={cx}
+        y2={230}
+        stroke={lineStroke}
+        strokeWidth={1}
+        strokeDasharray="3 3"
+      />
+      <circle cx={cx} cy={cy} r={6} stroke={strokeColor} strokeWidth={3} fill={fillColor} />
+      <text x={cx} y={cy - 15} textAnchor="middle" fill="#fff" fontSize={10} fontWeight={600}>
         {payload.percent}
       </text>
     </g>
@@ -51,6 +62,8 @@ const CustomDot = (props: any) => {
 };
 
 export const HistoricalApyData: ComponentWithProps<HistoricalApyDataProps> = ({ className }) => {
+  const yAxisTickFormatter = (value: number) => `$${value / 1000}K`;
+
   return (
     <section className={clsx(styles.root, className)}>
       <Text className={styles.heading} textView={TextView.H3}>
@@ -60,24 +73,22 @@ export const HistoricalApyData: ComponentWithProps<HistoricalApyDataProps> = ({ 
         This section shows the historical APY for our High Yield BTC Strategy vault, highlighting
         its success in leveraging market trends to enhance returns for Vault investors.
       </Text>
-      {/*<ScatterChart className={styles.chart}>*/}
-      {/*  <CartesianGrid strokeDasharray="3 3" />*/}
-      {/*</ScatterChart>*/}
       <ResponsiveContainer className={styles.chartContainer} width="100%" height={265}>
-        {/*<ScatterChart*/}
-        {/*  width={800}*/}
-        {/*  height={400}*/}
-        {/*  margin={{ top: 20, right: 20, bottom: 20, left: 20 }}*/}
-        {/*>*/}
-        {/*  <CartesianGrid />*/}
-        {/*  <XAxis type="category" dataKey="name" />*/}
-        {/*  <YAxis type="number" dataKey="value" domain={[30000, 60000]} />*/}
-        {/*  <Tooltip />*/}
-        {/*  <Legend />*/}
-        {/*  <Scatter name="A" data={data} fill="#8884d8">*/}
-        {/*    <LabelList dataKey="percent" position="top" />*/}
-        {/*  </Scatter>*/}
-        {/*</ScatterChart>*/}
+        <ScatterChart margin={{ top: 20, bottom: 10 }}>
+          <CartesianGrid vertical={false} stroke="rgba(255, 255, 255, 0.09)" />
+          <XAxis dataKey="x" name="Month" axisLine={false} tickLine={false} />
+          <YAxis
+            dataKey="y"
+            name="Amount"
+            domain={[30000, 60000]}
+            tickCount={7}
+            tickFormatter={yAxisTickFormatter}
+            axisLine={false}
+            tickLine={false}
+          />
+          <Tooltip />
+          <Scatter name="Data" data={data} shape={CustomDotWithLine} />
+        </ScatterChart>
       </ResponsiveContainer>
     </section>
   );

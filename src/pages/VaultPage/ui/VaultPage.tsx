@@ -11,11 +11,11 @@ import { Chip, ChipSize, Text, TextView } from '@/shared/ui';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
-import styles from './DashboardPage.module.scss';
+import styles from './VaultPage.module.scss';
 
 type DashboardPageProps = {};
 
-export const DashboardPage: ComponentWithProps<DashboardPageProps> = props => {
+export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
   return (
     <React.Fragment>
       <section className={clsx(styles.heroSection)}>
@@ -69,4 +69,4 @@ export const DashboardPage: ComponentWithProps<DashboardPageProps> = props => {
   );
 };
 
-export default DashboardPage;
+export default VaultPage;
