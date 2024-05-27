@@ -20,10 +20,8 @@ import MenuIcon from '@/shared/assets/icons/menu.svg';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import { ComponentWithProps } from '@/shared/types';
 import {
-  Button,
   ButtonSize,
   DarkModeSwitch,
-  IconButton,
   LanguageChange,
   Logo,
   MenuLink,
@@ -50,20 +48,25 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
       href: '/',
     },
     {
-      title: 'Dashboard',
-      href: '/2',
+      title: 'One-click',
+      href: '/1',
+      isComingSoon: true,
+      isDisabled: true,
     },
     {
-      title: 'Staking',
-      href: '/3',
+      title: 'Dashboard',
+      href: '/2',
+      isDisabled: true,
     },
     {
       title: 'Exchange',
       href: '/4',
+      isDisabled: true,
     },
     {
       title: 'Cybro Points',
       href: '/5',
+      isDisabled: true,
     },
   ];
 
@@ -84,7 +87,13 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
         <NavbarContent className={styles.desktopMenu}>
           {menuItems.map((item, index) => (
             <NavbarMenuItem key={`${item.title}-${index}`}>
-              <MenuLink href={item.href}>{item.title}</MenuLink>
+              <MenuLink
+                href={item.href}
+                isDisabled={item.isDisabled}
+                isComingSoon={item.isComingSoon}
+              >
+                {item.title}
+              </MenuLink>
             </NavbarMenuItem>
           ))}
         </NavbarContent>
@@ -117,7 +126,12 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
         <div className={styles.mobileMenuTop}>
           {menuItems.map((item, index) => (
             <NavbarMenuItem className={styles.mobileMenuList} key={`${item.title}-${index}`}>
-              <MenuLink className={styles.menuLinkMobile} href={item.href}>
+              <MenuLink
+                className={styles.menuLinkMobile}
+                href={item.href}
+                isDisabled={item.isDisabled}
+                isComingSoon={item.isComingSoon}
+              >
                 {item.title}
               </MenuLink>
             </NavbarMenuItem>
