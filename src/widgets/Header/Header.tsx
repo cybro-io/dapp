@@ -11,11 +11,13 @@ import {
   NavbarMenuItem,
   NavbarMenuToggle,
 } from '@nextui-org/react';
+import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
-import SettingsIcon from '@/shared/assets/icons/settings.svg';
+import TetherIcon from '@/shared/assets/icons/tether.svg';
 import { ComponentWithProps } from '@/shared/types';
 import {
   Button,
@@ -27,14 +29,20 @@ import {
   MenuLink,
   Socials,
   Text,
+  TextView,
 } from '@/shared/ui';
+import { shortenWalletAddress } from '@/shared/utils';
 
 import styles from './Header.module.scss';
 
 type HeaderProps = {};
 
 export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
+  const { disconnect } = useDisconnect();
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
+
+  console.log(isConnected, address, 'data');
 
   const menuItems = [
     {
@@ -90,10 +98,18 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
           <DarkModeSwitch />
         </NavbarItem>
         <NavbarItem>
-          <Button className={styles.connectWalletDesktop} size={ButtonSize.Small}>
-            Connect Wallet
-          </Button>
-          <IconButton className={styles.settingsButton} icon={<SettingsIcon />} />
+          {isConnected ? (
+            <div className={styles.connectedWalletContainer} onClick={() => disconnect()}>
+              <div className={styles.tetherIconContainer}>
+                <TetherIcon />
+              </div>
+              <Text textView={TextView.C3} className={styles.connectedWallet}>
+                {shortenWalletAddress(address)}
+              </Text>
+            </div>
+          ) : (
+            <ConnectWallet className={styles.connectWalletDesktop} buttonSize={ButtonSize.Small} />
+          )}
         </NavbarItem>
       </NavbarContent>
 
@@ -109,11 +125,8 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
           <Socials />
         </div>
         <div className={styles.mobileMenuBottom}>
-          <div className={styles.mobileMenuSettings}>
-            <DarkModeSwitch />
-            <LanguageChange />
-          </div>
-          <Button className={styles.connectWalletMobile}>Connect Wallet</Button>
+          <DarkModeSwitch />
+          <LanguageChange />
         </div>
       </NavbarMenu>
     </Navbar>

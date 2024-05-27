@@ -1,6 +1,7 @@
 import React from 'react';
 
-import { Footer, Header } from '@/shared/ui';
+import { Footer } from '@/widgets/Footer';
+import { Header } from '@/widgets/Header';
 
 import styles from './BaseLayout.module.scss';
 
