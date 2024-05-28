@@ -6,7 +6,7 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import clsx from 'clsx';
 
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
-import TetherIcon from '@/shared/assets/icons/tether.svg';
+import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 

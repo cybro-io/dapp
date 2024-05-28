@@ -10,21 +10,15 @@ type Web3ModalProps = {
 };
 
 const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID as string;
+const anrkId = process.env.NEXT_PUBLIC_ANKR_ID as string;
 
 const chains = [
   {
-    chainId: Chain.Mainnet,
-    name: 'Ethereum',
+    chainId: Chain.Sepolia,
+    name: 'Sepolia',
     currency: 'ETH',
-    explorerUrl: 'https://etherscan.io',
-    rpcUrl: 'https://ethereum-rpc.publicnode.com',
-  },
-  {
-    chainId: Chain.Goerli,
-    name: 'Goerli',
-    currency: 'ETH',
-    explorerUrl: 'https://goerli.etherscan.io',
-    rpcUrl: 'https://eth-goerli.public.blastapi.io',
+    explorerUrl: 'https://sepolia.etherscan.io',
+    rpcUrl: `https://rpc.ankr.com/eth_sepolia/${anrkId}`,
   },
 ];
 
@@ -44,6 +38,7 @@ createWeb3Modal({
   ethersConfig,
   chains,
   projectId,
+  defaultChain: chains[0],
   enableAnalytics: true,
   enableOnramp: true,
 });

@@ -5,7 +5,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { Banner, BannerSize } from '@/entities/Banner';
-import TetherIcon from '@/shared/assets/icons/tether.svg';
+import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Chip, ChipSize, Text, TextView } from '@/shared/ui';
 import { VaultInfo } from '@/widgets/VaultInfo';

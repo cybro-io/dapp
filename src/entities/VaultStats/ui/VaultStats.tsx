@@ -4,7 +4,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import TetherIcon from '@/shared/assets/icons/tether.svg';
+import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Chip, Link, LinkView, Text, TextView } from '@/shared/ui';
 

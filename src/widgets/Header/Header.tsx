@@ -17,7 +17,7 @@ import clsx from 'clsx';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
-import TetherIcon from '@/shared/assets/icons/tether.svg';
+import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import {
   ButtonSize,
@@ -37,10 +37,8 @@ type HeaderProps = {};
 
 export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
   const { disconnect } = useDisconnect();
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { address, isConnected } = useWeb3ModalAccount();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  console.log(isConnected, address, 'data');
 
   const menuItems = [
     {
