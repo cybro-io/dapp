@@ -48,7 +48,7 @@ export const Banner: ComponentWithProps<BannerProps> = ({
           {description}
         </Text>
       )}
-      {Button}
+      <div className={styles.buttonContainer}>{Button}</div>
       {caption && (
         <Link className={styles.caption} viewType={captionType}>
           {caption}

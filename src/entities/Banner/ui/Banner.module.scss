@@ -35,6 +35,7 @@
 }
 
 .big {
+  justify-content: start;
   padding: 34px 50% 18px 34px;
   align-items: start;
   clip-path: polygon(
@@ -42,14 +43,20 @@
   );
 
   .title {
+    margin-bottom: 10px;
     text-align: left;
     color: $text-black-heading;
-    max-width: 210px;
+    max-width: 330px;
   }
 
   .description {
     max-width: 215px;
     color: $text-black-body60;
+  }
+
+  .buttonContainer {
+    margin-top: auto;
+    margin-bottom: 15px;
   }
 }
 

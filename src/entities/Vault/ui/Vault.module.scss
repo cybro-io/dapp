@@ -82,3 +82,29 @@
   align-items: center;
   gap: 6px;
 }
+
+.trustScoreContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.trustScoreDesktop {
+  display: none;
+}
+
+@include desktop {
+  .trustScoreMobile {
+    display: none;
+  }
+
+  .trustScoreDesktop {
+    display: flex;
+  }
+
+  .trustScoreContainer {
+    gap: 18px;
+    flex-direction: row;
+    align-items: center;
+  }
+}

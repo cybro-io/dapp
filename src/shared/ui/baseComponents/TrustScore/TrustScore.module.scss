@@ -54,6 +54,13 @@
   width: 100%;
 }
 
+.iconContainer {
+  svg {
+    width: 45px;
+    height: 45px;
+  }
+}
+
 .top {
   display: flex;
   flex-direction: row;
@@ -129,5 +136,45 @@
   .cornerBottomLeft,
   .cornerBottomRight {
     display: none;
+  }
+}
+
+.desktop {
+  padding: 10px;
+  align-items: center;
+
+  .iconContainer {
+    svg {
+      width: 24px;
+      height: 24px;
+    }
+  }
+
+  .progressBarContainer {
+    display: none;
+  }
+
+  .title {
+    font-family: $unbounded-font;
+    font-size: 12px;
+    font-weight: 500;
+    line-height: 100%;
+    text-transform: initial;
+  }
+
+  .value {
+    font-family: $unbounded-font;
+    font-size: 18px;
+    font-weight: 500;
+    line-height: 120%;
+  }
+
+  .container {
+    display: block;
+  }
+
+  .top {
+    height: 100%;
+    //flex-direction: column;
   }
 }

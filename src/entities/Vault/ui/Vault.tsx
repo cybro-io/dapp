@@ -21,6 +21,7 @@ import {
   TextView,
   TrustScore,
 } from '@/shared/ui';
+import { TrustScoreViewType } from '@/shared/ui/baseComponents/TrustScore/const';
 import { formatMoney } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
@@ -73,8 +74,11 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
           </div>
         )}
         <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={'1’100k'} provider={'Details'} />
-        <TrustScore />
-        <Link viewType={LinkView.Tooltip}>How trust score counts</Link>
+        <div className={styles.trustScoreContainer}>
+          <TrustScore className={styles.trustScoreMobile} />
+          <TrustScore className={styles.trustScoreDesktop} viewType={TrustScoreViewType.Desktop} />
+          <Link viewType={LinkView.Tooltip}>How trust score counts</Link>
+        </div>
       </div>
     </Link>
   );
