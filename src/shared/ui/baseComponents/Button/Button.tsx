@@ -25,7 +25,6 @@ export const Button: ComponentWithProps<ButtonProps> = ({
   className,
   ...props
 }) => {
-  console.log(onClick, 'onClick');
   return (
     <button
       className={clsx(styles.root, styles[view], styles[size], className)}

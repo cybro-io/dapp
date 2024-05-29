@@ -86,14 +86,13 @@
   justify-content: space-between;
 }
 
-.connectWalletMobile.connectWalletMobile {
-  width: 100%;
-  justify-content: center;
-}
-
 @include tablet {
   .navbar.navbar {
     padding: 12px 16px;
+
+    .connectWallet {
+        padding: 12px 14px;
+    }
 
     .languageDropdown {
       display: block;

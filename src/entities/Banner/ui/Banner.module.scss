@@ -63,6 +63,12 @@
   }
 }
 
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
 .big.accent {
   background-image: url('../assets/img/AccentBannerBg.png');
   background-repeat: no-repeat;

@@ -13,7 +13,7 @@
   align-items: center;
   gap: 8px;
 
-  &:active, &:active > * {
+  &:not(:disabled):active, &:active > * {
     opacity: 0.8;
   }
 }
@@ -26,7 +26,7 @@
     fill: $button-primary-defaultLabel;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     background: $button-primary-hoverBg;
     box-shadow: 0 0 30px 0 rgb(251 255 58 / 60%);
   }
@@ -45,7 +45,7 @@
     fill: $button-secondary-defaultLabel;
   }
 
-  &:hover {
+  &:not(:disabled):hover {
     border: 1px solid $button-secondary-hoverStroke;
   }
 
