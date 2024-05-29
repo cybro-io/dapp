@@ -26,11 +26,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-        <Web3Modal>
-          <EthersProvider>{children}</EthersProvider>
-        </Web3Modal>
-      </body>
+      <Web3Modal>
+        <EthersProvider>
+          <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+            {children}
+          </body>
+        </EthersProvider>
+      </Web3Modal>
     </html>
   );
 }

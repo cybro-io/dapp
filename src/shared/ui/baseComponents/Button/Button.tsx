@@ -9,7 +9,6 @@ import { ButtonSize, ButtonView } from './const';
 
 type ButtonProps = {
   children: React.ReactNode;
-  onClick?: () => void;
   view?: ButtonView;
   size?: ButtonSize;
   startIcon?: React.ReactNode;
@@ -27,11 +26,7 @@ export const Button: ComponentWithProps<ButtonProps> = ({
   ...props
 }) => {
   return (
-    <button
-      className={clsx(styles.root, styles[view], styles[size], className)}
-      onClick={onClick}
-      {...props}
-    >
+    <button className={clsx(styles.root, styles[view], styles[size], className)} {...props}>
       {!!startIcon && <div className={styles.iconContainer}>{startIcon}</div>}
       <span>{children}</span>
       {!!endIcon && <div className={styles.iconContainer}>{endIcon}</div>}
