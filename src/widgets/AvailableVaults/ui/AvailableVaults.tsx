@@ -2,7 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { Banner, BannerColor, BannerSize, BannerViewType } from '@/entities/Banner';
+import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
@@ -29,7 +29,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
         {vaults.map((vault, index) => {
           if (index === 2) {
             return (
-              <React.Fragment>
+              <React.Fragment key={vault}>
                 <Banner
                   color={BannerColor.Dark}
                   size={BannerSize.Small}
@@ -53,7 +53,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
 
           if (index === 5) {
             return (
-              <React.Fragment>
+              <React.Fragment key={vault}>
                 <Banner
                   color={BannerColor.Accent}
                   size={BannerSize.Big}
@@ -80,7 +80,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
 
           if (index === 7) {
             return (
-              <React.Fragment>
+              <React.Fragment key={vault}>
                 <Vault />
                 <JoinCommunityBanner
                   className={clsx(styles.joinBanner, styles.joinBannerDesktop)}

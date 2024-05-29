@@ -56,8 +56,8 @@
   display: none;
 }
 
-.connectWalletDesktop {
-  display: none;
+.connectWallet {
+  padding: 8px 14px;
 }
 
 .menuLinkMobile.menuLinkMobile {
@@ -109,10 +109,6 @@
 @include desktop {
   .navbar.navbar {
     padding: 26px 16px;
-
-    .connectWalletDesktop {
-      display: flex;
-    }
 
     .settingsButton {
       display: none;

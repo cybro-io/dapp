@@ -29,6 +29,10 @@
   }
 }
 
+.availableFunds {
+  margin-bottom: 40px;
+}
+
 .yieldButton {
   width: 100%;
   justify-content: center;
@@ -36,6 +40,10 @@
 
 @media screen and (width >= 600px) {
   .vaultStatsMobile {
+    display: none;
+  }
+
+  .availableFunds {
     display: none;
   }
 

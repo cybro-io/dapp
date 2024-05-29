@@ -115,7 +115,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
               </Text>
             </div>
           ) : (
-            <ConnectWallet className={styles.connectWalletDesktop} buttonSize={ButtonSize.Small} />
+            <ConnectWallet className={styles.connectWallet} buttonSize={ButtonSize.Small} />
           )}
         </NavbarItem>
       </NavbarContent>

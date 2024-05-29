@@ -5,6 +5,7 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { AvailableFunds } from '@/entities/AvailableFunds';
 import { VaultStats } from '@/entities/VaultStats';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import TetherTronIcon from '@/shared/assets/icons/tetherTron.svg';
@@ -23,6 +24,7 @@ import {
 } from '@/shared/ui';
 import { TrustScoreViewType } from '@/shared/ui/baseComponents/TrustScore/const';
 import { formatMoney } from '@/shared/utils';
+import { AvailableVaults } from '@/widgets/AvailableVaults';
 
 import styles from './Vault.module.scss';
 
@@ -49,30 +51,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
             <Chip className={styles.chip}>Low Risk</Chip>
           </div>
         </div>
-        {isConnected && (
-          <div className={styles.availableFunds}>
-            <div className={styles.availableFundsInnerContainer}>
-              <div className={styles.funds}>
-                <Text className={styles.fundsTitle} textView={TextView.C3}>
-                  Available Funds:
-                </Text>
-                <Text className={styles.fundsValue} textView={TextView.P3}>
-                  <span className={styles.tetherIconContainer}>
-                    <TetherIcon />
-                  </span>
-                  {formatMoney(erc20Balance)}
-                </Text>
-              </div>
-              <Button
-                view={ButtonView.Secondary}
-                size={ButtonSize.Small}
-                className={styles.depositButton}
-              >
-                Deposit
-              </Button>
-            </div>
-          </div>
-        )}
+        {isConnected && erc20Balance && <AvailableFunds balance={erc20Balance} />}
         <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={'1’100k'} provider={'Details'} />
         <div className={styles.trustScoreContainer}>
           <TrustScore className={styles.trustScoreMobile} />

@@ -1,11 +1,14 @@
 import React from 'react';
 
+import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { AvailableFunds } from '@/entities/AvailableFunds';
 import { Banner, BannerColor, BannerViewType } from '@/entities/Banner';
 import { HistoricalApyData } from '@/entities/HistoricalApyData';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
+import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
 
@@ -14,9 +17,15 @@ import styles from './VaultInfo.module.scss';
 type VaultInfoProps = {};
 
 export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ className }) => {
+  const { isConnected } = useWeb3ModalAccount();
+  const { erc20Balance } = useBalances();
+
   return (
     <div className={clsx(styles.root, className)}>
       <section className={styles.vaultStatsContainer}>
+        {isConnected && erc20Balance && (
+          <AvailableFunds className={styles.availableFunds} balance={erc20Balance} />
+        )}
         <VaultStats
           className={styles.vaultStatsMobile}
           viewType={VaultStatsView.Card}
@@ -34,8 +43,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ className }) => 
           tvl={'1’100k'}
           provider={'Details'}
           overallVaultInvestment={'500k'}
-          yourDeposit={'100k'}
-          earningsMonthly={'100k'}
+          availableFunds={isConnected && erc20Balance ? erc20Balance : undefined}
         />
       </section>
       <HistoricalApyData className={styles.historicalApyData} />
