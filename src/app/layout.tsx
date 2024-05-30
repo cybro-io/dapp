@@ -1,5 +1,8 @@
 import React from 'react';
 
+import './fonts';
+import '@/shared/styles/global.scss';
+
 import clsx from 'clsx';
 import type { Metadata } from 'next';
 

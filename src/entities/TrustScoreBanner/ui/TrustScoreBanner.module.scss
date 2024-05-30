@@ -20,7 +20,7 @@
   margin-bottom: 16px;
 }
 
-.trustScoreDesktop {
+.trustScoreDesktop.trustScoreDesktop {
   display: none;
 }
 
@@ -84,11 +84,11 @@
     transform: rotate(180deg);
   }
 
-  .trustScoreDesktop {
+  .trustScoreDesktop.trustScoreDesktop {
     display: flex;
   }
 
-  .trustScoreMobile {
+  .trustScoreMobile.trustScoreMobile {
     display: none;
   }
 

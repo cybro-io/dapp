@@ -1,4 +1,4 @@
-.vaultStatsDesktop {
+.vaultStatsDesktop.vaultStatsDesktop {
   display: none;
 }
 
@@ -39,7 +39,7 @@
 }
 
 @media screen and (width >= 600px) {
-  .vaultStatsMobile {
+  .vaultStatsMobile.vaultStatsMobile {
     display: none;
   }
 
@@ -47,7 +47,7 @@
     display: none;
   }
 
-  .vaultStatsDesktop {
+  .vaultStatsDesktop.vaultStatsDesktop {
     display: block;
   }
 
