@@ -68,5 +68,3 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
     </React.Fragment>
   );
 };
-
-export default VaultPage;

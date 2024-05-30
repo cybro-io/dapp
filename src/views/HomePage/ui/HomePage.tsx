@@ -36,5 +36,3 @@ export const HomePage: ComponentWithProps<HomePageProps> = props => {
     </React.Fragment>
   );
 };
-
-export default HomePage;

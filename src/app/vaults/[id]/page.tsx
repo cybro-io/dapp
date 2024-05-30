@@ -1,7 +1,7 @@
 import React from 'react';
 
 import { BaseLayout } from '@/app/layouts';
-import VaultPage from '@/pages/VaultPage';
+import { VaultPage } from '@/views/VaultPage';
 
 type pageProps = {};
 
