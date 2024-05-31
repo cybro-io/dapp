@@ -47,9 +47,8 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
     },
     {
       title: 'One-click',
-      href: '/1',
+      href: '/one-click',
       isComingSoon: true,
-      isDisabled: true,
     },
     {
       title: 'Dashboard',

@@ -28,18 +28,16 @@ export const MenuLink: ComponentWithProps<MenuLinkProps> = ({
 
   const isSelected = React.useMemo(() => pathname === href, []);
 
-  const isLinkDisabled = isDisabled || isComingSoon;
-
   return (
     <Link
       className={clsx(
         styles.root,
         isSelected && styles.selected,
-        isLinkDisabled && styles.disabled,
+        isDisabled && styles.disabled,
         className,
       )}
       href={href}
-      onClick={e => isLinkDisabled && e.preventDefault()}
+      onClick={e => isDisabled && e.preventDefault()}
     >
       {isComingSoon && <p className={styles.comingSoonBanner}>Coming Soon</p>}
       {children}
