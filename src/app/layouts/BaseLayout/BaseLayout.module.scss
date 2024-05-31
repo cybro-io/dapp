@@ -18,6 +18,11 @@
   background-position: bottom;
   background-size: 100%;
   max-width: $app-max-width;
+
+  &.noFooter {
+    padding-bottom: 42px;
+    background-image: none;
+  }
 }
 
 .footer {
