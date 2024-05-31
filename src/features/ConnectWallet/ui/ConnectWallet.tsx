@@ -21,11 +21,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
   const { open } = useWeb3Modal();
 
   return (
-    <Button
-      onClick={() => open({ view: 'Networks' })}
-      className={clsx(styles.root, className)}
-      size={buttonSize}
-    >
+    <Button onClick={() => open()} className={clsx(styles.root, className)} size={buttonSize}>
       Connect Wallet
     </Button>
   );
