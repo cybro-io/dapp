@@ -7,7 +7,8 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 
 import { poppins, unbounded } from '@/app/fonts';
-import { EthersProvider, Web3Modal } from '@/app/providers';
+import { EthersProvider, ModalProvider, Web3Modal } from '@/app/providers';
+import { ModalContainer } from '@/shared/ui';
 
 import styles from './layout.module.scss';
 
@@ -31,9 +32,12 @@ export default function RootLayout({
     <html lang="en">
       <Web3Modal>
         <EthersProvider>
-          <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-            {children}
-          </body>
+          <ModalProvider>
+            <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+              {children}
+              <ModalContainer />
+            </body>
+          </ModalProvider>
         </EthersProvider>
       </Web3Modal>
     </html>
