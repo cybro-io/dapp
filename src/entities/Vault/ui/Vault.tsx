@@ -6,25 +6,16 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
+import {
+  HowTrustScoreCountsButton,
+  HowTrustScoreCountsButtonViewType,
+} from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import TetherIcon from '@/shared/assets/icons/tether.svg';
 import TetherTronIcon from '@/shared/assets/icons/tetherTron.svg';
 import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps } from '@/shared/types';
-import {
-  Button,
-  ButtonSize,
-  ButtonView,
-  Chip,
-  Link,
-  LinkView,
-  Text,
-  TextView,
-  TrustScore,
-} from '@/shared/ui';
+import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
 import { TrustScoreViewType } from '@/shared/ui/baseComponents/TrustScore/const';
-import { formatMoney } from '@/shared/utils';
-import { AvailableVaults } from '@/widgets/AvailableVaults';
 
 import styles from './Vault.module.scss';
 
@@ -56,7 +47,14 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
         <div className={styles.trustScoreContainer}>
           <TrustScore className={styles.trustScoreMobile} />
           <TrustScore className={styles.trustScoreDesktop} viewType={TrustScoreViewType.Desktop} />
-          <Link viewType={LinkView.Tooltip}>How trust score counts</Link>
+          <HowTrustScoreCountsButton
+            className={styles.howCountsDesktop}
+            viewType={HowTrustScoreCountsButtonViewType.Tooltip}
+          />
+          <HowTrustScoreCountsButton
+            className={styles.howCountsMobile}
+            viewType={HowTrustScoreCountsButtonViewType.Button}
+          />
         </div>
       </div>
     </Link>

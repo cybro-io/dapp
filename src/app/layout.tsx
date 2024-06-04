@@ -7,10 +7,9 @@ import clsx from 'clsx';
 import type { Metadata } from 'next';
 
 import { poppins, unbounded } from '@/app/fonts';
-import { EthersProvider, ModalProvider, Web3Modal } from '@/app/providers';
-import { ModalContainer } from '@/shared/ui';
 
 import styles from './layout.module.scss';
+import { EthersProvider, ModalContainer, ModalProvider, Web3Modal } from './providers';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',

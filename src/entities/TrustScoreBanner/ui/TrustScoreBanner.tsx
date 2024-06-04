@@ -2,8 +2,12 @@ import React from 'react';
 
 import clsx from 'clsx';
 
+import {
+  HowTrustScoreCountsButton,
+  HowTrustScoreCountsButtonViewType,
+} from '@/entities/HowTrustScoreCounts';
 import { ComponentWithProps } from '@/shared/types';
-import { Chip, Link, LinkView, Text, TextView, TrustScore } from '@/shared/ui';
+import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
 
 import styles from './TrustScoreBanner.module.scss';
 
@@ -27,9 +31,10 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
           className={clsx(styles.trustScore, styles.trustScoreDesktop)}
           isBordered={false}
         />
-        <Link className={clsx(styles.tooltip)} viewType={LinkView.Tooltip}>
-          How trust score counts
-        </Link>
+        <HowTrustScoreCountsButton
+          className={clsx(styles.tooltip)}
+          viewType={HowTrustScoreCountsButtonViewType.Tooltip}
+        />
       </div>
       <div className={styles.trustScoreRight}>
         <Text className={styles.vaultDescription} textView={TextView.P3}>

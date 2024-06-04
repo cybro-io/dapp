@@ -2,9 +2,9 @@
 
 import React from 'react';
 
-import { useModal } from '@/app/providers';
 import { ComponentWithProps } from '@/shared/types';
-import { ModalIdToView } from '@/shared/ui';
+
+import { ModalIdToView, useModal } from '../modal';
 
 type ModalContainerProps = {};
 

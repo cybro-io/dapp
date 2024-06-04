@@ -4,17 +4,13 @@ import React from 'react';
 
 import clsx from 'clsx';
 
+import {
+  HowTrustScoreCountsButton,
+  HowTrustScoreCountsButtonViewType,
+} from '@/entities/HowTrustScoreCounts';
 import { TrustScoreBanner } from '@/entities/TrustScoreBanner';
 import { ComponentWithProps } from '@/shared/types';
-import {
-  Chip,
-  Link,
-  LinkView,
-  Text,
-  TextView,
-  TrustScoreDescription,
-  TrustScoreVariant,
-} from '@/shared/ui';
+import { Text, TextView, TrustScoreDescription, TrustScoreVariant } from '@/shared/ui';
 
 import ArrowIcon from '../assets/icons/arrow.svg';
 
@@ -54,9 +50,11 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
             variant={TrustScoreVariant.Negative}
           />
         </div>
-        <Link className={clsx(styles.tooltip, styles.tooltipMobile)} viewType={LinkView.Tooltip}>
-          How trust score counts
-        </Link>
+        <HowTrustScoreCountsButton
+          className={clsx(styles.tooltip, styles.tooltipMobile)}
+          viewType={HowTrustScoreCountsButtonViewType.Button}
+          hasIcon={true}
+        />
         <button className={styles.dropdownButton} onClick={() => setIsOpened(prev => !prev)}>
           <ArrowIcon />
         </button>

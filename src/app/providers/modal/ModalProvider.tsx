@@ -1,17 +1,9 @@
 'use client';
 
-import React, {
-  createContext,
-  useContext,
-  useState,
-  ReactNode,
-  FC,
-  useMemo,
-  useEffect,
-} from 'react';
+import React from 'react';
 
+import { Modal } from '@/app/providers';
 import { Maybe } from '@/shared/types';
-import { Modal } from '@/shared/ui';
 
 interface ModalContextType {
   currentModal: Maybe<Modal>;
@@ -19,10 +11,10 @@ interface ModalContextType {
   closeModal: () => void;
 }
 
-const ModalContext = createContext<ModalContextType | undefined>(undefined);
+const ModalContext = React.createContext<ModalContextType | undefined>(undefined);
 
-export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
-  const [currentModal, setCurrentModal] = useState<Maybe<Modal>>(undefined);
+export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [currentModal, setCurrentModal] = React.useState<Maybe<Modal>>(undefined);
 
   const openModal = (id: Modal) => {
     setCurrentModal(id);
@@ -32,7 +24,7 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     setCurrentModal(undefined);
   };
 
-  useEffect(() => {
+  React.useEffect(() => {
     if (typeof currentModal !== 'undefined') {
       document.body.style.overflow = 'hidden';
     } else {
@@ -40,13 +32,16 @@ export const ModalProvider: FC<{ children: ReactNode }> = ({ children }) => {
     }
   }, [currentModal]);
 
-  const contextValues = useMemo(() => ({ currentModal, openModal, closeModal }), [currentModal]);
+  const contextValues = React.useMemo(
+    () => ({ currentModal, openModal, closeModal }),
+    [currentModal],
+  );
 
   return <ModalContext.Provider value={contextValues}>{children}</ModalContext.Provider>;
 };
 
 export const useModal = () => {
-  const context = useContext(ModalContext);
+  const context = React.useContext(ModalContext);
   if (!context) {
     throw new Error('useModal must be used within a ModalProvider');
   }

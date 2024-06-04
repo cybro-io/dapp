@@ -52,3 +52,20 @@
     opacity: 0.7;
   }
 }
+
+.button {
+  font-family: $unbounded-font;
+  font-size: 12px;
+  font-weight: 400;
+  letter-spacing: 0.48px;
+  text-align: center;
+  text-transform: uppercase;
+  color: $link-defaultLabel;
+}
+
+.contentContainer {
+  padding: 24px;
+  background-color: $background-tooltip;
+  border-radius: 30px;
+  backdrop-filter: blur(32px);
+}

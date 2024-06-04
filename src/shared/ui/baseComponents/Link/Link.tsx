@@ -17,7 +17,9 @@ type LinkProps = {
   href?: string;
   tooltipContent?: React.ReactNode;
   viewType?: LinkView;
+  onClick?: () => void;
   textClassName?: string;
+  tooltipClassName?: string;
 };
 
 export const Link: ComponentWithProps<LinkProps> = ({
@@ -26,6 +28,8 @@ export const Link: ComponentWithProps<LinkProps> = ({
   tooltipContent,
   href,
   textClassName,
+  tooltipClassName,
+  onClick,
   children,
 }) => {
   switch (viewType) {
@@ -36,10 +40,17 @@ export const Link: ComponentWithProps<LinkProps> = ({
         </NextLink>
       );
 
+    case LinkView.Button:
+      return (
+        <button className={clsx(styles.button, className)} onClick={onClick}>
+          {children}
+        </button>
+      );
+
     case LinkView.Tooltip:
       return (
         <Tooltip
-          className={clsx(styles.contentContainer)}
+          className={clsx(styles.contentContainer, tooltipClassName)}
           content={tooltipContent || 'Some content'}
         >
           <div className={clsx(styles.tooltipContainer, className)}>

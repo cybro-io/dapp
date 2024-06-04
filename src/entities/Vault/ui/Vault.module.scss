@@ -7,6 +7,14 @@
   }
 }
 
+.trustScoreMobile.trustScoreMobile {
+  margin-bottom: 16px;
+}
+
+.howCountsDesktop.howCountsDesktop {
+  display: none;
+}
+
 .iconContainer {
   width: 38px;
   height: 38px;
@@ -57,12 +65,22 @@
   display: none;
 }
 
+@media screen and (width >= 600px) {
+  .howCountsDesktop.howCountsDesktop {
+    display: flex;
+  }
+
+  .howCountsMobile.howCountsMobile {
+    display: none;
+  }
+}
+
 @include desktop {
-  .trustScoreMobile {
+  .trustScoreMobile.trustScoreMobile {
     display: none;
   }
 
-  .trustScoreDesktop {
+  .trustScoreDesktop.trustScoreDesktop {
     display: flex;
   }
 
