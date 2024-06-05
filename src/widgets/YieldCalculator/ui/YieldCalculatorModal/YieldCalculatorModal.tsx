@@ -12,7 +12,7 @@ type YieldCalculatorModalProps = {
   activeTab: YieldSwitchOptions;
 };
 
-export const YieldCalculatorModal: ComponentWithProps<unknown> = ({}) => {
+export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
   const { props } = useModal();
   const [userValue, setUserValue] = React.useState<number>(0);
   const type: YieldSwitchOptions = props.activeTab;
