@@ -7,21 +7,26 @@ import { Maybe } from '@/shared/types';
 
 interface ModalContextType {
   currentModal: Maybe<Modal>;
-  openModal: (id: Modal) => void;
+  openModal: (id: Modal, props?: Record<string, any>) => void;
   closeModal: () => void;
+  props: Record<string, any>;
 }
 
 const ModalContext = React.createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [currentModal, setCurrentModal] = React.useState<Maybe<Modal>>(undefined);
+  const [props, setProps] = React.useState<Record<string, any>>({});
 
-  const openModal = (id: Modal) => {
+  const openModal = (id: Modal, props?: Record<string, any>) => {
     setCurrentModal(id);
+
+    props && setProps(props);
   };
 
   const closeModal = () => {
     setCurrentModal(undefined);
+    setProps({});
   };
 
   React.useEffect(() => {
@@ -33,7 +38,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
   }, [currentModal]);
 
   const contextValues = React.useMemo(
-    () => ({ currentModal, openModal, closeModal }),
+    () => ({ currentModal, openModal, closeModal, props }),
     [currentModal],
   );
 

@@ -1,2 +1,1 @@
-export * from './YieldCalculator';
 export * from './YieldCalculatorModal';

@@ -3,11 +3,14 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { Modal, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { Banner, BannerColor, BannerViewType } from '@/entities/Banner';
+import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { HistoricalApyData } from '@/entities/HistoricalApyData';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
+import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
@@ -17,8 +20,10 @@ import styles from './VaultInfo.module.scss';
 type VaultInfoProps = {};
 
 export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ className }) => {
+  const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
   const { erc20Balance } = useBalances();
+  const [activeTab, setActiveTab] = React.useState<string | number>(YieldSwitchOptions.Deposit);
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -69,13 +74,18 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ className }) => 
           Title="Yield Calculator"
           description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
           Button={
-            <Button className={styles.yieldButton} view={ButtonView.Secondary}>
+            <Button
+              className={styles.yieldButton}
+              view={ButtonView.Secondary}
+              onClick={() => openModal(Modal.YieldCalculator, { activeTab })}
+            >
               Calculate Yield
             </Button>
           }
           caption="Cybro boost faq"
           captionType={LinkView.Tooltip}
         />
+        <DepositWithdrawTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       </section>
     </div>
   );

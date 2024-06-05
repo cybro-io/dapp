@@ -1,34 +1,3 @@
-.tabs {
-  margin-bottom: 16px;
-
-  > div {
-    font-family: $unbounded-font;
-    font-size: 14px;
-    font-weight: 900;
-    line-height: 120%;
-    background-color: $button-secondary-defaultBg;
-  }
-}
-
-.tab.tab {
-  height: 100%;
-  padding: 18px 40px;
-
-  > div {
-    text-transform: uppercase;
-  }
-}
-
-.activeTab.activeTab {
-  span {
-    background-color: $background-card;
-  }
-
-  div {
-    color: $button-secondary-defaultLabel!important;
-  }
-}
-
 .calculator {
   margin-bottom: 16px;
   background-color: $background-card;
@@ -104,65 +73,6 @@
       width: 28px;
       height: 24px;
     }
-  }
-}
-
-.label {
-  margin-bottom: 6px;
-}
-
-.inputContainer {
-  display: flex;
-  margin-bottom: 8px;
-  padding-top: 8px;
-  padding-bottom: 8px;
-  border-bottom: 1px dashed $stroke-tableBorder;
-  align-items: center;
-  gap: 24px;
-
-  .input {
-    font-family: $unbounded-font;
-    font-size: 20px;
-    line-height: 24px;
-    color: $text-white-body100;
-    background-color: transparent;
-    outline: none;
-  }
-
-  .equal {
-    font-family: $poppins-font;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 150%;
-    white-space: nowrap;
-    color: $text-white-body60;
-  }
-}
-
-.percentButtons {
-  display: flex;
-  justify-content: space-between;
-  gap: 4px;
-}
-
-.percentButton {
-  width: 100%;
-  padding: 4px 10px;
-  font-family: $poppins-font;
-  font-size: 13px;
-  font-weight: 500;
-  line-height: 150%;
-  color: $text-white-body100;
-  background-color: $background-chips;
-  border: 1px solid transparent;
-  border-radius: 20px;
-
-  &:hover {
-    border: 1px solid $stroke-whiteBorder;
-  }
-
-  &:active {
-    opacity: 0.8;
   }
 }
 
