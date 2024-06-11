@@ -2,8 +2,9 @@
 
 import React from 'react';
 
-import { Chain } from '@ethereumjs/common';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers/react';
+
+import { Chain } from '@/shared/const';
 
 type Web3ModalProps = {
   children: React.ReactNode;
@@ -14,11 +15,11 @@ const anrkId = process.env.NEXT_PUBLIC_ANKR_ID as string;
 
 const chains = [
   {
-    chainId: Chain.Sepolia,
-    name: 'Sepolia',
+    chainId: Chain.BlastTest,
+    name: 'Blast Testnet',
     currency: 'ETH',
-    explorerUrl: 'https://sepolia.etherscan.io',
-    rpcUrl: `https://rpc.ankr.com/eth_sepolia/${anrkId}`,
+    explorerUrl: 'https://testnet.blastscan.io',
+    rpcUrl: `https://rpc.ankr.com/blast_testnet_sepolia/${anrkId}`,
   },
 ];
 
