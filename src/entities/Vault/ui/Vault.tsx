@@ -13,9 +13,11 @@ import {
 import { VaultStats } from '@/entities/VaultStats';
 import TetherTronIcon from '@/shared/assets/icons/tetherTron.svg';
 import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps } from '@/shared/types';
+import { useVault } from '@/shared/hooks/vault';
+import { ComponentWithProps, Money } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
-import { TrustScoreViewType } from '@/shared/ui/baseComponents/TrustScore/const';
+import { TrustScoreViewType } from '@/shared/ui';
+import { getRandomVault, getUserBalanceForVault, getVaultTitle, VaultType } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -23,10 +25,29 @@ type VaultProps = {};
 
 export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  const { erc20Balance } = useBalances();
+  const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
+
+  ///////// MOCK /////////
+  const [vaultType, setVaultType] = React.useState<VaultType>();
+  const [title, setTitle] = React.useState<string>();
+  const [balance, setBalance] = React.useState<Money>();
+
+  React.useEffect(() => {
+    const vaultType = getRandomVault();
+    setVaultType(vaultType);
+
+    const title = getVaultTitle(vaultType);
+    setTitle(title);
+
+    const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+    setBalance(balance);
+  }, [usdbBalance, wethBalance, wbtcBalance]);
+
+  const { totalAssets, userDeposit } = useVault(vaultType);
+  //////////////////
 
   return (
-    <Link className={clsx(styles.link)} href={'/vaults/1'}>
+    <Link className={clsx(styles.link)} href={`/vaults/1?type=${vaultType}`}>
       <div className={clsx(styles.root, className)}>
         <div className={styles.titleContainer}>
           <div className={styles.title}>
@@ -34,7 +55,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
               <TetherTronIcon />
             </div>
             <Text textView={TextView.H4} className={styles.titleText}>
-              Stable Growth USDC Vault
+              {title}
             </Text>
           </div>
           <div className={styles.chipsContainer}>
@@ -42,8 +63,8 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
             <Chip className={styles.chip}>Low Risk</Chip>
           </div>
         </div>
-        {isConnected && erc20Balance && <AvailableFunds balance={erc20Balance} />}
-        <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={'1’100k'} provider={'Details'} />
+        {isConnected && balance && <AvailableFunds balance={balance} deposit={userDeposit} />}
+        <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={totalAssets} provider={'Details'} />
         <div className={styles.trustScoreContainer}>
           <TrustScore className={styles.trustScoreMobile} />
           <TrustScore className={styles.trustScoreDesktop} viewType={TrustScoreViewType.Desktop} />

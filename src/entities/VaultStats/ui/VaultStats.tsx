@@ -5,26 +5,27 @@ import React from 'react';
 import clsx from 'clsx';
 
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
-import { ComponentWithProps } from '@/shared/types';
+import { ComponentWithProps, Money } from '@/shared/types';
 import { Chip, Link, LinkView, Text, TextView } from '@/shared/ui';
+import { formatUserMoney } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
 
 import styles from './VaultStats.module.scss';
 
-type TableProps = {
+type VaultStatsProps = {
   weeklyApy: string | number;
   cybroPoints: string | number;
-  tvl: string | number;
+  tvl: Money;
   provider: string;
-  overallVaultInvestment?: string | number;
+  overallVaultInvestment?: Money;
   yourDeposit?: string | number;
-  availableFunds?: string | number;
+  availableFunds?: Money;
   earningsMonthly?: string | number;
   viewType?: VaultStatsView;
 };
 
-export const VaultStats: ComponentWithProps<TableProps> = ({
+export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
   weeklyApy,
   cybroPoints,
   tvl,
@@ -62,7 +63,7 @@ export const VaultStats: ComponentWithProps<TableProps> = ({
                 TVL
               </Text>
               <Text textView={TextView.P3} className={styles.detailsValue}>
-                ${tvl}
+                ${formatUserMoney(tvl) || '0'}
               </Text>
             </div>
             <div className={styles.detailsItem}>
@@ -83,7 +84,7 @@ export const VaultStats: ComponentWithProps<TableProps> = ({
                 TVL
               </Text>
               <Text textView={TextView.P3} className={styles.detailsValue}>
-                ${tvl}
+                ${formatUserMoney(tvl) || '0'}
               </Text>
             </div>
             <div className={styles.detailsItem}>
@@ -105,7 +106,7 @@ export const VaultStats: ComponentWithProps<TableProps> = ({
                 textView={TextView.P3}
                 className={clsx(styles.detailsValue, styles.overallInvestmentValue)}
               >
-                $<span>{overallVaultInvestment}</span>
+                $<span>{formatUserMoney(overallVaultInvestment)}</span>
               </Text>
             </div>
             {!!yourDeposit && (
@@ -167,7 +168,7 @@ export const VaultStats: ComponentWithProps<TableProps> = ({
               textView={TextView.P3}
               className={clsx(styles.detailsValue, styles.overallInvestmentValue)}
             >
-              ${overallVaultInvestment}
+              ${formatUserMoney(overallVaultInvestment)}
             </Text>
           </div>
         </div>

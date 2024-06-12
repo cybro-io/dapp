@@ -3,11 +3,13 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import { useSearchParams } from 'next/navigation';
 
 import { Banner, BannerSize } from '@/entities/Banner';
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Chip, ChipSize, Text, TextView } from '@/shared/ui';
+import { VaultType } from '@/shared/utils';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
@@ -16,6 +18,9 @@ import styles from './VaultPage.module.scss';
 type DashboardPageProps = {};
 
 export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
+  const searchParams = useSearchParams();
+  const vaultType = searchParams.get('type') as VaultType;
+
   return (
     <React.Fragment>
       <section className={clsx(styles.heroSection)}>
@@ -51,7 +56,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
       </section>
       <div className={styles.main}>
         <div className={styles.leftContent}>
-          <VaultInfo />
+          <VaultInfo vaultType={vaultType} />
         </div>
         <div className={styles.rightContent}>
           <Banner
@@ -61,7 +66,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
             size={BannerSize.Tiny}
           />
           <div className={styles.calculatorContainer}>
-            <YieldCalculator />
+            <YieldCalculator vaultType={vaultType} />
           </div>
         </div>
       </div>

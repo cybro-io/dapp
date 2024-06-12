@@ -8,8 +8,9 @@ import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps } from '@/shared/types';
+import { Money } from '@/shared/types/money';
 import { Text, TextView } from '@/shared/ui';
-import { formatMoney } from '@/shared/utils';
+import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
 
@@ -17,15 +18,33 @@ type DepositWithdrawInputProps = {
   userValue: number;
   setUserValue: React.Dispatch<React.SetStateAction<number>>;
   activeTab: string | number;
+  userBalance: Money;
+  vaultDeposit?: Money;
 };
 
 export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps> = ({
   userValue,
   setUserValue,
   activeTab,
+  userBalance,
+  vaultDeposit,
   className,
 }) => {
-  const { erc20Balance } = useBalances();
+  const getData = React.useCallback(() => {
+    if (activeTab === YieldSwitchOptions.Deposit) {
+      return {
+        availableFunds: formatUserMoney(userBalance),
+        availableFundsEqual: formatUserMoney(userBalance),
+      };
+    }
+
+    return {
+      availableFunds: formatUserMoney(vaultDeposit),
+      availableFundsEqual: formatUserMoney(vaultDeposit),
+    };
+  }, [activeTab, userBalance, vaultDeposit]);
+
+  const { availableFunds, availableFundsEqual } = getData();
 
   return (
     <div className={clsx(styles.calculator, className)}>
@@ -35,15 +54,10 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             Available Funds
           </Text>
           <Text className={styles.value} textView={TextView.P1}>
-            {activeTab === YieldSwitchOptions.Deposit && erc20Balance
-              ? formatMoney(erc20Balance)
-              : '100,000'}
+            {availableFunds}
           </Text>
           <Text className={styles.equal} textView={TextView.C3}>
-            ≈{' '}
-            {activeTab === YieldSwitchOptions.Deposit && erc20Balance
-              ? formatMoney(erc20Balance)
-              : '100,000'}
+            ≈ ${availableFundsEqual}
           </Text>
         </div>
         <div className={styles.currentToken}>

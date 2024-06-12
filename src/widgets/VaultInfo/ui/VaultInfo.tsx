@@ -12,43 +12,62 @@ import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps } from '@/shared/types';
+import { useVault } from '@/shared/hooks/vault';
+import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
+import { getUserBalanceForVault, VaultType } from '@/shared/utils';
 
 import styles from './VaultInfo.module.scss';
 
-type VaultInfoProps = {};
+type VaultInfoProps = {
+  vaultType: VaultType;
+};
 
-export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ className }) => {
+export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, className }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { erc20Balance } = useBalances();
+  const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const [activeTab, setActiveTab] = React.useState<string | number>(YieldSwitchOptions.Deposit);
+
+  ///////// MOCK /////////
+  const [balance, setBalance] = React.useState<Money>();
+
+  React.useEffect(() => {
+    const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+    setBalance(balance);
+  }, [usdbBalance, wethBalance, wbtcBalance, vaultType]);
+
+  const { totalAssets, userDeposit } = useVault(vaultType);
+  //////////////////
 
   return (
     <div className={clsx(styles.root, className)}>
       <section className={styles.vaultStatsContainer}>
-        {isConnected && erc20Balance && (
-          <AvailableFunds className={styles.availableFunds} balance={erc20Balance} />
+        {isConnected && usdbBalance && (
+          <AvailableFunds
+            className={styles.availableFunds}
+            balance={usdbBalance}
+            deposit={userDeposit}
+          />
         )}
         <VaultStats
           className={styles.vaultStatsMobile}
           viewType={VaultStatsView.Card}
           weeklyApy={'999,5'}
           cybroPoints={'20'}
-          tvl={'1’100k'}
+          tvl={totalAssets}
           provider={'Details'}
-          overallVaultInvestment={'500k'}
+          overallVaultInvestment={totalAssets}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
           viewType={VaultStatsView.Full}
           weeklyApy={'999,5'}
           cybroPoints={'20'}
-          tvl={'1’100k'}
+          tvl={totalAssets}
           provider={'Details'}
-          overallVaultInvestment={'500k'}
-          availableFunds={isConnected && erc20Balance ? erc20Balance : undefined}
+          overallVaultInvestment={totalAssets}
+          availableFunds={isConnected && balance ? balance : 0}
         />
       </section>
       <HistoricalApyData className={styles.historicalApyData} />

@@ -89,7 +89,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             );
           }
 
-          return <Vault />;
+          return <Vault key={vault} />;
         })}
       </div>
     </section>
