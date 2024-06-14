@@ -6,15 +6,25 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { ConnectWallet } from '@/features/ConnectWallet';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 
 import styles from './DepositCalculator.module.scss';
 
-type DepositCalculatorProps = {};
+type DepositCalculatorProps = {
+  deposit: (amount: number) => Promise<void>;
+  buttonMessage: string | null;
+  isButtonDisabled: boolean;
+};
 
-export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({ className }) => {
+export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
+  deposit,
+  buttonMessage,
+  isButtonDisabled,
+  className,
+}) => {
   const { isConnected } = useWeb3ModalAccount();
 
   return (
@@ -51,9 +61,13 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({ 
         balance after 1 year <span className={styles.balanceAfterValue}>$109,990.22</span>
       </Text>
 
-      <Button disabled={!isConnected} className={styles.submitButton}>
-        Deposit
-      </Button>
+      {!isConnected ? (
+        <ConnectWallet className={styles.connectButton} />
+      ) : (
+        <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
+          {buttonMessage || 'Deposit'}
+        </Button>
+      )}
     </div>
   );
 };

@@ -9,7 +9,7 @@ import { DepositWithdrawInput, DepositWithdrawTabs } from '@/entities/DepositWit
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { useVault } from '@/shared/hooks/vault';
+import { useDeposit, useVault } from '@/shared/hooks/vault';
 import { ComponentWithProps } from '@/shared/types';
 import { getUserBalanceForVault, VaultType } from '@/shared/utils';
 
@@ -28,6 +28,25 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
   const { userDeposit } = useVault(vaultType);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+  const { deposit, isLoading, error, buttonMessage } = useDeposit(vaultType);
+
+  const getIsSubmitButtonDisabled = React.useCallback(() => {
+    const availableBalance = activeTab === YieldSwitchOptions.Deposit ? balance : userDeposit;
+
+    if (availableBalance === null) {
+      return true;
+    }
+
+    return !userValue || userValue > availableBalance || isLoading;
+  }, [activeTab, balance, isLoading, userDeposit, userValue]);
+
+  const isSubmitButtonDisabled = getIsSubmitButtonDisabled();
+
+  const submitDeposit = React.useCallback(async () => {
+    await deposit(userValue);
+  }, [deposit, userValue]);
+
+  const submitWithdraw = React.useCallback(() => {}, []);
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -41,8 +60,16 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
         vaultDeposit={userDeposit}
       />
 
-      {activeTab === YieldSwitchOptions.Deposit && <DepositCalculator />}
-      {activeTab === YieldSwitchOptions.Withdraw && <WithdrawCalculator />}
+      {activeTab === YieldSwitchOptions.Deposit && (
+        <DepositCalculator
+          isButtonDisabled={isSubmitButtonDisabled}
+          deposit={submitDeposit}
+          buttonMessage={buttonMessage}
+        />
+      )}
+      {activeTab === YieldSwitchOptions.Withdraw && (
+        <WithdrawCalculator isButtonDisabled={isSubmitButtonDisabled} />
+      )}
     </div>
   );
 };

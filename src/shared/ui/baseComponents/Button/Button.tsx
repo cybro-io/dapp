@@ -13,7 +13,9 @@ type ButtonProps = {
   size?: ButtonSize;
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
-} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+  disabled?: boolean;
+  onClick?: any;
+};
 
 export const Button: ComponentWithProps<ButtonProps> = ({
   children,
@@ -23,6 +25,7 @@ export const Button: ComponentWithProps<ButtonProps> = ({
   startIcon,
   endIcon,
   className,
+  disabled = false,
   ...props
 }) => {
   return (

@@ -5,6 +5,7 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { ConnectWallet } from '@/features/ConnectWallet';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
@@ -14,9 +15,14 @@ import TimerIcon from '../assets/icons/timer.svg';
 
 import styles from './WithdrawCalculator.module.scss';
 
-type WithdrawCalculatorProps = {};
+type WithdrawCalculatorProps = {
+  isButtonDisabled: boolean;
+};
 
-export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({ className }) => {
+export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({
+  isButtonDisabled,
+  className,
+}) => {
   const { isConnected } = useWeb3ModalAccount();
 
   return (
@@ -58,9 +64,13 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
           <Text textView={TextView.C1}>5%</Text>
         </div>
       </div>
-      <Button disabled={!isConnected} className={styles.submitButton}>
-        Withdraw
-      </Button>
+      {!isConnected ? (
+        <ConnectWallet className={styles.connectButton} />
+      ) : (
+        <Button disabled={isButtonDisabled} className={styles.submitButton}>
+          Withdraw
+        </Button>
+      )}
     </div>
   );
 };
