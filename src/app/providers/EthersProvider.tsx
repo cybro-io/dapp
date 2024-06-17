@@ -12,16 +12,22 @@ import WBTC_VAULT from '@/app/abi/wbtcVault.json';
 import WETH from '@/app/abi/weth.json';
 import WETH_VAULT from '@/app/abi/wethVault.json';
 import { Nullable } from '@/shared/types';
+import { Usdb } from '@/shared/types/__generated/contracts/Usdb';
+import { UsdbVault } from '@/shared/types/__generated/contracts/UsdbVault';
+import { Wbtc } from '@/shared/types/__generated/contracts/Wbtc';
+import { WbtcVault } from '@/shared/types/__generated/contracts/WbtcVault';
+import { Weth } from '@/shared/types/__generated/contracts/Weth';
+import { WethVault } from '@/shared/types/__generated/contracts/WethVault';
 
 interface EthersContextProps {
   provider: Nullable<ethers.Provider>;
   signer: Nullable<ethers.Signer>;
-  usdbContract: Nullable<ethers.Contract>;
-  wethContract: Nullable<ethers.Contract>;
-  wbtcContract: Nullable<ethers.Contract>;
-  usdbVaultContract: Nullable<ethers.Contract>;
-  wethVaultContract: Nullable<ethers.Contract>;
-  wbtcVaultContract: Nullable<ethers.Contract>;
+  usdbContract: Nullable<Usdb>;
+  wethContract: Nullable<Weth>;
+  wbtcContract: Nullable<Wbtc>;
+  usdbVaultContract: Nullable<UsdbVault>;
+  wethVaultContract: Nullable<WethVault>;
+  wbtcVaultContract: Nullable<WbtcVault>;
 }
 
 const EthersContext = React.createContext<EthersContextProps | undefined>(undefined);
@@ -31,24 +37,36 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const { isConnected } = useWeb3ModalAccount();
   const [provider, setProvider] = React.useState<Nullable<ethers.Provider>>(null);
   const [signer, setSigner] = React.useState<Nullable<ethers.Signer>>(null);
-  const [usdbContract, setUsdbContract] = React.useState<Nullable<ethers.Contract>>(null);
-  const [wethContract, setWethContract] = React.useState<Nullable<ethers.Contract>>(null);
-  const [wbtcContract, setWbtcContract] = React.useState<Nullable<ethers.Contract>>(null);
-  const [usdbVaultContract, setUsdbVaultContract] = React.useState<Nullable<ethers.Contract>>(null);
-  const [wethVaultContract, setWethVaultContract] = React.useState<Nullable<ethers.Contract>>(null);
-  const [wbtcVaultContract, setWbtcVaultContract] = React.useState<Nullable<ethers.Contract>>(null);
+  const [usdbContract, setUsdbContract] = React.useState<Nullable<Usdb>>(null);
+  const [wethContract, setWethContract] = React.useState<Nullable<Weth>>(null);
+  const [wbtcContract, setWbtcContract] = React.useState<Nullable<Wbtc>>(null);
+  const [usdbVaultContract, setUsdbVaultContract] = React.useState<Nullable<UsdbVault>>(null);
+  const [wethVaultContract, setWethVaultContract] = React.useState<Nullable<WethVault>>(null);
+  const [wbtcVaultContract, setWbtcVaultContract] = React.useState<Nullable<WbtcVault>>(null);
 
   React.useEffect(() => {
     const getValues = async () => {
       if (isConnected && walletProvider) {
         const ethersProvider = new BrowserProvider(walletProvider);
         const signer = await ethersProvider.getSigner();
-        const usdbContract = new ethers.Contract(USDB.address, USDB.abi, signer);
-        const wethContract = new ethers.Contract(WETH.address, WETH.abi, signer);
-        const wbtcContract = new ethers.Contract(WBTC.address, WBTC.abi, signer);
-        const usdbVaultContract = new ethers.Contract(USDB_VAULT.address, USDB_VAULT.abi, signer);
-        const wethVaultContract = new ethers.Contract(WETH_VAULT.address, WETH_VAULT.abi, signer);
-        const wbtcVaultContract = new ethers.Contract(WBTC_VAULT.address, WBTC_VAULT.abi, signer);
+        const usdbContract = new ethers.Contract(USDB.address, USDB.abi, signer) as unknown as Usdb;
+        const wethContract = new ethers.Contract(WETH.address, WETH.abi, signer) as unknown as Weth;
+        const wbtcContract = new ethers.Contract(WBTC.address, WBTC.abi, signer) as unknown as Wbtc;
+        const usdbVaultContract = new ethers.Contract(
+          USDB_VAULT.address,
+          USDB_VAULT.abi,
+          signer,
+        ) as unknown as UsdbVault;
+        const wethVaultContract = new ethers.Contract(
+          WETH_VAULT.address,
+          WETH_VAULT.abi,
+          signer,
+        ) as unknown as WethVault;
+        const wbtcVaultContract = new ethers.Contract(
+          WBTC_VAULT.address,
+          WBTC_VAULT.abi,
+          signer,
+        ) as unknown as WbtcVault;
 
         setSigner(signer);
         setProvider(ethersProvider);

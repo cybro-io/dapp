@@ -16,11 +16,15 @@ import TimerIcon from '../assets/icons/timer.svg';
 import styles from './WithdrawCalculator.module.scss';
 
 type WithdrawCalculatorProps = {
+  withdraw: (amount: number) => Promise<void>;
   isButtonDisabled: boolean;
+  buttonMessage: string | null;
 };
 
 export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({
+  withdraw,
   isButtonDisabled,
+  buttonMessage,
   className,
 }) => {
   const { isConnected } = useWeb3ModalAccount();
@@ -67,8 +71,8 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
       {!isConnected ? (
         <ConnectWallet className={styles.connectButton} />
       ) : (
-        <Button disabled={isButtonDisabled} className={styles.submitButton}>
-          Withdraw
+        <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={withdraw}>
+          {buttonMessage || 'Withdraw'}
         </Button>
       )}
     </div>

@@ -37,3 +37,6 @@ next-env.d.ts
 
 #IDEs
 .idea
+
+# generated types
+src/shared/types/__generated

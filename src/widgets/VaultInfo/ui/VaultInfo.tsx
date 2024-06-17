@@ -27,7 +27,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, class
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const [activeTab, setActiveTab] = React.useState<string | number>(YieldSwitchOptions.Deposit);
+  const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
 
   ///////// MOCK /////////
   const [balance, setBalance] = React.useState<Money>();

@@ -7,7 +7,9 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "lint:css": "stylelint '**/*.scss'"
+    "lint:css": "stylelint '**/*.scss'",
+    "codegen-sc": "typechain --target ethers-v6 --out-dir src/shared/types/__generated/contracts './src/app/abi/*.json'",
+    "postinstall": "npm run codegen-sc"
   },
   "dependencies": {
     "@nextui-org/react": "^2.3.6",
@@ -27,6 +29,7 @@
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",
+    "@typechain/ethers-v6": "^0.5.1",
     "@types/node": "^20",
     "@types/numeral": "^2.0.5",
     "@types/react": "^18",
@@ -46,6 +49,7 @@
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.4",
     "stylelint-scss": "^6.3.0",
+    "typechain": "^8.3.2",
     "typescript": "^5",
     "typescript-eslint": "^7.8.0"
   }

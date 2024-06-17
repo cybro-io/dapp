@@ -20,7 +20,7 @@ const tabs = [
 ];
 
 type DepositWithdrawTabsProps = {
-  activeTab: string | number;
+  activeTab: YieldSwitchOptions;
   setActiveTab: React.Dispatch<React.SetStateAction<string | number>>;
 };
 
@@ -30,7 +30,12 @@ export const DepositWithdrawTabs: ComponentWithProps<DepositWithdrawTabsProps> =
   className,
 }) => {
   return (
-    <Tabs className={styles.tabs} onSelectionChange={setActiveTab} fullWidth size="lg">
+    <Tabs<YieldSwitchOptions>
+      className={styles.tabs}
+      onSelectionChange={setActiveTab}
+      fullWidth
+      size="lg"
+    >
       {tabs.map(({ title, key }) => (
         <Tab
           key={key}

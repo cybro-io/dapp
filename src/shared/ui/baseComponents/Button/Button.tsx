@@ -26,13 +26,12 @@ export const Button: ComponentWithProps<ButtonProps> = ({
   endIcon,
   className,
   disabled = false,
-  ...props
 }) => {
   return (
     <button
       className={clsx(styles.root, styles[view], styles[size], className)}
       onClick={onClick}
-      {...props}
+      disabled={disabled}
     >
       {!!startIcon && <div className={styles.iconContainer}>{startIcon}</div>}
       <span>{children}</span>

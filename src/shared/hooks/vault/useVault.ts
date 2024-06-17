@@ -3,16 +3,16 @@ import React from 'react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
-import { Money, Nullable } from '@/shared/types';
+import { Money, Nullable, Vault } from '@/shared/types';
 import { formatMoney, VaultType } from '@/shared/utils';
 
-export type Vault = {
+export type VaultRes = {
   userDeposit: Money;
   totalAssets: Money;
   totalSupply: Money;
 };
 
-export const useVault = (vaultType?: VaultType | null): Vault => {
+export const useVault = (vaultType?: VaultType | null): VaultRes => {
   const { provider, signer, usdbVaultContract, wethVaultContract, wbtcVaultContract } = useEthers();
   const [userDeposit, setUserDeposit] = React.useState<Money>(null);
   const [totalAssets, setTotalAssets] = React.useState<Money>(null);
@@ -20,7 +20,7 @@ export const useVault = (vaultType?: VaultType | null): Vault => {
 
   React.useEffect(() => {
     const fetchVault = async () => {
-      let contract: Nullable<ethers.Contract>;
+      let contract: Nullable<Vault>;
       let decimals = 18;
 
       switch (vaultType) {

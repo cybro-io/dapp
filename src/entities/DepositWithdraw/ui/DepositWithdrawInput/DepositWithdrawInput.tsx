@@ -6,8 +6,7 @@ import clsx from 'clsx';
 
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps } from '@/shared/types';
+import { ComponentWithProps, Maybe } from '@/shared/types';
 import { Money } from '@/shared/types/money';
 import { Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -15,8 +14,8 @@ import { formatUserMoney } from '@/shared/utils';
 import styles from './DepositWithdrawInput.module.scss';
 
 type DepositWithdrawInputProps = {
-  userValue: number;
-  setUserValue: React.Dispatch<React.SetStateAction<number>>;
+  userValue: Maybe<string>;
+  setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
   userBalance: Money;
   vaultDeposit?: Money;
@@ -88,7 +87,8 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             className={styles.input}
             value={userValue}
             type="number"
-            onChange={event => setUserValue(Number(event.target.value))}
+            onChange={setUserValue}
+            placeholder={'0'}
           />
           <span className={styles.equal}>≈ $1,000.00</span>
         </div>

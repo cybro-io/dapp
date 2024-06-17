@@ -8,14 +8,14 @@ import { Nullable, Token, Vault } from '@/shared/types';
 import { Usdb } from '@/shared/types/__generated/contracts';
 import { VaultType } from '@/shared/utils';
 
-type UseDeposit = {
-  deposit: (event: string) => Promise<void>;
+type UseWithdraw = {
+  withdraw: (amount: string) => Promise<void>;
   isLoading: boolean;
   buttonMessage: string | null;
   error: Nullable<string>;
 };
 
-export const useDeposit = (vaultType: VaultType): UseDeposit => {
+export const useWithdraw = (vaultType: VaultType): UseWithdraw => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
@@ -48,26 +48,24 @@ export const useDeposit = (vaultType: VaultType): UseDeposit => {
       break;
   }
 
-  const deposit = React.useCallback(
+  const withdraw = React.useCallback(
     async (amount: string) => {
       if (!token || !vault || !isConnected || !address) {
-        setError('Error');
+        setError('Missing contract or not connected');
         return;
       }
 
       try {
         setIsLoading(true);
-        const vaultAddress = vault.target;
         const decimals = await token.decimals();
+        const sharePrice = await vault.sharePrice();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const approveTx = await token.approve(vaultAddress, weiAmount);
-        setButtonMessage('Approving...');
-        await approveTx.wait();
+        const sharesAmount = weiAmount / sharePrice;
 
-        const depositTx = await vault.deposit(weiAmount, address);
-        setButtonMessage('Depositing...');
-        await depositTx.wait();
+        const withdrawTx = await vault.redeem(sharesAmount, address, address);
+        setButtonMessage('Redeeming...');
+        await withdrawTx.wait();
       } catch (error: any) {
         setError(error);
       } finally {
@@ -78,5 +76,5 @@ export const useDeposit = (vaultType: VaultType): UseDeposit => {
     [address, isConnected, token, vault],
   );
 
-  return { deposit, isLoading, buttonMessage, error };
+  return { withdraw, isLoading, buttonMessage, error };
 };
