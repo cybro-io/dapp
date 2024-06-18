@@ -33,6 +33,7 @@ export const DepositWithdrawTabs: ComponentWithProps<DepositWithdrawTabsProps> =
     <Tabs<YieldSwitchOptions>
       className={styles.tabs}
       onSelectionChange={setActiveTab}
+      defaultSelectedKey={activeTab}
       fullWidth
       size="lg"
     >

@@ -25,6 +25,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   className,
 }) => {
   const [amount, setAmount] = React.useState<string>();
+  const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
   const { userDeposit } = useVault(vaultType);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
@@ -68,8 +69,28 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       return index === 0 ? String(Number(part)) : acc + '.' + part;
     }, '');
 
+    setSelectedPercent(null);
     setAmount(cleanedValue);
   }, []);
+
+  const onPercentButtonClick = React.useCallback(
+    (value: number) => {
+      if (balance === null || userDeposit === null) {
+        return;
+      }
+
+      if (actionType === YieldSwitchOptions.Deposit) {
+        setAmount((balance * value).toFixed(2).toString());
+      }
+
+      if (actionType === YieldSwitchOptions.Withdraw) {
+        setAmount((userDeposit * value).toFixed(2).toString());
+      }
+
+      setSelectedPercent(value);
+    },
+    [actionType, balance, userDeposit],
+  );
 
   const submitDeposit = React.useCallback(async () => {
     if (!amount) {
@@ -95,6 +116,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         setUserValue={onAmountChange}
         userBalance={balance}
         vaultDeposit={userDeposit}
+        selectedPercent={selectedPercent}
+        setSelectedPercent={onPercentButtonClick}
       />
 
       {actionType === YieldSwitchOptions.Deposit && (
@@ -109,6 +132,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
           withdraw={submitWithdraw}
           isButtonDisabled={isSubmitButtonDisabled}
           buttonMessage={withdrawButtonMessage}
+          amountToWithdraw={amount}
         />
       )}
     </div>

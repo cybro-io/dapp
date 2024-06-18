@@ -19,7 +19,32 @@ type DepositWithdrawInputProps = {
   activeTab: string | number;
   userBalance: Money;
   vaultDeposit?: Money;
+  selectedPercent: number | null;
+  setSelectedPercent: (value: number) => void;
 };
+
+export const percentButtons = [
+  {
+    title: '5%',
+    value: 0.05,
+  },
+  {
+    title: '25%',
+    value: 0.25,
+  },
+  {
+    title: '50%',
+    value: 0.5,
+  },
+  {
+    title: '75%',
+    value: 0.75,
+  },
+  {
+    title: 'Max',
+    value: 1,
+  },
+];
 
 export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps> = ({
   userValue,
@@ -27,6 +52,8 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   activeTab,
   userBalance,
   vaultDeposit,
+  selectedPercent,
+  setSelectedPercent,
   className,
 }) => {
   const getData = React.useCallback(() => {
@@ -93,11 +120,20 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           <span className={styles.equal}>≈ ${formatUserMoney(userValue)}</span>
         </div>
         <div className={styles.percentButtons}>
-          <button className={clsx(styles.percentButton)}>5%</button>
-          <button className={clsx(styles.percentButton)}>25%</button>
-          <button className={clsx(styles.percentButton)}>50%</button>
-          <button className={clsx(styles.percentButton)}>75%</button>
-          <button className={clsx(styles.percentButton)}>Max</button>
+          {percentButtons.map(({ title, value }) => {
+            return (
+              <button
+                key={value}
+                className={clsx(
+                  styles.percentButton,
+                  value === selectedPercent && styles.percentButtonSelected,
+                )}
+                onClick={() => setSelectedPercent(value)}
+              >
+                {title}
+              </button>
+            );
+          })}
         </div>
       </div>
     </div>

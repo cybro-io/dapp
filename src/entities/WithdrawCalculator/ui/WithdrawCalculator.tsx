@@ -10,18 +10,21 @@ import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
+import { formatUserMoney } from '@/shared/utils';
 
 import TimerIcon from '../assets/icons/timer.svg';
 
 import styles from './WithdrawCalculator.module.scss';
 
 type WithdrawCalculatorProps = {
+  amountToWithdraw: string | undefined;
   withdraw: (amount: number) => Promise<void>;
   isButtonDisabled: boolean;
   buttonMessage: string | null;
 };
 
 export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({
+  amountToWithdraw,
   withdraw,
   isButtonDisabled,
   buttonMessage,
@@ -40,9 +43,9 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
             <span className={styles.tetherIconContainer}>
               <TetherIcon />
             </span>
-            500’000
+            {formatUserMoney(amountToWithdraw)}
           </Text>
-          <Text className={styles.resultActualValue}>≈ $10,000.00</Text>
+          <Text className={styles.resultActualValue}>≈ ${formatUserMoney(amountToWithdraw)}</Text>
         </div>
         <div className={styles.middleLine}>
           <Text className={styles.timer} textView={TextView.C3}>
