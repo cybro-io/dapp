@@ -61,7 +61,7 @@ export const useWithdraw = (vaultType: VaultType): UseWithdraw => {
         const sharePrice = await vault.sharePrice();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const sharesAmount = weiAmount / sharePrice;
+        const sharesAmount = ethers.parseUnits((weiAmount / sharePrice).toString());
 
         const withdrawTx = await vault.redeem(sharesAmount, address, address);
         setButtonMessage('Redeeming...');

@@ -60,8 +60,14 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const isSubmitButtonDisabled = getIsSubmitButtonDisabled();
 
   const onAmountChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    // Prevents negative numbers and leading zero
-    const cleanedValue = parseInt(Math.abs(Number(event.target.value)).toString(), 10).toString();
+    // Allow only digits and a single decimal point
+    const inputValue = event.target.value.replace(/[^0-9.]/g, '');
+
+    // Remove leading zeros and prevent multiple decimal points
+    const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
+      return index === 0 ? String(Number(part)) : acc + '.' + part;
+    }, '');
+
     setAmount(cleanedValue);
   }, []);
 

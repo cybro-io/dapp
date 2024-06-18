@@ -90,7 +90,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             onChange={setUserValue}
             placeholder={'0'}
           />
-          <span className={styles.equal}>≈ $1,000.00</span>
+          <span className={styles.equal}>≈ ${formatUserMoney(userValue)}</span>
         </div>
         <div className={styles.percentButtons}>
           <button className={clsx(styles.percentButton)}>5%</button>

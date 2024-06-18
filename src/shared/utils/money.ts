@@ -4,7 +4,7 @@ import numeral from 'numeral';
 import { Money, Nullable, UserMoney } from '@/shared/types';
 import { isUndefined } from '@/shared/utils';
 
-export const formatUserMoney = (value: Money | undefined): UserMoney => {
+export const formatUserMoney = (value: Money | string | undefined): UserMoney => {
   if (value === null || isUndefined(value)) return '0.00';
 
   if (Number(value) >= 1e6) {

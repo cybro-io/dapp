@@ -19,7 +19,7 @@ type VaultStatsProps = {
   tvl: Money;
   provider: string;
   overallVaultInvestment?: Money;
-  yourDeposit?: string | number;
+  yourDeposit?: Money;
   availableFunds?: Money;
   earningsMonthly?: string | number;
   viewType?: VaultStatsView;
@@ -121,7 +121,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   <span className={styles.tetherIconContainer}>
                     <TetherIcon />
                   </span>
-                  ${yourDeposit}
+                  ${formatUserMoney(yourDeposit)}
                 </Text>
               </div>
             )}
@@ -137,7 +137,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   <span className={styles.tetherIconContainer}>
                     <TetherIcon />
                   </span>
-                  ${availableFunds}
+                  ${formatUserMoney(availableFunds)}
                 </Text>
               </div>
             )}
