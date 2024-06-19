@@ -97,12 +97,12 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
       </div>
 
       <NavbarContent justify="end">
-        <NavbarItem className={styles.languageDropdown}>
-          <LanguageChange />
-        </NavbarItem>
-        <NavbarItem className={styles.darkModeSwitch}>
-          <DarkModeSwitch />
-        </NavbarItem>
+        {/*<NavbarItem className={styles.languageDropdown}>*/}
+        {/*  <LanguageChange />*/}
+        {/*</NavbarItem>*/}
+        {/*<NavbarItem className={styles.darkModeSwitch}>*/}
+        {/*  <DarkModeSwitch />*/}
+        {/*</NavbarItem>*/}
         <NavbarItem>
           {isConnected ? (
             <div className={styles.connectedWalletContainer} onClick={() => disconnect()}>
@@ -135,10 +135,10 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
           ))}
           <Socials />
         </div>
-        <div className={styles.mobileMenuBottom}>
-          <DarkModeSwitch />
-          <LanguageChange />
-        </div>
+        {/*<div className={styles.mobileMenuBottom}>*/}
+        {/*  <DarkModeSwitch />*/}
+        {/*  <LanguageChange />*/}
+        {/*</div>*/}
       </NavbarMenu>
     </Navbar>
   );

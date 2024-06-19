@@ -6,7 +6,7 @@ import clsx from 'clsx';
 
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
-import { Chip, Link, LinkView, Text, TextView } from '@/shared/ui';
+import { Chip, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
@@ -48,14 +48,24 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
             {weeklyApy}%
           </Text>
         </div>
-        <div className={styles.detailsItem}>
-          <Link viewType={LinkView.Tooltip} className={styles.detailsTitle}>
-            Cybro Points
-          </Link>
-          <Text textView={TextView.P3} className={styles.detailsValue}>
-            {cybroPoints}%
-          </Text>
-        </div>
+        {/*<div className={styles.detailsItem}>*/}
+        {/*  <Link viewType={LinkView.Tooltip} className={styles.detailsTitle}>*/}
+        {/*    Cybro Points*/}
+        {/*  </Link>*/}
+        {/*  <Text textView={TextView.P3} className={styles.detailsValue}>*/}
+        {/*    {cybroPoints}%*/}
+        {/*  </Text>*/}
+        {/*</div>*/}
+        {viewType === VaultStatsView.Card && (
+          <div className={styles.detailsItem}>
+            <Text textView={TextView.C3} className={styles.detailsTitle}>
+              TVL
+            </Text>
+            <Text textView={TextView.P3} className={styles.detailsValue}>
+              ${formatUserMoney(tvl) || '0'}
+            </Text>
+          </div>
+        )}
         {viewType === VaultStatsView.Full && (
           <React.Fragment>
             <div className={styles.detailsItem}>
@@ -79,14 +89,14 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
       <div className={clsx(styles.secondRow, styles.row)}>
         {viewType === VaultStatsView.Card && (
           <React.Fragment>
-            <div className={styles.detailsItem}>
-              <Text textView={TextView.C3} className={styles.detailsTitle}>
-                TVL
-              </Text>
-              <Text textView={TextView.P3} className={styles.detailsValue}>
-                ${formatUserMoney(tvl) || '0'}
-              </Text>
-            </div>
+            {/*<div className={styles.detailsItem}>*/}
+            {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+            {/*    TVL*/}
+            {/*  </Text>*/}
+            {/*  <Text textView={TextView.P3} className={styles.detailsValue}>*/}
+            {/*    ${formatUserMoney(tvl) || '0'}*/}
+            {/*  </Text>*/}
+            {/*</div>*/}
             <div className={styles.detailsItem}>
               <Text textView={TextView.C3} className={styles.detailsTitle}>
                 Provider

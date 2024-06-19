@@ -7,7 +7,6 @@ import { Modal, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { Banner, BannerColor, BannerViewType } from '@/entities/Banner';
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
-import { HistoricalApyData } from '@/entities/HistoricalApyData';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
@@ -40,6 +39,11 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, class
   const { totalAssets, userDeposit } = useVault(vaultType);
   //////////////////
 
+  const onTabChange = React.useCallback((activeTab: YieldSwitchOptions) => {
+    openModal(Modal.YieldCalculator, { activeTab });
+    setActiveTab(activeTab);
+  }, []);
+
   return (
     <div className={clsx(styles.root, className)}>
       <section className={styles.vaultStatsContainer}>
@@ -70,7 +74,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, class
           availableFunds={isConnected && balance ? balance : 0}
         />
       </section>
-      <HistoricalApyData className={styles.historicalApyData} />
+      {/*<HistoricalApyData className={styles.historicalApyData} />*/}
       <SafetyScoreDetails className={styles.safetyScoreDetails} />
       <section className={styles.extendedVaultDescription}>
         <Text className={styles.title} textView={TextView.H3}>
@@ -104,8 +108,13 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, class
           caption="Cybro boost faq"
           captionType={LinkView.Tooltip}
         />
-        <DepositWithdrawTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       </section>
+      <DepositWithdrawTabs
+        activeTab={activeTab}
+        setActiveTab={onTabChange}
+        className={styles.depositWithdrawTabs}
+        size={'sm'}
+      />
     </div>
   );
 };
