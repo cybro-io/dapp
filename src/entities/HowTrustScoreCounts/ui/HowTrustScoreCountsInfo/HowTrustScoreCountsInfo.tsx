@@ -17,7 +17,6 @@ export const HowTrustScoreCountsInfo: ComponentWithProps<HowTrustScoreCountsInfo
   viewType = HowTrustScoreCountsInfoViewType.Modal,
   className,
 }) => {
-  console.log(viewType, 'how counts view type');
   return (
     <div className={clsx(styles.root, styles[viewType], className)}>
       {viewType === HowTrustScoreCountsInfoViewType.Tooltip && (

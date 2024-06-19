@@ -10,6 +10,7 @@ import {
   HowTrustScoreCountsInfo,
   HowTrustScoreCountsInfoViewType,
 } from '@/entities/HowTrustScoreCounts';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import InfoIcon from '@/shared/assets/icons/info.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Link, LinkView } from '@/shared/ui';
@@ -28,6 +29,12 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
 }) => {
   const { openModal } = useModal();
 
+  const onTooltipChange = React.useCallback((isOpen: boolean) => {
+    if (isOpen) {
+      Mixpanel.track(MixpanelEvent.TrustScoreHintOpen);
+    }
+  }, []);
+
   return (
     <Link
       onClick={() => openModal(Modal.HowTrustScoreCounts)}
@@ -37,6 +44,7 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
       tooltipContent={
         <HowTrustScoreCountsInfo viewType={HowTrustScoreCountsInfoViewType.Tooltip} />
       }
+      onTooltipChange={onTooltipChange}
     >
       How trust score counts
       {viewType === HowTrustScoreCountsButtonViewType.Button && hasIcon && (

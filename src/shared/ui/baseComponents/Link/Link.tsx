@@ -20,6 +20,7 @@ type LinkProps = {
   onClick?: () => void;
   textClassName?: string;
   tooltipClassName?: string;
+  onTooltipChange?: (isOpen: boolean) => void;
 };
 
 export const Link: ComponentWithProps<LinkProps> = ({
@@ -30,6 +31,7 @@ export const Link: ComponentWithProps<LinkProps> = ({
   textClassName,
   tooltipClassName,
   onClick,
+  onTooltipChange,
   children,
 }) => {
   switch (viewType) {
@@ -52,6 +54,7 @@ export const Link: ComponentWithProps<LinkProps> = ({
         <Tooltip
           className={clsx(styles.contentContainer, tooltipClassName)}
           content={tooltipContent || 'Some content'}
+          onOpenChange={onTooltipChange}
         >
           <div className={clsx(styles.tooltipContainer, className)}>
             <p className={clsx(styles.tooltipText, textClassName)}>{children}</p>

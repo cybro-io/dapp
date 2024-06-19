@@ -1,3 +1,17 @@
 export const isUndefined = (value: any) => {
   return typeof value === 'undefined';
 };
+
+export const debounce = <T extends (...args: any[]) => any>(func: T, wait: number) => {
+  let timeout: ReturnType<typeof setTimeout> | null = null;
+
+  return (...args: Parameters<T>) => {
+    if (timeout !== null) {
+      clearTimeout(timeout);
+    }
+
+    timeout = setTimeout(() => {
+      func(...args);
+    }, wait);
+  };
+};

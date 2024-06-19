@@ -1,12 +1,13 @@
 'use client';
 
-import React from 'react';
+import React, { Key } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
@@ -27,11 +28,15 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
 }) => {
   const { isConnected } = useWeb3ModalAccount();
 
+  const onTabChange = React.useCallback((currentTab: Key) => {
+    Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, { period: currentTab });
+  }, []);
+
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.projectedYield}>
         <div className={styles.tabsContainer}>
-          <Tabs className={styles.yieldTabs} size="sm">
+          <Tabs className={styles.yieldTabs} size="sm" onSelectionChange={onTabChange}>
             <Tab key="year" title="Year" />
             <Tab key="quarter" title="Quarter" />
             <Tab key="month" title="Month" />
@@ -62,7 +67,7 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
       </Text>
 
       {!isConnected ? (
-        <ConnectWallet className={styles.connectButton} />
+        <ConnectWallet className={styles.connectButton} isForm />
       ) : (
         <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
           {buttonMessage || 'Deposit'}

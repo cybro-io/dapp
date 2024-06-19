@@ -5,12 +5,13 @@ import clsx from 'clsx';
 import { DepositCalculator } from '@/entities/DepositCalculator';
 import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
 import { useDeposit, useVault } from '@/shared/hooks/vault';
 import { useWithdraw } from '@/shared/hooks/vault/useWithdraw';
 import { ComponentWithProps } from '@/shared/types';
-import { getUserBalanceForVault, VaultType } from '@/shared/utils';
+import { debounce, getUserBalanceForVault, VaultType } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
 
@@ -60,6 +61,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const isSubmitButtonDisabled = getIsSubmitButtonDisabled();
 
+  const debouncedTrackEvent = React.useMemo(
+    () => debounce(() => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually), 3000),
+    [],
+  );
+
   const onAmountChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
     // Allow only digits and a single decimal point
     const inputValue = event.target.value.replace(/[^0-9.]/g, '');
@@ -68,6 +74,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
       return index === 0 ? String(Number(part)) : acc + '.' + part;
     }, '');
+
+    debouncedTrackEvent();
 
     setSelectedPercent(null);
     setAmount(cleanedValue);
@@ -87,6 +95,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         setAmount((userDeposit * value).toFixed(2).toString());
       }
 
+      Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);
       setSelectedPercent(value);
     },
     [actionType, balance, userDeposit],

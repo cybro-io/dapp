@@ -72,7 +72,7 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
         </div>
       </div>
       {!isConnected ? (
-        <ConnectWallet className={styles.connectButton} />
+        <ConnectWallet className={styles.connectButton} isForm />
       ) : (
         <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={withdraw}>
           {buttonMessage || 'Withdraw'}
