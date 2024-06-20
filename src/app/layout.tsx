@@ -9,7 +9,13 @@ import type { Metadata } from 'next';
 import { poppins, unbounded } from '@/app/fonts';
 
 import styles from './layout.module.scss';
-import { EthersProvider, ModalContainer, ModalProvider, Web3Modal } from './providers';
+import {
+  EthersProvider,
+  ModalContainer,
+  ModalProvider,
+  ReactQueryProvider,
+  Web3Modal,
+} from './providers';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -31,12 +37,14 @@ export default function RootLayout({
     <html lang="en">
       <Web3Modal>
         <EthersProvider>
-          <ModalProvider>
-            <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-              {children}
-              <ModalContainer />
-            </body>
-          </ModalProvider>
+          <ReactQueryProvider>
+            <ModalProvider>
+              <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                {children}
+                <ModalContainer />
+              </body>
+            </ModalProvider>
+          </ReactQueryProvider>
         </EthersProvider>
       </Web3Modal>
     </html>

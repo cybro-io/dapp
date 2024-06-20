@@ -11,7 +11,10 @@ if (!MIXPANEL_ID) {
   throw new Error('Mixpannel ID was not found');
 }
 
-mixpanel.init(MIXPANEL_ID, { debug: true, ignore_dnt: true });
+mixpanel.init(MIXPANEL_ID, {
+  ignore_dnt: true,
+  api_host: 'https://hiddenninja.cybro.io',
+});
 
 export const Mixpanel = {
   track: (name: MixpanelEvent, props?: Maybe<Dict>) => {

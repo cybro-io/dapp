@@ -23,10 +23,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Other scripts
 
 ### Production build
+#### Generate types for Smart Contracts and API types and hooks
+```bash
+npm run codegen
+```
+
 #### Generate types for Smart Contracts
 ```bash
-npm run codegen-sc
+npm run codegen-sc-with-index
 ```
+
+#### Generate API types and hooks
+```bash
+npm run codegen-api-with-index
+```
+
 #### Build the project
 
 ```bash

@@ -5,7 +5,6 @@ import { Contract, ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Nullable, Token, Vault } from '@/shared/types';
-import { Usdb } from '@/shared/types/__generated/contracts';
 import { VaultType } from '@/shared/utils';
 
 type UseWithdraw = {

@@ -1,11 +1,10 @@
 import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { Contract, ethers } from 'ethers';
+import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Nullable, Token, Vault } from '@/shared/types';
-import { Usdb } from '@/shared/types/__generated/contracts';
 import { VaultType } from '@/shared/utils';
 
 type UseDeposit = {
