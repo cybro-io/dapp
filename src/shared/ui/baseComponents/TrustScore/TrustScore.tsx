@@ -5,22 +5,50 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { ComponentWithProps } from '@/shared/types';
-import { Text } from '@/shared/ui';
-import { TrustScoreViewType } from '@/shared/ui/baseComponents/TrustScore/const';
+import { Text, TrustScoreColor, TrustScoreColorToIcon, TrustScoreViewType } from '@/shared/ui';
+import { formatTrustScore } from '@/shared/utils';
 
-import DangerIcon from './assets/icons/danger.svg';
+import PointerIcon from './assets/icons/pointer.svg';
 import styles from './TrustScore.module.scss';
 
 type TrustScoreProps = {
+  value?: number;
   viewType?: TrustScoreViewType;
   isBordered?: boolean;
 };
 
 export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
+  value = 1.1,
   isBordered = true,
   viewType = TrustScoreViewType.Mobile,
   className,
 }) => {
+  const getTrustScoreColor = React.useCallback(() => {
+    if (value <= 2) {
+      return TrustScoreColor.Danger;
+    }
+
+    if (value < 9) {
+      return TrustScoreColor.Warning;
+    }
+
+    return TrustScoreColor.Good;
+  }, []);
+
+  const getPointerPosition = React.useCallback(() => {
+    if (value <= 2) {
+      return 'calc(26.32% * ' + value / 2 + ')';
+    }
+
+    if (value < 9) {
+      return 'calc(26.32% + 52.63% * ' + (value - 2) / 7 + ')';
+    }
+
+    return 'calc(26.32% + 52.63% + 21.05% * ' + (value - 9) + ')';
+  }, []);
+
+  const trustScoreColor = getTrustScoreColor();
+
   return (
     <div
       className={clsx(styles.root, !isBordered && styles.notBordered, styles[viewType], className)}
@@ -29,20 +57,43 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
       <div className={styles.cornerTopRight} />
       <div className={styles.cornerBottomLeft} />
       <div className={styles.cornerBottomRight} />
-      <div className={styles.iconContainer}>
-        <DangerIcon />
-      </div>
+      <div className={styles.iconContainer}>{TrustScoreColorToIcon[trustScoreColor]}</div>
       <div className={styles.container}>
         <div className={styles.top}>
           <Text className={styles.title}>Trust Score</Text>
-          <Text className={styles.value}>1.8</Text>
+          <Text className={clsx(styles.value, styles[trustScoreColor])}>
+            {formatTrustScore(value)}
+          </Text>
         </div>
         <div className={styles.progressBarContainer}>
-          <div className={styles.pointer}></div>
+          <div
+            className={clsx(styles.pointer, styles[trustScoreColor])}
+            style={{ left: getPointerPosition() }}
+          >
+            <PointerIcon />
+          </div>
           <div className={styles.progressBar}>
-            <div className={clsx(styles.bar, styles.danger)}></div>
-            <div className={clsx(styles.bar, styles.warning)}></div>
-            <div className={clsx(styles.bar, styles.good)}></div>
+            <div
+              className={clsx(
+                styles.bar,
+                styles.danger,
+                trustScoreColor === TrustScoreColor.Danger && styles.active,
+              )}
+            ></div>
+            <div
+              className={clsx(
+                styles.bar,
+                styles.warning,
+                trustScoreColor === TrustScoreColor.Warning && styles.active,
+              )}
+            ></div>
+            <div
+              className={clsx(
+                styles.bar,
+                styles.good,
+                trustScoreColor === TrustScoreColor.Good && styles.active,
+              )}
+            ></div>
           </div>
         </div>
       </div>

@@ -10,7 +10,7 @@
     "lint:css": "stylelint '**/*.scss'",
     "codegen-sc": "typechain --target ethers-v6 --out-dir src/shared/types/__generated/contracts './src/app/abi/*.json'",
     "codegen-api": "npx orval",
-    "generate-index": "node ./src/shared/script/generate-index.js",
+    "generate-index": "node src/shared/script/generate-index.mjs",
     "codegen-sc-with-index": "npm run codegen-sc && npm run generate-index",
     "codegen-api-with-index": "npm run codegen-api && npm run generate-index",
     "codegen": "npm run codegen-sc && npm run codegen-api && npm run generate-index",

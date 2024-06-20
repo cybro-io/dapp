@@ -78,6 +78,7 @@
 }
 
 .progressBarContainer {
+  position: relative;
   width: 100%;
   height: 12px;
 }
@@ -93,39 +94,51 @@
 .bar {
   height: 100%;
   border-radius: 10px;
-}
 
-.danger {
-  width: 26.32%;
-  background: repeating-linear-gradient(
-                  135deg,
-                  $trustScore-red-15,
-                  $trustScore-red-15 3px,
-                  $trustScore-red-100 3px,
-                  $trustScore-red-100 5px,
-  );
-}
+  &.danger {
+    width: 26.32%;
+    background: repeating-linear-gradient(
+                    135deg,
+                    $trustScore-red-15,
+                    $trustScore-red-15 3px,
+                    $trustScore-red-100 3px,
+                    $trustScore-red-100 5px,
+    );
 
-.warning {
-  width: 52.63%;
-  background: repeating-linear-gradient(
-                  135deg,
-                  $trustScore-yellow-15,
-                  $trustScore-yellow-15 3px,
-                  $trustScore-yellow-100 3px,
-                  $trustScore-yellow-100 5px,
-  );
-}
+    &.active {
+      background: $trustScore-red-100;
+    }
+  }
 
-.good {
-  width: 21.05%;
-  background: repeating-linear-gradient(
-                  135deg,
-                  $trustScore-green-15,
-                  $trustScore-green-15 3px,
-                  $trustScore-green-100 3px,
-                  $trustScore-green-100 5px,
-  );
+  &.warning {
+    width: 52.63%;
+    background: repeating-linear-gradient(
+                    135deg,
+                    $trustScore-yellow-15,
+                    $trustScore-yellow-15 3px,
+                    $trustScore-yellow-100 3px,
+                    $trustScore-yellow-100 5px,
+    );
+
+    &.active {
+      background: $trustScore-yellow-100;
+    }
+  }
+
+  &.good {
+    width: 21.05%;
+    background: repeating-linear-gradient(
+                    135deg,
+                    $trustScore-green-15,
+                    $trustScore-green-15 3px,
+                    $trustScore-green-100 3px,
+                    $trustScore-green-100 5px,
+    );
+
+    &.active {
+      background: $trustScore-green-100;
+    }
+  }
 }
 
 .notBordered {
@@ -140,9 +153,46 @@
   }
 }
 
+.pointer {
+  position: absolute;
+  top: -6px;
+  width: 11px;
+  height: 5.5px;
+
+  &.danger {
+    fill: $trustScore-red-100;
+  }
+
+  &.warning {
+   fill: $trustScore-yellow-100;
+  }
+
+  &.good {
+    fill: $trustScore-green-100;
+  }
+}
+
+.value {
+  &.danger {
+    color: $trustScore-red-100;
+  }
+
+  &.warning {
+    color: $trustScore-yellow-100;
+  }
+
+  &.good {
+    color: $trustScore-green-100;
+  }
+}
+
 .desktop {
   padding: 10px;
   align-items: center;
+
+  .pointer {
+    display: none;
+  }
 
   .iconContainer {
     svg {

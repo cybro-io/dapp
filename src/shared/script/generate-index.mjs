@@ -19,7 +19,12 @@ const generateIndex = () => {
 
   const exports = folders
     .filter(folder => fs.existsSync(path.resolve(generatedDir, folder)))
-    .map(folder => `export * from './${folder}';`)
+    .map(folder => {
+      if (folder === 'api') {
+        return `export * from './${folder}/fastAPI';`;
+      }
+      return `export * from './${folder}';`;
+    })
     .join('\n');
 
   fs.writeFileSync(indexPath, exports, { encoding: 'utf-8' });

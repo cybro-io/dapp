@@ -18,6 +18,14 @@ const nextConfig = {
   sassOptions: {
     prependData: `@import "${path.resolve(__dirname, 'src/shared/styles/variables.scss')}";`,
   },
+  images: {
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'linkee.ws',
+      },
+    ],
+  },
 };
 
 export default nextConfig;

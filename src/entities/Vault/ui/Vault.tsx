@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import {
@@ -11,33 +12,28 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import TetherTronIcon from '@/shared/assets/icons/tetherTron.svg';
-import { useBalances } from '@/shared/hooks';
-import { useVault } from '@/shared/hooks/vault';
-import { ComponentWithProps, Money } from '@/shared/types';
-import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
-import { TrustScoreViewType } from '@/shared/ui';
-import { getRandomVault, getUserBalanceForVault, getVaultTitle, VaultType } from '@/shared/utils';
+import { useBalances, useVault } from '@/shared/hooks';
+import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
+import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
+import { getRandomVault, getUserBalanceForVault, VaultType } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
-type VaultProps = {};
+type VaultProps = {
+  vault: VaultsResponseData;
+};
 
-export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
+export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
 
   ///////// MOCK /////////
   const [vaultType, setVaultType] = React.useState<VaultType>();
-  const [title, setTitle] = React.useState<string>();
   const [balance, setBalance] = React.useState<Money>();
 
   React.useEffect(() => {
     const vaultType = getRandomVault();
     setVaultType(vaultType);
-
-    const title = getVaultTitle(vaultType);
-    setTitle(title);
 
     const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
@@ -52,22 +48,30 @@ export const Vault: ComponentWithProps<VaultProps> = ({ className }) => {
         <div className={styles.titleContainer}>
           <div className={styles.title}>
             <div className={styles.iconContainer}>
-              <TetherTronIcon />
+              <Image src={vault.icon} alt={''} width={40} height={40} />
             </div>
             <Text textView={TextView.H4} className={styles.titleText}>
-              {title}
+              {vault.name}
             </Text>
           </div>
           <div className={styles.chipsContainer}>
-            <Chip className={styles.chip}>Low Risk</Chip>
-            <Chip className={styles.chip}>Low Risk</Chip>
+            {vault?.badges.slice(0, 3).map(badge => <Chip className={styles.chip}>{badge}</Chip>)}
           </div>
         </div>
         {isConnected && balance && <AvailableFunds balance={balance} deposit={userDeposit} />}
-        <VaultStats weeklyApy={'999,5'} cybroPoints={'20'} tvl={totalAssets} provider={'Details'} />
+        <VaultStats
+          weeklyApy={vault.apy}
+          cybroPoints={'20'}
+          tvl={vault.tvl}
+          provider={vault.provider}
+        />
         <div className={styles.trustScoreContainer}>
-          <TrustScore className={styles.trustScoreMobile} />
-          <TrustScore className={styles.trustScoreDesktop} viewType={TrustScoreViewType.Desktop} />
+          <TrustScore value={vault.trust_score} className={styles.trustScoreMobile} />
+          <TrustScore
+            value={vault.trust_score}
+            className={styles.trustScoreDesktop}
+            viewType={TrustScoreViewType.Desktop}
+          />
           <HowTrustScoreCountsButton
             className={styles.howCountsDesktop}
             viewType={HowTrustScoreCountsButtonViewType.Tooltip}

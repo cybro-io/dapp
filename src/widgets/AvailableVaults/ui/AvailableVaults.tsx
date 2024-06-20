@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import clsx from 'clsx';
@@ -7,6 +9,7 @@ import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
 import { ComponentWithProps } from '@/shared/types';
+import { useGetVaultsApiV1VaultsGet, VaultsResponse } from '@/shared/types/__generated/api/fastAPI';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
 
 import styles from './AvailableVaults.module.scss';
@@ -14,7 +17,15 @@ import styles from './AvailableVaults.module.scss';
 type AvailableVaultsProps = {};
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const vaults = [1, 2, 3, 4, 5, 6, 7, 8];
+  const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet({
+    query: { queryKey: ['vaults'] },
+  });
+
+  const vaults = (data as { data: VaultsResponse })?.data?.data || [];
+
+  if (isError) {
+    return 'Error...';
+  }
 
   return (
     <section className={clsx(styles.root, className)}>
@@ -29,7 +40,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
         {vaults.map((vault, index) => {
           if (index === 2) {
             return (
-              <React.Fragment key={vault}>
+              <React.Fragment key={vault.id}>
                 <Banner
                   color={BannerColor.Dark}
                   size={BannerSize.Small}
@@ -46,14 +57,14 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   }
                 />
                 <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
-                <Vault />
+                <Vault vault={vault} />
               </React.Fragment>
             );
           }
 
           if (index === 5) {
             return (
-              <React.Fragment key={vault}>
+              <React.Fragment key={vault.id}>
                 <Banner
                   color={BannerColor.Accent}
                   size={BannerSize.Big}
@@ -73,15 +84,15 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   captionType={LinkView.Tooltip}
                 />
                 <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
-                <Vault />
+                <Vault vault={vault} />
               </React.Fragment>
             );
           }
 
           if (index === 7) {
             return (
-              <React.Fragment key={vault}>
-                <Vault />
+              <React.Fragment key={vault.id}>
+                <Vault vault={vault} />
                 <JoinCommunityBanner
                   className={clsx(styles.joinBanner, styles.joinBannerDesktop)}
                 />
@@ -89,7 +100,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             );
           }
 
-          return <Vault key={vault} />;
+          return <Vault vault={vault} key={vault.id} />;
         })}
       </div>
     </section>
