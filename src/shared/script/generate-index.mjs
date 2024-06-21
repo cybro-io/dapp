@@ -1,5 +1,9 @@
-const fs = require('fs');
-const path = require('path');
+import fs from 'fs';
+import path from 'path';
+import { fileURLToPath } from 'url';
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const ensureDirectoryExistence = filePath => {
   const dirname = path.dirname(filePath);
@@ -32,7 +36,7 @@ const generateIndex = () => {
 
   // Update the main index.ts
   const mainIndexPath = path.resolve(__dirname, '../types/index.ts');
-  const mainIndexExport = "export * from './__generated';\n";
+  const mainIndexExport = 'export * from \'./__generated\';\n';
 
   if (fs.existsSync(mainIndexPath)) {
     const mainIndexContent = fs.readFileSync(mainIndexPath, { encoding: 'utf-8' });
@@ -43,6 +47,7 @@ const generateIndex = () => {
       console.log('Export statement already exists in src/shared/types/index.ts.');
     }
   } else {
+    ensureDirectoryExistence(mainIndexPath);
     fs.writeFileSync(mainIndexPath, mainIndexExport, { encoding: 'utf-8' });
     console.log('Created src/shared/types/index.ts with export statement.');
   }

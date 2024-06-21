@@ -4,7 +4,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { ComponentWithProps } from '@/shared/types';
+import { ComponentWithProps, HistoryTrustScoreResponseData } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
 import NegativeIcon from './assets/negative.svg';
@@ -13,17 +13,17 @@ import { TrustScoreVariant } from './const';
 import styles from './TrustScoreDescription.module.scss';
 
 type TrustScoreDescriptionProps = {
-  title: string;
-  description: string;
-  variant?: TrustScoreVariant;
+  details: HistoryTrustScoreResponseData;
 };
 
 export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProps> = ({
-  title,
-  description,
-  variant = TrustScoreVariant.Positive,
+  details,
   className,
 }) => {
+  const variant = React.useMemo(() => {
+    return details.direction === '+' ? TrustScoreVariant.Positive : TrustScoreVariant.Negative;
+  }, [details]);
+
   return (
     <div className={clsx(styles.root, styles[variant], className)}>
       <div className={styles.trustScoreRating}>
@@ -31,15 +31,15 @@ export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProp
         <div className={styles.cornerTopRight} />
         <div className={styles.cornerBottomLeft} />
         <div className={styles.cornerBottomRight} />
-        <p className={styles.value}>2.5</p>
+        <p className={styles.value}>{details.trust_score}</p>
         <div className={styles.iconContainer}>
           {variant === TrustScoreVariant.Negative ? <NegativeIcon /> : <PositiveIcon />}
         </div>
       </div>
       <div className={styles.description}>
-        <Text textView={TextView.H5}>{title}</Text>
+        <Text textView={TextView.H5}>{details.name}</Text>
         <Text className={styles.descriptionValue} textView={TextView.P3}>
-          {description}
+          {details.description}
         </Text>
       </div>
     </div>

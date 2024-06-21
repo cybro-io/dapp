@@ -4,7 +4,7 @@ import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Money, Nullable, Vault } from '@/shared/types';
-import { formatMoney, VaultType } from '@/shared/utils';
+import { formatMoney, VaultCurrency } from '@/shared/utils';
 
 export type VaultRes = {
   userDeposit: Money;
@@ -12,7 +12,7 @@ export type VaultRes = {
   totalSupply: Money;
 };
 
-export const useVault = (vaultType?: VaultType | null): VaultRes => {
+export const useVault = (vaultType?: VaultCurrency | null): VaultRes => {
   const { provider, signer, usdbVaultContract, wethVaultContract, wbtcVaultContract } = useEthers();
   const [userDeposit, setUserDeposit] = React.useState<Money>(null);
   const [totalAssets, setTotalAssets] = React.useState<Money>(null);
@@ -24,13 +24,13 @@ export const useVault = (vaultType?: VaultType | null): VaultRes => {
       let decimals = 18;
 
       switch (vaultType) {
-        case VaultType.USDB:
+        case VaultCurrency.USDB:
           contract = usdbVaultContract;
           break;
-        case VaultType.WETH:
+        case VaultCurrency.WETH:
           contract = wethVaultContract;
           break;
-        case VaultType.WBTC:
+        case VaultCurrency.WBTC:
           contract = wbtcVaultContract;
           decimals = 8;
           break;

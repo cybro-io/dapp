@@ -15,7 +15,7 @@ import { VaultStats } from '@/entities/VaultStats';
 import { useBalances, useVault } from '@/shared/hooks';
 import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { getRandomVault, getUserBalanceForVault, VaultType } from '@/shared/utils';
+import { getRandomVault, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -26,15 +26,12 @@ type VaultProps = {
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
+  const vaultType = vault.token as VaultCurrency;
 
   ///////// MOCK /////////
-  const [vaultType, setVaultType] = React.useState<VaultType>();
   const [balance, setBalance] = React.useState<Money>();
 
   React.useEffect(() => {
-    const vaultType = getRandomVault();
-    setVaultType(vaultType);
-
     const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
   }, [usdbBalance, wethBalance, wbtcBalance]);
@@ -43,7 +40,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   //////////////////
 
   return (
-    <Link className={clsx(styles.link)} href={`/vaults/1?type=${vaultType}`}>
+    <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
       <div className={clsx(styles.root, className)}>
         <div className={styles.titleContainer}>
           <div className={styles.title}>

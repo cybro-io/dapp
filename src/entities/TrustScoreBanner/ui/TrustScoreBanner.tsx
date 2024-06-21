@@ -12,10 +12,12 @@ import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
 import styles from './TrustScoreBanner.module.scss';
 
 type TrustScoreBannerProps = {
+  trustScoreValue: number;
   isBordered?: boolean;
 };
 
 export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
+  trustScoreValue,
   isBordered = true,
   className,
 }) => {
@@ -26,8 +28,12 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
       <div className={styles.cornerBottomLeft} />
       <div className={styles.cornerBottomRight} />
       <div className={styles.trustScoreLeft}>
-        <TrustScore className={clsx(styles.trustScore, styles.trustScoreMobile)} />
         <TrustScore
+          value={trustScoreValue}
+          className={clsx(styles.trustScore, styles.trustScoreMobile)}
+        />
+        <TrustScore
+          value={trustScoreValue}
           className={clsx(styles.trustScore, styles.trustScoreDesktop)}
           isBordered={false}
         />

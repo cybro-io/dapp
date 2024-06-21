@@ -14,7 +14,7 @@ import { useDeposit, useVault } from '@/shared/hooks/vault';
 import { useWithdraw } from '@/shared/hooks/vault/useWithdraw';
 import { ComponentWithProps } from '@/shared/types';
 import { ModalLayout } from '@/shared/ui';
-import { getUserBalanceForVault, VaultType } from '@/shared/utils';
+import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator/ui/YieldCalculatorBody';
 
 type YieldCalculatorModalProps = {
@@ -23,7 +23,7 @@ type YieldCalculatorModalProps = {
 
 export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
   const searchParams = useSearchParams();
-  const vaultType = searchParams.get('type') as VaultType;
+  const vaultType = searchParams.get('type') as VaultCurrency;
   const { props } = useModal();
   const type: YieldSwitchOptions = props.activeTab;
 

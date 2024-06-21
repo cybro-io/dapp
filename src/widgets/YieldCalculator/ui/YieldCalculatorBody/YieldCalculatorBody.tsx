@@ -11,12 +11,12 @@ import { useBalances } from '@/shared/hooks';
 import { useDeposit, useVault } from '@/shared/hooks/vault';
 import { useWithdraw } from '@/shared/hooks/vault/useWithdraw';
 import { ComponentWithProps } from '@/shared/types';
-import { debounce, getUserBalanceForVault, VaultType } from '@/shared/utils';
+import { debounce, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
 
 type YieldCalculatorProps = {
-  vaultType: VaultType;
+  vaultType: VaultCurrency;
   actionType: YieldSwitchOptions;
 };
 

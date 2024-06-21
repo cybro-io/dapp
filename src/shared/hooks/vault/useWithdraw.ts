@@ -5,7 +5,7 @@ import { Contract, ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Nullable, Token, Vault } from '@/shared/types';
-import { VaultType } from '@/shared/utils';
+import { VaultCurrency } from '@/shared/utils';
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
@@ -14,7 +14,7 @@ type UseWithdraw = {
   error: Nullable<string>;
 };
 
-export const useWithdraw = (vaultType: VaultType): UseWithdraw => {
+export const useWithdraw = (vaultType: VaultCurrency): UseWithdraw => {
   const [isLoading, setIsLoading] = React.useState(false);
   const [error, setError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
@@ -33,15 +33,15 @@ export const useWithdraw = (vaultType: VaultType): UseWithdraw => {
   let vault: Nullable<Vault>;
 
   switch (vaultType) {
-    case VaultType.USDB:
+    case VaultCurrency.USDB:
       token = usdbContract;
       vault = usdbVaultContract;
       break;
-    case VaultType.WETH:
+    case VaultCurrency.WETH:
       token = wethContract;
       vault = wethVaultContract;
       break;
-    case VaultType.WBTC:
+    case VaultCurrency.WBTC:
       token = wbtcContract;
       vault = wbtcVaultContract;
       break;

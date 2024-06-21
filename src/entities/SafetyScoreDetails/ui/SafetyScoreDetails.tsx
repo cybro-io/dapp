@@ -9,17 +9,41 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { TrustScoreBanner } from '@/entities/TrustScoreBanner';
-import { ComponentWithProps } from '@/shared/types';
+import { QueryKey } from '@/shared/const/queryKey';
+import {
+  ComponentWithProps,
+  HistoryAPYResponse,
+  HistoryTrustScoreResponse,
+  useGetVaultHistoryApyApiV1VaultsVaultIdHistoryApyGet,
+  useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
+  VaultResponse,
+} from '@/shared/types';
 import { Text, TextView, TrustScoreDescription, TrustScoreVariant } from '@/shared/ui';
 
 import ArrowIcon from '../assets/icons/arrow.svg';
 
 import styles from './SafetyScoreDetails.module.scss';
 
-type SafetyScoreDetailsProps = {};
+type SafetyScoreDetailsProps = {
+  trustScore: number;
+  vaultId: number;
+};
 
-export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({ className }) => {
+export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({
+  trustScore,
+  vaultId,
+  className,
+}) => {
   const [isOpened, setIsOpened] = React.useState(false);
+  const { data } = useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId, {
+    query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
+  });
+
+  const trustScoreDetails = (data as { data: HistoryTrustScoreResponse })?.data?.data;
+
+  if (!trustScoreDetails) {
+    return 'Error...';
+  }
 
   return (
     <section className={clsx(styles.root, isOpened && styles.opened, className)}>
@@ -27,28 +51,11 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
         Safety Score Details
       </Text>
       <div className={styles.container}>
-        <TrustScoreBanner className={styles.trustScoreBanner} />
+        <TrustScoreBanner trustScoreValue={trustScore} className={styles.trustScoreBanner} />
         <div className={styles.trustScoreBreakdown}>
-          <TrustScoreDescription
-            title="Time-tested Protocol"
-            description="A long operational history without major incidents increases trust"
-            variant={TrustScoreVariant.Positive}
-          />
-          <TrustScoreDescription
-            title="Liquidity Level"
-            description="High level of liquidity minimizes the risk of market manipulation and ensures asset stability"
-            variant={TrustScoreVariant.Positive}
-          />
-          <TrustScoreDescription
-            title="Smart Contract Insurance"
-            description="Insurance policies in place to protect against potential smart contract vulnerabilities"
-            variant={TrustScoreVariant.Negative}
-          />
-          <TrustScoreDescription
-            title="Regular Security Updates"
-            description="Frequent updates to security measures to keep up with evolving threats"
-            variant={TrustScoreVariant.Negative}
-          />
+          {trustScoreDetails.map(detail => (
+            <TrustScoreDescription details={detail} />
+          ))}
         </div>
         <HowTrustScoreCountsButton
           className={clsx(styles.tooltip, styles.tooltipMobile)}

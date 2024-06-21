@@ -12,17 +12,18 @@ import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
 import { useVault } from '@/shared/hooks/vault';
-import { ComponentWithProps, Money } from '@/shared/types';
+import { ComponentWithProps, Money, VaultResponse, VaultResponseData } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
-import { getUserBalanceForVault, VaultType } from '@/shared/utils';
+import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './VaultInfo.module.scss';
 
 type VaultInfoProps = {
-  vaultType: VaultType;
+  vault: VaultResponseData;
+  vaultType: VaultCurrency;
 };
 
-export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, className }) => {
+export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType, className }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
@@ -57,33 +58,35 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vaultType, class
         <VaultStats
           className={styles.vaultStatsMobile}
           viewType={VaultStatsView.Card}
-          weeklyApy={'999,5'}
+          weeklyApy={vault.apy}
           cybroPoints={'20'}
-          tvl={totalAssets}
-          provider={'Details'}
+          tvl={vault.tvl}
+          provider={vault.provider}
           overallVaultInvestment={totalAssets}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
           viewType={VaultStatsView.Full}
-          weeklyApy={'999,5'}
+          weeklyApy={vault.apy}
           cybroPoints={'20'}
-          tvl={totalAssets}
-          provider={'Details'}
+          tvl={vault.tvl}
+          provider={vault.provider}
           overallVaultInvestment={totalAssets}
           availableFunds={isConnected && balance ? balance : 0}
         />
       </section>
       {/*<HistoricalApyData className={styles.historicalApyData} />*/}
-      <SafetyScoreDetails className={styles.safetyScoreDetails} />
+      <SafetyScoreDetails
+        vaultId={vault.id}
+        trustScore={vault.trust_score}
+        className={styles.safetyScoreDetails}
+      />
       <section className={styles.extendedVaultDescription}>
         <Text className={styles.title} textView={TextView.H3}>
           Extended Vault Description
         </Text>
         <Text className={styles.description} textView={TextView.P2}>
-          The High Yield BTC Strategy vault is designed for investors seeking higher returns through
-          dynamic management of Bitcoin assets. The strategy focuses on leveraging market trends and
-          fluctuations to optimize performance
+          {vault.description}
         </Text>
         <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>
           View contract details

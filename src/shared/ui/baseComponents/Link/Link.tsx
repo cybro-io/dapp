@@ -55,6 +55,7 @@ export const Link: ComponentWithProps<LinkProps> = ({
           className={clsx(styles.contentContainer, tooltipClassName)}
           content={tooltipContent || 'Some content'}
           onOpenChange={onTooltipChange}
+          closeDelay={100}
         >
           <div className={clsx(styles.tooltipContainer, className)}>
             <p className={clsx(styles.tooltipText, textClassName)}>{children}</p>

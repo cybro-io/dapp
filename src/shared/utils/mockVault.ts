@@ -1,9 +1,9 @@
 import { Money, Nullable } from '@/shared/types';
 
-export enum VaultType {
-  USDB = 'usdb',
-  WETH = 'weth',
-  WBTC = 'wbct',
+export enum VaultCurrency {
+  USDB = 'USDB',
+  WETH = 'WETH',
+  WBTC = 'WBTC',
 }
 
 export type VaultData = {
@@ -14,24 +14,24 @@ export type VaultData = {
   totalVaultInvestment: Nullable<string>;
 };
 
-export const getRandomVault = (): VaultType => {
-  const values = Object.values(VaultType);
+export const getRandomVault = (): VaultCurrency => {
+  const values = Object.values(VaultCurrency);
   const randomIndex = Math.floor(Math.random() * values.length);
   return values[randomIndex];
 };
 
 export const getUserBalanceForVault = (
-  vaultType: VaultType,
+  vaultType: VaultCurrency,
   usdbBalance: Money,
   wethBalance: Money,
   wbtcBalance: Money,
 ): Money => {
   switch (vaultType) {
-    case VaultType.USDB:
+    case VaultCurrency.USDB:
       return usdbBalance;
-    case VaultType.WETH:
+    case VaultCurrency.WETH:
       return wethBalance;
-    case VaultType.WBTC:
+    case VaultCurrency.WBTC:
       return wbtcBalance;
     default:
       return usdbBalance;

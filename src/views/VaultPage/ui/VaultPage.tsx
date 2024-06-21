@@ -3,60 +3,75 @@
 import React from 'react';
 
 import clsx from 'clsx';
-import { useSearchParams } from 'next/navigation';
+import Image from 'next/image';
 
 import { Banner, BannerSize } from '@/entities/Banner';
-import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
-import { ComponentWithProps } from '@/shared/types';
+import { QueryKey } from '@/shared/const/queryKey';
+import {
+  ComponentWithProps,
+  useGetVaultApiV1VaultsVaultIdGet,
+  VaultResponse,
+} from '@/shared/types';
 import { Chip, ChipSize, Text, TextView } from '@/shared/ui';
-import { VaultType } from '@/shared/utils';
+import { VaultCurrency } from '@/shared/utils';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
 import styles from './VaultPage.module.scss';
 
-type DashboardPageProps = {};
+type DashboardPageProps = {
+  vaultId: number;
+};
 
-export const VaultPage: ComponentWithProps<DashboardPageProps> = props => {
-  const searchParams = useSearchParams();
-  const vaultType = searchParams.get('type') as VaultType;
+export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
+  const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
+    vaultId,
+    {},
+    {
+      query: { queryKey: [QueryKey.Vault, vaultId] },
+    },
+  );
+  const vault = (data as { data: VaultResponse })?.data?.data;
+
+  if (!vault) {
+    return 'Error...';
+  }
+
+  const vaultType = vault?.token as VaultCurrency;
 
   return (
     <React.Fragment>
       <section className={clsx(styles.heroSection)}>
         <div className={styles.tetherContainer}>
-          <TetherIcon />
+          <Image src={vault.icon} alt={''} width={87} height={66} />
         </div>
         <Text className={styles.heading} textView={TextView.H1}>
           <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>
-            <span className={styles.accent}>High Yield</span>
+            <span className={styles.accent}>{vault.name}</span>
           </span>
-          <br />
-          <span className={styles.headingBackground}>BTC Strategy</span>
+          {/*<br />*/}
+          {/*<span className={styles.headingBackground}></span>*/}
         </Text>
         <Text
           textView={TextView.P3}
           className={clsx(styles.desktopDescription, styles.description)}
         >
-          The High Yield BTC Strategy vault is designed for investors seeking higher returns through
-          dynamic management of Bitcoin assets. The strategy focuses on leveraging market trends and
-          fluctuations to optimize performance
+          {vault.description}
         </Text>
         <Text textView={TextView.P3} className={clsx(styles.mobileDescription, styles.description)}>
           Maximize your returns with strategic Bitcoin investments
         </Text>
         <div className={styles.chipsContainer}>
-          <Chip className={styles.chip} size={ChipSize.Large}>
-            Low Risk
-          </Chip>
-          <Chip className={styles.chip} size={ChipSize.Large}>
-            Stablecoin
-          </Chip>
+          {vault.badges.map(badge => (
+            <Chip className={styles.chip} size={ChipSize.Large}>
+              {badge}
+            </Chip>
+          ))}
         </div>
       </section>
       <div className={styles.main}>
         <div className={styles.leftContent}>
-          <VaultInfo vaultType={vaultType} />
+          <VaultInfo vaultType={vaultType} vault={vault} />
         </div>
         <div className={styles.rightContent}>
           <Banner

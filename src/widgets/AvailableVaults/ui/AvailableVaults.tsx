@@ -8,6 +8,7 @@ import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
+import { QueryKey } from '@/shared/const';
 import { ComponentWithProps } from '@/shared/types';
 import { useGetVaultsApiV1VaultsGet, VaultsResponse } from '@/shared/types/__generated/api/fastAPI';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
@@ -17,9 +18,10 @@ import styles from './AvailableVaults.module.scss';
 type AvailableVaultsProps = {};
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet({
-    query: { queryKey: ['vaults'] },
-  });
+  const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
+    {},
+    { query: { queryKey: [QueryKey.AvailableVaults] } },
+  );
 
   const vaults = (data as { data: VaultsResponse })?.data?.data || [];
 
