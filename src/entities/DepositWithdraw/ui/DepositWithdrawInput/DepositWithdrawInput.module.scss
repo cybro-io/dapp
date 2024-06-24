@@ -100,10 +100,12 @@
   }
 
   .equal {
+    width: 85px;
     font-family: $poppins-font;
     font-size: 13px;
     font-weight: 500;
     line-height: 150%;
+    text-align: right;
     white-space: nowrap;
     color: $text-white-body60;
   }
