@@ -15,7 +15,7 @@ import { VaultStats } from '@/entities/VaultStats';
 import { useBalances, useVault } from '@/shared/hooks';
 import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { getRandomVault, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
+import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -26,17 +26,17 @@ type VaultProps = {
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const vaultType = vault.token as VaultCurrency;
+  const currency = vault.token as VaultCurrency;
 
   ///////// MOCK /////////
   const [balance, setBalance] = React.useState<Money>();
 
   React.useEffect(() => {
-    const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+    const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
-  }, [usdbBalance, wethBalance, wbtcBalance]);
+  }, [usdbBalance, wethBalance, wbtcBalance, currency]);
 
-  const { totalAssets, userDeposit } = useVault(vaultType);
+  const { totalAssets, userDeposit } = useVault(currency);
   //////////////////
 
   return (
@@ -52,10 +52,16 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             </Text>
           </div>
           <div className={styles.chipsContainer}>
-            {vault?.badges.slice(0, 3).map(badge => <Chip className={styles.chip}>{badge}</Chip>)}
+            {vault?.badges.slice(0, 3).map(badge => (
+              <Chip className={styles.chip} key={badge}>
+                {badge}
+              </Chip>
+            ))}
           </div>
         </div>
-        {isConnected && balance && <AvailableFunds balance={balance} deposit={userDeposit} />}
+        {isConnected && balance && (
+          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={userDeposit} />
+        )}
         <VaultStats
           weeklyApy={vault.apy}
           cybroPoints={'20'}

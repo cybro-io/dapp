@@ -11,8 +11,7 @@ import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { useVault } from '@/shared/hooks/vault';
-import { ComponentWithProps, Money, VaultResponse, VaultResponseData } from '@/shared/types';
+import { ComponentWithProps, Money, Nullable, Vault, VaultResponseData } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
 import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
@@ -20,10 +19,16 @@ import styles from './VaultInfo.module.scss';
 
 type VaultInfoProps = {
   vault: VaultResponseData;
-  vaultType: VaultCurrency;
+  contract: Nullable<Vault>;
+  currency: VaultCurrency;
 };
 
-export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType, className }) => {
+export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
+  vault,
+  currency,
+  contract,
+  className,
+}) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
@@ -33,17 +38,27 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType
   const [balance, setBalance] = React.useState<Money>();
 
   React.useEffect(() => {
-    const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+    const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
-  }, [usdbBalance, wethBalance, wbtcBalance, vaultType]);
-
-  const { totalAssets, userDeposit } = useVault(vaultType);
+  }, [usdbBalance, wethBalance, wbtcBalance, currency]);
   //////////////////
 
-  const onTabChange = React.useCallback((activeTab: YieldSwitchOptions) => {
-    openModal(Modal.YieldCalculator, { activeTab });
-    setActiveTab(activeTab);
-  }, []);
+  const modalProps = React.useMemo(() => {
+    return {
+      activeTab,
+      currency: vault.token,
+      vaultContract: contract,
+      tokenIcon: vault.icon,
+    };
+  }, [activeTab, contract, vault.icon, vault.token]);
+
+  const onTabChange = React.useCallback(
+    (activeTab: YieldSwitchOptions) => {
+      openModal(Modal.YieldCalculator, { ...modalProps, activeTab });
+      setActiveTab(activeTab);
+    },
+    [modalProps, openModal],
+  );
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -52,7 +67,8 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType
           <AvailableFunds
             className={styles.availableFunds}
             balance={usdbBalance}
-            deposit={userDeposit}
+            deposit={0}
+            tokenIcon={vault.icon}
           />
         )}
         <VaultStats
@@ -62,7 +78,8 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType
           cybroPoints={'20'}
           tvl={vault.tvl}
           provider={vault.provider}
-          overallVaultInvestment={totalAssets}
+          overallVaultInvestment={0}
+          tokenIcon={vault.icon}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
@@ -71,14 +88,16 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType
           cybroPoints={'20'}
           tvl={vault.tvl}
           provider={vault.provider}
-          overallVaultInvestment={totalAssets}
+          overallVaultInvestment={0}
           availableFunds={isConnected && balance ? balance : 0}
+          tokenIcon={vault.icon}
         />
       </section>
       {/*<HistoricalApyData className={styles.historicalApyData} />*/}
       <SafetyScoreDetails
         vaultId={vault.id}
         trustScore={vault.trust_score}
+        inspector={vault.trust_score_inspector}
         className={styles.safetyScoreDetails}
       />
       <section className={styles.extendedVaultDescription}>
@@ -103,7 +122,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({ vault, vaultType
             <Button
               className={styles.yieldButton}
               view={ButtonView.Secondary}
-              onClick={() => openModal(Modal.YieldCalculator, { activeTab })}
+              onClick={() => openModal(Modal.YieldCalculator, modalProps)}
             >
               Calculate Yield
             </Button>

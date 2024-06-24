@@ -1,6 +1,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
@@ -11,12 +12,14 @@ import styles from './AvailableFunds.module.scss';
 
 type AvailableFundsProps = {
   balance: number;
+  tokenIcon: string;
   deposit?: Money;
 };
 
 export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
   balance,
   deposit,
+  tokenIcon,
   className,
 }) => {
   const userDeposit = deposit && formatUserMoney(deposit);
@@ -49,7 +52,7 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
           </Text>
           <Text className={styles.fundsValue} textView={TextView.P3}>
             <span className={styles.tetherIconContainer}>
-              <TetherIcon />
+              <Image src={tokenIcon} alt={''} height={16} width={16} />
             </span>
             {firstValue}
           </Text>

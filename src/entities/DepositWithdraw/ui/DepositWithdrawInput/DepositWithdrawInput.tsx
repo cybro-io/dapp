@@ -3,17 +3,19 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
-import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Maybe } from '@/shared/types';
-import { Money } from '@/shared/types/money';
+import { Money } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
 
 type DepositWithdrawInputProps = {
+  currency: string;
+  tokenIcon: string;
   userValue: Maybe<string>;
   setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
@@ -47,6 +49,8 @@ export const percentButtons = [
 ];
 
 export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps> = ({
+  currency,
+  tokenIcon,
   userValue,
   setUserValue,
   activeTab,
@@ -92,11 +96,11 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           </Text>
           <div className={styles.value}>
             <div className={styles.iconContainer}>
-              <TetherIcon />
+              <Image src={tokenIcon} alt={''} height={24} width={24} />
             </div>
             <div className={styles.tokenValue}>
               <Text className={styles.value} textView={TextView.P1}>
-                USDT
+                {currency}
               </Text>
               <Text className={styles.network} textView={TextView.C3}>
                 On Etherium

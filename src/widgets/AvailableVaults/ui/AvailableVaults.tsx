@@ -23,7 +23,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
     { query: { queryKey: [QueryKey.AvailableVaults] } },
   );
 
-  const vaults = (data as { data: VaultsResponse })?.data?.data || [];
+  const vaults = data?.data?.data || [];
 
   if (isError) {
     return 'Error...';

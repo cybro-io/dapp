@@ -12,11 +12,13 @@ import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
 import styles from './TrustScoreBanner.module.scss';
 
 type TrustScoreBannerProps = {
+  inspector: string;
   trustScoreValue: number;
   isBordered?: boolean;
 };
 
 export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
+  inspector,
   trustScoreValue,
   isBordered = true,
   className,
@@ -49,7 +51,7 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
         </Text>
         <div className={styles.inspectedContainer}>
           <Text textView={TextView.C1}>Inspected by</Text>
-          <Chip>Cybro Guys</Chip>
+          <Chip>{inspector}</Chip>
         </div>
       </div>
     </div>

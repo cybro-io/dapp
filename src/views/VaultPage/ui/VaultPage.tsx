@@ -5,12 +5,14 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
+import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
 import { QueryKey } from '@/shared/const/queryKey';
 import {
   ComponentWithProps,
+  Nullable,
   useGetVaultApiV1VaultsVaultIdGet,
-  VaultResponse,
+  Vault,
 } from '@/shared/types';
 import { Chip, ChipSize, Text, TextView } from '@/shared/ui';
 import { VaultCurrency } from '@/shared/utils';
@@ -24,6 +26,8 @@ type DashboardPageProps = {
 };
 
 export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
+  const { createContractInstance } = useEthers();
+  const [contract, setContract] = React.useState<Nullable<Vault>>();
   const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
     vaultId,
     {},
@@ -31,13 +35,20 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
       query: { queryKey: [QueryKey.Vault, vaultId] },
     },
   );
-  const vault = (data as { data: VaultResponse })?.data?.data;
+  const vault = data?.data?.data;
+
+  React.useEffect(() => {
+    if (vault) {
+      const contract = createContractInstance(vault.address);
+      setContract(contract);
+    }
+  }, [createContractInstance, vault, vault?.address]);
 
   if (!vault) {
     return 'Error...';
   }
 
-  const vaultType = vault?.token as VaultCurrency;
+  const currency = vault?.token as VaultCurrency;
 
   return (
     <React.Fragment>
@@ -63,7 +74,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
         </Text>
         <div className={styles.chipsContainer}>
           {vault.badges.map(badge => (
-            <Chip className={styles.chip} size={ChipSize.Large}>
+            <Chip className={styles.chip} size={ChipSize.Large} key={badge}>
               {badge}
             </Chip>
           ))}
@@ -71,7 +82,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
       </section>
       <div className={styles.main}>
         <div className={styles.leftContent}>
-          <VaultInfo vaultType={vaultType} vault={vault} />
+          <VaultInfo currency={currency} vault={vault} contract={contract} />
         </div>
         <div className={styles.rightContent}>
           <Banner
@@ -81,7 +92,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             size={BannerSize.Tiny}
           />
           <div className={styles.calculatorContainer}>
-            <YieldCalculator vaultType={vaultType} />
+            <YieldCalculator tokenIcon={vault.icon} vaultContract={contract} currency={currency} />
           </div>
         </div>
       </div>

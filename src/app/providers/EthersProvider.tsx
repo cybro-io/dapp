@@ -7,11 +7,12 @@ import { ethers, BrowserProvider } from 'ethers';
 
 import USDB from '@/app/abi/usdb.json';
 import USDB_VAULT from '@/app/abi/usdbVault.json';
+import VAULT from '@/app/abi/vault.json';
 import WBTC from '@/app/abi/wbtc.json';
 import WBTC_VAULT from '@/app/abi/wbtcVault.json';
 import WETH from '@/app/abi/weth.json';
 import WETH_VAULT from '@/app/abi/wethVault.json';
-import { Usdb, UsdbVault, Wbtc, WbtcVault, Weth, WethVault, Nullable } from '@/shared/types';
+import { Usdb, UsdbVault, Wbtc, WbtcVault, Weth, WethVault, Nullable, Vault } from '@/shared/types';
 
 interface EthersContextProps {
   provider: Nullable<ethers.Provider>;
@@ -22,6 +23,8 @@ interface EthersContextProps {
   usdbVaultContract: Nullable<UsdbVault>;
   wethVaultContract: Nullable<WethVault>;
   wbtcVaultContract: Nullable<WbtcVault>;
+  contracts: { [address: string]: Vault };
+  createContractInstance: (address: string) => Nullable<Vault>;
 }
 
 const EthersContext = React.createContext<EthersContextProps | undefined>(undefined);
@@ -37,6 +40,7 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const [usdbVaultContract, setUsdbVaultContract] = React.useState<Nullable<UsdbVault>>(null);
   const [wethVaultContract, setWethVaultContract] = React.useState<Nullable<WethVault>>(null);
   const [wbtcVaultContract, setWbtcVaultContract] = React.useState<Nullable<WbtcVault>>(null);
+  const [contracts, setContracts] = React.useState<{ [address: string]: Vault }>({});
 
   React.useEffect(() => {
     const getValues = async () => {
@@ -76,6 +80,27 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     getValues();
   }, [isConnected, walletProvider]);
 
+  const createContractInstance = React.useCallback(
+    (address: string) => {
+      if (!isConnected) {
+        return null;
+      }
+
+      if (!provider || !signer) {
+        throw new Error('Provider or signer not initialized');
+      }
+
+      const contractInstance = new ethers.Contract(address, VAULT.abi, signer) as unknown as Vault;
+      setContracts(prevContracts => ({
+        ...prevContracts,
+        [address]: contractInstance,
+      }));
+
+      return contractInstance;
+    },
+    [isConnected, provider, signer],
+  );
+
   const contextValue = React.useMemo(
     () => ({
       provider,
@@ -86,16 +111,20 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       usdbVaultContract,
       wethVaultContract,
       wbtcVaultContract,
+      contracts,
+      createContractInstance,
     }),
     [
+      provider,
+      signer,
       usdbContract,
       wethContract,
       wbtcContract,
       usdbVaultContract,
       wethVaultContract,
       wbtcVaultContract,
-      provider,
-      signer,
+      contracts,
+      createContractInstance,
     ],
   );
 

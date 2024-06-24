@@ -8,40 +8,43 @@ import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { useDeposit, useVault } from '@/shared/hooks/vault';
-import { useWithdraw } from '@/shared/hooks/vault/useWithdraw';
-import { ComponentWithProps } from '@/shared/types';
+import { useDeposit, useVault, useWithdraw } from '@/shared/hooks/vault';
+import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { debounce, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
 
 type YieldCalculatorProps = {
-  vaultType: VaultCurrency;
+  tokenIcon: string;
+  vaultContract: Nullable<Vault>;
+  currency: VaultCurrency;
   actionType: YieldSwitchOptions;
 };
 
 export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
+  tokenIcon,
+  vaultContract,
   actionType,
-  vaultType,
+  currency,
   className,
 }) => {
   const [amount, setAmount] = React.useState<string>();
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
-  const { userDeposit } = useVault(vaultType);
+  const { userDeposit } = useVault(currency);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const balance = getUserBalanceForVault(vaultType, usdbBalance, wethBalance, wbtcBalance);
+  const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
   const {
     deposit,
     isLoading: isDepositLoading,
     error: depositError,
     buttonMessage: depositButtonMessage,
-  } = useDeposit(vaultType);
+  } = useDeposit(currency, vaultContract);
   const {
     withdraw,
     isLoading: isWithdrawLoading,
     error: withdrawError,
     buttonMessage: withdrawButtonMessage,
-  } = useWithdraw(vaultType);
+  } = useWithdraw(currency, vaultContract);
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
     const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : userDeposit;
@@ -66,20 +69,23 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     [],
   );
 
-  const onAmountChange = React.useCallback((event: React.ChangeEvent<HTMLInputElement>) => {
-    // Allow only digits and a single decimal point
-    const inputValue = event.target.value.replace(/[^0-9.]/g, '');
+  const onAmountChange = React.useCallback(
+    (event: React.ChangeEvent<HTMLInputElement>) => {
+      // Allow only digits and a single decimal point
+      const inputValue = event.target.value.replace(/[^0-9.]/g, '');
 
-    // Remove leading zeros and prevent multiple decimal points
-    const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
-      return index === 0 ? String(Number(part)) : acc + '.' + part;
-    }, '');
+      // Remove leading zeros and prevent multiple decimal points
+      const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
+        return index === 0 ? String(Number(part)) : acc + '.' + part;
+      }, '');
 
-    debouncedTrackEvent();
+      debouncedTrackEvent();
 
-    setSelectedPercent(null);
-    setAmount(cleanedValue);
-  }, []);
+      setSelectedPercent(null);
+      setAmount(cleanedValue);
+    },
+    [debouncedTrackEvent],
+  );
 
   const onPercentButtonClick = React.useCallback(
     (value: number) => {
@@ -120,6 +126,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   return (
     <div className={clsx(styles.root, className)}>
       <DepositWithdrawInput
+        currency={currency}
+        tokenIcon={tokenIcon}
         activeTab={actionType}
         userValue={amount}
         setUserValue={onAmountChange}

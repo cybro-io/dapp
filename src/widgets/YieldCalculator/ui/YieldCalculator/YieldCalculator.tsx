@@ -4,18 +4,22 @@ import clsx from 'clsx';
 
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps } from '@/shared/types';
+import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator/ui/YieldCalculatorBody';
 
 import styles from './YieldCalculator.module.scss';
 
 type YieldCalculatorProps = {
-  vaultType: VaultCurrency;
+  tokenIcon: string;
+  vaultContract: Nullable<Vault>;
+  currency: VaultCurrency;
 };
 
 export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
-  vaultType,
+  tokenIcon,
+  vaultContract,
+  currency,
   className,
 }) => {
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
@@ -23,7 +27,12 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
   return (
     <div className={clsx(styles.root, className)}>
       <DepositWithdrawTabs activeTab={activeTab} setActiveTab={setActiveTab} />
-      <YieldCalculatorBody vaultType={vaultType} actionType={activeTab} />
+      <YieldCalculatorBody
+        currency={currency}
+        actionType={activeTab}
+        tokenIcon={tokenIcon}
+        vaultContract={vaultContract}
+      />
     </div>
   );
 };

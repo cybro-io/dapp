@@ -1,3 +1,3 @@
 export * from './useVault';
-// export * from './useWithdraw';
+export * from './useWithdraw';
 export * from './useDeposit';

@@ -21,12 +21,12 @@ export const getRandomVault = (): VaultCurrency => {
 };
 
 export const getUserBalanceForVault = (
-  vaultType: VaultCurrency,
+  currency: VaultCurrency,
   usdbBalance: Money,
   wethBalance: Money,
   wbtcBalance: Money,
 ): Money => {
-  switch (vaultType) {
+  switch (currency) {
     case VaultCurrency.USDB:
       return usdbBalance;
     case VaultCurrency.WETH:

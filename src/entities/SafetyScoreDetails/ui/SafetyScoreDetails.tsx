@@ -12,24 +12,23 @@ import { TrustScoreBanner } from '@/entities/TrustScoreBanner';
 import { QueryKey } from '@/shared/const/queryKey';
 import {
   ComponentWithProps,
-  HistoryAPYResponse,
   HistoryTrustScoreResponse,
-  useGetVaultHistoryApyApiV1VaultsVaultIdHistoryApyGet,
   useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
-  VaultResponse,
 } from '@/shared/types';
-import { Text, TextView, TrustScoreDescription, TrustScoreVariant } from '@/shared/ui';
+import { Text, TextView, TrustScoreDescription } from '@/shared/ui';
 
 import ArrowIcon from '../assets/icons/arrow.svg';
 
 import styles from './SafetyScoreDetails.module.scss';
 
 type SafetyScoreDetailsProps = {
+  inspector: string;
   trustScore: number;
   vaultId: number;
 };
 
 export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({
+  inspector,
   trustScore,
   vaultId,
   className,
@@ -51,16 +50,20 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
         Safety Score Details
       </Text>
       <div className={styles.container}>
-        <TrustScoreBanner trustScoreValue={trustScore} className={styles.trustScoreBanner} />
+        <TrustScoreBanner
+          trustScoreValue={trustScore}
+          className={styles.trustScoreBanner}
+          inspector={inspector}
+        />
         <div className={styles.trustScoreBreakdown}>
           {trustScoreDetails.map(detail => (
-            <TrustScoreDescription details={detail} />
+            <TrustScoreDescription details={detail} key={detail.name} />
           ))}
         </div>
         <HowTrustScoreCountsButton
           className={clsx(styles.tooltip, styles.tooltipMobile)}
           viewType={HowTrustScoreCountsButtonViewType.Button}
-          hasIcon={true}
+          hasIcon
         />
         <button className={styles.dropdownButton} onClick={() => setIsOpened(prev => !prev)}>
           <ArrowIcon />

@@ -3,8 +3,8 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
-import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Chip, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -23,6 +23,7 @@ type VaultStatsProps = {
   availableFunds?: Money;
   earningsMonthly?: string | number;
   viewType?: VaultStatsView;
+  tokenIcon?: string;
 };
 
 export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
@@ -35,6 +36,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
   availableFunds,
   earningsMonthly,
   viewType = VaultStatsView.Card,
+  tokenIcon,
   className,
 }) => {
   return (
@@ -128,9 +130,11 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   textView={TextView.P3}
                   className={clsx(styles.detailsItem, styles.yourDepositValue)}
                 >
-                  <span className={styles.tetherIconContainer}>
-                    <TetherIcon />
-                  </span>
+                  {tokenIcon && (
+                    <span className={styles.tetherIconContainer}>
+                      <Image src={tokenIcon} alt={''} height={24} width={24} />
+                    </span>
+                  )}
                   ${formatUserMoney(yourDeposit)}
                 </Text>
               </div>
@@ -144,9 +148,11 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   textView={TextView.P3}
                   className={clsx(styles.detailsValue, styles.availableFundsValue)}
                 >
-                  <span className={styles.tetherIconContainer}>
-                    <TetherIcon />
-                  </span>
+                  {tokenIcon && (
+                    <span className={styles.tetherIconContainer}>
+                      <Image src={tokenIcon} alt={''} height={24} width={24} />
+                    </span>
+                  )}
                   ${formatUserMoney(availableFunds)}
                 </Text>
               </div>

@@ -2,4 +2,4 @@ import { Usdb, UsdbVault, Wbtc, WbtcVault, Weth, WethVault } from '@/shared/type
 
 export type Token = Usdb | Weth | Wbtc;
 
-export type Vault = UsdbVault | WethVault | WbtcVault;
+export type VaultTest = UsdbVault | WethVault | WbtcVault;
