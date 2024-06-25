@@ -3,7 +3,6 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import TetherIcon from '@/shared/assets/icons/tether.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -11,7 +10,7 @@ import { formatUserMoney } from '@/shared/utils';
 import styles from './AvailableFunds.module.scss';
 
 type AvailableFundsProps = {
-  balance: number;
+  balance: Money;
   tokenIcon: string;
   deposit?: Money;
 };

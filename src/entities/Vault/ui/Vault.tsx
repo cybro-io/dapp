@@ -59,7 +59,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             ))}
           </div>
         </div>
-        {isConnected && balance && (
+        {isConnected && typeof balance !== 'undefined' && (
           <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={userDeposit} />
         )}
         <VaultStats
