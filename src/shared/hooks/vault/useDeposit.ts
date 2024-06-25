@@ -4,23 +4,34 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
-import { Nullable, Token, Vault } from '@/shared/types';
+import {
+  Nullable,
+  Token,
+  useAddVaultActionApiV1VaultsVaultIdActionPost,
+  Vault,
+} from '@/shared/types';
 import { VaultCurrency } from '@/shared/utils';
 
 type UseDeposit = {
-  deposit: (event: string) => Promise<void>;
+  deposit: (amount: string) => Promise<void>;
   isLoading: boolean;
   buttonMessage: string | null;
-  error: Nullable<string>;
+  txError: Nullable<string>;
 };
 
-export const useDeposit = (currency: VaultCurrency, contract: Nullable<Vault>): UseDeposit => {
+export const useDeposit = (
+  currency: VaultCurrency,
+  contract: Nullable<Vault>,
+  vaultId: number,
+): UseDeposit => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string>();
+  const [txError, setTxError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
   const { usdbContract, wethContract, wbtcContract } = useEthers();
+
+  const { mutate, isPending, error } = useAddVaultActionApiV1VaultsVaultIdActionPost();
 
   let token: Nullable<Token>;
 
@@ -39,7 +50,7 @@ export const useDeposit = (currency: VaultCurrency, contract: Nullable<Vault>): 
   const deposit = React.useCallback(
     async (amount: string) => {
       if (!token || !contract || !isConnected || !address) {
-        setError('Props error');
+        setTxError('Props error');
         return;
       }
 
@@ -56,15 +67,17 @@ export const useDeposit = (currency: VaultCurrency, contract: Nullable<Vault>): 
         const depositTx = await contract.deposit(weiAmount, address);
         setButtonMessage('Depositing...');
         await depositTx.wait();
+
+        mutate({ vaultId, data: { tx_hash: depositTx.hash, address, action: 'deposit' } });
       } catch (error: any) {
-        setError(error);
+        setTxError(error);
       } finally {
         setIsLoading(false);
         setButtonMessage(null);
       }
     },
-    [address, contract, isConnected, token],
+    [token, contract, isConnected, address, mutate, vaultId],
   );
 
-  return { deposit, isLoading, buttonMessage, error };
+  return { deposit, isLoading, buttonMessage, txError };
 };

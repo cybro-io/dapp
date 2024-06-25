@@ -4,21 +4,32 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
-import { Nullable, Token, Vault } from '@/shared/types';
+import {
+  Nullable,
+  Token,
+  useAddVaultActionApiV1VaultsVaultIdActionPost,
+  Vault,
+} from '@/shared/types';
 import { VaultCurrency } from '@/shared/utils';
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
   isLoading: boolean;
   buttonMessage: string | null;
-  error: Nullable<string>;
+  txError: Nullable<string>;
 };
 
-export const useWithdraw = (currency: VaultCurrency, contract: Nullable<Vault>): UseWithdraw => {
+export const useWithdraw = (
+  currency: VaultCurrency,
+  contract: Nullable<Vault>,
+  vaultId: number,
+): UseWithdraw => {
   const [isLoading, setIsLoading] = React.useState(false);
-  const [error, setError] = React.useState<string>();
+  const [txError, setTxError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
+
+  const { mutate, isPending, error } = useAddVaultActionApiV1VaultsVaultIdActionPost();
 
   const { usdbContract, wethContract, wbtcContract } = useEthers();
 
@@ -39,7 +50,7 @@ export const useWithdraw = (currency: VaultCurrency, contract: Nullable<Vault>):
   const withdraw = React.useCallback(
     async (amount: string) => {
       if (!token || !contract || !isConnected || !address) {
-        setError('Missing contract or not connected');
+        setTxError('Missing contract or not connected');
         return;
       }
 
@@ -54,15 +65,17 @@ export const useWithdraw = (currency: VaultCurrency, contract: Nullable<Vault>):
         const withdrawTx = await contract.redeem(sharesAmount, address, address);
         setButtonMessage('Redeeming...');
         await withdrawTx.wait();
+
+        mutate({ vaultId, data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' } });
       } catch (error: any) {
-        setError(error.message || error.toString());
+        setTxError(error.message || error.toString());
       } finally {
         setIsLoading(false);
         setButtonMessage(null);
       }
     },
-    [address, isConnected, token, contract],
+    [token, contract, isConnected, address, mutate, vaultId],
   );
 
-  return { withdraw, isLoading, buttonMessage, error };
+  return { withdraw, isLoading, buttonMessage, txError };
 };

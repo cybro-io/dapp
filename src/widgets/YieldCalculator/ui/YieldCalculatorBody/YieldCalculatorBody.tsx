@@ -15,6 +15,7 @@ import { debounce, getUserBalanceForVault, VaultCurrency } from '@/shared/utils'
 import styles from './YieldCalculatorBody.module.scss';
 
 type YieldCalculatorProps = {
+  vaultId: number;
   tokenIcon: string;
   vaultContract: Nullable<Vault>;
   currency: VaultCurrency;
@@ -23,6 +24,7 @@ type YieldCalculatorProps = {
 };
 
 export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
+  vaultId,
   tokenIcon,
   vaultContract,
   actionType,
@@ -37,15 +39,15 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const {
     deposit,
     isLoading: isDepositLoading,
-    error: depositError,
+    txError: depositError,
     buttonMessage: depositButtonMessage,
-  } = useDeposit(currency, vaultContract);
+  } = useDeposit(currency, vaultContract, vaultId);
   const {
     withdraw,
     isLoading: isWithdrawLoading,
-    error: withdrawError,
+    txError: withdrawError,
     buttonMessage: withdrawButtonMessage,
-  } = useWithdraw(currency, vaultContract);
+  } = useWithdraw(currency, vaultContract, vaultId);
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
     const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : userDeposit;

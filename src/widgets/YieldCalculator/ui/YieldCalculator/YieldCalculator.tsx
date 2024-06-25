@@ -11,6 +11,7 @@ import { YieldCalculatorBody } from '@/widgets/YieldCalculator/ui/YieldCalculato
 import styles from './YieldCalculator.module.scss';
 
 type YieldCalculatorProps = {
+  vaultId: number;
   tokenIcon: string;
   vaultContract: Nullable<Vault>;
   userDeposit: Nullable<Money>;
@@ -18,6 +19,7 @@ type YieldCalculatorProps = {
 };
 
 export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
+  vaultId,
   tokenIcon,
   vaultContract,
   currency,
@@ -30,6 +32,7 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
     <div className={clsx(styles.root, className)}>
       <DepositWithdrawTabs activeTab={activeTab} setActiveTab={setActiveTab} />
       <YieldCalculatorBody
+        vaultId={vaultId}
         currency={currency}
         actionType={activeTab}
         userDeposit={userDeposit}

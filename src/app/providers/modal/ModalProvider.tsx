@@ -39,7 +39,7 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
 
   const contextValues = React.useMemo(
     () => ({ currentModal, openModal, closeModal, props }),
-    [currentModal],
+    [currentModal, props],
   );
 
   return <ModalContext.Provider value={contextValues}>{children}</ModalContext.Provider>;

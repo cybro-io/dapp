@@ -43,12 +43,13 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   const modalProps = React.useMemo(() => {
     return {
       activeTab,
+      vaultId: vault.id,
       currency: vault.token,
       vaultContract: contract,
       tokenIcon: vault.icon,
       userDeposit: vault.balance,
     };
-  }, [activeTab, contract, vault.balance, vault.icon, vault.token]);
+  }, [activeTab, contract, vault.balance, vault.icon, vault.id, vault.token]);
 
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {
