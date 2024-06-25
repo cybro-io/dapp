@@ -8,8 +8,8 @@ import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { useDeposit, useVault, useWithdraw } from '@/shared/hooks/vault';
-import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
+import { useDeposit, useWithdraw } from '@/shared/hooks/vault';
+import { ComponentWithProps, Money, Nullable, Vault } from '@/shared/types';
 import { debounce, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
@@ -18,6 +18,7 @@ type YieldCalculatorProps = {
   tokenIcon: string;
   vaultContract: Nullable<Vault>;
   currency: VaultCurrency;
+  userDeposit: Nullable<Money>;
   actionType: YieldSwitchOptions;
 };
 
@@ -26,11 +27,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   vaultContract,
   actionType,
   currency,
+  userDeposit = 0,
   className,
 }) => {
   const [amount, setAmount] = React.useState<string>();
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
-  const { userDeposit } = useVault(currency);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
   const {

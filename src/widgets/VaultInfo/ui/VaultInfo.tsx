@@ -33,15 +33,12 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
-
-  ///////// MOCK /////////
   const [balance, setBalance] = React.useState<Money>();
 
   React.useEffect(() => {
     const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
   }, [usdbBalance, wethBalance, wbtcBalance, currency]);
-  //////////////////
 
   const modalProps = React.useMemo(() => {
     return {
@@ -49,8 +46,9 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       currency: vault.token,
       vaultContract: contract,
       tokenIcon: vault.icon,
+      userDeposit: vault.balance,
     };
-  }, [activeTab, contract, vault.icon, vault.token]);
+  }, [activeTab, contract, vault.balance, vault.icon, vault.token]);
 
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {
@@ -63,11 +61,11 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   return (
     <div className={clsx(styles.root, className)}>
       <section className={styles.vaultStatsContainer}>
-        {isConnected && usdbBalance && (
+        {isConnected && typeof balance !== 'undefined' && (
           <AvailableFunds
             className={styles.availableFunds}
-            balance={usdbBalance}
-            deposit={0}
+            balance={balance}
+            deposit={vault.balance}
             tokenIcon={vault.icon}
           />
         )}
@@ -80,6 +78,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           provider={vault.provider}
           overallVaultInvestment={0}
           tokenIcon={vault.icon}
+          yourDeposit={vault.balance}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
@@ -91,6 +90,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           overallVaultInvestment={0}
           availableFunds={isConnected && balance ? balance : 0}
           tokenIcon={vault.icon}
+          yourDeposit={vault.balance}
         />
       </section>
       {/*<HistoricalApyData className={styles.historicalApyData} />*/}

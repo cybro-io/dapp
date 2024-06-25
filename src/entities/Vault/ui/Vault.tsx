@@ -12,7 +12,7 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import { useBalances, useVault } from '@/shared/hooks';
+import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
@@ -26,18 +26,13 @@ type VaultProps = {
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const currency = vault.token as VaultCurrency;
-
-  ///////// MOCK /////////
   const [balance, setBalance] = React.useState<Money>();
+  const currency = vault.token as VaultCurrency;
 
   React.useEffect(() => {
     const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
     setBalance(balance);
   }, [usdbBalance, wethBalance, wbtcBalance, currency]);
-
-  const { totalAssets, userDeposit } = useVault(currency);
-  //////////////////
 
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
@@ -60,7 +55,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
           </div>
         </div>
         {isConnected && typeof balance !== 'undefined' && (
-          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={userDeposit} />
+          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />
         )}
         <VaultStats
           weeklyApy={vault.apy}
