@@ -14,6 +14,7 @@ import {
   ModalContainer,
   ModalProvider,
   ReactQueryProvider,
+  ToastProvider,
   Web3Modal,
 } from './providers';
 
@@ -40,7 +41,7 @@ export default function RootLayout({
           <ReactQueryProvider>
             <ModalProvider>
               <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                {children}
+                <ToastProvider>{children}</ToastProvider>
                 <ModalContainer />
               </body>
             </ModalProvider>

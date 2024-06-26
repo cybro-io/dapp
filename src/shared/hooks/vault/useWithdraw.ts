@@ -4,13 +4,15 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
+import { useToast } from '@/shared/hooks';
 import {
   Nullable,
   Token,
   useAddVaultActionApiV1VaultsVaultIdActionPost,
   Vault,
 } from '@/shared/types';
-import { VaultCurrency } from '@/shared/utils';
+import { ToastType } from '@/shared/ui';
+import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
@@ -24,6 +26,7 @@ export const useWithdraw = (
   contract: Nullable<Vault>,
   vaultId: number,
 ): UseWithdraw => {
+  const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [txError, setTxError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
@@ -67,8 +70,19 @@ export const useWithdraw = (
         await withdrawTx.wait();
 
         mutate({ vaultId, data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' } });
+
+        triggerToast({
+          message: `${formatUserMoney(amount)} ${currency} withdrawn`,
+          description: 'Check the balance of the wallet connected to the platform.',
+        });
       } catch (error: any) {
         setTxError(error.message || error.toString());
+        triggerToast({
+          message: `Something went wrong`,
+          description:
+            'We were unable to complete the current operation. Try again or connect support.',
+          type: ToastType.Error,
+        });
       } finally {
         setIsLoading(false);
         setButtonMessage(null);

@@ -4,13 +4,15 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
+import { useToast } from '@/shared/hooks';
 import {
   Nullable,
   Token,
   useAddVaultActionApiV1VaultsVaultIdActionPost,
   Vault,
 } from '@/shared/types';
-import { VaultCurrency } from '@/shared/utils';
+import { ToastType } from '@/shared/ui';
+import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 
 type UseDeposit = {
   deposit: (amount: string) => Promise<void>;
@@ -24,6 +26,7 @@ export const useDeposit = (
   contract: Nullable<Vault>,
   vaultId: number,
 ): UseDeposit => {
+  const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [txError, setTxError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
@@ -69,8 +72,19 @@ export const useDeposit = (
         await depositTx.wait();
 
         mutate({ vaultId, data: { tx_hash: depositTx.hash, address, action: 'deposit' } });
+
+        triggerToast({
+          message: `${formatUserMoney(amount)} ${currency} deposited`,
+          description: 'Check your updated Vault Balance or explore the contract.',
+        });
       } catch (error: any) {
         setTxError(error);
+        triggerToast({
+          message: `Something went wrong`,
+          description:
+            'We were unable to complete the current operation. Try again or connect support.',
+          type: ToastType.Error,
+        });
       } finally {
         setIsLoading(false);
         setButtonMessage(null);
