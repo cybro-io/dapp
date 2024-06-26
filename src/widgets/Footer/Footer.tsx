@@ -77,9 +77,9 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
               <Link href={'/'}>Support</Link>
             </li>
           </ul>
-          <p className={clsx(styles.copyright, styles.copyrightLong)}>
-            CoinLock Protector LLC, Saint Vincent and the Grenadines
-          </p>
+          {/*<p className={clsx(styles.copyright, styles.copyrightLong)}>*/}
+          {/*  CoinLock Protector LLC, Saint Vincent and the Grenadines*/}
+          {/*</p>*/}
         </div>
       </div>
       <p className={styles.copyright}>CoinLock Protector LLC</p>
