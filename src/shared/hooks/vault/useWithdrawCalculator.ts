@@ -36,26 +36,26 @@ export const useWithdrawCalculator = (
   const [timer, setTimer] = React.useState<string>('00:00');
 
   const fetchData = React.useCallback(async () => {
-    if (!address || !vaultContract || !amountToWithdraw || amountToWithdraw === '0') {
+    if (!address || !vaultContract) {
       return;
     }
 
     const sharePrice = await vaultContract.sharePrice();
-    const decimals = await vaultContract.decimals();
+    const decimals = Number(await vaultContract.decimals());
     const weiAmountToWithdraw = ethers.parseUnits(amountToWithdraw, decimals);
 
     const userTotalShares = await vaultContract.balanceOf(address);
-    const availableFunds = fromWei(userTotalShares);
+    const availableFunds = fromWei(userTotalShares, decimals);
     const availableFundsTokens = availableFunds
-      ? (userTotalShares * sharePrice) / BigInt(10 ** Number(decimals))
+      ? (userTotalShares * sharePrice) / BigInt(10 ** decimals)
       : 0;
-    const availableFundsUsd = convertToUsd(fromWei(availableFundsTokens), tokenPrice);
+    const availableFundsUsd = convertToUsd(fromWei(availableFundsTokens, decimals), tokenPrice);
 
-    const weiYourWithdraw = (weiAmountToWithdraw * sharePrice) / BigInt(10 ** Number(decimals));
-    const yourWithdrawTokens = fromWei(weiYourWithdraw);
+    const weiYourWithdraw = (weiAmountToWithdraw * sharePrice) / BigInt(10 ** decimals);
+    const yourWithdrawTokens = fromWei(weiYourWithdraw, decimals);
     const yourWithdrawUsd = convertToUsd(yourWithdrawTokens, tokenPrice);
 
-    const currentRate = fromWei(sharePrice, Number(decimals));
+    const currentRate = fromWei(sharePrice, decimals);
 
     setAvailableFundsUsd(availableFundsUsd);
     setAvailableFunds(availableFunds);
