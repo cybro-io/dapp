@@ -110,17 +110,17 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
 
         {viewType === VaultStatsView.Full && (
           <React.Fragment>
-            <div className={styles.detailsItem}>
-              <Text textView={TextView.C3} className={styles.detailsTitle}>
-                Overall Vault Investments
-              </Text>
-              <Text
-                textView={TextView.P3}
-                className={clsx(styles.detailsValue, styles.overallInvestmentValue)}
-              >
-                $<span>{formatUserMoney(overallVaultInvestment)}</span>
-              </Text>
-            </div>
+            {/*<div className={styles.detailsItem}>*/}
+            {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+            {/*    Overall Vault Investments*/}
+            {/*  </Text>*/}
+            {/*  <Text*/}
+            {/*    textView={TextView.P3}*/}
+            {/*    className={clsx(styles.detailsValue, styles.overallInvestmentValue)}*/}
+            {/*  >*/}
+            {/*    $<span>{formatUserMoney(overallVaultInvestment)}</span>*/}
+            {/*  </Text>*/}
+            {/*</div>*/}
             {!!yourDeposit && (
               <div className={styles.detailsItem}>
                 <Text textView={TextView.C3} className={styles.detailsTitle}>
@@ -174,21 +174,21 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
         )}
       </div>
 
-      {viewType === VaultStatsView.Card && !!overallVaultInvestment && (
-        <div className={clsx(styles.thirdRow, styles.row)}>
-          <div className={styles.detailsItem}>
-            <Text textView={TextView.C3} className={styles.detailsTitle}>
-              Overall Vault Investments
-            </Text>
-            <Text
-              textView={TextView.P3}
-              className={clsx(styles.detailsValue, styles.overallInvestmentValue)}
-            >
-              ${formatUserMoney(overallVaultInvestment)}
-            </Text>
-          </div>
-        </div>
-      )}
+      {/*{viewType === VaultStatsView.Card && !!overallVaultInvestment && (*/}
+      {/*  <div className={clsx(styles.thirdRow, styles.row)}>*/}
+      {/*    <div className={styles.detailsItem}>*/}
+      {/*      <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+      {/*        Overall Vault Investments*/}
+      {/*      </Text>*/}
+      {/*      <Text*/}
+      {/*        textView={TextView.P3}*/}
+      {/*        className={clsx(styles.detailsValue, styles.overallInvestmentValue)}*/}
+      {/*      >*/}
+      {/*        ${formatUserMoney(overallVaultInvestment)}*/}
+      {/*      </Text>*/}
+      {/*    </div>*/}
+      {/*  </div>*/}
+      {/*)}*/}
     </div>
   );
 };

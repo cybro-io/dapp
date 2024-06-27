@@ -19,6 +19,7 @@ type DepositWithdrawInputProps = {
   userValueUsd: Maybe<Money>;
   setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
+  chain: string;
   userBalance: Money;
   availableFunds?: Money;
   availableFundsUsd?: Money;
@@ -55,6 +56,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   userValue,
   userValueUsd,
   setUserValue,
+  chain,
   activeTab,
   userBalance,
   availableFunds,
@@ -107,7 +109,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
                 {currency}
               </Text>
               <Text className={styles.network} textView={TextView.C3}>
-                On Etherium
+                On {chain}
               </Text>
             </div>
           </div>

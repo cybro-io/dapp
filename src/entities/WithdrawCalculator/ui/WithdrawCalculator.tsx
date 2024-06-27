@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
@@ -24,6 +25,7 @@ type WithdrawCalculatorProps = {
   isButtonDisabled: boolean;
   timer: string;
   buttonMessage: string | null;
+  tokenIcon: string;
 };
 
 export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({
@@ -34,6 +36,7 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
   isButtonDisabled,
   timer,
   buttonMessage,
+  tokenIcon,
   className,
 }) => {
   const { isConnected } = useWeb3ModalAccount();
@@ -47,7 +50,7 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
         <div className={styles.yourWithdrawResultContainer}>
           <Text className={styles.resultValue}>
             <span className={styles.tetherIconContainer}>
-              <TetherIcon />
+              <Image src={tokenIcon} alt={''} height={20} width={20} />
             </span>
             {formatUserMoney(amountToWithdraw)}
           </Text>

@@ -16,12 +16,14 @@ import styles from './DepositCalculator.module.scss';
 
 type DepositCalculatorProps = {
   deposit: (amount: number) => Promise<void>;
+  apy: number;
   buttonMessage: string | null;
   isButtonDisabled: boolean;
 };
 
 export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
   deposit,
+  apy,
   buttonMessage,
   isButtonDisabled,
   className,
@@ -42,7 +44,7 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
             <Tab key="month" title="Month" />
           </Tabs>
           <Text textView={TextView.C2}>
-            Weekly APY <span className={styles.weeklyApyPercents}>9,25%</span>
+            Weekly APY <span className={styles.weeklyApyPercents}>{apy}%</span>
           </Text>
         </div>
         <div className={styles.yieldContainer}>

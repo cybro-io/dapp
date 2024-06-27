@@ -17,19 +17,23 @@ import styles from './YieldCalculatorBody.module.scss';
 type YieldCalculatorProps = {
   vaultId: number;
   tokenIcon: string;
+  apy: number;
   vaultContract: Nullable<Vault>;
   currency: VaultCurrency;
   actionType: YieldSwitchOptions;
   chainId: number;
+  chain: string;
 };
 
 export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   vaultId,
   tokenIcon,
+  apy,
   vaultContract,
   actionType,
   currency,
   chainId,
+  chain,
   className,
 }) => {
   const [amount, setAmount] = React.useState<string>();
@@ -170,11 +174,13 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         availableFundsUsd={availableFundsUsd}
         selectedPercent={selectedPercent}
         setSelectedPercent={onPercentButtonClick}
+        chain={chain}
       />
 
       {actionType === YieldSwitchOptions.Deposit && (
         <DepositCalculator
           isButtonDisabled={isSubmitButtonDisabled}
+          apy={apy}
           deposit={submitDeposit}
           buttonMessage={depositButtonMessage}
         />
@@ -188,6 +194,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
           buttonMessage={withdrawButtonMessage}
           amountToWithdraw={yourWithdraw}
           amountToWithdrawUsd={yourWithdrawUsd}
+          tokenIcon={tokenIcon}
         />
       )}
     </div>

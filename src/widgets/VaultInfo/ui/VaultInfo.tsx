@@ -47,10 +47,22 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       currency: vault.token,
       vaultContract: contract,
       tokenIcon: vault.icon,
+      apy: vault.apy,
       userDeposit: vault.balance,
       chainId: vault.chain_id,
+      chain: vault.chain,
     };
-  }, [activeTab, contract, vault.balance, vault.icon, vault.id, vault.token]);
+  }, [
+    vault.chain,
+    activeTab,
+    contract,
+    vault.apy,
+    vault.balance,
+    vault.chain_id,
+    vault.icon,
+    vault.id,
+    vault.token,
+  ]);
 
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {

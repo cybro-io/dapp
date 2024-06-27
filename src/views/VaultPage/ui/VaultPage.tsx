@@ -95,9 +95,11 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             <YieldCalculator
               vaultId={vaultId}
               tokenIcon={vault.icon}
+              apy={vault.apy}
               vaultContract={contract}
               currency={currency}
               chainId={vault.chain_id}
+              chain={vault.chain}
             />
           </div>
         </div>
