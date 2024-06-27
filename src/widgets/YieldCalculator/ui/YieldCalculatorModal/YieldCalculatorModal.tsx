@@ -12,6 +12,7 @@ import { YieldCalculatorBody } from '@/widgets/YieldCalculator';
 type YieldCalculatorModalProps = {
   currency: VaultCurrency;
   vaultId: number;
+  chainId: number;
   vaultContract: Nullable<Vault>;
   tokenIcon: string;
   userDeposit: Nullable<Money>;
@@ -20,7 +21,7 @@ type YieldCalculatorModalProps = {
 
 export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
   const { props } = useModal() as unknown as { props: YieldCalculatorModalProps };
-  const { activeTab, currency, vaultContract, tokenIcon, userDeposit, vaultId } = props;
+  const { activeTab, currency, chainId, vaultContract, tokenIcon, userDeposit, vaultId } = props;
 
   const title = activeTab === YieldSwitchOptions.Deposit ? 'Vault Deposit' : 'Vault Withdraw';
 
@@ -31,8 +32,8 @@ export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
         currency={currency}
         actionType={activeTab}
         tokenIcon={tokenIcon}
+        chainId={chainId}
         vaultContract={vaultContract}
-        userDeposit={userDeposit}
       />
     </ModalLayout>
   );

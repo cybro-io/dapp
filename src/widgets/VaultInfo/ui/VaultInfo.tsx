@@ -48,6 +48,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       vaultContract: contract,
       tokenIcon: vault.icon,
       userDeposit: vault.balance,
+      chainId: vault.chain_id,
     };
   }, [activeTab, contract, vault.balance, vault.icon, vault.id, vault.token]);
 
