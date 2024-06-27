@@ -25,7 +25,7 @@ export const formatEth = (value: Nullable<BigNumberish>): Money => {
   return Number(ethers.formatEther(value));
 };
 
-export const parseMoney = (value: Nullable<BigNumberish>, decimals = 18): Money => {
+export const fromWei = (value: Nullable<BigNumberish>, decimals = 18): Money => {
   if (typeof value === 'undefined' || value === null) return null;
 
   return Number(ethers.formatUnits(value, decimals));
@@ -34,4 +34,10 @@ export const parseMoney = (value: Nullable<BigNumberish>, decimals = 18): Money 
 export const formatMoney = (value: number, decimals = 2): string => {
   const factor = Math.pow(10, decimals);
   return (Math.floor(value * factor) / factor).toFixed(decimals);
+};
+
+export const convertToUsd = (value: Money, tokenPrice: number) => {
+  if (!value) return 0;
+
+  return value * tokenPrice;
 };

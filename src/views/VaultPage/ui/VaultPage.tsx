@@ -97,7 +97,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
               tokenIcon={vault.icon}
               vaultContract={contract}
               currency={currency}
-              userDeposit={vault.balance}
+              chainId={vault.chain_id}
             />
           </div>
         </div>

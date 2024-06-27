@@ -6,8 +6,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps, Maybe } from '@/shared/types';
-import { Money } from '@/shared/types';
+import { ComponentWithProps, Maybe, Money } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
@@ -17,10 +16,12 @@ type DepositWithdrawInputProps = {
   currency: string;
   tokenIcon: string;
   userValue: Maybe<string>;
+  userValueUsd: Maybe<Money>;
   setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
   userBalance: Money;
   vaultDeposit?: Money;
+  vaultDepositUsd?: Money;
   selectedPercent: number | null;
   setSelectedPercent: (value: number) => void;
 };
@@ -52,10 +53,12 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   currency,
   tokenIcon,
   userValue,
+  userValueUsd,
   setUserValue,
   activeTab,
   userBalance,
   vaultDeposit,
+  vaultDepositUsd,
   selectedPercent,
   setSelectedPercent,
   className,
@@ -70,7 +73,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
 
     return {
       availableFunds: formatUserMoney(vaultDeposit),
-      availableFundsEqual: formatUserMoney(vaultDeposit),
+      availableFundsEqual: formatUserMoney(vaultDepositUsd),
     };
   }, [activeTab, userBalance, vaultDeposit]);
 
@@ -100,7 +103,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             </div>
             <div className={styles.tokenValue}>
               <Text className={styles.value} textView={TextView.P1}>
-                {currency}
+                cy{currency}
               </Text>
               <Text className={styles.network} textView={TextView.C3}>
                 On Etherium
@@ -121,7 +124,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             onChange={setUserValue}
             placeholder={'0'}
           />
-          <span className={styles.equal}>≈ ${formatUserMoney(userValue)}</span>
+          <span className={styles.equal}>≈ ${formatUserMoney(userValueUsd)}</span>
         </div>
         <div className={styles.percentButtons}>
           {percentButtons.map(({ title, value }) => {

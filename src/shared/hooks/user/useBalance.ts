@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useEthers } from '@/app/providers';
 import { Money } from '@/shared/types';
-import { formatEth, parseMoney } from '@/shared/utils';
+import { formatEth, fromWei } from '@/shared/utils';
 
 export type Balance = {
   ethBalance: Money;
@@ -26,13 +26,13 @@ export const useBalances = (): Balance => {
         setEthBalance(formatEth(ethBalance));
 
         const usdbBalance = await usdbContract.balanceOf(address);
-        setUsdbBalance(parseMoney(usdbBalance));
+        setUsdbBalance(fromWei(usdbBalance));
 
         const wethBalance = await wethContract.balanceOf(address);
-        setWethBalance(parseMoney(wethBalance));
+        setWethBalance(fromWei(wethBalance));
 
         const wbtcBalance = await wbtcContract.balanceOf(address);
-        setWbtcBalance(parseMoney(wbtcBalance, 8));
+        setWbtcBalance(fromWei(wbtcBalance, 8));
       }
     };
 

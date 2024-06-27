@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps, Money, Nullable, Vault } from '@/shared/types';
+import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator/ui/YieldCalculatorBody';
 
@@ -14,7 +14,7 @@ type YieldCalculatorProps = {
   vaultId: number;
   tokenIcon: string;
   vaultContract: Nullable<Vault>;
-  userDeposit: Nullable<Money>;
+  chainId: number;
   currency: VaultCurrency;
 };
 
@@ -23,7 +23,7 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
   tokenIcon,
   vaultContract,
   currency,
-  userDeposit,
+  chainId,
   className,
 }) => {
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
@@ -35,8 +35,8 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
         vaultId={vaultId}
         currency={currency}
         actionType={activeTab}
-        userDeposit={userDeposit}
         tokenIcon={tokenIcon}
+        chainId={chainId}
         vaultContract={vaultContract}
       />
     </div>

@@ -7,9 +7,8 @@ import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances } from '@/shared/hooks';
-import { useDeposit, useWithdraw } from '@/shared/hooks/vault';
-import { ComponentWithProps, Money, Nullable, Vault } from '@/shared/types';
+import { useBalances, useWithdrawCalculator, useDeposit, useWithdraw } from '@/shared/hooks';
+import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { debounce, formatMoney, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
@@ -19,8 +18,8 @@ type YieldCalculatorProps = {
   tokenIcon: string;
   vaultContract: Nullable<Vault>;
   currency: VaultCurrency;
-  userDeposit: Nullable<Money>;
   actionType: YieldSwitchOptions;
+  chainId: number;
 };
 
 export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
@@ -29,13 +28,15 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   vaultContract,
   actionType,
   currency,
-  userDeposit = 0,
+  chainId,
   className,
 }) => {
   const [amount, setAmount] = React.useState<string>();
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
+  const { availableFunds, availableFundsUsd, yourWithdraw, yourWithdrawUsd, currentRate, timer } =
+    useWithdrawCalculator(vaultContract, amount, currency, chainId);
   const {
     deposit,
     isLoading: isDepositLoading,
@@ -50,7 +51,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   } = useWithdraw(currency, vaultContract, vaultId);
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
-    const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : userDeposit;
+    const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : availableFunds;
 
     if (availableBalance === null) {
       return true;
@@ -63,7 +64,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       isDepositLoading ||
       isWithdrawLoading
     );
-  }, [actionType, balance, isDepositLoading, isWithdrawLoading, userDeposit, amount]);
+  }, [actionType, balance, availableFunds, amount, isDepositLoading, isWithdrawLoading]);
 
   const isSubmitButtonDisabled = getIsSubmitButtonDisabled();
 
@@ -92,7 +93,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const onPercentButtonClick = React.useCallback(
     (value: number) => {
-      if (balance === null || userDeposit === null) {
+      if (balance === null || availableFunds === null) {
         return;
       }
 
@@ -101,13 +102,13 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       }
 
       if (actionType === YieldSwitchOptions.Withdraw) {
-        setAmount(formatMoney(userDeposit * value, 6));
+        setAmount(formatMoney(availableFunds * value, 6));
       }
 
       Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);
       setSelectedPercent(value);
     },
-    [actionType, balance, userDeposit],
+    [actionType, balance, availableFunds],
   );
 
   const submitDeposit = React.useCallback(async () => {
@@ -133,9 +134,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         tokenIcon={tokenIcon}
         activeTab={actionType}
         userValue={amount}
+        userValueUsd={yourWithdrawUsd}
         setUserValue={onAmountChange}
         userBalance={balance}
-        vaultDeposit={userDeposit}
+        vaultDeposit={availableFunds}
+        vaultDepositUsd={availableFundsUsd}
         selectedPercent={selectedPercent}
         setSelectedPercent={onPercentButtonClick}
       />
@@ -150,9 +153,12 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       {actionType === YieldSwitchOptions.Withdraw && (
         <WithdrawCalculator
           withdraw={submitWithdraw}
+          timer={timer}
+          currentRate={currentRate}
           isButtonDisabled={isSubmitButtonDisabled}
           buttonMessage={withdrawButtonMessage}
-          amountToWithdraw={amount}
+          amountToWithdraw={yourWithdraw}
+          amountToWithdrawUsd={yourWithdrawUsd}
         />
       )}
     </div>
