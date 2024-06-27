@@ -7,7 +7,8 @@ import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances, useWithdrawCalculator, useDeposit, useWithdraw } from '@/shared/hooks';
+import { useBalances, useDeposit, useWithdraw, useWithdrawCalculator } from '@/shared/hooks';
+import { useDepositCalculator } from '@/shared/hooks/vault/useDepositCalculator';
 import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { debounce, formatMoney, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
@@ -35,8 +36,20 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
-  const { availableFunds, availableFundsUsd, yourWithdraw, yourWithdrawUsd, currentRate, timer } =
-    useWithdrawCalculator(vaultContract, amount, currency, chainId);
+  const {
+    availableFunds,
+    availableFundsUsd: withDrawAvailableFundsUsd,
+    yourWithdraw,
+    yourWithdrawUsd,
+    currentRate,
+    timer,
+  } = useWithdrawCalculator(vaultContract, amount, currency, chainId);
+  const { availableFundsUsd: depositAvailableFundsUsd, entryAmountUsd } = useDepositCalculator(
+    amount,
+    balance,
+    currency,
+    chainId,
+  );
   const {
     deposit,
     isLoading: isDepositLoading,
@@ -49,6 +62,22 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     txError: withdrawError,
     buttonMessage: withdrawButtonMessage,
   } = useWithdraw(currency, vaultContract, vaultId);
+
+  const availableFundsUsd = React.useMemo(() => {
+    if (actionType === YieldSwitchOptions.Withdraw) {
+      return withDrawAvailableFundsUsd;
+    } else {
+      return depositAvailableFundsUsd;
+    }
+  }, [actionType, depositAvailableFundsUsd, withDrawAvailableFundsUsd]);
+
+  const userValueUsd = React.useMemo(() => {
+    if (actionType === YieldSwitchOptions.Withdraw) {
+      return yourWithdrawUsd;
+    } else {
+      return entryAmountUsd;
+    }
+  }, [actionType, entryAmountUsd, yourWithdrawUsd]);
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
     const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : availableFunds;
@@ -134,11 +163,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         tokenIcon={tokenIcon}
         activeTab={actionType}
         userValue={amount}
-        userValueUsd={yourWithdrawUsd}
+        userValueUsd={userValueUsd}
         setUserValue={onAmountChange}
         userBalance={balance}
-        vaultDeposit={availableFunds}
-        vaultDepositUsd={availableFundsUsd}
+        availableFunds={availableFunds}
+        availableFundsUsd={availableFundsUsd}
         selectedPercent={selectedPercent}
         setSelectedPercent={onPercentButtonClick}
       />

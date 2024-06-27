@@ -20,8 +20,8 @@ type DepositWithdrawInputProps = {
   setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
   userBalance: Money;
-  vaultDeposit?: Money;
-  vaultDepositUsd?: Money;
+  availableFunds?: Money;
+  availableFundsUsd?: Money;
   selectedPercent: number | null;
   setSelectedPercent: (value: number) => void;
 };
@@ -57,8 +57,8 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   setUserValue,
   activeTab,
   userBalance,
-  vaultDeposit,
-  vaultDepositUsd,
+  availableFunds,
+  availableFundsUsd,
   selectedPercent,
   setSelectedPercent,
   className,
@@ -66,18 +66,18 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   const getData = React.useCallback(() => {
     if (activeTab === YieldSwitchOptions.Deposit) {
       return {
-        availableFunds: formatUserMoney(userBalance),
-        availableFundsEqual: formatUserMoney(userBalance),
+        availableFundsValue: formatUserMoney(userBalance),
+        availableFundsValueUsd: formatUserMoney(availableFundsUsd),
       };
     }
 
     return {
-      availableFunds: formatUserMoney(vaultDeposit),
-      availableFundsEqual: formatUserMoney(vaultDepositUsd),
+      availableFundsValue: formatUserMoney(availableFunds),
+      availableFundsValueUsd: formatUserMoney(availableFundsUsd),
     };
-  }, [activeTab, userBalance, vaultDeposit]);
+  }, [activeTab, userBalance, availableFunds, availableFundsUsd]);
 
-  const { availableFunds, availableFundsEqual } = getData();
+  const { availableFundsValue, availableFundsValueUsd } = getData();
 
   return (
     <div className={clsx(styles.calculator, className)}>
@@ -87,10 +87,10 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             Available Funds
           </Text>
           <Text className={styles.value} textView={TextView.P1}>
-            {availableFunds}
+            {availableFundsValue}
           </Text>
           <Text className={styles.equal} textView={TextView.C3}>
-            ≈ ${availableFundsEqual}
+            ≈ ${availableFundsValueUsd}
           </Text>
         </div>
         <div className={styles.currentToken}>
@@ -103,7 +103,8 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             </div>
             <div className={styles.tokenValue}>
               <Text className={styles.value} textView={TextView.P1}>
-                cy{currency}
+                {activeTab === YieldSwitchOptions.Withdraw && 'cy'}
+                {currency}
               </Text>
               <Text className={styles.network} textView={TextView.C3}>
                 On Etherium
