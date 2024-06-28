@@ -86,7 +86,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
         )}
       </div>
 
-      {(!isInvalid(yourDeposit) || !isInvalid(availableFunds) || !isInvalid(earningsMonthly)) && (
+      {(!isInvalid(yourDeposit) ||
+        !isInvalid(availableFunds) ||
+        !isInvalid(earningsMonthly) ||
+        viewType === VaultStatsView.Card) && (
         <div className={clsx(styles.secondRow, styles.row)}>
           {viewType === VaultStatsView.Card && (
             <React.Fragment>
