@@ -8,7 +8,6 @@ import Image from 'next/image';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
-import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';

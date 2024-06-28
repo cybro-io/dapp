@@ -2,13 +2,18 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { DepositCalculator } from '@/entities/DepositCalculator';
+import { DepositCalculator, PeriodTab } from '@/entities/DepositCalculator';
 import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances, useDeposit, useWithdraw, useWithdrawCalculator } from '@/shared/hooks';
-import { useDepositCalculator } from '@/shared/hooks/vault/useDepositCalculator';
+import {
+  useBalances,
+  useDeposit,
+  useWithdraw,
+  useWithdrawCalculator,
+  useDepositCalculator,
+} from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
 import { debounce, formatMoney, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
 
@@ -36,7 +41,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   chain,
   className,
 }) => {
-  const [amount, setAmount] = React.useState<string>();
+  const [amount, setAmount] = React.useState<string>('0');
+  const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
   const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
@@ -48,22 +54,24 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     currentRate,
     timer,
   } = useWithdrawCalculator(vaultContract, amount, currency, chainId);
-  const { availableFundsUsd: depositAvailableFundsUsd, entryAmountUsd } = useDepositCalculator(
-    amount,
-    balance,
-    currency,
-    chainId,
-  );
+  const {
+    availableFundsUsd: depositAvailableFundsUsd,
+    entryAmountUsd,
+    apy: currentApy,
+    text,
+    profitUsd,
+    profitTokens,
+    balanceAfter,
+    balanceAfterText,
+  } = useDepositCalculator(amount, balance, currency, chainId, period, apy);
   const {
     deposit,
     isLoading: isDepositLoading,
-    txError: depositError,
     buttonMessage: depositButtonMessage,
   } = useDeposit(currency, vaultContract, vaultId);
   const {
     withdraw,
     isLoading: isWithdrawLoading,
-    txError: withdrawError,
     buttonMessage: withdrawButtonMessage,
   } = useWithdraw(currency, vaultContract, vaultId);
 
@@ -149,7 +157,12 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       return;
     }
 
-    await deposit(amount);
+    try {
+      await deposit(amount);
+      setAmount('0');
+    } catch (error) {
+      console.error(error);
+    }
   }, [deposit, amount]);
 
   const submitWithdraw = React.useCallback(async () => {
@@ -157,8 +170,13 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       return;
     }
 
-    await withdraw(amount);
-  }, [withdraw, amount]);
+    try {
+      await withdraw(amount);
+      setAmount('0');
+    } catch (error) {
+      console.error(error);
+    }
+  }, [amount, withdraw]);
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -180,9 +198,15 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       {actionType === YieldSwitchOptions.Deposit && (
         <DepositCalculator
           isButtonDisabled={isSubmitButtonDisabled}
-          apy={apy}
+          apy={currentApy}
           deposit={submitDeposit}
           buttonMessage={depositButtonMessage}
+          setPeriod={setPeriod}
+          balanceAfter={balanceAfter}
+          balanceAfterText={balanceAfterText}
+          profitTokens={profitTokens}
+          profitUsd={profitUsd}
+          text={text}
         />
       )}
       {actionType === YieldSwitchOptions.Withdraw && (

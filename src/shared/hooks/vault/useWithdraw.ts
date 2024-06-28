@@ -18,7 +18,6 @@ type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
   isLoading: boolean;
   buttonMessage: string | null;
-  txError: Nullable<string>;
 };
 
 export const useWithdraw = (
@@ -28,7 +27,6 @@ export const useWithdraw = (
 ): UseWithdraw => {
   const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
-  const [txError, setTxError] = React.useState<string>();
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
@@ -53,7 +51,12 @@ export const useWithdraw = (
   const withdraw = React.useCallback(
     async (amount: string) => {
       if (!token || !contract || !isConnected || !address) {
-        setTxError('Missing contract or not connected');
+        triggerToast({
+          message: `Something went wrong`,
+          description:
+            'We were unable to complete the current operation. Try again or connect support.',
+          type: ToastType.Error,
+        });
         return;
       }
 
@@ -73,7 +76,6 @@ export const useWithdraw = (
           description: 'Check the balance of the wallet connected to the platform.',
         });
       } catch (error: any) {
-        setTxError(error.message || error.toString());
         triggerToast({
           message: `Something went wrong`,
           description:
@@ -88,5 +90,5 @@ export const useWithdraw = (
     [token, contract, isConnected, address, mutate, vaultId, triggerToast, currency],
   );
 
-  return { withdraw, isLoading, buttonMessage, txError };
+  return { withdraw, isLoading, buttonMessage };
 };

@@ -32,7 +32,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
     }
 
     await open();
-  }, []);
+  }, [isForm, open]);
 
   React.useEffect(() => {
     // This effect will track the success event when the component unmounts

@@ -37,7 +37,7 @@ export const MenuLink: ComponentWithProps<MenuLinkProps> = ({
         className,
       )}
       href={href}
-      onClick={e => isDisabled && e.preventDefault()}
+      onClick={event => isDisabled && event.preventDefault()}
     >
       {isComingSoon && <p className={styles.comingSoonBanner}>Coming Soon</p>}
       {children}

@@ -6,66 +6,99 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { PeriodTab } from '@/entities/DepositCalculator/const';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
-import { ComponentWithProps } from '@/shared/types';
+import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
+import { formatMoney, formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositCalculator.module.scss';
 
 type DepositCalculatorProps = {
   deposit: (amount: number) => Promise<void>;
   apy: number;
+  setPeriod: React.Dispatch<React.SetStateAction<PeriodTab>>;
   buttonMessage: string | null;
   isButtonDisabled: boolean;
+  text: string;
+  profitUsd: Money;
+  profitTokens: Money;
+  balanceAfter: Money;
+  balanceAfterText: string;
 };
+
+const periods = [
+  {
+    key: PeriodTab.Year,
+    title: 'Year',
+  },
+  {
+    key: PeriodTab.Quarter,
+    title: 'Quarter',
+  },
+  {
+    key: PeriodTab.Month,
+    title: 'Month',
+  },
+];
 
 export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
   deposit,
   apy,
+  setPeriod,
   buttonMessage,
   isButtonDisabled,
+  text,
+  profitUsd,
+  profitTokens,
+  balanceAfter,
+  balanceAfterText,
   className,
 }) => {
   const { isConnected } = useWeb3ModalAccount();
 
-  const onTabChange = React.useCallback((currentTab: Key) => {
-    Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, { period: currentTab });
-  }, []);
+  const onTabChange = React.useCallback(
+    (currentTab: Key) => {
+      setPeriod(currentTab as PeriodTab);
+      Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, { period: currentTab });
+    },
+    [setPeriod],
+  );
 
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.projectedYield}>
         <div className={styles.tabsContainer}>
           <Tabs className={styles.yieldTabs} size="sm" onSelectionChange={onTabChange}>
-            <Tab key="year" title="Year" />
-            <Tab key="quarter" title="Quarter" />
-            <Tab key="month" title="Month" />
+            {periods.map(({ key, title }) => (
+              <Tab key={key} title={title} />
+            ))}
           </Tabs>
-          <Text textView={TextView.C2}>
-            Weekly APY <span className={styles.weeklyApyPercents}>{apy}%</span>
-          </Text>
         </div>
         <div className={styles.yieldContainer}>
           <Text className={styles.resultTitle} textView={TextView.C3}>
             Projected Yield after Fees:
           </Text>
           <div className={styles.yieldValuesContainer}>
-            <Text className={styles.resultValue}>+ $100,000</Text>
-            <Text className={styles.resultActualValue}>≈ $10,000.00</Text>
+            <Text className={styles.resultValue}>+ {formatMoney(profitTokens || 0, 6)}</Text>
+            <Text className={styles.resultActualValue}>≈ ${formatUserMoney(profitUsd)}</Text>
           </div>
           <div className={styles.yieldPercents}>
             <div>
               <ScoreUpIcon />
             </div>
-            <Text textView={TextView.C3}>4,50% yearly</Text>
+            <Text textView={TextView.C3}>
+              {apy}% {text}
+            </Text>
           </div>
         </div>
       </div>
 
       <Text textView={TextView.C2} className={styles.balanceAfter}>
-        balance after 1 year <span className={styles.balanceAfterValue}>$109,990.22</span>
+        balance after {balanceAfterText}{' '}
+        <span className={styles.balanceAfterValue}>{formatMoney(balanceAfter || 0, 6)}</span>
       </Text>
 
       {!isConnected ? (

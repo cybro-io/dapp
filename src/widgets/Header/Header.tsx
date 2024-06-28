@@ -19,16 +19,7 @@ import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
-import {
-  ButtonSize,
-  DarkModeSwitch,
-  LanguageChange,
-  Logo,
-  MenuLink,
-  Socials,
-  Text,
-  TextView,
-} from '@/shared/ui';
+import { ButtonSize, Logo, MenuLink, Socials, Text, TextView } from '@/shared/ui';
 import { shortenWalletAddress } from '@/shared/utils';
 
 import styles from './Header.module.scss';
@@ -83,7 +74,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
 
         <NavbarContent className={styles.desktopMenu}>
           {menuItems.map((item, index) => (
-            <NavbarMenuItem key={`${item.title}-${index}`}>
+            <NavbarMenuItem key={item.title}>
               <MenuLink
                 href={item.href}
                 isDisabled={item.isDisabled}
@@ -122,7 +113,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
       <NavbarMenu className={clsx(styles.mobileMenu)}>
         <div className={styles.mobileMenuTop}>
           {menuItems.map((item, index) => (
-            <NavbarMenuItem className={styles.mobileMenuList} key={`${item.title}-${index}`}>
+            <NavbarMenuItem className={styles.mobileMenuList} key={item.title}>
               <MenuLink
                 className={styles.menuLinkMobile}
                 href={item.href}
