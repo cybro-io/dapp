@@ -53,7 +53,11 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                     </Text>
                   }
                   Button={
-                    <Button className={styles.smallBannerButton} size={ButtonSize.Medium}>
+                    <Button
+                      className={styles.smallBannerButton}
+                      size={ButtonSize.Medium}
+                      onClick={() => window.open('https://cybro.io/', '_blank')}
+                    >
                       Buy Crypto Tokens
                     </Button>
                   }
