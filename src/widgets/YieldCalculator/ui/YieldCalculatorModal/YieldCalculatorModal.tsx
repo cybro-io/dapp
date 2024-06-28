@@ -2,8 +2,6 @@
 
 import React from 'react';
 
-import { chain } from '@react-aria/utils';
-
 import { useModal } from '@/app/providers';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Money, Nullable, Vault } from '@/shared/types';

@@ -60,12 +60,9 @@ export const useWithdraw = (
       try {
         setIsLoading(true);
         const decimals = await token.decimals();
-        const sharePrice = await contract.sharePrice();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const sharesAmount = (weiAmount * 10n ** BigInt(decimals)) / sharePrice;
-
-        const withdrawTx = await contract.redeem(sharesAmount, address, address);
+        const withdrawTx = await contract.redeem(weiAmount, address, address);
         setButtonMessage('Redeeming...');
         await withdrawTx.wait();
 
@@ -88,7 +85,7 @@ export const useWithdraw = (
         setButtonMessage(null);
       }
     },
-    [token, contract, isConnected, address, mutate, vaultId],
+    [token, contract, isConnected, address, mutate, vaultId, triggerToast, currency],
   );
 
   return { withdraw, isLoading, buttonMessage, txError };
