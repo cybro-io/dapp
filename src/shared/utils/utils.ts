@@ -15,3 +15,7 @@ export const debounce = <T extends (...args: any[]) => any>(func: T, wait: numbe
     }, wait);
   };
 };
+
+export const isInvalid = (value: any): value is null | undefined => {
+  return value === null || value === undefined || (typeof value === 'number' && isNaN(value));
+};

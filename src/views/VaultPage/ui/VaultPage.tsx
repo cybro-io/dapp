@@ -2,12 +2,13 @@
 
 import React from 'react';
 
+import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
-import { QueryKey } from '@/shared/const/queryKey';
+import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
   Nullable,
@@ -26,13 +27,14 @@ type DashboardPageProps = {
 };
 
 export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
+  const { address } = useWeb3ModalAccount();
   const { createContractInstance } = useEthers();
   const [contract, setContract] = React.useState<Nullable<Vault>>();
   const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
     vaultId,
-    {},
+    { address },
     {
-      query: { queryKey: [QueryKey.Vault, vaultId] },
+      query: { queryKey: [QueryKey.Vault, vaultId, address] },
     },
   );
   const vault = data?.data?.data;

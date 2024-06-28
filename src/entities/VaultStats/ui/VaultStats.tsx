@@ -7,15 +7,15 @@ import Image from 'next/image';
 
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Chip, Text, TextView } from '@/shared/ui';
-import { formatUserMoney } from '@/shared/utils';
+import { formatUserMoney, isInvalid } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
 
 import styles from './VaultStats.module.scss';
 
 type VaultStatsProps = {
-  weeklyApy: string | number;
-  cybroPoints: string | number;
+  apy: string | number;
+  cybroPoints?: string | number;
   tvl: Money;
   provider: string;
   overallVaultInvestment?: Money;
@@ -27,11 +27,9 @@ type VaultStatsProps = {
 };
 
 export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
-  weeklyApy,
-  cybroPoints,
+  apy,
   tvl,
   provider,
-  overallVaultInvestment,
   yourDeposit,
   availableFunds,
   earningsMonthly,
@@ -44,10 +42,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
       <div className={clsx(styles.firstRow, styles.row)}>
         <div className={styles.detailsItem}>
           <Text textView={TextView.C3} className={styles.detailsTitle}>
-            Weekly APY
+            APY
           </Text>
           <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.weeklyApyValue)}>
-            {weeklyApy}%
+            {apy}%
           </Text>
         </div>
         {/*<div className={styles.detailsItem}>*/}
@@ -88,91 +86,93 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
         )}
       </div>
 
-      <div className={clsx(styles.secondRow, styles.row)}>
-        {viewType === VaultStatsView.Card && (
-          <React.Fragment>
-            {/*<div className={styles.detailsItem}>*/}
-            {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
-            {/*    TVL*/}
-            {/*  </Text>*/}
-            {/*  <Text textView={TextView.P3} className={styles.detailsValue}>*/}
-            {/*    ${formatUserMoney(tvl) || '0'}*/}
-            {/*  </Text>*/}
-            {/*</div>*/}
-            <div className={styles.detailsItem}>
-              <Text textView={TextView.C3} className={styles.detailsTitle}>
-                Provider
-              </Text>
-              <Chip>{provider}</Chip>
-            </div>
-          </React.Fragment>
-        )}
+      {(!isInvalid(yourDeposit) || !isInvalid(availableFunds) || !isInvalid(earningsMonthly)) && (
+        <div className={clsx(styles.secondRow, styles.row)}>
+          {viewType === VaultStatsView.Card && (
+            <React.Fragment>
+              {/*<div className={styles.detailsItem}>*/}
+              {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+              {/*    TVL*/}
+              {/*  </Text>*/}
+              {/*  <Text textView={TextView.P3} className={styles.detailsValue}>*/}
+              {/*    ${formatUserMoney(tvl) || '0'}*/}
+              {/*  </Text>*/}
+              {/*</div>*/}
+              <div className={styles.detailsItem}>
+                <Text textView={TextView.C3} className={styles.detailsTitle}>
+                  Provider
+                </Text>
+                <Chip>{provider}</Chip>
+              </div>
+            </React.Fragment>
+          )}
 
-        {viewType === VaultStatsView.Full && (
-          <React.Fragment>
-            {/*<div className={styles.detailsItem}>*/}
-            {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
-            {/*    Overall Vault Investments*/}
-            {/*  </Text>*/}
-            {/*  <Text*/}
-            {/*    textView={TextView.P3}*/}
-            {/*    className={clsx(styles.detailsValue, styles.overallInvestmentValue)}*/}
-            {/*  >*/}
-            {/*    $<span>{formatUserMoney(overallVaultInvestment)}</span>*/}
-            {/*  </Text>*/}
-            {/*</div>*/}
-            {!!yourDeposit && (
-              <div className={styles.detailsItem}>
-                <Text textView={TextView.C3} className={styles.detailsTitle}>
-                  Your Deposit
-                </Text>
-                <Text
-                  textView={TextView.P3}
-                  className={clsx(styles.detailsItem, styles.yourDepositValue)}
-                >
-                  {tokenIcon && (
-                    <span className={styles.tetherIconContainer}>
-                      <Image src={tokenIcon} alt={''} height={24} width={24} />
-                    </span>
-                  )}
-                  ${formatUserMoney(yourDeposit)}
-                </Text>
-              </div>
-            )}
-            {!!availableFunds && (
-              <div className={styles.detailsItem}>
-                <Text textView={TextView.C3} className={styles.detailsTitle}>
-                  Available Funds
-                </Text>
-                <Text
-                  textView={TextView.P3}
-                  className={clsx(styles.detailsValue, styles.availableFundsValue)}
-                >
-                  {tokenIcon && (
-                    <span className={styles.tetherIconContainer}>
-                      <Image src={tokenIcon} alt={''} height={24} width={24} />
-                    </span>
-                  )}
-                  ${formatUserMoney(availableFunds)}
-                </Text>
-              </div>
-            )}
-            {!!earningsMonthly && (
-              <div className={styles.detailsItem}>
-                <Text textView={TextView.C3} className={styles.detailsTitle}>
-                  Earnings Monthly
-                </Text>
-                <Text
-                  textView={TextView.P3}
-                  className={clsx(styles.detailsValue, styles.earningsMonthlyValue)}
-                >
-                  ${earningsMonthly}
-                </Text>
-              </div>
-            )}
-          </React.Fragment>
-        )}
-      </div>
+          {viewType === VaultStatsView.Full && (
+            <React.Fragment>
+              {/*<div className={styles.detailsItem}>*/}
+              {/*  <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+              {/*    Overall Vault Investments*/}
+              {/*  </Text>*/}
+              {/*  <Text*/}
+              {/*    textView={TextView.P3}*/}
+              {/*    className={clsx(styles.detailsValue, styles.overallInvestmentValue)}*/}
+              {/*  >*/}
+              {/*    $<span>{formatUserMoney(overallVaultInvestment)}</span>*/}
+              {/*  </Text>*/}
+              {/*</div>*/}
+              {!isInvalid(yourDeposit) && (
+                <div className={styles.detailsItem}>
+                  <Text textView={TextView.C3} className={styles.detailsTitle}>
+                    Your Deposit
+                  </Text>
+                  <Text
+                    textView={TextView.P3}
+                    className={clsx(styles.detailsItem, styles.yourDepositValue)}
+                  >
+                    {tokenIcon && (
+                      <span className={styles.tetherIconContainer}>
+                        <Image src={tokenIcon} alt={''} height={24} width={24} />
+                      </span>
+                    )}
+                    ${formatUserMoney(yourDeposit)}
+                  </Text>
+                </div>
+              )}
+              {!isInvalid(availableFunds) && (
+                <div className={styles.detailsItem}>
+                  <Text textView={TextView.C3} className={styles.detailsTitle}>
+                    Available Funds
+                  </Text>
+                  <Text
+                    textView={TextView.P3}
+                    className={clsx(styles.detailsValue, styles.availableFundsValue)}
+                  >
+                    {tokenIcon && (
+                      <span className={styles.tetherIconContainer}>
+                        <Image src={tokenIcon} alt={''} height={24} width={24} />
+                      </span>
+                    )}
+                    ${formatUserMoney(availableFunds)}
+                  </Text>
+                </div>
+              )}
+              {!isInvalid(earningsMonthly) && (
+                <div className={styles.detailsItem}>
+                  <Text textView={TextView.C3} className={styles.detailsTitle}>
+                    Earnings Monthly
+                  </Text>
+                  <Text
+                    textView={TextView.P3}
+                    className={clsx(styles.detailsValue, styles.earningsMonthlyValue)}
+                  >
+                    ${earningsMonthly}
+                  </Text>
+                </div>
+              )}
+            </React.Fragment>
+          )}
+        </div>
+      )}
 
       {/*{viewType === VaultStatsView.Card && !!overallVaultInvestment && (*/}
       {/*  <div className={clsx(styles.thirdRow, styles.row)}>*/}

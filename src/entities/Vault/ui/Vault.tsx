@@ -57,12 +57,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
         {isConnected && typeof balance !== 'undefined' && (
           <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />
         )}
-        <VaultStats
-          weeklyApy={vault.apy}
-          cybroPoints={'20'}
-          tvl={vault.tvl}
-          provider={vault.provider}
-        />
+        <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>
           <TrustScore value={vault.trust_score} className={styles.trustScoreMobile} />
           <TrustScore

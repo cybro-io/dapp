@@ -86,25 +86,23 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         <VaultStats
           className={styles.vaultStatsMobile}
           viewType={VaultStatsView.Card}
-          weeklyApy={vault.apy}
+          apy={vault.apy}
           cybroPoints={'20'}
           tvl={vault.tvl}
           provider={vault.provider}
-          overallVaultInvestment={0}
           tokenIcon={vault.icon}
           yourDeposit={vault.balance}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
           viewType={VaultStatsView.Full}
-          weeklyApy={vault.apy}
+          apy={vault.apy}
           cybroPoints={'20'}
           tvl={vault.tvl}
           provider={vault.provider}
-          overallVaultInvestment={0}
-          availableFunds={isConnected && balance ? balance : 0}
+          availableFunds={isConnected && balance !== undefined ? balance : null}
           tokenIcon={vault.icon}
-          yourDeposit={vault.balance}
+          yourDeposit={isConnected ? vault.balance : null}
         />
       </section>
       {/*<HistoricalApyData className={styles.historicalApyData} />*/}
