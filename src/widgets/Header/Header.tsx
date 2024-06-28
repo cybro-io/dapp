@@ -10,6 +10,7 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
+  Tooltip,
 } from '@nextui-org/react';
 import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
@@ -19,7 +20,16 @@ import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
 import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
-import { ButtonSize, Logo, MenuLink, Socials, Text, TextView } from '@/shared/ui';
+import {
+  Button,
+  ButtonSize,
+  ButtonView,
+  Logo,
+  MenuLink,
+  Socials,
+  Text,
+  TextView,
+} from '@/shared/ui';
 import { shortenWalletAddress } from '@/shared/utils';
 
 import styles from './Header.module.scss';
@@ -96,14 +106,27 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
         {/*</NavbarItem>*/}
         <NavbarItem>
           {isConnected ? (
-            <div className={styles.connectedWalletContainer} onClick={() => disconnect()}>
-              <div className={styles.tetherIconContainer}>
-                <TetherIcon />
+            <Tooltip
+              className={styles.tooltipContainer}
+              content={
+                <Button
+                  view={ButtonView.Primary}
+                  size={ButtonSize.Small}
+                  onClick={() => disconnect()}
+                >
+                  Disconnect
+                </Button>
+              }
+            >
+              <div className={styles.connectedWalletContainer}>
+                <div className={styles.tetherIconContainer}>
+                  <TetherIcon />
+                </div>
+                <Text textView={TextView.C3} className={styles.connectedWallet}>
+                  {shortenWalletAddress(address)}
+                </Text>
               </div>
-              <Text textView={TextView.C3} className={styles.connectedWallet}>
-                {shortenWalletAddress(address)}
-              </Text>
-            </div>
+            </Tooltip>
           ) : (
             <ConnectWallet className={styles.connectWallet} buttonSize={ButtonSize.Small} />
           )}
@@ -125,10 +148,14 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
             </NavbarMenuItem>
           ))}
           <Socials />
+          <Button view={ButtonView.Primary} onClick={() => disconnect()}>
+            Disconnect
+          </Button>
         </div>
         {/*<div className={styles.mobileMenuBottom}>*/}
-        {/*  <DarkModeSwitch />*/}
-        {/*  <LanguageChange />*/}
+        {/*  <Button onClick={() => disconnect()}>Disconnect</Button>*/}
+        {/*  /!*<DarkModeSwitch />*!/*/}
+        {/*  /!*<LanguageChange />*!/*/}
         {/*</div>*/}
       </NavbarMenu>
     </Navbar>

@@ -21,6 +21,7 @@
   border-radius: 8px;
   align-items: center;
   gap: 7px;
+  cursor: pointer;
 }
 
 .tetherIconContainer {
@@ -84,6 +85,10 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
+}
+
+.tooltipContainer {
+  background-color: transparent;
 }
 
 @include tablet {
