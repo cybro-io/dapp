@@ -5,8 +5,8 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import { ComponentWithProps, Money } from '@/shared/types';
-import { Chip, Text, TextView } from '@/shared/ui';
+import { ComponentWithProps, Money, Nullable } from '@/shared/types';
+import { Chip, Text, TextView, VaultStatsSkeleton } from '@/shared/ui';
 import { formatUserMoney, isInvalid } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
@@ -14,16 +14,17 @@ import { VaultStatsView } from '../const';
 import styles from './VaultStats.module.scss';
 
 type VaultStatsProps = {
-  apy: string | number;
+  apy: Nullable<string | number>;
   cybroPoints?: string | number;
-  tvl: Money;
-  provider: string;
+  tvl: Nullable<Money>;
+  provider: Nullable<string>;
   overallVaultInvestment?: Money;
   yourDeposit?: Money;
   availableFunds?: Money;
   earningsMonthly?: string | number;
   viewType?: VaultStatsView;
   tokenIcon?: string;
+  isLoading?: boolean;
 };
 
 export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
@@ -35,8 +36,13 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
   earningsMonthly,
   viewType = VaultStatsView.Card,
   tokenIcon,
+  isLoading = false,
   className,
 }) => {
+  if (isLoading) {
+    return <VaultStatsSkeleton className={className} />;
+  }
+
   return (
     <div className={clsx(styles.root, styles[viewType], className)}>
       <div className={clsx(styles.firstRow, styles.row)}>

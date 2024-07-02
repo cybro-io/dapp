@@ -3,7 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import { ComponentWithProps, Money } from '@/shared/types';
+import { ComponentWithProps, Money, Nullable } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
@@ -11,7 +11,7 @@ import styles from './AvailableFunds.module.scss';
 
 type AvailableFundsProps = {
   balance: Money;
-  tokenIcon: string;
+  tokenIcon: Nullable<string>;
   deposit?: Money;
 };
 
@@ -51,7 +51,7 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
           </Text>
           <Text className={styles.fundsValue} textView={TextView.P3}>
             <span className={styles.tetherIconContainer}>
-              <Image src={tokenIcon} alt={''} height={16} width={16} />
+              {tokenIcon && <Image src={tokenIcon} alt={''} height={16} width={16} />}
             </span>
             {firstValue}
           </Text>

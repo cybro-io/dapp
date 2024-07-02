@@ -13,35 +13,40 @@ import { QueryKey } from '@/shared/const/queryKey';
 import {
   ComponentWithProps,
   HistoryTrustScoreResponse,
+  Nullable,
   useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
 } from '@/shared/types';
-import { Text, TextView, TrustScoreDescription } from '@/shared/ui';
+import { SafetyScoreDetailsSkeleton, Text, TextView, TrustScoreDescription } from '@/shared/ui';
 
 import ArrowIcon from '../assets/icons/arrow.svg';
 
 import styles from './SafetyScoreDetails.module.scss';
 
 type SafetyScoreDetailsProps = {
-  inspector: string;
-  trustScore: number;
-  vaultId: number;
+  inspector: Nullable<string>;
+  trustScore: Nullable<number>;
+  vaultId: Nullable<number>;
+  isLoading?: boolean;
 };
 
 export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({
   inspector,
   trustScore,
   vaultId,
+  isLoading = false,
   className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
-  const { data } = useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId, {
-    query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
-  });
+  const { data, isLoading: isDataLoading } =
+    useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId as number, {
+      query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
+    });
 
-  const trustScoreDetails = (data as { data: HistoryTrustScoreResponse })?.data?.data;
+  const trustScoreDetails = data?.data?.data;
 
-  if (!trustScoreDetails) {
-    return 'Error...';
+  if (isLoading || isDataLoading || !trustScoreDetails) {
+    // return 'Error...';
+    return <SafetyScoreDetailsSkeleton />;
   }
 
   return (
@@ -50,11 +55,13 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
         Safety Score Details
       </Text>
       <div className={styles.container}>
-        <TrustScoreBanner
-          trustScoreValue={trustScore}
-          className={styles.trustScoreBanner}
-          inspector={inspector}
-        />
+        {!!trustScore && inspector && (
+          <TrustScoreBanner
+            trustScoreValue={trustScore}
+            className={styles.trustScoreBanner}
+            inspector={inspector}
+          />
+        )}
         <div className={styles.trustScoreBreakdown}>
           {trustScoreDetails.map(detail => (
             <TrustScoreDescription details={detail} key={detail.name} />

@@ -11,11 +11,21 @@ import { Vault } from '@/entities/Vault';
 import { QueryKey } from '@/shared/const';
 import { ComponentWithProps } from '@/shared/types';
 import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
-import { Button, ButtonSize, ButtonView, LinkView, Text, TextView } from '@/shared/ui';
+import {
+  Button,
+  ButtonSize,
+  ButtonView,
+  LinkView,
+  Text,
+  TextView,
+  VaultSkeleton,
+} from '@/shared/ui';
 
 import styles from './AvailableVaults.module.scss';
 
 type AvailableVaultsProps = {};
+
+const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
@@ -39,6 +49,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       </div>
 
       <div className={styles.vaults}>
+        {isLoading && skeletons.map(index => <VaultSkeleton key={index} />)}
         {vaults.map((vault, index) => {
           if (index === 2) {
             return (
