@@ -74,7 +74,7 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <p className={styles.sectionHeading}>Company</p>
           <ul className={clsx(styles.sectionList)}>
             <li className={styles.sectionItem}>
-              <Link href={'/'}>Support</Link>
+              <Link href={'/feedback'}>Feedback</Link>
             </li>
           </ul>
           {/*<p className={clsx(styles.copyright, styles.copyrightLong)}>*/}

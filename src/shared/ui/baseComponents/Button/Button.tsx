@@ -14,6 +14,7 @@ type ButtonProps = {
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
   disabled?: boolean;
+  type?: 'submit' | 'reset' | 'button';
   onClick?: any;
 };
 
@@ -24,6 +25,7 @@ export const Button: ComponentWithProps<ButtonProps> = ({
   size = ButtonSize.Medium,
   startIcon,
   endIcon,
+  type,
   className,
   disabled = false,
 }) => {
@@ -32,6 +34,7 @@ export const Button: ComponentWithProps<ButtonProps> = ({
       className={clsx(styles.root, styles[view], styles[size], className)}
       onClick={onClick}
       disabled={disabled}
+      type={type}
     >
       {!!startIcon && <div className={styles.iconContainer}>{startIcon}</div>}
       <span>{children}</span>

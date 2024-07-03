@@ -54,7 +54,7 @@ export const useDeposit = (
         triggerToast({
           message: `Something went wrong`,
           description:
-            'We were unable to complete the current operation. Try again or connect support.',
+            'We were unable to complete the current operation. Try again or connect feedback.',
           type: ToastType.Error,
         });
         return;
@@ -84,7 +84,7 @@ export const useDeposit = (
         triggerToast({
           message: `Something went wrong`,
           description:
-            'We were unable to complete the current operation. Try again or connect support.',
+            'We were unable to complete the current operation. Try again or connect feedback.',
           type: ToastType.Error,
         });
       } finally {
