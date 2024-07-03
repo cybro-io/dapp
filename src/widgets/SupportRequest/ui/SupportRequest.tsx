@@ -1,14 +1,16 @@
 'use client';
 
-import React from 'react';
+import React, { createRef, RefObject } from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
+import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
-import { ComponentWithProps } from '@/shared/types';
-import { Button } from '@/shared/ui';
+import { useToast } from '@/shared/hooks';
+import { ComponentWithProps, useCaptchaApiV1WaitlistCaptchaGet } from '@/shared/types';
+import { Button, ToastType } from '@/shared/ui';
 
 import { SupportRequestField, SupportRequestFormValues } from '../types';
 
@@ -18,17 +20,38 @@ type SupportRequestProps = {};
 
 export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ className }) => {
   const { isConnected, address } = useWeb3ModalAccount();
+  const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
+  const { triggerToast } = useToast();
+  const capchaRef: RefObject<ReCAPTCHA> = createRef();
+
+  const capchaKey = data?.data?.data?.sitekey;
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid },
+    formState: { errors, isValid, isSubmitting },
   } = useForm<SupportRequestFormValues>({
     mode: 'onBlur',
   });
 
-  const onSubmit = React.useCallback((formData: SupportRequestFormValues) => {
+  const onSubmit = React.useCallback(async (formData: SupportRequestFormValues) => {
     console.log(formData, 'fd');
+    try {
+      const token = await capchaRef?.current?.executeAsync();
+      const email = formData?.email;
+
+      if (!token) {
+        throw new Error('Captcha token failed.');
+      }
+
+      triggerToast({ message: 'Success', description: 'Feedback have been sent!' });
+    } catch (e) {
+      triggerToast({
+        message: 'Error',
+        description: 'Unexpected error. Contact support',
+        type: ToastType.Error,
+      });
+    }
   }, []);
 
   return (
@@ -63,10 +86,15 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
       {!isConnected ? (
         <ConnectWallet className={styles.submitButton} />
       ) : (
-        <Button className={styles.submitButton} disabled={!isValid} type="submit">
+        <Button
+          className={styles.submitButton}
+          disabled={!isValid || isLoading || isSubmitting}
+          type="submit"
+        >
           Send
         </Button>
       )}
+      {capchaKey && <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />}
     </form>
   );
 };
