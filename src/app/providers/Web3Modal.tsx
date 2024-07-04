@@ -30,7 +30,7 @@ const mainChains = [
     name: 'Blast',
     currency: 'ETH',
     explorerUrl: 'https://blastscan.io/',
-    rpcUrl: `https://rpc.ankr.com/blast${anrkId}`,
+    rpcUrl: `https://rpc.ankr.com/blast/${anrkId}`,
   },
 ];
 
@@ -43,8 +43,6 @@ const metadata = {
 };
 
 const chains = type === 'mainnet' ? mainChains : testChains;
-
-console.log(chains, 'chains');
 
 const ethersConfig = defaultConfig({
   metadata,
