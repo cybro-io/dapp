@@ -37,14 +37,14 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
 
   const getPointerPosition = React.useCallback(() => {
     if (value <= 2) {
-      return 'calc(26.32% * ' + value / 2 + ')';
+      return 'calc((26.32% * ' + value / 2 + ') - 7px)';
     }
 
     if (value < 9) {
-      return 'calc(26.32% + 52.63% * ' + (value - 2) / 7 + ')';
+      return 'calc((26.32% + 52.63% * ' + (value - 2) / 7 + ') - 7px)';
     }
 
-    return 'calc(26.32% + 52.63% + 21.05% * ' + (value - 9) + ')';
+    return 'calc((26.32% + 52.63% + 21.05% * ' + (value - 9) + ') - 7px)';
   }, [value]);
 
   const trustScoreColor = getTrustScoreColor();

@@ -58,7 +58,7 @@
   }
 }
 
-@include desktop {
+@media screen and (width >= 1140px) {
   .main {
     padding-bottom: 230px;
   }

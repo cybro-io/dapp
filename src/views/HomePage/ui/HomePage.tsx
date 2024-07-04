@@ -27,7 +27,7 @@ export const HomePage: ComponentWithProps<HomePageProps> = props => {
           Select the ideal vault for your strategy and boost your portfolio today.
         </Text>
         <div className={styles.bottomContainer}>
-          <Tvl>Cybro TVL $950,000</Tvl>
+          <Tvl />
           <Socials />
         </div>
       </section>

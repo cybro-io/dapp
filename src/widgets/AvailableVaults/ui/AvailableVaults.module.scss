@@ -51,7 +51,7 @@
   }
 }
 
-@include desktop {
+@media screen and (width >= 1140px) {
   .root {
     padding-right: 100px;
     padding-left: 100px;
@@ -82,7 +82,7 @@
     color: $text-accent-yellow;
   }
 
-  .chip {
+  .chip.chip {
     display: none;
   }
 

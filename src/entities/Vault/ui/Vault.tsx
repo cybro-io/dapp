@@ -15,7 +15,7 @@ import { VaultStats } from '@/entities/VaultStats';
 import { useBalances } from '@/shared/hooks';
 import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
+import { getUserBalanceForVault, isInvalid, VaultCurrency } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -54,7 +54,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             ))}
           </div>
         </div>
-        {isConnected && typeof balance !== 'undefined' && (
+        {isConnected && !isInvalid(balance) && (
           <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />
         )}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />

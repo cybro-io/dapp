@@ -156,8 +156,9 @@
 .pointer {
   position: absolute;
   top: -6px;
-  width: 11px;
-  height: 5.5px;
+  left: 0;
+  width: 15px;
+  height: 12px;
 
   &.danger {
     fill: $trustScore-red-100;

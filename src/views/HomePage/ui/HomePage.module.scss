@@ -16,7 +16,7 @@
     url('/CybroBgGrey.svg') top / 100% no-repeat;
   }
 
-  .heading {
+  .heading.heading {
     margin-top: 0;
     margin-bottom: 24px;
     font-family: $unbounded-font;
@@ -52,7 +52,7 @@
     }
   }
 
-  .description {
+  .description.description {
     max-width: 480px;
     margin-bottom: 40px;
     font-family: $poppins-font;

@@ -36,7 +36,7 @@
 
 .big {
   justify-content: start;
-  padding: 34px 50% 18px 34px;
+  padding: 55px 50% 36px 30px;
   align-items: start;
   clip-path: polygon(
                   5% 0%, 100% 0%, 100% 10%, 100% 90%, 95% 100%, 10% 100%, 0% 100%, 0% 10%
@@ -51,6 +51,7 @@
 
   .description {
     max-width: 215px;
+    font-size: 14px;
     color: $text-black-body60;
   }
 

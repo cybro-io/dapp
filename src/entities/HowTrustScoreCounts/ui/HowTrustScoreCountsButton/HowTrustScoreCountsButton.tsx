@@ -46,7 +46,7 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
       }
       onTooltipChange={onTooltipChange}
     >
-      How trust score counts
+      How Trust Score Counts
       {viewType === HowTrustScoreCountsButtonViewType.Button && hasIcon && (
         <div>
           <InfoIcon />

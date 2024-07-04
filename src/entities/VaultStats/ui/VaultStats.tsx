@@ -86,7 +86,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               <Text textView={TextView.C3} className={styles.detailsTitle}>
                 Provider
               </Text>
-              <Chip>{provider}</Chip>
+              <Chip className={styles.detailsChip}>{provider}</Chip>
             </div>
           </React.Fragment>
         )}
@@ -111,7 +111,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                 <Text textView={TextView.C3} className={styles.detailsTitle}>
                   Provider
                 </Text>
-                <Chip>{provider}</Chip>
+                <Chip className={styles.detailsChip}>{provider}</Chip>
               </div>
             </React.Fragment>
           )}

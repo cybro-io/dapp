@@ -16,7 +16,7 @@ export const HowTrustScoreCountsModal: ComponentWithProps<HowTrustScoreCountsMod
   const { closeModal } = useModal();
 
   return (
-    <ModalLayout title={'How Trust Score Counts'}>
+    <ModalLayout title={'Trust Score Calculation'}>
       <HowTrustScoreCountsInfo className={styles.modal} />
       <Button onClick={closeModal} className={styles.button} view={ButtonView.Secondary}>
         Okay, got it

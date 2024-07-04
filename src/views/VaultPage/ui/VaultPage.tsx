@@ -55,6 +55,9 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   const currency = vault?.token as VaultCurrency;
 
+  const vaultName = vault?.name || '';
+  const [firstLineTitle, secondLineTitle] = vaultName.split(/\\n|\n/);
+
   return (
     <React.Fragment>
       {isLoading ? (
@@ -66,10 +69,10 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
           </div>
           <Text className={styles.heading} textView={TextView.H1}>
             <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>
-              <span className={styles.accent}>{vault?.name}</span>
+              <span className={styles.accent}>{firstLineTitle}</span>
             </span>
-            {/*<br />*/}
-            {/*<span className={styles.headingBackground}></span>*/}
+            <br />
+            <span className={styles.headingBackground}>{secondLineTitle}</span>
           </Text>
           <Text
             textView={TextView.P3}

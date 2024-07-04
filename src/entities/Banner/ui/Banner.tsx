@@ -18,6 +18,8 @@ type BannerProps = {
   color?: BannerColor;
   viewType?: BannerViewType;
   size?: BannerSize;
+  captionHref?: string;
+  captionTarget?: string;
 };
 
 export const Banner: ComponentWithProps<BannerProps> = ({
@@ -29,6 +31,8 @@ export const Banner: ComponentWithProps<BannerProps> = ({
   viewType = BannerViewType.Desktop,
   color = BannerColor.Dark,
   size = BannerSize.Big,
+  captionHref,
+  captionTarget,
   className,
 }) => {
   const title =
@@ -50,7 +54,12 @@ export const Banner: ComponentWithProps<BannerProps> = ({
       )}
       <div className={styles.buttonContainer}>{Button}</div>
       {caption && (
-        <Link className={styles.caption} viewType={captionType}>
+        <Link
+          className={styles.caption}
+          viewType={captionType}
+          href={captionHref}
+          target={captionTarget}
+        >
           {caption}
         </Link>
       )}

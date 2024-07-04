@@ -45,7 +45,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
         <Text className={styles.heading} textView={TextView.H2}>
           Available Vaults
         </Text>
-        <Tvl className={styles.chip}>Cybro TVL $950,000</Tvl>
+        <Tvl className={styles.chip} />
       </div>
 
       <div className={styles.vaults}>
@@ -60,7 +60,8 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   className={styles.smallBanner}
                   Title={
                     <Text className={styles.smallBannerTitle}>
-                      Join the <span className={styles.smallBannerTitleAccent}>Points Hunt</span>
+                      Join the
+                      <br /> <span className={styles.smallBannerTitleAccent}>Points Hunt</span>
                     </Text>
                   }
                   Button={
@@ -69,7 +70,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                       size={ButtonSize.Medium}
                       onClick={() => window.open('https://cybro.io/', '_blank')}
                     >
-                      Buy Crypto Tokens
+                      Buy Cybro Tokens
                     </Button>
                   }
                 />
@@ -93,12 +94,15 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                       className={styles.bigBannerButton}
                       size={ButtonSize.Medium}
                       view={ButtonView.Secondary}
+                      onClick={() => window.open('https://cybro.io/', '_blank')}
                     >
-                      Buy Crypto Tokens
+                      Buy Cybro Tokens
                     </Button>
                   }
                   caption="Cybro points faq"
-                  captionType={LinkView.Tooltip}
+                  captionType={LinkView.Link}
+                  captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                  captionTarget="_blank"
                 />
                 <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
                 <Vault vault={vault} />
@@ -106,7 +110,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             );
           }
 
-          if (index === 7) {
+          if (index === 9) {
             return (
               <React.Fragment key={vault.id}>
                 <Vault vault={vault} />

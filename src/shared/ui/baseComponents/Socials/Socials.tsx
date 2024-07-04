@@ -17,13 +17,13 @@ type SocialsProps = {};
 export const Socials: ComponentWithProps<SocialsProps> = ({ className }) => {
   return (
     <div className={clsx(styles.root, className)}>
-      <Link className={styles.social} href={'/'}>
+      <Link className={styles.social} href="https://x.com/Cybro_io" target="_blank">
         <TwitterIcon />
       </Link>
-      <Link className={styles.social} href={'/'}>
+      <Link className={styles.social} href="https://discord.com/invite/xFMGDQPhrB" target="_blank">
         <DiscordIcon />
       </Link>
-      <Link className={styles.social} href={'/'}>
+      <Link className={styles.social} href="https://t.me/cybro_io" target="_blank">
         <TelegramIcon />
       </Link>
     </div>

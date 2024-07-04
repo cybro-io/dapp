@@ -21,6 +21,7 @@ type LinkProps = {
   textClassName?: string;
   tooltipClassName?: string;
   onTooltipChange?: (isOpen: boolean) => void;
+  target?: string;
 };
 
 export const Link: ComponentWithProps<LinkProps> = ({
@@ -32,12 +33,13 @@ export const Link: ComponentWithProps<LinkProps> = ({
   tooltipClassName,
   onClick,
   onTooltipChange,
+  target,
   children,
 }) => {
   switch (viewType) {
     case LinkView.Link:
       return (
-        <NextLink className={clsx(styles.text, className)} href={href || ''}>
+        <NextLink className={clsx(styles.text, className)} href={href || ''} target={target}>
           {children}
         </NextLink>
       );
