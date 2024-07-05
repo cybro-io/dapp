@@ -12,7 +12,6 @@ import { TrustScoreBanner } from '@/entities/TrustScoreBanner';
 import { QueryKey } from '@/shared/const/queryKey';
 import {
   ComponentWithProps,
-  HistoryTrustScoreResponse,
   Nullable,
   useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
 } from '@/shared/types';
