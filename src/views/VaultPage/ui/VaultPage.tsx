@@ -24,7 +24,7 @@ import {
   VaultPageHeaderSkeleton,
   CalculatorSkeleton,
 } from '@/shared/ui';
-import { VaultCurrency } from '@/shared/utils';
+import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';

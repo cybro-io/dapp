@@ -82,7 +82,7 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
             Projected Yield after Fees:
           </Text>
           <div className={styles.yieldValuesContainer}>
-            <Text className={styles.resultValue}>+ {formatMoney(profitTokens || 0, 6)}</Text>
+            <Text className={styles.resultValue}>+ {formatUserMoney(profitTokens || 0)}</Text>
             <Text className={styles.resultActualValue}>≈ ${formatUserMoney(profitUsd)}</Text>
           </div>
           <div className={styles.yieldPercents}>
@@ -98,7 +98,7 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
 
       <Text textView={TextView.C2} className={styles.balanceAfter}>
         balance after {balanceAfterText}{' '}
-        <span className={styles.balanceAfterValue}>{formatMoney(balanceAfter || 0, 6)}</span>
+        <span className={styles.balanceAfterValue}>{formatUserMoney(balanceAfter || 0, 8)}</span>
       </Text>
 
       {!isConnected ? (

@@ -81,7 +81,8 @@
 }
 
 .inputContainer {
-  display: flex;
+  display: grid;
+  grid-template-columns: 3fr 2fr;
   justify-content: space-between;
   margin-bottom: 8px;
   padding-top: 8px;
@@ -101,7 +102,6 @@
   }
 
   .equal {
-    width: 85px;
     font-family: $poppins-font;
     font-size: 13px;
     font-weight: 500;

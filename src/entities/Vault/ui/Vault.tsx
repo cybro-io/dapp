@@ -25,9 +25,9 @@ type VaultProps = {
 
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  // const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
+  // const { balance } = useBalances('');
   // const [balance, setBalance] = React.useState<Money>();
-  const currency = vault.token.name as VaultCurrency;
+  // const currency = vault.token.name as VaultCurrency;
 
   // React.useEffect(() => {
   //   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);

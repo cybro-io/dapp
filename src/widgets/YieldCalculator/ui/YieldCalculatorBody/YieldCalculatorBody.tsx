@@ -15,7 +15,7 @@ import {
   useDepositCalculator,
 } from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
-import { debounce, formatMoney, getUserBalanceForVault, VaultCurrency } from '@/shared/utils';
+import { debounce, formatMoney, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
 
@@ -138,11 +138,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       }
 
       if (actionType === YieldSwitchOptions.Deposit) {
-        setAmount(formatMoney(balance * value, 6));
+        setAmount(formatMoney(balance * value));
       }
 
       if (actionType === YieldSwitchOptions.Withdraw) {
-        setAmount(formatMoney(availableFunds * value, 6));
+        setAmount(formatMoney(availableFunds * value));
       }
 
       Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);

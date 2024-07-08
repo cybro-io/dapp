@@ -2,9 +2,10 @@ import { BigNumberish, ethers } from 'ethers';
 import numeral from 'numeral';
 
 import { Money, Nullable, UserMoney } from '@/shared/types';
+import { isInvalid } from '@/shared/utils/utils';
 
-export const formatUserMoney = (value: Money | string | undefined): UserMoney => {
-  if (value === null || value === undefined) return '0.00';
+export const formatUserMoney = (value: Money | string | undefined, maxDecimals = 8): UserMoney => {
+  if (isInvalid(value)) return '0.00';
 
   const numericValue = typeof value === 'string' ? parseFloat(value) : value;
 
@@ -16,13 +17,16 @@ export const formatUserMoney = (value: Money | string | undefined): UserMoney =>
     return numeral(Math.floor(numericValue / 1e6) * 1e6).format('0,0a');
   }
 
-  return numeral(Math.floor(numericValue * 100) / 100).format('0,0.00');
-};
+  if (numericValue === 0) {
+    return '0';
+  }
 
-export const formatEth = (value: Nullable<BigNumberish>): Money => {
-  if (typeof value === 'undefined' || value === null) return null;
-
-  return Number(ethers.formatEther(value));
+  return numericValue
+    .toLocaleString('en', {
+      minimumFractionDigits: 0,
+      maximumFractionDigits: maxDecimals,
+    })
+    .replace(/\.?0+$/, ''); // Remove trailing zeros
 };
 
 export const fromWei = (value: Nullable<BigNumberish>, decimals = 18): Money => {

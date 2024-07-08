@@ -48,7 +48,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
     return {
       activeTab,
       vaultId: vault?.id,
-      currency: vault?.token,
+      currency: vault?.token.name,
       vaultContract: contract,
       tokenIcon: vault?.icon,
       apy: vault?.apy,
