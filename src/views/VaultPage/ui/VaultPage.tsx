@@ -25,6 +25,7 @@ import {
   CalculatorSkeleton,
 } from '@/shared/ui';
 import { VaultCurrency } from '@/shared/utils';
+import { ErrorMessage } from '@/widgets/ErrorMessage';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
@@ -68,6 +69,10 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   const vaultName = vault?.name || '';
   const [firstLineTitle, secondLineTitle] = vaultName.split(/\\n|\n/);
+
+  if (isError) {
+    return <ErrorMessage className={styles.errorMessage} />;
+  }
 
   return (
     <React.Fragment>

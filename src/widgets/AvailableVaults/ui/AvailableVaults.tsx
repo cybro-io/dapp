@@ -20,6 +20,7 @@ import {
   TextView,
   VaultSkeleton,
 } from '@/shared/ui';
+import { ErrorMessage } from '@/widgets/ErrorMessage';
 
 import styles from './AvailableVaults.module.scss';
 
@@ -36,7 +37,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
   const vaults = data?.data?.data || [];
 
   if (isError) {
-    return 'Error...';
+    return <ErrorMessage />;
   }
 
   return (
