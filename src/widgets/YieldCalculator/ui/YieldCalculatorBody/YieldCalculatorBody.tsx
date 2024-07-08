@@ -44,8 +44,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const [amount, setAmount] = React.useState<string>('0');
   const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
-  const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
+  const { balance } = useBalances(vaultContract);
   const {
     availableFunds,
     availableFundsUsd: withDrawAvailableFundsUsd,

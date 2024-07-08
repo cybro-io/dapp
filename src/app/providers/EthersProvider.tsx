@@ -5,23 +5,16 @@ import React from 'react';
 import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers/react';
 import { ethers, BrowserProvider } from 'ethers';
 
-import VAULT from '@/app/abi/vault.json';
-import WBTC from '@/app/abi/wbtc.json';
-import WBTC_VAULT from '@/app/abi/wbtcVault.json';
-import WETH from '@/app/abi/weth.json';
-import WETH_VAULT from '@/app/abi/wethVault.json';
-import { Usdb, Wbtc, WbtcVault, Weth, WethVault, Nullable, Vault } from '@/shared/types';
+import TOKEN from '@/app/abi/token.json';
+import { Maybe, Nullable, Token, Vault } from '@/shared/types';
 
 interface EthersContextProps {
   provider: Nullable<ethers.Provider>;
   signer: Nullable<ethers.Signer>;
-  usdbContract: Nullable<Usdb>;
-  wethContract: Nullable<Weth>;
-  wbtcContract: Nullable<Wbtc>;
-  wethVaultContract: Nullable<WethVault>;
-  wbtcVaultContract: Nullable<WbtcVault>;
-  contracts: { [address: string]: Vault };
-  createContractInstance: (address: string) => Nullable<Vault>;
+  vaults: { [address: string]: Maybe<Vault> };
+  tokens: { [vaultAddress: string]: Maybe<Token> };
+  createContractInstance: (address: string, abi: any) => Promise<{ vault: Vault; token: Token }>;
+  createTokenInstance: (address: string, vaultAddress: string) => Token;
 }
 
 const EthersContext = React.createContext<EthersContextProps | undefined>(undefined);
@@ -31,88 +24,92 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   const { isConnected } = useWeb3ModalAccount();
   const [provider, setProvider] = React.useState<Nullable<ethers.Provider>>(null);
   const [signer, setSigner] = React.useState<Nullable<ethers.Signer>>(null);
-  const [usdbContract, setUsdbContract] = React.useState<Nullable<Usdb>>(null);
-  const [wethContract, setWethContract] = React.useState<Nullable<Weth>>(null);
-  const [wbtcContract, setWbtcContract] = React.useState<Nullable<Wbtc>>(null);
-  const [wethVaultContract, setWethVaultContract] = React.useState<Nullable<WethVault>>(null);
-  const [wbtcVaultContract, setWbtcVaultContract] = React.useState<Nullable<WbtcVault>>(null);
-  const [contracts, setContracts] = React.useState<{ [address: string]: Vault }>({});
+  const [vaults, setVaults] = React.useState<{ [address: string]: Vault }>({});
+  const [tokens, setTokens] = React.useState<{ [vaultAddress: string]: Token }>({});
 
   React.useEffect(() => {
     const getValues = async () => {
       if (isConnected && walletProvider) {
         const ethersProvider = new BrowserProvider(walletProvider);
         const signer = await ethersProvider.getSigner();
-        const wethContract = new ethers.Contract(WETH.address, WETH.abi, signer) as unknown as Weth;
-        const wbtcContract = new ethers.Contract(WBTC.address, WBTC.abi, signer) as unknown as Wbtc;
-        const wethVaultContract = new ethers.Contract(
-          WETH_VAULT.address,
-          WETH_VAULT.abi,
-          signer,
-        ) as unknown as WethVault;
-        const wbtcVaultContract = new ethers.Contract(
-          WBTC_VAULT.address,
-          WBTC_VAULT.abi,
-          signer,
-        ) as unknown as WbtcVault;
 
         setSigner(signer);
         setProvider(ethersProvider);
-        setUsdbContract(usdbContract);
-        setWethContract(wethContract);
-        setWbtcContract(wbtcContract);
-        setWethVaultContract(wethVaultContract);
-        setWbtcVaultContract(wbtcVaultContract);
       }
     };
 
     getValues();
-  }, [isConnected, usdbContract, walletProvider]);
+  }, [isConnected, walletProvider]);
 
   const createContractInstance = React.useCallback(
-    (address: string) => {
+    async (address: string, abi: any) => {
       if (!isConnected) {
-        return null;
+        throw new Error('Wallet is not connected');
       }
 
       if (!provider || !signer) {
         throw new Error('Provider or signer not initialized');
       }
 
-      const contractInstance = new ethers.Contract(address, VAULT.abi, signer) as unknown as Vault;
-      setContracts(prevContracts => ({
+      if (vaults[address] && tokens[address]) {
+        return { vault: vaults[address], token: tokens[address] };
+      }
+
+      const contractInstance = new ethers.Contract(address, abi, signer) as unknown as Vault;
+
+      const tokenAddress = await contractInstance.asset();
+      const tokenInstance = new ethers.Contract(tokenAddress, TOKEN, signer) as unknown as Token;
+
+      setVaults(prevContracts => ({
         ...prevContracts,
         [address]: contractInstance,
       }));
 
-      return contractInstance;
+      setTokens(prevTokens => ({
+        ...prevTokens,
+        [address]: tokenInstance,
+      }));
+
+      return { vault: contractInstance, token: tokenInstance };
     },
-    [isConnected, provider, signer],
+    [isConnected, provider, signer, vaults, tokens],
+  );
+
+  const createTokenInstance = React.useCallback(
+    (address: string, vaultAddress: string) => {
+      if (!isConnected) {
+        throw new Error('Wallet is not connected');
+      }
+
+      if (!provider || !signer) {
+        throw new Error('Provider or signer not initialized');
+      }
+
+      if (tokens[vaultAddress]) {
+        return tokens[vaultAddress];
+      }
+
+      const tokenInstance = new ethers.Contract(address, TOKEN, signer) as unknown as Token;
+      setTokens(prevContracts => ({
+        ...prevContracts,
+        [vaultAddress]: tokenInstance,
+      }));
+
+      return tokenInstance;
+    },
+    [isConnected, provider, signer, tokens],
   );
 
   const contextValue = React.useMemo(
     () => ({
       provider,
       signer,
-      usdbContract,
-      wethContract,
-      wbtcContract,
-      wethVaultContract,
-      wbtcVaultContract,
-      contracts,
+      vaults,
+      tokens,
       createContractInstance,
+      createTokenInstance,
     }),
-    [
-      provider,
-      signer,
-      usdbContract,
-      wethContract,
-      wbtcContract,
-      wethVaultContract,
-      wbtcVaultContract,
-      contracts,
-      createContractInstance,
-    ],
+    [provider, signer, vaults, tokens, createContractInstance, createTokenInstance],
   );
 
   return <EthersContext.Provider value={contextValue}>{children}</EthersContext.Provider>;

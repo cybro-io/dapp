@@ -35,7 +35,6 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
   });
 
   const onSubmit = React.useCallback(async (formData: SupportRequestFormValues) => {
-    console.log(formData, 'fd');
     try {
       const token = await capchaRef?.current?.executeAsync();
       const email = formData?.email;

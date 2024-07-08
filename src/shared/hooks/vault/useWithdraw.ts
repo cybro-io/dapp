@@ -5,12 +5,7 @@ import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { useToast } from '@/shared/hooks';
-import {
-  Nullable,
-  Token,
-  useAddVaultActionApiV1VaultsVaultIdActionPost,
-  Vault,
-} from '@/shared/types';
+import { Nullable, useAddVaultActionApiV1VaultsVaultIdActionPost, Vault } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 
@@ -22,35 +17,21 @@ type UseWithdraw = {
 
 export const useWithdraw = (
   currency: VaultCurrency,
-  contract: Nullable<Vault>,
+  vaultContract: Nullable<Vault>,
   vaultId: number,
 ): UseWithdraw => {
   const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
-
-  const { mutate, isPending, error } = useAddVaultActionApiV1VaultsVaultIdActionPost();
-
-  const { usdbContract, wethContract, wbtcContract } = useEthers();
-
-  let token: Nullable<Token>;
-
-  switch (currency) {
-    case VaultCurrency.USDB:
-      token = usdbContract;
-      break;
-    case VaultCurrency.WETH:
-      token = wethContract;
-      break;
-    case VaultCurrency.WBTC:
-      token = wbtcContract;
-      break;
-  }
+  const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
+  const { tokens } = useEthers();
 
   const withdraw = React.useCallback(
     async (amount: string) => {
-      if (!token || !contract || !isConnected || !address) {
+      const vaultAddress = vaultContract?.target;
+      const tokenContract = vaultAddress ? tokens[vaultAddress as string] : undefined;
+      if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({
           message: `Something went wrong`,
           description:
@@ -62,10 +43,10 @@ export const useWithdraw = (
 
       try {
         setIsLoading(true);
-        const decimals = await token.decimals();
+        const decimals = await tokenContract.decimals();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const withdrawTx = await contract.redeem(weiAmount, address, address);
+        const withdrawTx = await vaultContract.redeem(weiAmount, address, address);
         setButtonMessage('Redeeming...');
         await withdrawTx.wait();
 
@@ -87,7 +68,7 @@ export const useWithdraw = (
         setButtonMessage(null);
       }
     },
-    [token, contract, isConnected, address, mutate, vaultId, triggerToast, currency],
+    [vaultContract, tokens, isConnected, address, triggerToast, mutate, vaultId, currency],
   );
 
   return { withdraw, isLoading, buttonMessage };

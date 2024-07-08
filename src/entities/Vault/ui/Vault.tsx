@@ -25,14 +25,14 @@ type VaultProps = {
 
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
-  const [balance, setBalance] = React.useState<Money>();
+  // const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
+  // const [balance, setBalance] = React.useState<Money>();
   const currency = vault.token as VaultCurrency;
 
-  React.useEffect(() => {
-    const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
-    setBalance(balance);
-  }, [usdbBalance, wethBalance, wbtcBalance, currency]);
+  // React.useEffect(() => {
+  //   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
+  //   setBalance(balance);
+  // }, [usdbBalance, wethBalance, wbtcBalance, currency]);
 
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
@@ -54,9 +54,9 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             ))}
           </div>
         </div>
-        {isConnected && !isInvalid(balance) && (
-          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />
-        )}
+        {/*{isConnected && !isInvalid(balance) && (*/}
+        {/*  <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />*/}
+        {/*)}*/}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>
           <TrustScore value={vault.trust_score} className={styles.trustScoreMobile} />

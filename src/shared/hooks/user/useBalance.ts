@@ -1,43 +1,36 @@
 import React from 'react';
 
 import { useEthers } from '@/app/providers';
-import { Money } from '@/shared/types';
-import { formatEth, fromWei } from '@/shared/utils';
+import { Money, Nullable, Vault } from '@/shared/types';
+import { fromWei } from '@/shared/utils';
 
 export type Balance = {
-  ethBalance: Money;
-  usdbBalance: Money;
-  wethBalance: Money;
-  wbtcBalance: Money;
+  balance: Money;
 };
 
-export const useBalances = (): Balance => {
-  const { provider, signer, usdbContract, wethContract, wbtcContract } = useEthers();
-  const [ethBalance, setEthBalance] = React.useState<Money>(null);
-  const [usdbBalance, setUsdbBalance] = React.useState<Money>(null);
-  const [wethBalance, setWethBalance] = React.useState<Money>(null);
-  const [wbtcBalance, setWbtcBalance] = React.useState<Money>(null);
+export const useBalances = (vaultContract: Nullable<Vault>): Balance => {
+  const { provider, signer, tokens } = useEthers();
+  const [balance, setBalance] = React.useState<Money>(null);
 
   React.useEffect(() => {
     const fetchBalances = async () => {
-      if (provider && signer && usdbContract && wethContract && wbtcContract) {
-        const address = await signer.getAddress();
-        const ethBalance = await provider.getBalance(address);
-        setEthBalance(formatEth(ethBalance));
+      if (provider && signer && vaultContract) {
+        const vaultAddress = vaultContract.target as string;
+        const tokenContract = tokens[vaultAddress];
+        const userAddress = await signer.getAddress();
 
-        const usdbBalance = await usdbContract.balanceOf(address);
-        setUsdbBalance(fromWei(usdbBalance));
+        if (!tokenContract) {
+          throw new Error('Token not found');
+        }
 
-        const wethBalance = await wethContract.balanceOf(address);
-        setWethBalance(fromWei(wethBalance));
-
-        const wbtcBalance = await wbtcContract.balanceOf(address);
-        setWbtcBalance(fromWei(wbtcBalance, 8));
+        const balance = await tokenContract.balanceOf(userAddress);
+        const decimals = await vaultContract.decimals();
+        setBalance(fromWei(balance, Number(decimals)));
       }
     };
 
     fetchBalances();
-  }, [usdbContract, provider, signer, wethContract, wbtcContract]);
+  }, [provider, signer, tokens, vaultContract]);
 
-  return { ethBalance, usdbBalance, wethBalance, wbtcBalance };
+  return { balance };
 };

@@ -12,6 +12,7 @@ import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
   Nullable,
+  Token,
   useGetVaultApiV1VaultsVaultIdGet,
   Vault,
 } from '@/shared/types';
@@ -37,6 +38,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
   const { address } = useWeb3ModalAccount();
   const { createContractInstance } = useEthers();
   const [contract, setContract] = React.useState<Nullable<Vault>>();
+  const [token, setToken] = React.useState<Nullable<Token>>();
   const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
     vaultId,
     { address },
@@ -47,10 +49,19 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
   const vault = data?.data?.data;
 
   React.useEffect(() => {
-    if (vault) {
-      const contract = createContractInstance(vault.address);
-      setContract(contract);
-    }
+    const initContracts = async () => {
+      if (vault) {
+        const { vault: createdVault, token: createdToken } = await createContractInstance(
+          vault.address,
+          vault.abi,
+        );
+
+        setContract(createdVault);
+        setToken(createdToken);
+      }
+    };
+
+    initContracts();
   }, [createContractInstance, vault, vault?.address]);
 
   const currency = vault?.token as VaultCurrency;

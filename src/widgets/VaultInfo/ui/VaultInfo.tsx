@@ -41,14 +41,8 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
 }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { usdbBalance, wethBalance, wbtcBalance } = useBalances();
+  const { balance } = useBalances(contract);
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
-  const [balance, setBalance] = React.useState<Money>();
-
-  React.useEffect(() => {
-    const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
-    setBalance(balance);
-  }, [usdbBalance, wethBalance, wbtcBalance, currency]);
 
   const modalProps = React.useMemo(() => {
     return {

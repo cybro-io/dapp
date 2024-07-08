@@ -5,12 +5,7 @@ import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { useToast } from '@/shared/hooks';
-import {
-  Nullable,
-  Token,
-  useAddVaultActionApiV1VaultsVaultIdActionPost,
-  Vault,
-} from '@/shared/types';
+import { Nullable, useAddVaultActionApiV1VaultsVaultIdActionPost, Vault } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 
@@ -22,7 +17,7 @@ type UseDeposit = {
 
 export const useDeposit = (
   currency: VaultCurrency,
-  contract: Nullable<Vault>,
+  vaultContract: Nullable<Vault>,
   vaultId: number,
 ): UseDeposit => {
   const { triggerToast } = useToast();
@@ -30,27 +25,15 @@ export const useDeposit = (
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
-  const { usdbContract, wethContract, wbtcContract } = useEthers();
-
-  const { mutate, isPending, error } = useAddVaultActionApiV1VaultsVaultIdActionPost();
-
-  let token: Nullable<Token>;
-
-  switch (currency) {
-    case VaultCurrency.USDB:
-      token = usdbContract;
-      break;
-    case VaultCurrency.WETH:
-      token = wethContract;
-      break;
-    case VaultCurrency.WBTC:
-      token = wbtcContract;
-      break;
-  }
+  const { tokens } = useEthers();
+  const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
 
   const deposit = React.useCallback(
     async (amount: string) => {
-      if (!token || !contract || !isConnected || !address) {
+      const vaultAddress = vaultContract?.target;
+      const tokenContract = vaultAddress ? tokens[vaultAddress as string] : undefined;
+
+      if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({
           message: `Something went wrong`,
           description:
@@ -62,15 +45,14 @@ export const useDeposit = (
 
       try {
         setIsLoading(true);
-        const vaultAddress = contract.target;
-        const decimals = await token.decimals();
+        const decimals = await tokenContract.decimals();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const approveTx = await token.approve(vaultAddress, weiAmount);
+        const approveTx = await tokenContract.approve(vaultAddress, weiAmount);
         setButtonMessage('Approving...');
         await approveTx.wait();
 
-        const depositTx = await contract.deposit(weiAmount, address);
+        const depositTx = await vaultContract.deposit(weiAmount, address);
         setButtonMessage('Depositing...');
         await depositTx.wait();
 
@@ -92,7 +74,7 @@ export const useDeposit = (
         setButtonMessage(null);
       }
     },
-    [token, contract, isConnected, address, mutate, vaultId, triggerToast, currency],
+    [vaultContract, isConnected, address, triggerToast, tokens, mutate, vaultId, currency],
   );
 
   return { deposit, isLoading, buttonMessage };
