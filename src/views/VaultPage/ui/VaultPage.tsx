@@ -65,7 +65,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
     initContracts();
   }, [createContractInstance, vault, vault?.address]);
 
-  const currency = vault?.token as VaultCurrency;
+  const currency = vault?.token.name as VaultCurrency;
 
   const vaultName = vault?.name || '';
   const [firstLineTitle, secondLineTitle] = vaultName.split(/\\n|\n/);
