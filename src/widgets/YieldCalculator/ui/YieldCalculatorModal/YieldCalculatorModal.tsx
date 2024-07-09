@@ -4,16 +4,17 @@ import React from 'react';
 
 import { useModal } from '@/app/providers';
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps, Money, Nullable, Vault } from '@/shared/types';
+import { ComponentWithProps, Money, Nullable, Vault, Token } from '@/shared/types';
 import { ModalLayout } from '@/shared/ui';
 import { VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator';
 
-type YieldCalculatorModalProps = {
+export type YieldCalculatorModalProps = {
   currency: VaultCurrency;
   vaultId: number;
   chainId: number;
   vaultContract: Nullable<Vault>;
+  tokenContract: Nullable<Token>;
   tokenIcon: string;
   userDeposit: Nullable<Money>;
   activeTab: YieldSwitchOptions;
@@ -23,7 +24,17 @@ type YieldCalculatorModalProps = {
 
 export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
   const { props } = useModal() as unknown as { props: YieldCalculatorModalProps };
-  const { activeTab, currency, apy, chain, chainId, vaultContract, tokenIcon, vaultId } = props;
+  const {
+    activeTab,
+    currency,
+    apy,
+    chain,
+    chainId,
+    vaultContract,
+    tokenContract,
+    tokenIcon,
+    vaultId,
+  } = props;
 
   const title = activeTab === YieldSwitchOptions.Deposit ? 'Vault Deposit' : 'Vault Withdraw';
 
@@ -36,6 +47,7 @@ export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
         tokenIcon={tokenIcon}
         chainId={chainId}
         vaultContract={vaultContract}
+        tokenContract={tokenContract}
         chain={chain}
         apy={apy}
       />

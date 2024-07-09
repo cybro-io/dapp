@@ -4,7 +4,7 @@ import clsx from 'clsx';
 
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps, Nullable, Vault } from '@/shared/types';
+import { ComponentWithProps, Nullable, Token, Vault } from '@/shared/types';
 import { VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator/ui/YieldCalculatorBody';
 
@@ -15,6 +15,7 @@ type YieldCalculatorProps = {
   tokenIcon: string;
   apy: number;
   vaultContract: Nullable<Vault>;
+  tokenContract: Nullable<Token>;
   chainId: number;
   chain: string;
   currency: VaultCurrency;
@@ -25,6 +26,7 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
   tokenIcon,
   apy,
   vaultContract,
+  tokenContract,
   currency,
   chainId,
   chain,
@@ -44,6 +46,7 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
         chainId={chainId}
         chain={chain}
         vaultContract={vaultContract}
+        tokenContract={tokenContract}
       />
     </div>
   );

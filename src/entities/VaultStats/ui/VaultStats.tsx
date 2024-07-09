@@ -4,6 +4,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 import Image from 'next/image';
+import numeral from 'numeral';
 
 import { ComponentWithProps, Money, Nullable } from '@/shared/types';
 import { Chip, Text, TextView, VaultStatsSkeleton } from '@/shared/ui';
@@ -68,7 +69,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               TVL
             </Text>
             <Text textView={TextView.P3} className={styles.detailsValue}>
-              ${formatUserMoney(tvl) || '0'}
+              ${numeral(Math.floor(Number(tvl))).format('0.0a')}
             </Text>
           </div>
         )}
@@ -79,7 +80,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                 TVL
               </Text>
               <Text textView={TextView.P3} className={styles.detailsValue}>
-                ${formatUserMoney(tvl) || '0'}
+                ${numeral(Math.floor(Number(tvl))).format('0.0a')}
               </Text>
             </div>
             <div className={styles.detailsItem}>
@@ -161,7 +162,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                         <Image src={tokenIcon} alt={''} height={24} width={24} />
                       </span>
                     )}
-                    ${formatUserMoney(availableFunds)}
+                    ${formatUserMoney(availableFunds, 2)}
                   </Text>
                 </div>
               )}

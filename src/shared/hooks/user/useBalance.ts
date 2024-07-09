@@ -1,36 +1,24 @@
 import React from 'react';
 
-import { useEthers } from '@/app/providers';
-import { Money, Nullable, Vault } from '@/shared/types';
-import { fromWei } from '@/shared/utils';
+import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 
-export type Balance = {
-  balance: Money;
-};
+import { useBalanceContext, useEthers } from '@/app/providers';
+import { Nullable, Token } from '@/shared/types';
 
-export const useBalances = (vaultContract: Nullable<Vault>): Balance => {
+export const useBalances = (tokenContract: Nullable<Token>) => {
+  const { isConnected } = useWeb3ModalAccount();
   const { provider, signer, tokens } = useEthers();
-  const [balance, setBalance] = React.useState<Money>(null);
+  const { balance, refetchBalance } = useBalanceContext();
+  const tokenAddress = tokenContract?.target as string;
 
   React.useEffect(() => {
-    const fetchBalances = async () => {
-      if (provider && signer && vaultContract) {
-        const vaultAddress = vaultContract.target as string;
-        const tokenContract = tokens[vaultAddress];
-        const userAddress = await signer.getAddress();
+    if (provider && signer && tokenContract && isConnected) {
+      refetchBalance(provider, signer, tokenContract);
+    }
+  }, [provider, signer, tokens, refetchBalance, tokenContract, isConnected]);
 
-        if (!tokenContract) {
-          throw new Error('Token not found');
-        }
-
-        const balance = await tokenContract.balanceOf(userAddress);
-        const decimals = await vaultContract.decimals();
-        setBalance(fromWei(balance, Number(decimals)));
-      }
-    };
-
-    fetchBalances();
-  }, [provider, signer, tokens, vaultContract]);
-
-  return { balance };
+  return {
+    balance: balance[tokenAddress],
+    refetchBalance: () => refetchBalance(provider, signer, tokenContract),
+  };
 };

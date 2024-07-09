@@ -11,7 +11,7 @@ import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
 import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps, Money, Nullable, Vault, VaultResponseData } from '@/shared/types';
+import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
 import {
   Button,
   ButtonSize,
@@ -21,27 +21,27 @@ import {
   Text,
   TextView,
 } from '@/shared/ui';
-import { getUserBalanceForVault, isInvalid, VaultCurrency } from '@/shared/utils';
+import { isInvalid } from '@/shared/utils';
 
 import styles from './VaultInfo.module.scss';
 
 type VaultInfoProps = {
   vault: Nullable<VaultResponseData>;
-  contract: Nullable<Vault>;
-  currency: VaultCurrency;
+  vaultContract: Nullable<Vault>;
+  tokenContract: Nullable<Token>;
   isLoading?: boolean;
 };
 
 export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   vault,
-  currency,
-  contract,
+  vaultContract,
+  tokenContract,
   isLoading = false,
   className,
 }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { balance } = useBalances(contract);
+  const { balance } = useBalances(vaultContract);
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
 
   const modalProps = React.useMemo(() => {
@@ -49,7 +49,8 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       activeTab,
       vaultId: vault?.id,
       currency: vault?.token.name,
-      vaultContract: contract,
+      vaultContract,
+      tokenContract,
       tokenIcon: vault?.icon,
       apy: vault?.apy,
       userDeposit: vault?.balance,
@@ -59,7 +60,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   }, [
     vault?.chain,
     activeTab,
-    contract,
+    vaultContract,
     vault?.apy,
     vault?.balance,
     vault?.chain_id,

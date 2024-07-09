@@ -44,17 +44,17 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
     <div className={styles.root}>
       <div className={clsx(styles.yourWithdraw, className)}>
         <Text className={styles.resultTitle} textView={TextView.C3}>
-          Your Withdraw:
+          Your Receive:
         </Text>
         <div className={styles.yourWithdrawResultContainer}>
           <Text className={styles.resultValue}>
             <span className={styles.tetherIconContainer}>
               <Image src={tokenIcon} alt={''} height={20} width={20} />
             </span>
-            {formatUserMoney(amountToWithdraw)}
+            {formatUserMoney(amountToWithdraw, 8)}
           </Text>
           <Text className={styles.resultActualValue}>
-            ≈ ${formatUserMoney(amountToWithdrawUsd)}
+            ≈ ${formatUserMoney(amountToWithdrawUsd, 8)}
           </Text>
         </div>
         <div className={styles.middleLine}>

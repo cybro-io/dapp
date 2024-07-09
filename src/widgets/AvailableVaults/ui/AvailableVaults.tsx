@@ -4,7 +4,6 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { useEthers } from '@/app/providers';
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
@@ -30,7 +29,6 @@ type AvailableVaultsProps = {};
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const { createTokenInstance } = useEthers();
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
     {},
     { query: { queryKey: [QueryKey.AvailableVaults] } },
@@ -54,7 +52,6 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       <div className={styles.vaults}>
         {isLoading && skeletons.map(index => <VaultSkeleton key={index} />)}
         {vaults.map((vault, index) => {
-          // createTokenInstance(vault.token.address, '');
           if (index === 2) {
             return (
               <React.Fragment key={vault.id}>

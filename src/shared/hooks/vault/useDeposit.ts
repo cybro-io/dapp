@@ -5,7 +5,12 @@ import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { useToast } from '@/shared/hooks';
-import { Nullable, useAddVaultActionApiV1VaultsVaultIdActionPost, Vault } from '@/shared/types';
+import {
+  Nullable,
+  Token,
+  useAddVaultActionApiV1VaultsVaultIdActionPost,
+  Vault,
+} from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, VaultCurrency } from '@/shared/utils';
 
@@ -18,6 +23,7 @@ type UseDeposit = {
 export const useDeposit = (
   currency: VaultCurrency,
   vaultContract: Nullable<Vault>,
+  tokenContract: Nullable<Token>,
   vaultId: number,
 ): UseDeposit => {
   const { triggerToast } = useToast();
@@ -31,7 +37,6 @@ export const useDeposit = (
   const deposit = React.useCallback(
     async (amount: string) => {
       const vaultAddress = vaultContract?.target;
-      const tokenContract = vaultAddress ? tokens[vaultAddress as string] : undefined;
 
       if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({

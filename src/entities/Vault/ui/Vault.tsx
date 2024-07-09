@@ -6,6 +6,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
+import { useEthers } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import {
   HowTrustScoreCountsButton,
@@ -13,9 +14,9 @@ import {
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
 import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps, Money, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, Token, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { getUserBalanceForVault, isInvalid, VaultCurrency } from '@/shared/utils';
+import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -25,14 +26,16 @@ type VaultProps = {
 
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  // const { balance } = useBalances('');
-  // const [balance, setBalance] = React.useState<Money>();
-  // const currency = vault.token.name as VaultCurrency;
+  const { createTokenInstance } = useEthers();
+  const [tokenContract, setTokenContract] = React.useState<Token>();
+  const { balance } = useBalances(tokenContract);
 
-  // React.useEffect(() => {
-  //   const balance = getUserBalanceForVault(currency, usdbBalance, wethBalance, wbtcBalance);
-  //   setBalance(balance);
-  // }, [usdbBalance, wethBalance, wbtcBalance, currency]);
+  React.useEffect(() => {
+    if (isConnected) {
+      const tokenContract = createTokenInstance(vault.token.address);
+      setTokenContract(tokenContract);
+    }
+  }, [createTokenInstance, vault.address, vault.token.address, isConnected]);
 
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
@@ -54,9 +57,9 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             ))}
           </div>
         </div>
-        {/*{isConnected && !isInvalid(balance) && (*/}
-        {/*  <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vault.balance} />*/}
-        {/*)}*/}
+        {isConnected && !isInvalid(balance) && (
+          <AvailableFunds tokenIcon={vault.icon} balance={balance} />
+        )}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>
           <TrustScore value={vault.trust_score} className={styles.trustScoreMobile} />

@@ -10,6 +10,7 @@ import { poppins, unbounded } from '@/app/fonts';
 
 import styles from './layout.module.scss';
 import {
+  BalanceProvider,
   EthersProvider,
   ModalContainer,
   ModalProvider,
@@ -39,12 +40,14 @@ export default function RootLayout({
       <Web3Modal>
         <EthersProvider>
           <ReactQueryProvider>
-            <ModalProvider>
-              <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                <ToastProvider>{children}</ToastProvider>
-                <ModalContainer />
-              </body>
-            </ModalProvider>
+            <BalanceProvider>
+              <ModalProvider>
+                <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                  <ToastProvider>{children}</ToastProvider>
+                  <ModalContainer />
+                </body>
+              </ModalProvider>
+            </BalanceProvider>
           </ReactQueryProvider>
         </EthersProvider>
       </Web3Modal>

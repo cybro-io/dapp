@@ -13,8 +13,8 @@ interface EthersContextProps {
   signer: Nullable<ethers.Signer>;
   vaults: { [address: string]: Maybe<Vault> };
   tokens: { [vaultAddress: string]: Maybe<Token> };
-  createContractInstance: (address: string, abi: any) => Promise<{ vault: Vault; token: Token }>;
-  createTokenInstance: (address: string, vaultAddress: string) => Token;
+  createVaultInstance: (vaultAddress: string, abi: any) => Promise<{ vault: Vault; token: Token }>;
+  createTokenInstance: (tokenAddress: string) => Token;
 }
 
 const EthersContext = React.createContext<EthersContextProps | undefined>(undefined);
@@ -41,8 +41,8 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
     getValues();
   }, [isConnected, walletProvider]);
 
-  const createContractInstance = React.useCallback(
-    async (address: string, abi: any) => {
+  const createVaultInstance = React.useCallback(
+    async (vaultAddress: string, abi: any) => {
       if (!isConnected) {
         throw new Error('Wallet is not connected');
       }
@@ -51,32 +51,32 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         throw new Error('Provider or signer not initialized');
       }
 
-      if (vaults[address] && tokens[address]) {
-        return { vault: vaults[address], token: tokens[address] };
+      if (vaults[vaultAddress] && tokens[vaultAddress]) {
+        return { vault: vaults[vaultAddress], token: tokens[vaultAddress] };
       }
 
-      const contractInstance = new ethers.Contract(address, abi, signer) as unknown as Vault;
+      const vaultInstance = new ethers.Contract(vaultAddress, abi, signer) as unknown as Vault;
 
-      const tokenAddress = await contractInstance.asset();
+      const tokenAddress = await vaultInstance.asset();
       const tokenInstance = new ethers.Contract(tokenAddress, TOKEN, signer) as unknown as Token;
 
       setVaults(prevContracts => ({
         ...prevContracts,
-        [address]: contractInstance,
+        [vaultAddress]: vaultInstance,
       }));
 
       setTokens(prevTokens => ({
         ...prevTokens,
-        [address]: tokenInstance,
+        [tokenAddress]: tokenInstance,
       }));
 
-      return { vault: contractInstance, token: tokenInstance };
+      return { vault: vaultInstance, token: tokenInstance };
     },
     [isConnected, provider, signer, vaults, tokens],
   );
 
   const createTokenInstance = React.useCallback(
-    (address: string, vaultAddress: string) => {
+    (tokenAddress: string) => {
       if (!isConnected) {
         throw new Error('Wallet is not connected');
       }
@@ -85,14 +85,14 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         throw new Error('Provider or signer not initialized');
       }
 
-      if (tokens[vaultAddress]) {
-        return tokens[vaultAddress];
+      if (tokens[tokenAddress]) {
+        return tokens[tokenAddress];
       }
 
-      const tokenInstance = new ethers.Contract(address, TOKEN, signer) as unknown as Token;
+      const tokenInstance = new ethers.Contract(tokenAddress, TOKEN, signer) as unknown as Token;
       setTokens(prevContracts => ({
         ...prevContracts,
-        [vaultAddress]: tokenInstance,
+        [tokenAddress]: tokenInstance,
       }));
 
       return tokenInstance;
@@ -106,10 +106,10 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       signer,
       vaults,
       tokens,
-      createContractInstance,
+      createVaultInstance,
       createTokenInstance,
     }),
-    [provider, signer, vaults, tokens, createContractInstance, createTokenInstance],
+    [provider, signer, vaults, tokens, createVaultInstance, createTokenInstance],
   );
 
   return <EthersContext.Provider value={contextValue}>{children}</EthersContext.Provider>;
@@ -117,6 +117,7 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
 
 export const useEthers = (): EthersContextProps => {
   const context = React.useContext(EthersContext);
+
   if (!context) {
     throw new Error('useEthers must be used within an EthersProvider');
   }

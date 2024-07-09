@@ -24,7 +24,7 @@ import {
   VaultPageHeaderSkeleton,
   CalculatorSkeleton,
 } from '@/shared/ui';
-import { formatUserMoney, VaultCurrency } from '@/shared/utils';
+import { VaultCurrency } from '@/shared/utils';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
@@ -36,10 +36,11 @@ type DashboardPageProps = {
 };
 
 export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
-  const { address } = useWeb3ModalAccount();
-  const { createContractInstance } = useEthers();
-  const [contract, setContract] = React.useState<Nullable<Vault>>();
-  const [token, setToken] = React.useState<Nullable<Token>>();
+  const { address, isConnected } = useWeb3ModalAccount();
+  const { createVaultInstance } = useEthers();
+  const [vaultContract, setVaultContract] = React.useState<Nullable<Vault>>();
+  const [tokenContract, setTokenContract] = React.useState<Nullable<Token>>();
+  const [isContractsLoading, setIsContractsLoading] = React.useState<boolean>(false);
   const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
     vaultId,
     { address },
@@ -51,19 +52,21 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   React.useEffect(() => {
     const initContracts = async () => {
-      if (vault) {
-        const { vault: createdVault, token: createdToken } = await createContractInstance(
+      if (vault && isConnected) {
+        setIsContractsLoading(true);
+        const { vault: createdVault, token: createdToken } = await createVaultInstance(
           vault.address,
           vault.abi,
         );
 
-        setContract(createdVault);
-        setToken(createdToken);
+        setIsContractsLoading(false);
+        setVaultContract(createdVault);
+        setTokenContract(createdToken);
       }
     };
 
     initContracts();
-  }, [createContractInstance, vault, vault?.address]);
+  }, [createVaultInstance, vault, vault?.address, isConnected]);
 
   const currency = vault?.token.name as VaultCurrency;
 
@@ -76,7 +79,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   return (
     <React.Fragment>
-      {isLoading ? (
+      {isLoading || !vault ? (
         <VaultPageHeaderSkeleton />
       ) : (
         <section className={clsx(styles.heroSection)}>
@@ -87,8 +90,12 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>
               <span className={styles.accent}>{firstLineTitle}</span>
             </span>
-            <br />
-            <span className={styles.headingBackground}>{secondLineTitle}</span>
+            {secondLineTitle && (
+              <React.Fragment>
+                <br />
+                <span className={styles.headingBackground}>{secondLineTitle}</span>
+              </React.Fragment>
+            )}
           </Text>
           <Text
             textView={TextView.P3}
@@ -113,7 +120,12 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
       )}
       <div className={styles.main}>
         <div className={styles.leftContent}>
-          <VaultInfo currency={currency} vault={vault} contract={contract} isLoading={isLoading} />
+          <VaultInfo
+            vault={vault}
+            vaultContract={vaultContract}
+            tokenContract={tokenContract}
+            isLoading={isLoading}
+          />
         </div>
         <div className={styles.rightContent}>
           {!isLoading && vault ? (
@@ -130,7 +142,8 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
                   vaultId={vaultId}
                   tokenIcon={vault.icon}
                   apy={vault.apy}
-                  vaultContract={contract}
+                  vaultContract={vaultContract}
+                  tokenContract={tokenContract}
                   currency={currency}
                   chainId={vault.chain_id}
                   chain={vault.chain}

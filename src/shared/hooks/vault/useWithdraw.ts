@@ -2,12 +2,20 @@ import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
+import { types } from 'sass';
 
 import { useEthers } from '@/app/providers';
 import { useToast } from '@/shared/hooks';
-import { Nullable, useAddVaultActionApiV1VaultsVaultIdActionPost, Vault } from '@/shared/types';
+import {
+  Nullable,
+  Token,
+  useAddVaultActionApiV1VaultsVaultIdActionPost,
+  Vault,
+} from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, VaultCurrency } from '@/shared/utils';
+
+import Null = types.Null;
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
@@ -18,6 +26,7 @@ type UseWithdraw = {
 export const useWithdraw = (
   currency: VaultCurrency,
   vaultContract: Nullable<Vault>,
+  tokenContract: Nullable<Token>,
   vaultId: number,
 ): UseWithdraw => {
   const { triggerToast } = useToast();
@@ -30,7 +39,6 @@ export const useWithdraw = (
   const withdraw = React.useCallback(
     async (amount: string) => {
       const vaultAddress = vaultContract?.target;
-      const tokenContract = vaultAddress ? tokens[vaultAddress as string] : undefined;
       if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({
           message: `Something went wrong`,
@@ -60,7 +68,7 @@ export const useWithdraw = (
         triggerToast({
           message: `Something went wrong`,
           description:
-            'We were unable to complete the current operation. Try again or connect feedback.',
+            'We were unable to complete the current operation. Try again or connect support.',
           type: ToastType.Error,
         });
       } finally {
