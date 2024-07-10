@@ -137,7 +137,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   </Text>
                   <Text
                     textView={TextView.P3}
-                    className={clsx(styles.detailsItem, styles.yourDepositValue)}
+                    className={clsx(styles.detailsValue, styles.yourDepositValue)}
                   >
                     {tokenIcon && (
                       <span className={styles.tetherIconContainer}>
@@ -162,7 +162,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                         <Image src={tokenIcon} alt={''} height={24} width={24} />
                       </span>
                     )}
-                    ${formatUserMoney(availableFunds, 2)}
+                    {formatUserMoney(availableFunds, 2)}
                   </Text>
                 </div>
               )}
