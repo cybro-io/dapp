@@ -2,7 +2,6 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { useEthers } from '@/app/providers';
 import { DepositCalculator, PeriodTab } from '@/entities/DepositCalculator';
 import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
@@ -141,11 +140,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       }
 
       if (actionType === YieldSwitchOptions.Deposit) {
-        setAmount(formatMoney(balance * value));
+        setAmount(formatMoney(balance * value, 8));
       }
 
       if (actionType === YieldSwitchOptions.Withdraw) {
-        setAmount(formatMoney(availableFunds * value));
+        setAmount(formatMoney(availableFunds * value, 8));
       }
 
       Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);

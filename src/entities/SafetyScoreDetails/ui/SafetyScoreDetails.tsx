@@ -62,8 +62,8 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
           />
         )}
         <div className={styles.trustScoreBreakdown}>
-          {trustScoreDetails.map(detail => (
-            <TrustScoreDescription details={detail} key={detail.name} />
+          {trustScoreDetails.map((detail, index) => (
+            <TrustScoreDescription details={detail} key={index} />
           ))}
         </div>
         <HowTrustScoreCountsButton

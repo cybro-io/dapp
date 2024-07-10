@@ -28,15 +28,20 @@ export const formatUserMoney = (value: Money | string | undefined, maxDecimals =
     return '0';
   }
 
+  // Adjust the value to be smaller than or equal to the initial value
+  let adjustedValue = numericValue;
+  const factor = Math.pow(10, maxDecimals);
+  adjustedValue = Math.floor(adjustedValue * factor) / factor;
+
   // Format the number with up to maxDecimals decimal places
-  let formattedValue = numericValue.toLocaleString('en', {
+  let formattedValue = adjustedValue.toLocaleString('en', {
     minimumFractionDigits: 0,
     maximumFractionDigits: maxDecimals,
   });
 
   // Remove trailing zeros after the decimal point, but not after commas
   if (formattedValue.includes('.')) {
-    formattedValue = formattedValue.replace(/(\.\d*?[1-9])0+$/, '').replace(/\.$/, '');
+    formattedValue = formattedValue.replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.$/, '');
   }
 
   return formattedValue;

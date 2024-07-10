@@ -10,7 +10,7 @@ import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances } from '@/shared/hooks';
+import { useBalances, useWithdrawCalculator } from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
 import {
   Button,
@@ -21,7 +21,7 @@ import {
   Text,
   TextView,
 } from '@/shared/ui';
-import { isInvalid } from '@/shared/utils';
+import { isInvalid, VaultCurrency } from '@/shared/utils';
 
 import styles from './VaultInfo.module.scss';
 
@@ -41,8 +41,15 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
 }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { balance } = useBalances(vaultContract);
+  const { balance } = useBalances(tokenContract);
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
+
+  const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(
+    vaultContract,
+    '0',
+    (vault?.token.name || 'WBTC') as VaultCurrency,
+    vault?.chain_id || 0,
+  );
 
   const modalProps = React.useMemo(() => {
     return {
@@ -53,20 +60,21 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       tokenContract,
       tokenIcon: vault?.icon,
       apy: vault?.apy,
-      userDeposit: vault?.balance,
+      userDeposit: yourDeposit,
       chainId: vault?.chain_id,
       chain: vault?.chain,
     };
   }, [
-    vault?.chain,
     activeTab,
-    vaultContract,
-    vault?.apy,
-    vault?.balance,
-    vault?.chain_id,
-    vault?.icon,
     vault?.id,
-    vault?.token,
+    vault?.token.name,
+    vault?.icon,
+    vault?.apy,
+    vault?.chain_id,
+    vault?.chain,
+    vaultContract,
+    tokenContract,
+    yourDeposit,
   ]);
 
   const onTabChange = React.useCallback(
@@ -96,7 +104,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           tvl={vault?.tvl}
           provider={vault?.provider}
           tokenIcon={vault?.icon}
-          yourDeposit={vault?.balance}
+          yourDeposit={yourDeposit}
           isLoading={isLoading}
         />
         <VaultStats
@@ -108,7 +116,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           provider={vault?.provider}
           availableFunds={isConnected && !isInvalid(balance) ? balance : null}
           tokenIcon={vault?.icon}
-          yourDeposit={isConnected ? vault?.balance : null}
+          yourDeposit={yourDeposit}
           isLoading={isLoading}
         />
       </section>
