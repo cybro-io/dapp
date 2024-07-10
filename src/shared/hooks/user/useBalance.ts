@@ -3,22 +3,57 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 
 import { useBalanceContext, useEthers } from '@/app/providers';
-import { Nullable, Token } from '@/shared/types';
+import { QueryKey } from '@/shared/const';
+import {
+  Nullable,
+  Token,
+  useGetPriceApiV1MarketDataPriceGet,
+  Vault,
+  VaultMin,
+} from '@/shared/types';
 
-export const useBalance = (tokenContract: Nullable<Token>) => {
+export const useBalance = (
+  tokenContract: Nullable<Token>,
+  vaultContract?: Nullable<Vault | VaultMin>,
+  chainId?: number,
+  token?: string,
+) => {
   const { isConnected } = useWeb3ModalAccount();
   const { provider, signer, tokens } = useEthers();
-  const { balance, refetchBalance } = useBalanceContext();
+  const { balance, refetchBalance, vaultDeposit, vaultDepositUsd } = useBalanceContext();
+  const vaultAddress = vaultContract?.target as string;
   const tokenAddress = tokenContract?.target as string;
+
+  const { data } = useGetPriceApiV1MarketDataPriceGet(
+    {
+      token: token || '',
+      chain_id: chainId || 0,
+    },
+    { query: { queryKey: [QueryKey.TokenPrice, token, chainId] } },
+  );
+
+  const tokenPrice = Number(data?.data?.data?.price);
 
   React.useEffect(() => {
     if (provider && signer && tokenContract && isConnected) {
-      refetchBalance(provider, signer, tokenContract);
+      refetchBalance(provider, signer, tokenContract, vaultContract, tokenPrice);
     }
-  }, [provider, signer, tokens, refetchBalance, tokenContract, isConnected]);
+  }, [
+    provider,
+    signer,
+    tokens,
+    refetchBalance,
+    tokenContract,
+    isConnected,
+    vaultContract,
+    tokenPrice,
+  ]);
 
   return {
     balance: balance[tokenAddress],
-    refetchBalance: () => refetchBalance(provider, signer, tokenContract),
+    vaultDeposit: vaultDeposit[vaultAddress],
+    vaultDepositUsd: vaultDepositUsd[vaultAddress],
+    refetchBalance: () =>
+      refetchBalance(provider, signer, tokenContract, vaultContract, tokenPrice),
   };
 };

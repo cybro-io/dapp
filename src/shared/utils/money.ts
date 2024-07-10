@@ -58,7 +58,7 @@ export const formatMoney = (value: number, decimals = 2): string => {
   return (Math.floor(value * factor) / factor).toFixed(decimals);
 };
 
-export const convertToUsd = (value: Money, tokenPrice: number) => {
+export const convertToUsd = (value: Money, tokenPrice: number): Money => {
   if (!value) return 0;
 
   return value * tokenPrice;

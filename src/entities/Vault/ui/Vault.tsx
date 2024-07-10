@@ -14,10 +14,10 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import { useBalance, useWithdrawCalculator } from '@/shared/hooks';
+import { useBalance } from '@/shared/hooks';
 import { ComponentWithProps, Token, VaultMin, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { isInvalid, VaultCurrency } from '@/shared/utils';
+import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -30,13 +30,11 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { createVaultInstance } = useEthers();
   const [tokenContract, setTokenContract] = React.useState<Token>();
   const [vaultContract, setVaultContract] = React.useState<VaultMin>();
-  const { balance } = useBalance(tokenContract);
-
-  const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(
+  const { balance, vaultDepositUsd } = useBalance(
+    tokenContract,
     vaultContract,
-    '0',
-    vault.token.name as VaultCurrency,
-    vault.chain_id,
+    vault?.chain_id,
+    vault?.token?.name,
   );
 
   React.useEffect(() => {
@@ -53,6 +51,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
     };
 
     initContract();
+    //   Adding createVaultInstance as a dep causes infinite loop
   }, [vault.address, vault.token.address, isConnected]);
 
   return (
@@ -76,7 +75,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
           </div>
         </div>
         {isConnected && !isInvalid(balance) && (
-          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={yourDeposit} />
+          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vaultDepositUsd} />
         )}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>

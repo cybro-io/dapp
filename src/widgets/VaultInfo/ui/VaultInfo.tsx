@@ -21,7 +21,7 @@ import {
   Text,
   TextView,
 } from '@/shared/ui';
-import { isInvalid, VaultCurrency } from '@/shared/utils';
+import { isInvalid } from '@/shared/utils';
 
 import styles from './VaultInfo.module.scss';
 
@@ -41,15 +41,13 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
 }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { balance } = useBalance(tokenContract);
-  const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
-
-  const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(
+  const { balance, vaultDepositUsd } = useBalance(
+    tokenContract,
     vaultContract,
-    '0',
-    (vault?.token.name || 'WBTC') as VaultCurrency,
-    vault?.chain_id || 0,
+    vault?.chain_id,
+    vault?.token?.name,
   );
+  const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
 
   const modalProps = React.useMemo(() => {
     return {
@@ -60,7 +58,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       tokenContract,
       tokenIcon: vault?.icon,
       apy: vault?.apy,
-      userDeposit: yourDeposit,
+      userDeposit: vaultDepositUsd,
       chainId: vault?.chain_id,
       chain: vault?.chain,
     };
@@ -74,7 +72,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
     vault?.chain,
     vaultContract,
     tokenContract,
-    yourDeposit,
+    vaultDepositUsd,
   ]);
 
   const onTabChange = React.useCallback(
@@ -104,7 +102,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           tvl={vault?.tvl}
           provider={vault?.provider}
           tokenIcon={vault?.icon}
-          yourDeposit={yourDeposit}
+          yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
         />
         <VaultStats
@@ -116,7 +114,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           provider={vault?.provider}
           availableFunds={isConnected && !isInvalid(balance) ? balance : null}
           tokenIcon={vault?.icon}
-          yourDeposit={yourDeposit}
+          yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
         />
       </section>

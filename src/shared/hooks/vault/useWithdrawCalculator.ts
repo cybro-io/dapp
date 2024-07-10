@@ -3,6 +3,7 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
+import { QueryKey } from '@/shared/const';
 import {
   Maybe,
   Money,
@@ -14,8 +15,6 @@ import {
 import { convertToUsd, fromWei, VaultCurrency } from '@/shared/utils';
 
 type UseWithdrawCalculator = {
-  availableFunds: Money;
-  availableFundsUsd: Money;
   yourWithdraw: Money;
   yourWithdrawUsd: Money;
   currentRate: Money;
@@ -28,15 +27,16 @@ export const useWithdrawCalculator = (
   token: VaultCurrency,
   chainId: number,
 ): UseWithdrawCalculator => {
-  const { data } = useGetPriceApiV1MarketDataPriceGet({
-    token,
-    chain_id: chainId,
-  });
+  const { data } = useGetPriceApiV1MarketDataPriceGet(
+    {
+      token,
+      chain_id: chainId,
+    },
+    { query: { queryKey: [QueryKey.TokenPrice, token, chainId] } },
+  );
 
   const tokenPrice = Number(data?.data?.data?.price);
   const { address } = useWeb3ModalAccount();
-  const [availableFunds, setAvailableFunds] = React.useState<Money>(0.0);
-  const [availableFundsUsd, setAvailableFundsUsd] = React.useState<Money>(0);
   const [yourWithdraw, setYourWithdraw] = React.useState<Money>(0.0);
   const [yourWithdrawUsd, setYourWithdrawUsd] = React.useState<Money>(0.0);
   const [currentRate, setCurrentRate] = React.useState<Money>(0.0);
@@ -49,23 +49,15 @@ export const useWithdrawCalculator = (
 
     const sharePrice = await vaultContract.sharePrice();
     const decimals = Number(await vaultContract.decimals());
+
     const weiAmountToWithdraw = ethers.parseUnits(amountToWithdraw, decimals);
-
-    const userTotalShares = await vaultContract.balanceOf(address);
-    const availableFunds = fromWei(userTotalShares, decimals);
-    const availableFundsTokens = availableFunds
-      ? (userTotalShares * sharePrice) / BigInt(10 ** decimals)
-      : 0;
-    const availableFundsUsd = convertToUsd(fromWei(availableFundsTokens, decimals), tokenPrice);
-
     const weiYourWithdraw = (weiAmountToWithdraw * sharePrice) / BigInt(10 ** decimals);
+
     const yourWithdrawTokens = fromWei(weiYourWithdraw, decimals);
     const yourWithdrawUsd = convertToUsd(yourWithdrawTokens, tokenPrice);
 
     const currentRate = fromWei(sharePrice, decimals);
 
-    setAvailableFundsUsd(availableFundsUsd);
-    setAvailableFunds(availableFunds);
     setYourWithdraw(yourWithdrawTokens);
     setYourWithdrawUsd(yourWithdrawUsd);
     setCurrentRate(currentRate);
@@ -97,8 +89,6 @@ export const useWithdrawCalculator = (
   }, [amountToWithdraw, fetchData]);
 
   return {
-    availableFunds,
-    availableFundsUsd,
     yourWithdraw,
     yourWithdrawUsd,
     currentRate,
