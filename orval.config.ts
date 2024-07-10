@@ -7,7 +7,7 @@ const baseUrl = process.env.NEXT_PUBLIC_API_URL as string;
 
 export default defineConfig({
   dapp: {
-    input: `${baseUrl}/openapi.json`,
+    input: `${baseUrl}openapi.json`,
     output: {
       target: './src/shared/types/__generated/api',
       client: 'react-query',

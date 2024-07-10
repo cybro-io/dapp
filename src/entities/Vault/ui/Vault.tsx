@@ -69,12 +69,12 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             viewType={TrustScoreViewType.Desktop}
           />
           <HowTrustScoreCountsButton
-            className={styles.howCountsDesktop}
-            viewType={HowTrustScoreCountsButtonViewType.Tooltip}
-          />
-          <HowTrustScoreCountsButton
             className={styles.howCountsMobile}
             viewType={HowTrustScoreCountsButtonViewType.Button}
+          />
+          <HowTrustScoreCountsButton
+            className={styles.howCountsDesktop}
+            viewType={HowTrustScoreCountsButtonViewType.Tooltip}
           />
         </div>
       </div>

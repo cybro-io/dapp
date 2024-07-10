@@ -36,22 +36,29 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
   }, []);
 
   return (
-    <Link
-      onClick={() => openModal(Modal.HowTrustScoreCounts)}
-      viewType={viewType as LinkView}
-      className={clsx(styles.root, className)}
-      tooltipClassName={styles.tooltip}
-      tooltipContent={
-        <HowTrustScoreCountsInfo viewType={HowTrustScoreCountsInfoViewType.Tooltip} />
-      }
-      onTooltipChange={onTooltipChange}
-    >
-      How Trust Score Counts
-      {viewType === HowTrustScoreCountsButtonViewType.Button && hasIcon && (
-        <div>
-          <InfoIcon />
-        </div>
+    <div className={clsx(styles.root, className)}>
+      {viewType === HowTrustScoreCountsButtonViewType.Tooltip && (
+        <span className={styles.text}>How Trust Score Counts</span>
       )}
-    </Link>
+      <Link
+        onClick={() => openModal(Modal.HowTrustScoreCounts)}
+        viewType={viewType as LinkView}
+        className={clsx(styles.link)}
+        tooltipClassName={styles.tooltip}
+        tooltipContent={
+          <HowTrustScoreCountsInfo viewType={HowTrustScoreCountsInfoViewType.Tooltip} />
+        }
+        onTooltipChange={onTooltipChange}
+      >
+        {viewType === HowTrustScoreCountsButtonViewType.Button && (
+          <span className={styles.text}>How Trust Score Counts</span>
+        )}
+        {viewType === HowTrustScoreCountsButtonViewType.Button && hasIcon && (
+          <div>
+            <InfoIcon />
+          </div>
+        )}
+      </Link>
+    </div>
   );
 };
