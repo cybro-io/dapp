@@ -40,7 +40,6 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
   const { createVaultInstance } = useEthers();
   const [vaultContract, setVaultContract] = React.useState<Nullable<Vault>>();
   const [tokenContract, setTokenContract] = React.useState<Nullable<Token>>();
-  const [isContractsLoading, setIsContractsLoading] = React.useState<boolean>(false);
   const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
     vaultId,
     { address },
@@ -53,20 +52,18 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
   React.useEffect(() => {
     const initContracts = async () => {
       if (vault && isConnected) {
-        setIsContractsLoading(true);
         const { vault: createdVault, token: createdToken } = await createVaultInstance(
           vault.address,
           vault.abi,
         );
 
-        setIsContractsLoading(false);
         setVaultContract(createdVault);
         setTokenContract(createdToken);
       }
     };
 
     initContracts();
-  }, [createVaultInstance, vault, vault?.address, isConnected]);
+  }, [isConnected, vault?.address, vault?.abi]);
 
   const currency = vault?.token.name as VaultCurrency;
 
