@@ -44,7 +44,6 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
   const trustScoreDetails = data?.data?.data;
 
   if (isLoading || isDataLoading || !trustScoreDetails) {
-    // return 'Error...';
     return <SafetyScoreDetailsSkeleton />;
   }
 
