@@ -48,7 +48,7 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
         throw new Error('Captcha token failed.');
       }
 
-      await mutate({
+      mutate({
         data: {
           captcha_answer: token,
           email,
