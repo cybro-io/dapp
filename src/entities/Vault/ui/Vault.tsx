@@ -14,7 +14,7 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import { useBalances, useWithdrawCalculator } from '@/shared/hooks';
+import { useBalance, useWithdrawCalculator } from '@/shared/hooks';
 import { ComponentWithProps, Token, VaultMin, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 import { isInvalid, VaultCurrency } from '@/shared/utils';
@@ -30,7 +30,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { createVaultInstance } = useEthers();
   const [tokenContract, setTokenContract] = React.useState<Token>();
   const [vaultContract, setVaultContract] = React.useState<VaultMin>();
-  const { balance } = useBalances(tokenContract);
+  const { balance } = useBalance(tokenContract);
 
   const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(
     vaultContract,

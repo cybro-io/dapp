@@ -10,7 +10,7 @@ import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalances, useWithdrawCalculator } from '@/shared/hooks';
+import { useBalance, useWithdrawCalculator } from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
 import {
   Button,
@@ -41,7 +41,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
 }) => {
   const { openModal } = useModal();
   const { isConnected } = useWeb3ModalAccount();
-  const { balance } = useBalances(tokenContract);
+  const { balance } = useBalance(tokenContract);
   const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
 
   const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(

@@ -8,7 +8,7 @@ import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import {
-  useBalances,
+  useBalance,
   useDeposit,
   useWithdraw,
   useWithdrawCalculator,
@@ -46,7 +46,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const [amount, setAmount] = React.useState<string>('0');
   const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
-  const { balance, refetchBalance } = useBalances(tokenContract);
+  const { balance, refetchBalance } = useBalance(tokenContract);
   const {
     availableFunds,
     availableFundsUsd: withDrawAvailableFundsUsd,

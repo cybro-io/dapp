@@ -5,7 +5,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { useBalanceContext, useEthers } from '@/app/providers';
 import { Nullable, Token } from '@/shared/types';
 
-export const useBalances = (tokenContract: Nullable<Token>) => {
+export const useBalance = (tokenContract: Nullable<Token>) => {
   const { isConnected } = useWeb3ModalAccount();
   const { provider, signer, tokens } = useEthers();
   const { balance, refetchBalance } = useBalanceContext();
