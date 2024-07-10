@@ -6,6 +6,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
+import VAULT_MIN_ABI from '@/app/abi/vaultMin.json';
 import { useEthers } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import {
@@ -13,10 +14,10 @@ import {
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import { useBalances } from '@/shared/hooks';
-import { ComponentWithProps, Token, VaultsResponseData } from '@/shared/types';
+import { useBalances, useWithdrawCalculator } from '@/shared/hooks';
+import { ComponentWithProps, Token, VaultMin, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
-import { isInvalid } from '@/shared/utils';
+import { isInvalid, VaultCurrency } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
@@ -26,16 +27,33 @@ type VaultProps = {
 
 export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  const { createTokenInstance } = useEthers();
+  const { createVaultInstance } = useEthers();
   const [tokenContract, setTokenContract] = React.useState<Token>();
+  const [vaultContract, setVaultContract] = React.useState<VaultMin>();
   const { balance } = useBalances(tokenContract);
 
+  const { availableFundsUsd: yourDeposit } = useWithdrawCalculator(
+    vaultContract,
+    '0',
+    vault.token.name as VaultCurrency,
+    vault.chain_id,
+  );
+
   React.useEffect(() => {
-    if (isConnected) {
-      const tokenContract = createTokenInstance(vault.token.address);
-      setTokenContract(tokenContract);
-    }
-  }, [createTokenInstance, vault.address, vault.token.address, isConnected]);
+    const initContract = async () => {
+      if (isConnected) {
+        const { vault: vaultContract, token: tokenContract } = await createVaultInstance(
+          vault.address,
+          VAULT_MIN_ABI,
+        );
+
+        setTokenContract(tokenContract);
+        setVaultContract(vaultContract);
+      }
+    };
+
+    initContract();
+  }, [vault.address, vault.token.address, isConnected]);
 
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
@@ -58,7 +76,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
           </div>
         </div>
         {isConnected && !isInvalid(balance) && (
-          <AvailableFunds tokenIcon={vault.icon} balance={balance} />
+          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={yourDeposit} />
         )}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>

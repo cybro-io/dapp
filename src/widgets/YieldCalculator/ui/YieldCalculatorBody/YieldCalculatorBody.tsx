@@ -55,18 +55,6 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     currentRate,
     timer,
   } = useWithdrawCalculator(vaultContract, amount, currency, chainId);
-
-  console.log('hey');
-
-  // const availableFunds = 0;
-  // const withDrawAvailableFundsUsd = 0;
-  // const yourWithdraw = 0;
-  // const yourWithdrawUsd = 0;
-  // const currentRate = 0;
-  // const timer = '0';
-
-  // console.log({ timer });
-
   const {
     availableFundsUsd: depositAvailableFundsUsd,
     entryAmountUsd,

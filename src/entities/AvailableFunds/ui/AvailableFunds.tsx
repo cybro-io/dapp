@@ -28,19 +28,17 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
     if (deposit) {
       return {
         firstTitle: 'Your Deposit:',
-        firstValue: userDeposit,
-        secondTitle: 'Earnings Monthly:',
-        secondValue: '$0.00',
+        firstValue: `$${userDeposit}`,
       };
     }
 
     return {
       firstTitle: 'Available Funds:',
-      firstValue: availableFunds,
+      firstValue: `$${availableFunds}`,
     };
   }, [availableFunds, deposit, userDeposit]);
 
-  const { firstTitle, firstValue, secondTitle, secondValue } = getData();
+  const { firstTitle, firstValue } = getData();
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -56,24 +54,13 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
             {firstValue}
           </Text>
         </div>
-        {!deposit ? (
-          <Button
-            view={ButtonView.Secondary}
-            size={ButtonSize.Small}
-            className={styles.depositButton}
-          >
-            Deposit
-          </Button>
-        ) : (
-          <div className={styles.funds}>
-            <Text className={styles.fundsTitle} textView={TextView.C3}>
-              {secondTitle}
-            </Text>
-            <Text className={styles.fundsValue} textView={TextView.P3}>
-              {secondValue}
-            </Text>
-          </div>
-        )}
+        <Button
+          view={ButtonView.Secondary}
+          size={ButtonSize.Small}
+          className={styles.depositButton}
+        >
+          Deposit
+        </Button>
       </div>
     </div>
   );

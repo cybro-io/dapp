@@ -3,7 +3,14 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
-import { Maybe, Money, Nullable, useGetPriceApiV1MarketDataPriceGet, Vault } from '@/shared/types';
+import {
+  Maybe,
+  Money,
+  Nullable,
+  useGetPriceApiV1MarketDataPriceGet,
+  Vault,
+  VaultMin,
+} from '@/shared/types';
 import { convertToUsd, fromWei, VaultCurrency } from '@/shared/utils';
 
 type UseWithdrawCalculator = {
@@ -16,7 +23,7 @@ type UseWithdrawCalculator = {
 };
 
 export const useWithdrawCalculator = (
-  vaultContract: Nullable<Vault>,
+  vaultContract: Nullable<Vault | VaultMin>,
   amountToWithdraw: Maybe<string> = '0',
   token: VaultCurrency,
   chainId: number,
