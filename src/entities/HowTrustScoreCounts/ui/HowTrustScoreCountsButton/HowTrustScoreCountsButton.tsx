@@ -35,13 +35,20 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
     }
   }, []);
 
+  const onTooltipClick = React.useCallback((event: Event) => {
+    console.log('event', event);
+    event.preventDefault();
+    event.stopPropagation();
+    openModal(Modal.HowTrustScoreCounts);
+  }, []);
+
   return (
     <div className={clsx(styles.root, className)}>
       {viewType === HowTrustScoreCountsButtonViewType.Tooltip && (
         <span className={styles.text}>How Trust Score Counts</span>
       )}
       <Link
-        onClick={() => openModal(Modal.HowTrustScoreCounts)}
+        onClick={onTooltipClick}
         viewType={viewType as LinkView}
         className={clsx(styles.link)}
         tooltipClassName={styles.tooltip}

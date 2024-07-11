@@ -17,7 +17,7 @@ type LinkProps = {
   href?: string;
   tooltipContent?: React.ReactNode;
   viewType?: LinkView;
-  onClick?: () => void;
+  onClick?: (...args: any) => void;
   textClassName?: string;
   tooltipClassName?: string;
   onTooltipChange?: (isOpen: boolean) => void;
