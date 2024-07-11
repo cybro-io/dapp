@@ -60,13 +60,19 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <p className={styles.sectionHeading}>Legal</p>
           <ul className={clsx(styles.sectionList)}>
             <li className={styles.sectionItem}>
-              <Link href={'/'}>Terms and Conditions</Link>
+              <a href={'/Cybro Blast L2 Terms.pdf'} target="_blank" rel="noreferrer">
+                Terms and Conditions
+              </a>
             </li>
             <li className={styles.sectionItem}>
-              <Link href={'/'}>Privacy Policy</Link>
+              <a href={'/Cybro Privacy.pdf'} target="_blank" rel="noreferrer">
+                Privacy Policy
+              </a>
             </li>
             <li className={styles.sectionItem}>
-              <Link href={'/'}>Documentation</Link>
+              <Link href={'https://docs.cybro.io/cybro'} target="_blank">
+                Documentation
+              </Link>
             </li>
           </ul>
         </div>
