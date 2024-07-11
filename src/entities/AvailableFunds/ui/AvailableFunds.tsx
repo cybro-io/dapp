@@ -13,12 +13,14 @@ type AvailableFundsProps = {
   balance: Money;
   tokenIcon: Nullable<string>;
   deposit: Money;
+  onButtonClick?: (...args: any) => void;
 };
 
 export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
   balance,
   deposit,
   tokenIcon,
+  onButtonClick,
   className,
 }) => {
   const userDeposit = deposit && formatUserMoney(deposit);
@@ -58,6 +60,7 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
           view={ButtonView.Secondary}
           size={ButtonSize.Small}
           className={styles.depositButton}
+          onClick={onButtonClick}
         >
           Deposit
         </Button>

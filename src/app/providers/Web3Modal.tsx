@@ -29,7 +29,7 @@ const mainChains = [
     chainId: Chain.BlastMain,
     name: 'Blast',
     currency: 'ETH',
-    explorerUrl: 'https://blastscan.io/',
+    explorerUrl: 'https://blastscan.io',
     rpcUrl: `https://rpc.ankr.com/blast/${anrkId}`,
   },
 ];

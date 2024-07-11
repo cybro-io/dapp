@@ -2,6 +2,7 @@ import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 import { Modal, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
@@ -9,7 +10,7 @@ import { Banner, BannerColor, BannerViewType } from '@/entities/Banner';
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
-import { YieldSwitchOptions } from '@/shared/const';
+import { ChainToExplorerUrl, YieldSwitchOptions } from '@/shared/const';
 import { useBalance } from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
 import {
@@ -40,7 +41,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
   className,
 }) => {
   const { openModal } = useModal();
-  const { isConnected } = useWeb3ModalAccount();
+  const { isConnected, chainId } = useWeb3ModalAccount();
   const { balance, vaultDepositUsd } = useBalance(
     tokenContract,
     vaultContract,
@@ -75,6 +76,12 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
     vaultDepositUsd,
   ]);
 
+  console.log(
+    chainId && vaultContract?.target
+      ? `${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`
+      : 'noooooo',
+  );
+
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {
       openModal(Modal.YieldCalculator, { ...modalProps, activeTab });
@@ -92,6 +99,12 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             balance={balance}
             deposit={vaultDepositUsd}
             tokenIcon={vault?.icon}
+            onButtonClick={() =>
+              openModal(Modal.YieldCalculator, {
+                ...modalProps,
+                activeTab: YieldSwitchOptions.Deposit,
+              })
+            }
           />
         )}
         <VaultStats
@@ -137,9 +150,20 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             <Text className={styles.description} textView={TextView.P2}>
               {vault?.description}
             </Text>
-            <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>
-              View contract details
-            </Button>
+            {!isInvalid(chainId) && vaultContract?.target && (
+              <Link
+                href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`}
+                target="_blank"
+              >
+                <Button
+                  className={styles.button}
+                  view={ButtonView.Secondary}
+                  size={ButtonSize.Small}
+                >
+                  View contract details
+                </Button>
+              </Link>
+            )}
           </section>
           <section className={styles.yieldCalculator}>
             <Banner

@@ -76,7 +76,7 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
           <span className={styles.accent}>One-Click</span> Investing
         </Text>
         <div className={styles.imageContainerMobile}>
-          <Image src={'/oneClickBg.png'} alt={''} height={264} width={375} />
+          <Image src={'/oneClickBg.webp'} alt={''} height={264} width={375} />
         </div>
         <Text className={styles.subtitle} textView={TextView.H3}>
           Coming&nbsp;Soon This&nbsp;Year
@@ -93,7 +93,7 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
       </div>
       <div className={styles.right}>
         <div className={styles.imageContainerDesktop}>
-          <Image src={'/oneClickBgDesktop.png'} alt={''} height={530} width={620} />
+          <Image src={'/oneClickBgDesktop.webp'} alt={''} height={530} width={620} />
         </div>
         <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
           <input

@@ -5,10 +5,6 @@
   border-radius: 12px;
 }
 
-.detailsChip {
-  font-size: 9px;
-}
-
 .secondRow {
   border-top: 1px solid $stroke-tableBorder;
 }
@@ -55,7 +51,7 @@
 
 .availableFundsValue, .yourDepositValue {
   gap: 5px;
-  font-size: 18px!important;
+  font-size: 18px !important;
 }
 
 .card {
@@ -103,11 +99,4 @@
     width: 28px;
     height: 24px;
   }
-}
-
-@media screen and (width >= 1000px){
-  .detailsChip.detailsChip {
-    font-size: 10px;
-  }
-
 }

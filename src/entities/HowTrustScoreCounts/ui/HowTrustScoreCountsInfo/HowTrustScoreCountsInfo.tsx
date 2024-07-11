@@ -26,10 +26,10 @@ export const HowTrustScoreCountsInfo: ComponentWithProps<HowTrustScoreCountsInfo
       )}
       <div className={styles.imagesContainer}>
         <div className={clsx(styles.leftImage, styles.image)}>
-          <Image src={'/howCountsLeft.png'} fill objectFit="contain" alt={''} />
+          <Image src={'/howCountsLeft.webp'} fill objectFit="contain" alt={''} />
         </div>
         <div className={clsx(styles.rightImage, styles.image)}>
-          <Image src={'/howCountsRight.png'} fill objectFit="contain" alt={''} />
+          <Image src={'/howCountsRight.webp'} fill objectFit="contain" alt={''} />
         </div>
       </div>
       <Text className={styles.text}>

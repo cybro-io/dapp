@@ -14,6 +14,7 @@ import {
 } from '@nextui-org/react';
 import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
@@ -119,8 +120,9 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
               }
             >
               <div className={styles.connectedWalletContainer}>
-                <div className={styles.tetherIconContainer}>
-                  <TetherIcon />
+                <div className={styles.avatarContainer}>
+                  <Image src={'/avatar.webp'} height={20} width={20} alt={'avatar'} />
+                  {/*<TetherIcon />*/}
                 </div>
                 <Text textView={TextView.C3} className={styles.connectedWallet}>
                   {shortenWalletAddress(address)}

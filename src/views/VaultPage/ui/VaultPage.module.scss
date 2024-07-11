@@ -4,7 +4,7 @@
   padding-top: 40px;
   padding-bottom: 40px;
   background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
-  url('/HeroBgMobile.png') -30px center / auto 100% no-repeat,
+  url('/HeroBgMobile.webp') -30px center / auto 100% no-repeat,
   url('/RectBg.svg') repeat,
   url('/CybroBgGrey.svg') 0 30px / 100% no-repeat;
   justify-content: center;
@@ -127,7 +127,7 @@
     padding-top: 32px;
     padding-bottom: 95px;
     background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
-    url('/HeroBg.png') right 0 no-repeat,
+    url('/HeroBg.webp') right 0 no-repeat,
     url('/RectBg.svg') repeat,
     url('/CybroBgGrey.svg') top / 100% no-repeat;
   }
