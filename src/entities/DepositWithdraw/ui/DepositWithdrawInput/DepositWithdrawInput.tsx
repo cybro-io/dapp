@@ -81,6 +81,18 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
 
   const { availableFundsValue, availableFundsValueUsd } = getData();
 
+  const numberInputOnWheelPreventChange = (event: any) => {
+    // Prevent the input value change
+    event.target.blur();
+
+    // Prevent the page/container scrolling
+    event.stopPropagation();
+
+    setTimeout(() => {
+      event.target.focus();
+    }, 0);
+  };
+
   return (
     <div className={clsx(styles.calculator, className)}>
       <div className={styles.userInfo}>
@@ -126,6 +138,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             type="number"
             onChange={setUserValue}
             placeholder={'0'}
+            onWheel={numberInputOnWheelPreventChange}
           />
           <span className={styles.equal}>≈ ${formatUserMoney(userValueUsd)}</span>
         </div>
