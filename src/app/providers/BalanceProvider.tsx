@@ -47,7 +47,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
         if (NATIVE_TOKENS.includes(tokenAddress)) {
           balance = await provider.getBalance(userAddress);
-          decimals = 8;
+          decimals = 18;
         } else {
           balance = await tokenContract.balanceOf(userAddress);
           decimals = await tokenContract.decimals();

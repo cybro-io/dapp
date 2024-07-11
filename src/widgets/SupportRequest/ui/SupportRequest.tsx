@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createRef, RefObject } from 'react';
+import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
@@ -9,7 +9,11 @@ import { useForm } from 'react-hook-form';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { useToast } from '@/shared/hooks';
-import { ComponentWithProps, useCaptchaApiV1WaitlistCaptchaGet } from '@/shared/types';
+import {
+  ComponentWithProps,
+  useCaptchaApiV1WaitlistCaptchaGet,
+  useCollectFeedbackApiV1CommonFeedbackPost,
+} from '@/shared/types';
 import { Button, ToastType } from '@/shared/ui';
 
 import { SupportRequestField, SupportRequestFormValues } from '../types';
@@ -22,7 +26,8 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
   const { isConnected, address } = useWeb3ModalAccount();
   const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
   const { triggerToast } = useToast();
-  const capchaRef: RefObject<ReCAPTCHA> = createRef();
+  const capchaRef: any = React.useRef();
+  const { mutate } = useCollectFeedbackApiV1CommonFeedbackPost();
 
   const capchaKey = data?.data?.data?.sitekey;
 
@@ -30,6 +35,7 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
     register,
     handleSubmit,
     formState: { errors, isValid, isSubmitting },
+    reset,
   } = useForm<SupportRequestFormValues>({
     mode: 'onBlur',
   });
@@ -38,12 +44,20 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
     try {
       const token = await capchaRef?.current?.executeAsync();
       const email = formData?.email;
+      const text = formData?.details;
 
       if (!token) {
         throw new Error('Captcha token failed.');
       }
 
+      if (!address) {
+        throw new Error('No address found.');
+      }
+
+      mutate({ data: { email, address, text, captcha_answer: token } });
+
       triggerToast({ message: 'Success', description: 'Feedback have been sent!' });
+      reset();
     } catch (e) {
       triggerToast({
         message: 'Error',
