@@ -6,16 +6,13 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
-import VAULT_MIN_ABI from '@/app/abi/vaultMin.json';
-import { useEthers } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import {
   HowTrustScoreCountsButton,
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
 import { VaultStats } from '@/entities/VaultStats';
-import { useBalance } from '@/shared/hooks';
-import { ComponentWithProps, Token, VaultMin, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
 
@@ -23,36 +20,11 @@ import styles from './Vault.module.scss';
 
 type VaultProps = {
   vault: VaultsResponseData;
+  userBalance: number;
 };
 
-export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
+export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, className }) => {
   const { isConnected } = useWeb3ModalAccount();
-  const { createVaultInstance } = useEthers();
-  const [tokenContract, setTokenContract] = React.useState<Token>();
-  const [vaultContract, setVaultContract] = React.useState<VaultMin>();
-  const { balance, vaultDepositUsd } = useBalance(
-    tokenContract,
-    vaultContract,
-    vault?.chain_id,
-    vault?.token?.name,
-  );
-
-  React.useEffect(() => {
-    const initContract = async () => {
-      if (isConnected) {
-        const { vault: vaultContract, token: tokenContract } = await createVaultInstance(
-          vault.address,
-          VAULT_MIN_ABI,
-        );
-
-        setTokenContract(tokenContract);
-        setVaultContract(vaultContract);
-      }
-    };
-
-    initContract();
-    //   Adding createVaultInstance as a dep causes infinite loop
-  }, [vault.address, vault.token.address, isConnected]);
 
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
@@ -74,8 +46,8 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, className }) => {
             ))}
           </div>
         </div>
-        {isConnected && !isInvalid(balance) && (
-          <AvailableFunds tokenIcon={vault.icon} balance={balance} deposit={vaultDepositUsd} />
+        {isConnected && !isInvalid(userBalance) && (
+          <AvailableFunds tokenIcon={vault.icon} balance={userBalance} deposit={vault.balance} />
         )}
         <VaultStats apy={vault.apy} cybroPoints={'20'} tvl={vault.tvl} provider={vault.provider} />
         <div className={styles.trustScoreContainer}>

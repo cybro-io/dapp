@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
@@ -9,7 +10,10 @@ import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
 import { QueryKey } from '@/shared/const';
-import { ComponentWithProps } from '@/shared/types';
+import {
+  ComponentWithProps,
+  useGetBalanceByAddressApiV1ProfileAddressBalanceGet,
+} from '@/shared/types';
 import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
 import {
   Button,
@@ -20,6 +24,7 @@ import {
   TextView,
   VaultSkeleton,
 } from '@/shared/ui';
+import { transformBalances } from '@/shared/utils';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
 
 import styles from './AvailableVaults.module.scss';
@@ -29,12 +34,25 @@ type AvailableVaultsProps = {};
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
+  const { address, chainId } = useWeb3ModalAccount();
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
     {},
     { query: { queryKey: [QueryKey.AvailableVaults] } },
   );
 
+  const { data: balanceData } = useGetBalanceByAddressApiV1ProfileAddressBalanceGet(
+    address || '',
+    { chain_id: chainId || 0 },
+    {
+      query: { queryKey: [QueryKey.UserBalance, address, chainId] },
+    },
+  );
+
   const vaults = data?.data?.data || [];
+  const balance = React.useMemo(
+    () => transformBalances(balanceData?.data?.data || []),
+    [balanceData?.data?.data],
+  );
 
   if (isError) {
     return <ErrorMessage />;
@@ -76,7 +94,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   }
                 />
                 <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
-                <Vault vault={vault} />
+                <Vault vault={vault} userBalance={balance[vault.token.address]} />
               </React.Fragment>
             );
           }
@@ -106,7 +124,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   captionTarget="_blank"
                 />
                 <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
-                <Vault vault={vault} />
+                <Vault vault={vault} userBalance={balance[vault.token.address]} />
               </React.Fragment>
             );
           }
@@ -114,7 +132,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
           if (index === 9) {
             return (
               <React.Fragment key={vault.id}>
-                <Vault vault={vault} />
+                <Vault vault={vault} userBalance={balance[vault.token.address]} />
                 <JoinCommunityBanner
                   className={clsx(styles.joinBanner, styles.joinBannerDesktop)}
                 />
@@ -122,7 +140,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             );
           }
 
-          return <Vault vault={vault} key={vault.id} />;
+          return <Vault vault={vault} userBalance={balance[vault.token.address]} key={vault.id} />;
         })}
       </div>
     </section>

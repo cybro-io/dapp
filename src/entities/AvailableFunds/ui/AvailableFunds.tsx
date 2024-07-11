@@ -12,7 +12,7 @@ import styles from './AvailableFunds.module.scss';
 type AvailableFundsProps = {
   balance: Money;
   tokenIcon: Nullable<string>;
-  deposit?: Money;
+  deposit: Money;
 };
 
 export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
@@ -27,31 +27,31 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
   const getData = React.useCallback(() => {
     if (userDeposit !== '0' && userDeposit !== 0 && !isInvalid(userDeposit)) {
       return {
-        firstTitle: 'Your Deposit:',
-        firstValue: `$${userDeposit}`,
+        title: 'Your Deposit:',
+        value: `$${userDeposit}`,
       };
     }
 
     return {
-      firstTitle: 'Available Funds:',
-      firstValue: `$${availableFunds}`,
+      title: 'Available Funds:',
+      value: `$${availableFunds}`,
     };
   }, [availableFunds, userDeposit]);
 
-  const { firstTitle, firstValue } = getData();
+  const { title, value } = getData();
 
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.availableFundsInnerContainer}>
         <div className={styles.funds}>
           <Text className={styles.fundsTitle} textView={TextView.C3}>
-            {firstTitle}
+            {title}
           </Text>
           <Text className={styles.fundsValue} textView={TextView.P3}>
             <span className={styles.tetherIconContainer}>
               {tokenIcon && <Image src={tokenIcon} alt={''} height={16} width={16} />}
             </span>
-            {firstValue}
+            {value}
           </Text>
         </div>
         <Button

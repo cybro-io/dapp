@@ -10,7 +10,7 @@ import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { YieldSwitchOptions } from '@/shared/const';
-import { useBalance, useWithdrawCalculator } from '@/shared/hooks';
+import { useBalance } from '@/shared/hooks';
 import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
 import {
   Button,
@@ -90,7 +90,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           <AvailableFunds
             className={styles.availableFunds}
             balance={balance}
-            deposit={vault?.balance}
+            deposit={vaultDepositUsd}
             tokenIcon={vault?.icon}
           />
         )}

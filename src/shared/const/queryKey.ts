@@ -3,4 +3,5 @@ export enum QueryKey {
   Vault = 'vault',
   TrustScoreDetails = 'trustScoreDetails',
   TokenPrice = 'tokenPrice',
+  UserBalance = 'userBalance',
 }
