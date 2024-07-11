@@ -12,7 +12,7 @@ import {
   Vault,
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
-import { formatUserMoney, VaultCurrency } from '@/shared/utils';
+import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
 
 type UseDeposit = {
   deposit: (amount: string) => Promise<void>;
@@ -31,7 +31,7 @@ export const useDeposit = (
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
-  const { tokens } = useEthers();
+  const { tokens, signer, provider } = useEthers();
   const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
 
   const deposit = React.useCallback(
@@ -57,7 +57,10 @@ export const useDeposit = (
         setButtonMessage('Approving...');
         await approveTx.wait();
 
-        const depositTx = await vaultContract.deposit(weiAmount, address);
+        const depositEstimatedGas = await vaultContract.deposit.estimateGas(weiAmount, address);
+        const gasLimit = increaseGasLimit(depositEstimatedGas, 1.2);
+
+        const depositTx = await vaultContract.deposit(weiAmount, address, { gasLimit });
         setButtonMessage('Depositing...');
         await depositTx.wait();
 

@@ -13,7 +13,7 @@ import {
   Vault,
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
-import { formatUserMoney, VaultCurrency } from '@/shared/utils';
+import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
 
 import Null = types.Null;
 
@@ -54,7 +54,14 @@ export const useWithdraw = (
         const decimals = await tokenContract.decimals();
         const weiAmount = ethers.parseUnits(amount, decimals);
 
-        const withdrawTx = await vaultContract.redeem(weiAmount, address, address);
+        const withdrawEstimatedGas = await vaultContract.redeem.estimateGas(
+          weiAmount,
+          address,
+          address,
+        );
+        const gasLimit = increaseGasLimit(withdrawEstimatedGas, 1.2);
+
+        const withdrawTx = await vaultContract.redeem(weiAmount, address, address, { gasLimit });
         setButtonMessage('Redeeming...');
         await withdrawTx.wait();
 

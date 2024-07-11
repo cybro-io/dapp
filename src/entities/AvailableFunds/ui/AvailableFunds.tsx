@@ -5,7 +5,7 @@ import Image from 'next/image';
 
 import { ComponentWithProps, Money, Nullable } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
-import { formatUserMoney } from '@/shared/utils';
+import { formatUserMoney, isInvalid } from '@/shared/utils';
 
 import styles from './AvailableFunds.module.scss';
 
@@ -25,7 +25,7 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
   const availableFunds = formatUserMoney(balance);
 
   const getData = React.useCallback(() => {
-    if (deposit) {
+    if (userDeposit !== '0' && userDeposit !== 0 && !isInvalid(userDeposit)) {
       return {
         firstTitle: 'Your Deposit:',
         firstValue: `$${userDeposit}`,
@@ -36,7 +36,7 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
       firstTitle: 'Available Funds:',
       firstValue: `$${availableFunds}`,
     };
-  }, [availableFunds, deposit, userDeposit]);
+  }, [availableFunds, userDeposit]);
 
   const { firstTitle, firstValue } = getData();
 

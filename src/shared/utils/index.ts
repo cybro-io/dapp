@@ -3,3 +3,4 @@ export * from './money';
 export * from './mockVault';
 export * from './utils';
 export * from './trustScore';
+export * from './contract';
