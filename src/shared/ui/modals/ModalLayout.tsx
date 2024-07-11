@@ -22,6 +22,28 @@ export const ModalLayout: ComponentWithProps<ModalLayoutProps> = ({
   className,
 }) => {
   const { closeModal } = useModal();
+
+  // Handling system buttons and search bars on mobile
+  React.useEffect(() => {
+    const adjustModalHeight = () => {
+      const modalElement = document.querySelector(`.${styles.root}`) as HTMLElement | null;
+      if (modalElement) {
+        modalElement.style.height = `${window.innerHeight}px`;
+      }
+    };
+
+    window.addEventListener('resize', adjustModalHeight);
+    window.addEventListener('orientationchange', adjustModalHeight);
+
+    // Initial adjustment
+    adjustModalHeight();
+
+    return () => {
+      window.removeEventListener('resize', adjustModalHeight);
+      window.removeEventListener('orientationchange', adjustModalHeight);
+    };
+  }, []);
+
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.content}>
