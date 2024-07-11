@@ -104,7 +104,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             textView={TextView.P3}
             className={clsx(styles.mobileDescription, styles.description)}
           >
-            Maximize your returns with strategic Bitcoin investments
+            {vault?.description}
           </Text>
           <div className={styles.chipsContainer}>
             {vault?.badges.map(badge => (

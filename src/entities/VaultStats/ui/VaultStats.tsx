@@ -166,19 +166,19 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                   </Text>
                 </div>
               )}
-              {!isInvalid(earningsMonthly) && (
-                <div className={styles.detailsItem}>
-                  <Text textView={TextView.C3} className={styles.detailsTitle}>
-                    Earnings Monthly
-                  </Text>
-                  <Text
-                    textView={TextView.P3}
-                    className={clsx(styles.detailsValue, styles.earningsMonthlyValue)}
-                  >
-                    ${earningsMonthly}
-                  </Text>
-                </div>
-              )}
+              {/*{!isInvalid(earningsMonthly) && (*/}
+              {/*  <div className={styles.detailsItem}>*/}
+              {/*    <Text textView={TextView.C3} className={styles.detailsTitle}>*/}
+              {/*      Earnings Monthly*/}
+              {/*    </Text>*/}
+              {/*    <Text*/}
+              {/*      textView={TextView.P3}*/}
+              {/*      className={clsx(styles.detailsValue, styles.earningsMonthlyValue)}*/}
+              {/*    >*/}
+              {/*      ${earningsMonthly}*/}
+              {/*    </Text>*/}
+              {/*  </div>*/}
+              {/*)}*/}
             </React.Fragment>
           )}
         </div>
