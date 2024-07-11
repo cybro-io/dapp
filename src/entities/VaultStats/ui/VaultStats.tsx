@@ -162,7 +162,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
                         <Image src={tokenIcon} alt={''} height={24} width={24} />
                       </span>
                     )}
-                    {formatUserMoney(availableFunds, 2)}
+                    {formatUserMoney(availableFunds)}
                   </Text>
                 </div>
               )}
