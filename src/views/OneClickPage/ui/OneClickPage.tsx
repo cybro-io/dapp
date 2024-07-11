@@ -1,6 +1,6 @@
 'use client';
 
-import React, { createRef, RefObject } from 'react';
+import React from 'react';
 
 import clsx from 'clsx';
 import Image from 'next/image';
@@ -27,7 +27,7 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
   const { triggerToast } = useToast();
   const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
   const { mutate, isPending } = useAddToWaitlistApiV1WaitlistSignupPost();
-  const capchaRef: RefObject<ReCAPTCHA> = createRef();
+  const capchaRef: any = React.useRef();
 
   const capchaKey = data?.data?.data?.sitekey;
 
@@ -39,32 +39,35 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
     mode: 'onBlur',
   });
 
-  const onSubmit = React.useCallback(async (formData: FormValues) => {
-    try {
-      const token = await capchaRef?.current?.executeAsync();
-      const email = formData?.email;
+  const onSubmit = React.useCallback(
+    async (formData: FormValues) => {
+      try {
+        const token = await capchaRef?.current?.executeAsync();
+        const email = formData?.email;
 
-      if (!token) {
-        throw new Error('Captcha token failed.');
+        if (!token) {
+          throw new Error('Captcha token failed.');
+        }
+
+        mutate({
+          data: {
+            captcha_answer: token,
+            email,
+          },
+        });
+
+        triggerToast({ message: 'Success', description: 'You have been added to waitlist' });
+      } catch (e) {
+        console.error(e, 'error');
+        triggerToast({
+          message: 'Error',
+          description: 'Unexpected error. Contact support',
+          type: ToastType.Error,
+        });
       }
-
-      mutate({
-        data: {
-          captcha_answer: token,
-          email,
-        },
-      });
-
-      triggerToast({ message: 'Success', description: 'You have been added to waitlist' });
-    } catch (e) {
-      console.log(e, 'error');
-      triggerToast({
-        message: 'Error',
-        description: 'Unexpected error. Contact support',
-        type: ToastType.Error,
-      });
-    }
-  }, []);
+    },
+    [mutate, triggerToast],
+  );
 
   return (
     <section className={clsx(styles.root, className)}>
