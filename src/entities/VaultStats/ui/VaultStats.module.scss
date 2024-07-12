@@ -100,3 +100,14 @@
     height: 24px;
   }
 }
+
+.tooltipContent.tooltipContent {
+  padding: 8px 12px;
+  font-family: $poppins-font;
+  font-size: 13px;
+  font-weight: 500;
+  line-height: 130%;
+  background-color: $background-tooltip;
+  border-radius: 8px;
+  max-width: 185px;
+}

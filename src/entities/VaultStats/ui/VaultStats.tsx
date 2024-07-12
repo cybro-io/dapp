@@ -7,7 +7,7 @@ import Image from 'next/image';
 import numeral from 'numeral';
 
 import { ComponentWithProps, Money, Nullable } from '@/shared/types';
-import { Chip, Text, TextView, VaultStatsSkeleton } from '@/shared/ui';
+import { Chip, Link, LinkView, Text, TextView, VaultStatsSkeleton } from '@/shared/ui';
 import { formatUserMoney, isInvalid } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
@@ -48,9 +48,15 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
     <div className={clsx(styles.root, styles[viewType], className)}>
       <div className={clsx(styles.firstRow, styles.row)}>
         <div className={styles.detailsItem}>
-          <Text textView={TextView.C3} className={styles.detailsTitle}>
-            APY
-          </Text>
+          <Link
+            viewType={LinkView.Tooltip}
+            tooltipContent={"Vault's APY is calculated as a daily average"}
+            tooltipClassName={styles.tooltipContent}
+          >
+            <Text textView={TextView.C3} className={styles.detailsTitle}>
+              APY
+            </Text>
+          </Link>
           <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.weeklyApyValue)}>
             {apy}%
           </Text>
