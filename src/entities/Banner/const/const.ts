@@ -10,6 +10,7 @@ export enum BannerColor {
 
 export enum BannerSize {
   Big = 'big',
+  BigMobile = 'bigMobile',
   Small = 'small',
   Tiny = 'tiny',
 }

@@ -10,7 +10,7 @@ import { BannerColor, BannerSize, BannerViewType } from '../const';
 import styles from './Banner.module.scss';
 
 type BannerProps = {
-  Title: React.ReactNode | string;
+  title: string;
   description?: string;
   Button?: React.ReactNode;
   caption?: string;
@@ -23,7 +23,7 @@ type BannerProps = {
 };
 
 export const Banner: ComponentWithProps<BannerProps> = ({
-  Title,
+  title,
   description,
   Button,
   caption,
@@ -35,18 +35,18 @@ export const Banner: ComponentWithProps<BannerProps> = ({
   captionTarget,
   className,
 }) => {
-  const title =
-    typeof Title === 'string' ? (
-      <Text textView={TextView.H3} className={styles.title}>
-        {Title}
-      </Text>
-    ) : (
-      Title
-    );
+  const [firstLineTitle, secondLineTitle] = title.split(/\\n|\n/);
 
   return (
     <div className={clsx(styles.root, styles[viewType], styles[color], styles[size], className)}>
-      {title}
+      <Text textView={TextView.H3} className={styles.title}>
+        {firstLineTitle}
+        {secondLineTitle && (
+          <React.Fragment>
+            <br /> <span className={styles.titleAccent}>{secondLineTitle}</span>
+          </React.Fragment>
+        )}
+      </Text>
       {description && (
         <Text textView={TextView.P3} className={styles.description}>
           {description}

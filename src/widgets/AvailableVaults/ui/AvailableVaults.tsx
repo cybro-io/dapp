@@ -78,16 +78,11 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                 <Banner
                   color={BannerColor.Dark}
                   size={BannerSize.Small}
-                  className={styles.smallBanner}
-                  Title={
-                    <Text className={styles.smallBannerTitle}>
-                      Join the
-                      <br /> <span className={styles.smallBannerTitleAccent}>Points Hunt</span>
-                    </Text>
-                  }
+                  className={clsx(styles.pointsHunt, styles.pointsHuntDesktop)}
+                  title={'Join the\nPoints Hunt'}
                   Button={
                     <Button
-                      className={styles.smallBannerButton}
+                      className={styles.pointsHuntButton}
                       size={ButtonSize.Medium}
                       onClick={() => window.open('https://cybro.io/', '_blank')}
                     >
@@ -95,7 +90,59 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                     </Button>
                   }
                 />
-                <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
+                <JoinCommunityBanner
+                  className={clsx(styles.joinBanner, styles.joinBannerDesktop)}
+                />
+                <Banner
+                  color={BannerColor.Accent}
+                  size={BannerSize.BigMobile}
+                  className={styles.referralBannerMobile}
+                  title="Become the&nbsp;CYBRO Evangelist"
+                  description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
+                  Button={
+                    isConnected ? (
+                      <ReferralLink />
+                    ) : (
+                      <ConnectWallet
+                        className={styles.referralBannerButton}
+                        viewType={ButtonView.Secondary}
+                      />
+                    )
+                  }
+                  caption="Cybro points faq"
+                  captionType={LinkView.Link}
+                  captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                  captionTarget="_blank"
+                />
+                <Vault vault={vault} userBalance={balance[vault.token.address]} />
+              </React.Fragment>
+            );
+          }
+
+          if (index === 3) {
+            return (
+              <React.Fragment key={vault.id}>
+                <Banner
+                  color={BannerColor.Dark}
+                  size={BannerSize.BigMobile}
+                  className={clsx(styles.pointsHunt, styles.pointsHuntMobile)}
+                  title={'Join the\nPoints Hunt'}
+                  description="To start racking up CYBRO Points by getting friends onboard, you'll need to grab some CYBRO tokens"
+                  Button={
+                    <Button
+                      className={styles.pointsHuntButton}
+                      size={ButtonSize.Medium}
+                      onClick={() => window.open('https://cybro.io/', '_blank')}
+                    >
+                      Buy Cybro Tokens
+                    </Button>
+                  }
+                  caption="Cybro points faq"
+                  captionType={LinkView.Link}
+                  captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                  captionTarget="_blank"
+                />
+
                 <Vault vault={vault} userBalance={balance[vault.token.address]} />
               </React.Fragment>
             );
@@ -107,15 +154,15 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                 <Banner
                   color={BannerColor.Accent}
                   size={BannerSize.Big}
-                  className={styles.bigBanner}
-                  Title="Become &nbsp; the CYBRO Evangelist"
+                  className={styles.referralBannerDesktop}
+                  title="Become &nbsp; the CYBRO Evangelist"
                   description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
                   Button={
                     isConnected ? (
                       <ReferralLink />
                     ) : (
                       <ConnectWallet
-                        className={styles.bigBannerButton}
+                        className={styles.referralBannerButton}
                         viewType={ButtonView.Secondary}
                       />
                     )
@@ -125,19 +172,16 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
                   captionTarget="_blank"
                 />
-                <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerMobile)} />
                 <Vault vault={vault} userBalance={balance[vault.token.address]} />
               </React.Fragment>
             );
           }
 
-          if (index === 9) {
+          if (index === vaults.length - 1) {
             return (
               <React.Fragment key={vault.id}>
                 <Vault vault={vault} userBalance={balance[vault.token.address]} />
-                <JoinCommunityBanner
-                  className={clsx(styles.joinBanner, styles.joinBannerDesktop)}
-                />
+                <JoinCommunityBanner className={clsx(styles.joinBanner)} />
               </React.Fragment>
             );
           }

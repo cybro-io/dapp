@@ -25,7 +25,7 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
 
   const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${address}`, [address, presaleUrl]);
   const shortLink = React.useMemo(
-    () => `${shortenUrl}/?ref=${shortenWalletAddress(address)}`,
+    () => `${shortenUrl}/?ref=${shortenWalletAddress(address, 3)}`,
     [address, shortenUrl],
   );
 

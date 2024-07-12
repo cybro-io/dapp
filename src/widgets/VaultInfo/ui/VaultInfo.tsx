@@ -6,7 +6,7 @@ import Link from 'next/link';
 
 import { Modal, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
-import { Banner, BannerColor, BannerViewType } from '@/entities/Banner';
+import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
@@ -75,12 +75,6 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
     tokenContract,
     vaultDepositUsd,
   ]);
-
-  console.log(
-    chainId && vaultContract?.target
-      ? `${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`
-      : 'noooooo',
-  );
 
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {
@@ -169,8 +163,8 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             <Banner
               className={styles.yieldBanner}
               color={BannerColor.Accent}
-              viewType={BannerViewType.Mobile}
-              Title="Yield Calculator"
+              size={BannerSize.BigMobile}
+              title="Yield Calculator"
               description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
               Button={
                 <Button

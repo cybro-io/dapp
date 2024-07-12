@@ -129,7 +129,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             <React.Fragment>
               <Banner
                 className={styles.yieldBanner}
-                Title="Calculate & Transact"
+                title="Calculate & Transact"
                 description="Estimate your earnings and deposit or withdraw instantly"
                 size={BannerSize.Tiny}
               />

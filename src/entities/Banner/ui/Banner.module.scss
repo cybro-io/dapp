@@ -11,12 +11,15 @@
   line-height: 120%;
   text-align: center;
   text-transform: uppercase;
+
+  .titleAccent {
+    color: $text-accent-yellow;
+  }
 }
 
 .dark {
-  background:
-          url('../assets/img/DarkBannerBg.png') no-repeat center 70%,
-          repeating-linear-gradient(
+  background: url('../assets/img/DarkBannerBg.png') no-repeat center 70%,
+  repeating-linear-gradient(
                   135deg,
                   $background-modal,
                   $background-modal 50px,
@@ -24,14 +27,36 @@
                   $background-window 100px
   );
   background-size: 250px 224px, auto;
+
+  .caption {
+    color: $link-defaultLabel;
+  }
 }
 
 .accent {
   background-color: $text-accent-yellow;
+  background-image: url('../assets/img/AccentBannerBg.png');
+  background-repeat: no-repeat;
+  background-position: 95% bottom;
+  background-size: 335px 335px;
+
+  .title {
+    color: $text-black-heading;
+  }
+
+  .description {
+    color: $text-black-body60;
+  }
 }
 
 .caption {
   color: $text-black-body100;
+}
+
+.buttonContainer {
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .big {
@@ -64,17 +89,36 @@
   }
 }
 
-.buttonContainer {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-}
+.bigMobile {
+  padding: 24px 34px;
+  clip-path: polygon(
+                  15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%
+  );
+  background-position: center bottom 80px;
+  background-size: 250px 248px;
 
-.big.accent {
-  background-image: url('../assets/img/AccentBannerBg.png');
-  background-repeat: no-repeat;
-  background-position: 95% bottom;
-  background-size: 335px 335px;
+  .title {
+    margin-right: auto;
+    margin-bottom: 10px;
+    margin-left: auto;
+    max-width: 260px;
+  }
+
+  .description {
+    margin-right: auto;
+    margin-bottom: 230px;
+    margin-left: auto;
+    text-align: center;
+    max-width: 260px;
+  }
+
+  .buttonContainer {
+    margin-bottom: 16px;
+  }
+
+  .caption {
+    margin: auto;
+  }
 }
 
 .small {
@@ -84,71 +128,75 @@
   );
 }
 
-.mobile.mobile {
-  flex-direction: column;
-  padding: 30px 24px;
-  background-position: center 70%;
-  background-size: 283px 263px;
-  align-items: center;
-  clip-path: polygon(
-                  15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%
-  );
+.mobile {
+  &.mobile {
+    flex-direction: column;
+    padding: 30px 24px;
+    background-position: center bottom 50px;
+    background-size: 283px 263px;
+    align-items: center;
+    clip-path: polygon(
+                    15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%
+    );
 
-  .title {
-    margin-bottom: 8px;
-    text-align: center;
-  }
+    .title {
+      margin-bottom: 8px;
+      text-align: center;
+    }
 
-  .description {
-    margin-bottom: 280px;
-    text-align: center;
-    color: $text-black-body100;
-    max-width: 270px;
-  }
+    .description {
+      margin-bottom: 280px;
+      text-align: center;
+      color: $text-black-body100;
+      max-width: 270px;
+    }
 
-  .caption {
-    padding-top: 18px;
+    .caption {
+      padding-top: 18px;
+    }
   }
 }
 
-.tiny.tiny {
-  position: relative;
-  padding: 24px 70px 24px 24px;
-  background: $background-accent-linear;
-  background-size: 100%;
-  clip-path: polygon(
-                  0% 0%, 90% 0%, 100% 30%, 100% 100%, 0% 100%,
-  );
-  overflow: visible;
+.tiny {
+  &.tiny {
+    position: relative;
+    padding: 24px 70px 24px 24px;
+    background: $background-accent-linear;
+    background-size: 100%;
+    clip-path: polygon(
+                    0% 0%, 90% 0%, 100% 30%, 100% 100%, 0% 100%
+    );
+    overflow: visible;
 
-  .title {
-    margin-bottom: 8px;
-    font-family: $unbounded-font;
-    font-size: 18px;
-    font-weight: 500;
-    line-height: 120%;
-    text-align: left;
-    text-transform: initial;
-    color: $text-black-heading;
-  }
+    .title {
+      margin-bottom: 8px;
+      font-family: $unbounded-font;
+      font-size: 18px;
+      font-weight: 500;
+      line-height: 120%;
+      text-align: left;
+      text-transform: initial;
+      color: $text-black-heading;
+    }
 
-  .description {
-    font-family: $poppins-font;
-    font-size: 13px;
-    font-weight: 500;
-    line-height: 150%;
-    color: $text-black-body60;
-  }
+    .description {
+      font-family: $poppins-font;
+      font-size: 13px;
+      font-weight: 500;
+      line-height: 150%;
+      color: $text-black-body60;
+    }
 
-  &::after {
-    position: absolute;
-    right: 0;
-    bottom: 0;
-    display: block;
-    width: 88px;
-    height: 131px;
-    background-image: url("../assets/img/Calculator.png");
-    background-size: 120%;
-    content: '';
+    &::after {
+      position: absolute;
+      right: 0;
+      bottom: 0;
+      display: block;
+      width: 88px;
+      height: 131px;
+      background-image: url("../assets/img/Calculator.png");
+      background-size: 120%;
+      content: '';
+    }
   }
 }
