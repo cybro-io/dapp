@@ -32,7 +32,7 @@ export const DepositWithdrawTabs: ComponentWithProps<DepositWithdrawTabsProps> =
   className,
 }) => {
   return (
-    <Tabs<YieldSwitchOptions>
+    <Tabs
       className={clsx(styles.tabs, className)}
       onSelectionChange={setActiveTab}
       defaultSelectedKey={activeTab}
