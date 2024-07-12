@@ -9,6 +9,8 @@ import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Tvl } from '@/entities/Tvl';
 import { Vault } from '@/entities/Vault';
+import { ConnectWallet } from '@/features/ConnectWallet';
+import { ReferralLink } from '@/features/ReferralLink';
 import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
@@ -34,7 +36,7 @@ type AvailableVaultsProps = {};
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const { address, chainId } = useWeb3ModalAccount();
+  const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
     { address },
     { query: { queryKey: [QueryKey.AvailableVaults, address] } },
@@ -109,14 +111,14 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
                   Title="Become &nbsp; the CYBRO Evangelist"
                   description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
                   Button={
-                    <Button
-                      className={styles.bigBannerButton}
-                      size={ButtonSize.Medium}
-                      view={ButtonView.Secondary}
-                      onClick={() => window.open('https://cybro.io/', '_blank')}
-                    >
-                      Buy Cybro Tokens
-                    </Button>
+                    isConnected ? (
+                      <ReferralLink />
+                    ) : (
+                      <ConnectWallet
+                        className={styles.bigBannerButton}
+                        viewType={ButtonView.Secondary}
+                      />
+                    )
                   }
                   caption="Cybro points faq"
                   captionType={LinkView.Link}

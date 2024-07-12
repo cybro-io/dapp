@@ -15,7 +15,7 @@ export const ToastProvider: React.FC<ToastProviderProps> = ({ children }) => {
       {children}
       <ToastContainer
         position="top-right"
-        autoClose={500000}
+        autoClose={3000}
         closeOnClick
         pauseOnHover
         theme="dark"

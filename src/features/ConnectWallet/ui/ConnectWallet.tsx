@@ -7,17 +7,19 @@ import clsx from 'clsx';
 
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { ComponentWithProps } from '@/shared/types';
-import { Button, ButtonSize } from '@/shared/ui';
+import { Button, ButtonSize, ButtonView } from '@/shared/ui';
 
 import styles from './ConnectWallet.module.scss';
 
 type ConnectWalletProps = {
   buttonSize?: ButtonSize;
+  viewType?: ButtonView;
   isForm?: boolean;
 };
 
 export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
   buttonSize,
+  viewType,
   isForm = false,
   className,
 }) => {
@@ -48,6 +50,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
       onClick={onConnectWalletClick}
       className={clsx(styles.root, className)}
       size={buttonSize}
+      view={viewType}
     >
       Connect Wallet
     </Button>
