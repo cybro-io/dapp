@@ -36,8 +36,8 @@ const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
   const { address, chainId } = useWeb3ModalAccount();
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
-    {},
-    { query: { queryKey: [QueryKey.AvailableVaults] } },
+    { address },
+    { query: { queryKey: [QueryKey.AvailableVaults, address] } },
   );
 
   const { data: balanceData } = useGetBalanceByAddressApiV1ProfileAddressBalanceGet(
