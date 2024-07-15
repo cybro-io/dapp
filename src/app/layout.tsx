@@ -5,7 +5,7 @@ import '@/shared/styles/global.scss';
 
 import clsx from 'clsx';
 import type { Metadata } from 'next';
-import { GoogleAnalytics } from '@next/third-parties/google'
+import { GoogleAnalytics } from '@next/third-parties/google';
 
 import { poppins, unbounded } from '@/app/fonts';
 
@@ -19,6 +19,7 @@ import {
   ToastProvider,
   Web3Modal,
 } from './providers';
+import Script from 'next/script';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -34,27 +35,38 @@ export const metadata: Metadata = {
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
 
 export default function RootLayout({
-  children,
-}: Readonly<{
+                                     children,
+                                   }: Readonly<{
   children: React.ReactNode;
 }>) {
   return (
     <html lang="en" className="dark">
-      <Web3Modal>
-        <EthersProvider>
-          <ReactQueryProvider>
-            <BalanceProvider>
-              <ModalProvider>
-                <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                  <ToastProvider>{children}</ToastProvider>
-                  <ModalContainer />
-                </body>
-                {!!gaId && <GoogleAnalytics gaId={gaId}/>}
-              </ModalProvider>
-            </BalanceProvider>
-          </ReactQueryProvider>
-        </EthersProvider>
-      </Web3Modal>
+    <Script defer data-domain="app.cybro.io" src="https://analytics.cybro.io/js/script.js" />
+    <Script>
+      {`(function(h,o,t,j,a,r){
+          h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
+          h._hjSettings={hjid:5059762,hjsv:6};
+          a=o.getElementsByTagName('head')[0];
+          r=o.createElement('script');r.async=1;
+          r.src=t+h._hjSettings.hjid+j+h._hjSettings.hjsv;
+          a.appendChild(r);
+      })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
+    </Script>
+    <Web3Modal>
+      <EthersProvider>
+        <ReactQueryProvider>
+          <BalanceProvider>
+            <ModalProvider>
+              <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+              <ToastProvider>{children}</ToastProvider>
+              <ModalContainer />
+              </body>
+              {!!gaId && <GoogleAnalytics gaId={gaId} />}
+            </ModalProvider>
+          </BalanceProvider>
+        </ReactQueryProvider>
+      </EthersProvider>
+    </Web3Modal>
     </html>
   );
 }
