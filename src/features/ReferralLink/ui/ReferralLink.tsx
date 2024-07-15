@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
@@ -23,9 +23,23 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
   const presaleUrl = process.env.NEXT_PUBLIC_PRESALE_URL;
   const shortenUrl = presaleUrl?.replace(/^https?:\/\//, '');
 
-  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${address}`, [address, presaleUrl]);
+  // todo: fixme
+  const [refcode, setRefcode] = useState('');
+  useEffect(() => {
+    if (address) {
+      fetch(`https://dapp-api.cybro.io/api/v1/profile/${address}/refcode`)
+        .then(response => response.json())
+        .then(data => {
+          if (data.ok && data.data) {
+            setRefcode(data.data);
+          }
+        });
+    }
+  }, [address]);
+
+  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refcode}`, [address, presaleUrl]);
   const shortLink = React.useMemo(
-    () => `${shortenUrl}/?ref=${shortenWalletAddress(address, 3)}`,
+    () => `${shortenUrl}/?ref=${refcode}`,
     [address, shortenUrl],
   );
 
@@ -46,11 +60,14 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
   }, [fullLink, triggerToast]);
 
   return (
-    <div className={clsx(styles.root, className)}>
-      <Text className={styles.link} textView={TextView.P2}>
-        {shortLink}
-      </Text>
-      <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
-    </div>
-  );
+    <>
+      {!!refcode && <div className={clsx(styles.root, className)}>
+        <Text className={styles.link} textView={TextView.P2}>
+          {shortLink}
+        </Text>
+        <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
+      </div>}
+    </>
+  )
+    ;
 };
