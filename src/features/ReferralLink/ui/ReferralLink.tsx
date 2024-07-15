@@ -37,10 +37,10 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
     }
   }, [address]);
 
-  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refcode}`, [address, presaleUrl]);
+  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refcode}`, [address, presaleUrl, refcode]);
   const shortLink = React.useMemo(
     () => `${shortenUrl}/?ref=${refcode}`,
-    [address, shortenUrl],
+    [address, shortenUrl, refcode],
   );
 
   const onCopyClick = React.useCallback(async () => {
