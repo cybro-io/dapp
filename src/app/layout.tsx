@@ -9,6 +9,7 @@ import type { Metadata } from 'next';
 import Script from 'next/script';
 
 import { poppins, unbounded } from '@/app/fonts';
+import icon from '@/shared/assets/icons/favicon.ico';
 
 import styles from './layout.module.scss';
 import {
@@ -30,6 +31,13 @@ export const metadata: Metadata = {
     description:
       'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
   },
+  icons: [
+    {
+      rel: 'icon',
+      type: 'image/png',
+      url: icon.src,
+    },
+  ],
 };
 
 const gaId = process.env.NEXT_PUBLIC_GA_ID;
