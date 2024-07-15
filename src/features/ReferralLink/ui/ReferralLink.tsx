@@ -60,14 +60,14 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
   }, [fullLink, triggerToast]);
 
   return (
-    <>
+    <React.Fragment>
       {!!refcode && <div className={clsx(styles.root, className)}>
         <Text className={styles.link} textView={TextView.P2}>
           {shortLink}
         </Text>
         <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
       </div>}
-    </>
+    </React.Fragment>
   )
     ;
 };
