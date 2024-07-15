@@ -17,6 +17,7 @@
     "postinstall": "npm run codegen"
   },
   "dependencies": {
+    "@next/third-parties": "^14.2.5",
     "@nextui-org/react": "^2.3.6",
     "@reduxjs/toolkit": "^2.2.3",
     "@tanstack/react-query": "^5.45.1",
