@@ -4,4 +4,5 @@ export enum QueryKey {
   TrustScoreDetails = 'trustScoreDetails',
   TokenPrice = 'tokenPrice',
   UserBalance = 'userBalance',
+  RefCode = 'refCode',
 }

@@ -1,14 +1,18 @@
 'use client';
 
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 
+import { QueryKey } from '@/shared/const';
 import { useToast } from '@/shared/hooks';
-import { ComponentWithProps } from '@/shared/types';
+import {
+  ComponentWithProps,
+  useGetProfilePointsApiV1ProfileAddressRefcodeGet,
+} from '@/shared/types';
 import { IconButton, Text, TextView, ToastType } from '@/shared/ui';
-import { shortenWalletAddress } from '@/shared/utils';
 
 import CopyIcon from '../assets/icon/copy.svg';
 
@@ -19,29 +23,16 @@ type ReferralLinkProps = {};
 export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className }) => {
   const { address } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
+  const { data, isLoading } = useGetProfilePointsApiV1ProfileAddressRefcodeGet(address || '', {
+    query: { queryKey: [QueryKey.RefCode, address] },
+  });
 
   const presaleUrl = process.env.NEXT_PUBLIC_PRESALE_URL;
   const shortenUrl = presaleUrl?.replace(/^https?:\/\//, '');
+  const refCode = data?.data?.data;
 
-  // todo: fixme
-  const [refcode, setRefcode] = useState('');
-  useEffect(() => {
-    if (address) {
-      fetch(`https://dapp-api.cybro.io/api/v1/profile/${address}/refcode`)
-        .then(response => response.json())
-        .then(data => {
-          if (data.ok && data.data) {
-            setRefcode(data.data);
-          }
-        });
-    }
-  }, [address]);
-
-  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refcode}`, [address, presaleUrl, refcode]);
-  const shortLink = React.useMemo(
-    () => `${shortenUrl}/?ref=${refcode}`,
-    [address, shortenUrl, refcode],
-  );
+  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refCode}`, [presaleUrl, refCode]);
+  const shortLink = React.useMemo(() => `${shortenUrl}/?ref=${refCode}`, [refCode, shortenUrl]);
 
   const onCopyClick = React.useCallback(async () => {
     try {
@@ -59,15 +50,24 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
     }
   }, [fullLink, triggerToast]);
 
+  if (isLoading) {
+    return (
+      <Skeleton className="rounded-lg">
+        <div className="h-14 w-52 rounded-full"></div>
+      </Skeleton>
+    );
+  }
+
   return (
     <React.Fragment>
-      {!!refcode && <div className={clsx(styles.root, className)}>
-        <Text className={styles.link} textView={TextView.P2}>
-          {shortLink}
-        </Text>
-        <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
-      </div>}
+      {!!refCode && (
+        <div className={clsx(styles.root, className)}>
+          <Text className={styles.link} textView={TextView.P2}>
+            {shortLink}
+          </Text>
+          <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
+        </div>
+      )}
     </React.Fragment>
-  )
-    ;
+  );
 };
