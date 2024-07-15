@@ -5,6 +5,7 @@ import '@/shared/styles/global.scss';
 
 import clsx from 'clsx';
 import type { Metadata } from 'next';
+import { GoogleAnalytics } from '@next/third-parties/google'
 
 import { poppins, unbounded } from '@/app/fonts';
 
@@ -30,6 +31,8 @@ export const metadata: Metadata = {
   },
 };
 
+const gaId = process.env.NEXT_PUBLIC_GA_ID;
+
 export default function RootLayout({
   children,
 }: Readonly<{
@@ -46,6 +49,7 @@ export default function RootLayout({
                   <ToastProvider>{children}</ToastProvider>
                   <ModalContainer />
                 </body>
+                {!!gaId && <GoogleAnalytics gaId={gaId}/>}
               </ModalProvider>
             </BalanceProvider>
           </ReactQueryProvider>
