@@ -5,10 +5,10 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { ApyInfo } from '@/entities/ApyInfo';
+import { MyVaultsInfo } from '@/entities/MyVaultsInfo';
 import { ComponentWithProps } from '@/shared/types';
 import { InfoBox, InfoBoxViewType } from '@/shared/ui';
 
-import { MyVaultsInfo } from '../../../entities/MyVaultsInfo';
 import DepositIcon from '../assets/icons/deposit.svg';
 import YieldIcon from '../assets/icons/yield.svg';
 

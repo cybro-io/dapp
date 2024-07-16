@@ -14,8 +14,8 @@ type InfoBoxProps = {
   title: string;
   icon: React.ReactNode;
   value: string;
-  isOpened: boolean;
-  setIsOpened: (...args: any[]) => void;
+  isOpened?: boolean;
+  setIsOpened?: (...args: any[]) => void;
   rightContent?: React.ReactNode;
   viewType?: InfoBoxViewType;
   actionType?: InfoBoxActionType;
