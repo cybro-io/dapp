@@ -54,8 +54,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
     },
     {
       title: 'Dashboard',
-      href: '/2',
-      isDisabled: true,
+      href: '/dashboard',
     },
     {
       title: 'Exchange',

@@ -1,0 +1,27 @@
+.dropdownItem {
+  display: flex;
+  padding: 6px;
+  border: 1px solid transparent;
+  border-radius: 10px;
+  gap: 8px;
+
+  &:hover {
+    border: 1px solid $stroke-whiteBorder;
+    cursor: pointer;
+  }
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  align-items: start;
+}
+
+.title {
+  line-height: 130%;
+}
+
+.value {
+  color: $text-white-body60;
+}

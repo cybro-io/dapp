@@ -14,3 +14,4 @@ export * from './IconButton';
 export * from './TrustScoreDescription';
 export * from './TextSwitch';
 export * from './Toast';
+export * from './InfoBox';
