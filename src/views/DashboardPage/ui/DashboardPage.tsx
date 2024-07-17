@@ -3,7 +3,8 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { ComponentWithProps } from '@/shared/types';
-import { InfoBox, Text, TextView } from '@/shared/ui';
+import { Text, TextView } from '@/shared/ui';
+import { BalanceHistory } from '@/widgets/BalanceHistory';
 import { DashboardInfo } from '@/widgets/DashboardInfo';
 
 import styles from './DashboardPage.module.scss';
@@ -17,6 +18,7 @@ export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ classNam
         Dashboard
       </Text>
       <DashboardInfo className={styles.dashboardInfo} />
+      <BalanceHistory className={styles.balanceHistory} />
     </div>
   );
 };
