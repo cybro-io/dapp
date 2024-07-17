@@ -52,7 +52,6 @@ createWeb3Modal({
   ethersConfig,
   chains,
   projectId,
-  defaultChain: chains[0],
   enableAnalytics: true,
   enableOnramp: true,
 });
