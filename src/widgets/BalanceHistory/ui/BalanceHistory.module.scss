@@ -1,7 +1,5 @@
 .root {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+  width: 100%;
 }
 
 .history, .balance {
@@ -10,7 +8,11 @@
   align-items: center;
 }
 
-.base {
+.balanceOverview {
+  margin-bottom: 40px;
+}
+
+.historyTabs {
   margin-bottom: 16px;
 }
 
@@ -33,5 +35,47 @@
   span {
     background-color: $background-white;
     border-radius: 100px;
+  }
+}
+
+.historyDesktop.historyDesktop {
+  display: none;
+}
+
+@include desktop {
+  .root {
+    display: grid;
+    grid-template-columns: 2fr 1fr;
+    padding: 24px;
+    background-color: $background-card;
+    border-radius: 30px;
+    gap: 26px;
+  }
+
+  .historyTitle.historyTitle {
+    display: none;
+  }
+
+  .balanceTitle {
+    margin-bottom: 20px;
+    text-align: left;
+  }
+
+  .historyTabs {
+    margin-left: auto;
+  }
+
+  .historyDesktop.historyDesktop {
+    display: flex;
+  }
+
+  .historyMobile.historyMobile {
+    display: none;
+  }
+
+  .balanceChart {
+    height: 450px;
+    padding: 0;
+    border: 0;
   }
 }
