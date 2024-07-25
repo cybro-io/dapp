@@ -41,6 +41,10 @@
   justify-content: center;
 }
 
+.counter {
+  display: none;
+}
+
 @media screen and (width >= 700px) {
   .vaults {
     grid-template-columns: 1fr 1fr;
@@ -95,6 +99,8 @@
   }
 
   .heading {
+    display: flex;
+    gap: 6px;
     margin-right: auto;
     margin-left: 0;
     font-size: 25px;
@@ -103,6 +109,18 @@
     text-align: left;
     text-transform: uppercase;
   }
+
+  .counter {
+    display: block;
+    height: 17px;
+    padding: 0 3px;
+    font-size: 16px;
+    font-weight: 300;
+    line-height: 16px;
+    color: $text-black-body100;
+    background: $background-white;
+  }
+
 
   .referralBannerDesktop.referralBannerDesktop {
     display: flex;
