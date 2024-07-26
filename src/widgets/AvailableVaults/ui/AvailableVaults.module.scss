@@ -14,41 +14,12 @@
   margin: auto;
 }
 
-.vaults {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 24px;
-}
-
-.pointsHuntDesktop {
-  display: none;
-}
-
-.referralBannerDesktop.referralBannerDesktop {
-  display: none;
-}
-
-.joinBannerMobile {
-  width: calc(100% + (24px * 2));
-  margin-left: -24px;
-}
-
-.joinBannerDesktop.joinBannerDesktop {
-  display: none;
-}
-
-.pointsHuntButton {
-  justify-content: center;
-}
-
 .counter {
   display: none;
 }
 
-@media screen and (width >= 700px) {
-  .vaults {
-    grid-template-columns: 1fr 1fr;
-  }
+.listViewSwitch {
+  display: none;
 }
 
 @media screen and (width >= 1140px) {
@@ -57,45 +28,12 @@
     padding-left: 100px;
   }
 
-  .vaults {
-    grid-template-columns: 1fr 1fr 1fr;
-  }
-
-  .joinBannerDesktop {
-    display: block;
-  }
-
-  .pointsHuntMobile.pointsHuntMobile {
-    display: none;
-  }
-
-  .pointsHunt {
-    display: flex;
-  }
-
-  .pointsHuntTitle {
-    font-family: $unbounded-font;
-    font-size: 25px;
-    font-weight: 700;
-    line-height: 120%;
-    text-align: center;
-    text-transform: uppercase;
-  }
-
-  .pointsHuntTitleAccent {
-    color: $text-accent-yellow;
-  }
-
-  .referralBannerMobile.referralBannerMobile {
-    display: none;
-  }
-
-  .chip.chip {
-    display: none;
-  }
-
   .top {
+    display: flex;
+    flex-direction: row;
     margin-bottom: 20px;
+    align-items: center;
+    justify-content: space-between;
   }
 
   .heading {
@@ -110,6 +48,10 @@
     text-transform: uppercase;
   }
 
+  .listViewSwitch {
+    display: flex;
+  }
+
   .counter {
     display: block;
     height: 17px;
@@ -120,15 +62,33 @@
     color: $text-black-body100;
     background: $background-white;
   }
+}
 
+.tabList {
+  background-color: $background-card;
+  border-radius: 40px;
+}
 
-  .referralBannerDesktop.referralBannerDesktop {
-    display: flex;
-    grid-column: 1/3;
+.tab {
+  span {
+    background-color: $background-chips!important;
+    border: none;
+    border-radius: 40px;
   }
+}
 
-  .referralBannerButton  {
-    width: 100%;
-    justify-content: center;
-  }
+.tabContent {
+  display: flex;
+  font-family: $poppins-font;
+  font-size: 12px;
+  font-style: normal;
+  font-weight: 500;
+  line-height: 150%;
+  color: $text-white-body100;
+  align-items: center;
+  gap: 8px;
+}
+
+.switchTab {
+
 }

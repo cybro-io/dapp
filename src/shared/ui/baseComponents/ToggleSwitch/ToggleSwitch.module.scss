@@ -1,9 +1,19 @@
-.root {
-  span {
-    background-color: $background-chips;
+.wrapper {
+  background-color: $background-chips !important;
+}
 
-    span {
-      background-color: $background-card;
-    }
+.thumb {
+  background-color: $background-white;
+}
+
+.switchContent {
+  font-family: $poppins-font;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  color: $text-black-body60;
+
+  &.selected {
+    color: $text-black-body100;
   }
 }

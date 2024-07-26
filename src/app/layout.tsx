@@ -2,6 +2,7 @@ import React from 'react';
 
 import './fonts';
 import '@/shared/styles/global.scss';
+import 'ag-grid-community/styles/ag-grid.css';
 
 import { GoogleAnalytics } from '@next/third-parties/google';
 import clsx from 'clsx';
