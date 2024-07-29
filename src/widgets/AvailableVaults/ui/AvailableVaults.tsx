@@ -63,7 +63,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
   return (
     <section className={clsx(styles.root, className)}>
       <div className={styles.top}>
-        <Text className={styles.heading} textView={TextView.H2}>
+        <Text className={styles.heading} textView={TextView.H3}>
           Available Vaults
           <span className={styles.counter}>{vaults.length}</span>
         </Text>

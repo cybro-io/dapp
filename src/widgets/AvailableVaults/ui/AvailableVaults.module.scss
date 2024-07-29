@@ -46,6 +46,10 @@
 }
 
 @media screen and (width >= 700px) {
+  .heading {
+    font-size: 36px;
+  }
+
   .vaults {
     grid-template-columns: 1fr 1fr;
   }
