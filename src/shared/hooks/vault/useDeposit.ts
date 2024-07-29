@@ -4,6 +4,7 @@ import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
 
 import { useEthers } from '@/app/providers';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import {
   Nullable,
@@ -65,6 +66,7 @@ export const useDeposit = (
         await depositTx.wait();
 
         mutate({ vaultId, data: { tx_hash: depositTx.hash, address, action: 'deposit' } });
+        Mixpanel.track(MixpanelEvent.DepositSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} deposited`,
@@ -82,7 +84,7 @@ export const useDeposit = (
         setButtonMessage(null);
       }
     },
-    [vaultContract, isConnected, address, triggerToast, tokens, mutate, vaultId, currency],
+    [vaultContract, tokenContract, isConnected, address, triggerToast, mutate, vaultId, currency],
   );
 
   return { deposit, isLoading, buttonMessage };

@@ -65,8 +65,9 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       <div className={styles.top}>
         <Text className={styles.heading} textView={TextView.H2}>
           Available Vaults
+          <span className={styles.counter}>{vaults.length}</span>
         </Text>
-        <Tvl className={styles.chip} />
+        {/*<Tvl className={styles.chip} />*/}
       </div>
 
       <div className={styles.vaults}>

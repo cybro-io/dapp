@@ -38,7 +38,7 @@ const metadata = {
   name: 'CYBRO',
   description:
     'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
-  url: 'http://localhost:3000',
+  url: 'https://app.cybro.io',
   icons: ['https://avatars.mywebsite.com/'],
 };
 
@@ -52,7 +52,6 @@ createWeb3Modal({
   ethersConfig,
   chains,
   projectId,
-  defaultChain: chains[0],
   enableAnalytics: true,
   enableOnramp: true,
 });
