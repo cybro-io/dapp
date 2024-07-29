@@ -12,12 +12,14 @@ import { Button, ButtonSize, ButtonView } from '@/shared/ui';
 import styles from './ConnectWallet.module.scss';
 
 type ConnectWalletProps = {
+  whenConnectedComponent?: React.ReactNode;
   buttonSize?: ButtonSize;
   viewType?: ButtonView;
   isForm?: boolean;
 };
 
 export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
+  whenConnectedComponent,
   buttonSize,
   viewType,
   isForm = false,
@@ -25,6 +27,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
 }) => {
   const { open } = useWeb3Modal();
   const { isConnected } = useWeb3ModalAccount();
+  const [hasClickedConnect, setHasClickedConnect] = React.useState(false);
 
   const onConnectWalletClick = React.useCallback(async () => {
     if (isForm) {
@@ -33,26 +36,32 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
       Mixpanel.track(MixpanelEvent.ConnectWalletClick);
     }
 
+    setHasClickedConnect(true);
     await open();
   }, [isForm, open]);
 
   React.useEffect(() => {
-    // This effect will track the success event when the component unmounts
-    return () => {
-      if (isConnected) {
-        Mixpanel.track(MixpanelEvent.ConnectWalletSuccess);
-      }
-    };
-  }, [isConnected]);
+    if (hasClickedConnect && isConnected) {
+      console.log('wallet connected');
+      Mixpanel.track(MixpanelEvent.ConnectWalletSuccess);
+      setHasClickedConnect(false); // Reset the state after tracking
+    }
+  }, [isConnected, hasClickedConnect]);
 
   return (
-    <Button
-      onClick={onConnectWalletClick}
-      className={clsx(styles.root, className)}
-      size={buttonSize}
-      view={viewType}
-    >
-      Connect Wallet
-    </Button>
+    <React.Fragment>
+      {!isConnected ? (
+        <Button
+          onClick={onConnectWalletClick}
+          className={clsx(styles.root, className)}
+          size={buttonSize}
+          view={viewType}
+        >
+          Connect Wallet
+        </Button>
+      ) : (
+        whenConnectedComponent
+      )}
+    </React.Fragment>
   );
 };

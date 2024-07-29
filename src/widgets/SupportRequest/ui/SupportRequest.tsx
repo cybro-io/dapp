@@ -96,17 +96,18 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
         />
         {errors.details && <p className={styles.error}>{errors.details.message}</p>}
       </div>
-      {!isConnected ? (
-        <ConnectWallet className={styles.submitButton} />
-      ) : (
-        <Button
-          className={styles.submitButton}
-          disabled={!isValid || isLoading || isSubmitting}
-          type="submit"
-        >
-          Send
-        </Button>
-      )}
+      <ConnectWallet
+        className={styles.submitButton}
+        whenConnectedComponent={
+          <Button
+            className={styles.submitButton}
+            disabled={!isValid || isLoading || isSubmitting}
+            type="submit"
+          >
+            Send
+          </Button>
+        }
+      />
       {capchaKey && <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />}
     </form>
   );

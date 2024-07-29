@@ -106,32 +106,34 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
         {/*  <DarkModeSwitch />*/}
         {/*</NavbarItem>*/}
         <NavbarItem>
-          {isConnected ? (
-            <Tooltip
-              className={styles.tooltipContainer}
-              content={
-                <Button
-                  view={ButtonView.Primary}
-                  size={ButtonSize.Small}
-                  onClick={() => disconnect()}
-                >
-                  Disconnect
-                </Button>
-              }
-            >
-              <div className={styles.connectedWalletContainer}>
-                <div className={styles.avatarContainer}>
-                  <Image src={'/avatar.webp'} height={20} width={20} alt={'avatar'} />
-                  {/*<TetherIcon />*/}
+          <ConnectWallet
+            className={styles.connectWallet}
+            buttonSize={ButtonSize.Small}
+            whenConnectedComponent={
+              <Tooltip
+                className={styles.tooltipContainer}
+                content={
+                  <Button
+                    view={ButtonView.Primary}
+                    size={ButtonSize.Small}
+                    onClick={() => disconnect()}
+                  >
+                    Disconnect
+                  </Button>
+                }
+              >
+                <div className={styles.connectedWalletContainer}>
+                  <div className={styles.avatarContainer}>
+                    <Image src={'/avatar.webp'} height={20} width={20} alt={'avatar'} />
+                    {/*<TetherIcon />*/}
+                  </div>
+                  <Text textView={TextView.C3} className={styles.connectedWallet}>
+                    {shortenWalletAddress(address)}
+                  </Text>
                 </div>
-                <Text textView={TextView.C3} className={styles.connectedWallet}>
-                  {shortenWalletAddress(address)}
-                </Text>
-              </div>
-            </Tooltip>
-          ) : (
-            <ConnectWallet className={styles.connectWallet} buttonSize={ButtonSize.Small} />
-          )}
+              </Tooltip>
+            }
+          />
         </NavbarItem>
       </NavbarContent>
 
