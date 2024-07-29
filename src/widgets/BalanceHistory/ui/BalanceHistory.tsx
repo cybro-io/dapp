@@ -86,6 +86,18 @@ type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
   const [historyPeriod, setHistoryPeriod] = React.useState<HistoryTab>(HistoryTab.Today);
+  const [width, setWidth] = React.useState(window.innerWidth);
+
+  React.useEffect(() => {
+    const handleResize = () => {
+      setWidth(window.innerWidth);
+    };
+
+    window.addEventListener('resize', handleResize);
+    return () => {
+      window.removeEventListener('resize', handleResize);
+    };
+  }, []);
 
   const onTabChange = React.useCallback((period: HistoryTab) => {
     setHistoryPeriod(period);
@@ -93,40 +105,41 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
 
   return (
     <div className={clsx(styles.root, className)}>
-      <div className={styles.balanceOverview}>
-        <Text className={clsx(styles.title, styles.balanceTitle)} textView={TextView.H3}>
-          Balance overview
-        </Text>
-        <BalanceChart className={styles.balanceChart} data={data} />
-      </div>
-      <div className={styles.history}>
-        <Text className={clsx(styles.title, styles.historyTitle)} textView={TextView.H3}>
-          History
-        </Text>
-        <Tabs
-          items={historyTabs}
-          onSelectionChange={key => onTabChange(key as HistoryTab)}
-          classNames={{
-            base: styles.historyTabs,
-            tabList: styles.tabList,
-            tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
-            panel: styles.panel,
-          }}
-        >
-          {({ key, title }) => (
-            <Tab
-              className={clsx(styles.tab, key === historyPeriod && styles.selected)}
-              key={key}
-              title={title}
-            />
-          )}
-        </Tabs>
-        <TransactionHistory className={styles.historyMobile} data={data} />
-        <TransactionHistory
-          className={styles.historyDesktop}
-          data={data}
-          viewType={HistoryViewType.Infinite}
-        />
+      <div className={styles.container}>
+        <div className={styles.balanceOverview}>
+          <Text className={clsx(styles.title, styles.balanceTitle)} textView={TextView.H3}>
+            Balance overview
+          </Text>
+          <BalanceChart className={styles.balanceChart} data={data} />
+        </div>
+        <div className={styles.history}>
+          <Text className={clsx(styles.title, styles.historyTitle)} textView={TextView.H3}>
+            History
+          </Text>
+          <Tabs
+            items={historyTabs}
+            onSelectionChange={key => onTabChange(key as HistoryTab)}
+            classNames={{
+              base: styles.historyTabs,
+              tabList: styles.tabList,
+              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
+              panel: styles.panel,
+            }}
+          >
+            {({ key, title }) => (
+              <Tab
+                className={clsx(styles.tab, key === historyPeriod && styles.selected)}
+                key={key}
+                title={title}
+              />
+            )}
+          </Tabs>
+          <TransactionHistory
+            className={styles.transactionHistory}
+            data={data}
+            viewType={width >= 1100 ? HistoryViewType.Infinite : HistoryViewType.Pagination}
+          />
+        </div>
       </div>
     </div>
   );

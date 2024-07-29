@@ -32,18 +32,21 @@
 }
 
 .tab.tab {
+  height: 28px;
+
   span {
     background-color: $background-white;
     border-radius: 100px;
   }
 }
 
-.historyDesktop.historyDesktop {
-  display: none;
-}
-
 @include desktop {
   .root {
+    padding-right: 38px;
+    padding-left: 38px;
+  }
+
+  .container {
     display: grid;
     grid-template-columns: 2fr 1fr;
     padding: 24px;
@@ -57,7 +60,7 @@
   }
 
   .balanceTitle {
-    margin-bottom: 20px;
+    margin-bottom: 0;
     text-align: left;
   }
 
@@ -65,17 +68,21 @@
     margin-left: auto;
   }
 
-  .historyDesktop.historyDesktop {
+  .transactionHistory {
     display: flex;
-  }
-
-  .historyMobile.historyMobile {
-    display: none;
   }
 
   .balanceChart {
     height: 450px;
     padding: 0;
     border: 0;
+  }
+
+  .balanceOverview {
+    margin-bottom: 0;
+  }
+
+  .balanceChartContainer {
+    padding: 0 38px;
   }
 }
