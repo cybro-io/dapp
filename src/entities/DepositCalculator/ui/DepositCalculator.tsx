@@ -101,13 +101,15 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
         <span className={styles.balanceAfterValue}>{formatUserMoney(balanceAfter || 0, 8)}</span>
       </Text>
 
-      {!isConnected ? (
-        <ConnectWallet className={styles.connectButton} isForm />
-      ) : (
-        <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
-          {buttonMessage || 'Deposit'}
-        </Button>
-      )}
+      <ConnectWallet
+        className={styles.connectButton}
+        whenConnectedComponent={
+          <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
+            {buttonMessage || 'Deposit'}
+          </Button>
+        }
+        isForm
+      />
     </div>
   );
 };

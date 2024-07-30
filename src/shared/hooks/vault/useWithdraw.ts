@@ -2,9 +2,9 @@ import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import { ethers } from 'ethers';
-import { types } from 'sass';
 
 import { useEthers } from '@/app/providers';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import {
   Nullable,
@@ -14,8 +14,6 @@ import {
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
-
-import Null = types.Null;
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
@@ -66,6 +64,7 @@ export const useWithdraw = (
         await withdrawTx.wait();
 
         mutate({ vaultId, data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' } });
+        Mixpanel.track(MixpanelEvent.WithdrawalSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} withdrawn`,
@@ -83,7 +82,7 @@ export const useWithdraw = (
         setButtonMessage(null);
       }
     },
-    [vaultContract, tokens, isConnected, address, triggerToast, mutate, vaultId, currency],
+    [vaultContract, tokenContract, isConnected, address, triggerToast, mutate, vaultId, currency],
   );
 
   return { withdraw, isLoading, buttonMessage };

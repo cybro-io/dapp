@@ -14,12 +14,50 @@
   margin: auto;
 }
 
+.vaults {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 24px;
+}
+
+.pointsHuntDesktop {
+  display: none;
+}
+
+.referralBannerDesktop.referralBannerDesktop {
+  display: none;
+}
+
+.joinBannerMobile {
+  width: calc(100% + (24px * 2));
+  margin-left: -24px;
+}
+
+.joinBannerDesktop.joinBannerDesktop {
+  display: none;
+}
+
+.pointsHuntButton {
+  justify-content: center;
+}
+
 .counter {
   display: none;
 }
 
 .listViewSwitch {
   display: none;
+
+}
+
+@media screen and (width >= 700px) {
+  .heading {
+    font-size: 36px;
+  }
+
+  .vaults {
+    grid-template-columns: 1fr 1fr;
+  }
 }
 
 @media screen and (width >= 1140px) {
@@ -87,8 +125,4 @@
   color: $text-white-body100;
   align-items: center;
   gap: 8px;
-}
-
-.switchTab {
-
 }

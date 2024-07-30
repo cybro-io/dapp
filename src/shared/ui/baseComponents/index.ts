@@ -13,3 +13,4 @@ export * from './Socials';
 export * from './IconButton';
 export * from './TrustScoreDescription';
 export * from './Toast';
+export * from './InfoBox';
