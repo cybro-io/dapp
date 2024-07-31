@@ -86,16 +86,22 @@ type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
   const [historyPeriod, setHistoryPeriod] = React.useState<HistoryTab>(HistoryTab.Today);
-  const [width, setWidth] = React.useState(window.innerWidth);
+  const [width, setWidth] = React.useState(0);
 
   React.useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
 
-    window.addEventListener('resize', handleResize);
+    if (typeof window !== 'undefined') {
+      setWidth(window.innerWidth);
+      window.addEventListener('resize', handleResize);
+    }
+
     return () => {
-      window.removeEventListener('resize', handleResize);
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('resize', handleResize);
+      }
     };
   }, []);
 

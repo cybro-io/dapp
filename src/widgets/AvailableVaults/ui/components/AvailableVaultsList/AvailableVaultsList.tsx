@@ -6,8 +6,8 @@ import Image from 'next/image';
 import Link from 'next/link';
 import numeral from 'numeral';
 
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
-import { Chip, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
+import { ComponentWithProps, SortValue, VaultsResponseData } from '@/shared/types';
+import { Chip, Loader, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
 import DownIcon from '../../../assets/icons/down.svg';
 import UpIcon from '../../../assets/icons/up.svg';
@@ -17,30 +17,60 @@ import styles from './AvailableVaultsList.module.scss';
 type AvailableVaultsGridProps = {
   vaults: VaultsResponseData[];
   skeletons: number[];
+  setSort: Dispatch<SetStateAction<[SortValue, boolean]>>;
   balance: Record<string, number>;
   isConnected: boolean;
   isLoading: boolean;
 };
 
 enum Sort {
-  Down = 'down',
-  Up = 'up',
+  Descending = 'descending',
+  Ascending = 'ascending',
   Default = 'default',
 }
 
+const headers = [
+  {
+    title: 'Vault Name',
+    sortName: SortValue.name,
+  },
+  {
+    title: 'Assets',
+  },
+  {
+    title: 'Weekly APY',
+    sortName: SortValue.apy,
+  },
+  {
+    title: 'Vault TVL',
+    sortName: SortValue.tvl,
+  },
+  {
+    title: 'Provider',
+    sortName: SortValue.provider,
+  },
+  {
+    title: 'Trust Score',
+    sortName: SortValue.trust_score,
+  },
+];
+
 export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> = ({
   vaults,
+  setSort,
   skeletons,
   balance,
   isConnected,
   isLoading,
   className,
 }) => {
-  const [vaultNameSort, setVaultNameSort] = React.useState<Sort>(Sort.Default);
-  const [apySort, setApySort] = React.useState<Sort>(Sort.Default);
-  const [tvlSort, setTvlSort] = React.useState<Sort>(Sort.Default);
-  const [providerSort, setProviderSort] = React.useState<Sort>(Sort.Default);
-  const [trustScoreSort, setTrustScoreSort] = React.useState<Sort>(Sort.Default);
+  const [currentSort, setCurrentSort] = React.useState<{
+    column: SortValue | null;
+    direction: Sort;
+  }>({
+    column: null,
+    direction: Sort.Default,
+  });
 
   const getSortIcons = React.useCallback((sort: Sort) => {
     switch (sort) {
@@ -51,52 +81,69 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
             <DownIcon />
           </React.Fragment>
         );
-      case Sort.Down:
+      case Sort.Descending:
         return <DownIcon />;
-      case Sort.Up:
+      case Sort.Ascending:
         return <UpIcon />;
     }
   }, []);
 
-  const handleSort = React.useCallback((setSort: Dispatch<SetStateAction<Sort>>) => {
-    setSort(prevState => {
-      if (prevState === Sort.Default) {
-        return Sort.Up;
-      }
+  const handleSort = React.useCallback(
+    (sortName: SortValue) => {
+      setCurrentSort(prevState => {
+        if (prevState.column !== sortName) {
+          setSort([sortName, true]);
+          return { column: sortName, direction: Sort.Ascending };
+        }
 
-      if (prevState === Sort.Up) {
-        return Sort.Down;
-      }
+        let newDirection;
+        if (prevState.direction === Sort.Default) {
+          newDirection = Sort.Ascending;
+        } else if (prevState.direction === Sort.Ascending) {
+          newDirection = Sort.Descending;
+        } else {
+          newDirection = Sort.Default;
+        }
 
-      return Sort.Default;
-    });
-  }, []);
+        setSort([sortName, newDirection === Sort.Ascending]);
+        return { column: sortName, direction: newDirection };
+      });
+    },
+    [setSort],
+  );
+
+  if (isLoading) {
+    return <Loader className={styles.loader} />;
+  }
 
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.table}>
         <div className={styles.tableHeader}>
-          <button className={styles.tableCell} onClick={() => handleSort(setVaultNameSort)}>
-            Vault Name
-            <div className={styles.sortButtonsContainer}>{getSortIcons(vaultNameSort)}</div>
-          </button>
-          <div className={styles.tableCell}>Assets</div>
-          <button className={styles.tableCell} onClick={() => handleSort(setApySort)}>
-            Weekly APY
-            <div className={styles.sortButtonsContainer}>{getSortIcons(apySort)}</div>
-          </button>
-          <button className={styles.tableCell} onClick={() => handleSort(setTvlSort)}>
-            Vault TVL
-            <div className={styles.sortButtonsContainer}>{getSortIcons(tvlSort)}</div>
-          </button>
-          <button className={styles.tableCell} onClick={() => handleSort(setProviderSort)}>
-            Provider
-            <div className={styles.sortButtonsContainer}>{getSortIcons(providerSort)}</div>
-          </button>
-          <button className={styles.tableCell} onClick={() => handleSort(setTrustScoreSort)}>
-            Trust Score
-            <div className={styles.sortButtonsContainer}>{getSortIcons(trustScoreSort)}</div>
-          </button>
+          {headers.map(header => {
+            if (!header.sortName) {
+              return (
+                <div key={header.title} className={styles.tableCell}>
+                  {header.title}
+                </div>
+              );
+            }
+
+            return (
+              <button
+                key={header.title}
+                className={styles.tableCell}
+                onClick={() => handleSort(header.sortName)}
+              >
+                {header.title}
+                <div className={styles.sortButtonsContainer}>
+                  {getSortIcons(
+                    currentSort.column === header.sortName ? currentSort.direction : Sort.Default,
+                  )}
+                </div>
+              </button>
+            );
+          })}
         </div>
         {vaults.map((vault, index) => (
           <Link

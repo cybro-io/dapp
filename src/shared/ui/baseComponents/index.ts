@@ -1,10 +1,8 @@
-export * from './ToggleSwitch';
 export * from './Button';
 export * from './Dropdown';
 export * from './Logo';
 export * from './MenuLink';
 export * from './Text';
-export * from './DarkModeSwitch';
 export * from './LanguageChange';
 export * from './Chip';
 export * from './TrustScore';
@@ -14,3 +12,4 @@ export * from './IconButton';
 export * from './TrustScoreDescription';
 export * from './Toast';
 export * from './InfoBox';
+export * from './Loader';

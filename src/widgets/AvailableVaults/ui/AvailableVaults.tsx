@@ -9,6 +9,7 @@ import clsx from 'clsx';
 import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
+  SortValue,
   useGetBalanceByAddressApiV1ProfileAddressBalanceGet,
 } from '@/shared/types';
 import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
@@ -35,9 +36,10 @@ enum ViewType {
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
   const [viewType, setViewType] = React.useState<ViewType>(ViewType.Card);
   const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const [sort, setSort] = React.useState<[SortValue, boolean]>([SortValue.name, false]);
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
-    { address },
-    { query: { queryKey: [QueryKey.AvailableVaults, address] } },
+    { address, sort_by: sort[0], ascending: sort[1] },
+    { query: { queryKey: [QueryKey.AvailableVaults, address, sort[0], sort[1]] } },
   );
 
   const { data: balanceData } = useGetBalanceByAddressApiV1ProfileAddressBalanceGet(
@@ -130,6 +132,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       ) : (
         <AvailableVaultsList
           balance={balance}
+          setSort={setSort}
           isConnected={isConnected}
           isLoading={isLoading}
           skeletons={skeletons}

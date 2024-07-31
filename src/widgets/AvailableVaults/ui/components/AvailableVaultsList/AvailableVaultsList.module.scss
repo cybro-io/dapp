@@ -101,7 +101,7 @@
 }
 
 .vaultName {
-  margin-bottom: 6px;
+  margin-bottom: 6px!important;
 }
 
 .chips {
@@ -133,5 +133,9 @@
   line-height: 150%;
   color: $text-white-body40;
   gap: 2px;
+}
+
+.loader {
+  margin: auto;
 }
 
