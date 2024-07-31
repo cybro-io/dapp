@@ -126,7 +126,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
         </div>
         <div className={styles.rightContent}>
           {!isLoading && vault ? (
-            <React.Fragment>
+            <div className={styles.rightContentContainer}>
               <Banner
                 className={styles.yieldBanner}
                 title="Calculate & Transact"
@@ -146,7 +146,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
                   chain={vault.chain}
                 />
               </div>
-            </React.Fragment>
+            </div>
           ) : (
             <CalculatorSkeleton />
           )}
