@@ -49,6 +49,17 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
 
   const trustScoreColor = getTrustScoreColor();
 
+  if (viewType === TrustScoreViewType.Small) {
+    return (
+      <div className={styles.tinyContainer}>
+        <div className={styles.iconContainer}>{TrustScoreColorToIcon[trustScoreColor]}</div>
+        <Text className={clsx(styles.value, styles[trustScoreColor])}>
+          {formatTrustScore(value)}
+        </Text>
+      </div>
+    );
+  }
+
   return (
     <div
       className={clsx(styles.root, !isBordered && styles.notBordered, styles[viewType], className)}

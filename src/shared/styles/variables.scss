@@ -80,7 +80,7 @@ $tablet-width: 768px;
 $desktop-width-large: 1280px;
 $desktop-width: 1100px;
 
-$app-max-width: 1680px;
+$app-max-width: 1560px;
 
 @mixin tablet {
   @media (min-width: #{$tablet-width}) {

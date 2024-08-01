@@ -81,13 +81,15 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
         {/*  <Text textView={TextView.C1}>5%</Text>*/}
         {/*</div>*/}
       </div>
-      {!isConnected ? (
-        <ConnectWallet className={styles.connectButton} isForm />
-      ) : (
-        <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={withdraw}>
-          {buttonMessage || 'Withdraw'}
-        </Button>
-      )}
+      <ConnectWallet
+        className={styles.connectButton}
+        whenConnectedComponent={
+          <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={withdraw}>
+            {buttonMessage || 'Withdraw'}
+          </Button>
+        }
+        isForm
+      />
     </div>
   );
 };
