@@ -31,10 +31,10 @@ jobs:
           push: true
           tags: ghcr.io/${{ github.repository }}:latest
           build-args: |
-            NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID: ${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID }}
-            NEXT_PUBLIC_ANKR_ID: ${{ secrets.NEXT_PUBLIC_ANKR_ID }}
-            NEXT_PUBLIC_MIXPANEL_ID: ${{ secrets.NEXT_PUBLIC_MIXPANEL_ID }}
-            NEXT_PUBLIC_API_URL: ${{ secrets.NEXT_PUBLIC_API_URL }}
-            NEXT_PUBLIC_TYPE: ${{ secrets.NEXT_PUBLIC_TYPE }}
-            NEXT_PUBLIC_GA_ID: ${{ secrets.NEXT_PUBLIC_GA_ID }}
-            NEXT_PUBLIC_PRESALE_URL: ${{ secrets.NEXT_PUBLIC_PRESALE_URL }}
+            NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID=${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID }}
+            NEXT_PUBLIC_ANKR_ID=${{ secrets.NEXT_PUBLIC_ANKR_ID }}
+            NEXT_PUBLIC_MIXPANEL_ID=${{ secrets.NEXT_PUBLIC_MIXPANEL_ID }}
+            NEXT_PUBLIC_API_URL=${{ secrets.NEXT_PUBLIC_API_URL }}
+            NEXT_PUBLIC_TYPE=${{ secrets.NEXT_PUBLIC_TYPE }}
+            NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }}
+            NEXT_PUBLIC_PRESALE_URL=${{ secrets.NEXT_PUBLIC_PRESALE_URL }}
