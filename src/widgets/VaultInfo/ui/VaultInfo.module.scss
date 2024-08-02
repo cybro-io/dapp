@@ -1,3 +1,8 @@
+.root {
+  display: flex;
+  flex-direction: column;
+}
+
 .vaultStatsDesktop.vaultStatsDesktop {
   display: none;
 }
@@ -57,6 +62,43 @@
   }
 }
 
+.providerDescription {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 40px;
+
+  .description {
+    color: $text-white-body80;
+  }
+}
+
+.keyFeatures {
+  .title {
+    margin-bottom: 16px;
+  }
+}
+
+.keyFeaturesList {
+  display: flex;
+  flex-direction: column;
+  padding-left: 20px; /* Ensure the bullets and text are aligned */
+  list-style-type: disc; /* Use default disc type */
+  gap: 12px;
+
+  li {
+    display: list-item;
+    font-family: $poppins-font;
+    font-weight: 400;
+    line-height: 1.5; /* Line height for readability */
+    color: $text-white-body80;
+  }
+}
+
+.feeBanner {
+  margin-bottom: 40px;
+}
+
 @media screen and (width >= 400px) {
   .depositWithdrawTabs {
     display: block;
@@ -86,5 +128,23 @@
 
   .depositWithdrawTabs.depositWithdrawTabs {
     display: none;
+  }
+}
+
+@include desktop {
+  .safetyScoreDetails {
+    order: 1;
+  }
+}
+
+@media screen and (width >= 1280px) {
+  .providerDescriptionTitle {
+    font-size: 36px;
+  }
+
+  .keyFeatures {
+    .title {
+      font-size: 20px;
+    }
   }
 }

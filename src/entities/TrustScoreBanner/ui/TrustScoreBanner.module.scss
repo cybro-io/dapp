@@ -16,8 +16,17 @@
   align-items: center;
 }
 
+.auditedBy {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  font-weight: 700;
+}
+
 .vaultDescription {
   margin-bottom: 16px;
+  color: $text-white-body80;
 }
 
 .trustScoreDesktop.trustScoreDesktop {

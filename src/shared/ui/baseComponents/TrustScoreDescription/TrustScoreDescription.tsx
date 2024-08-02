@@ -31,7 +31,10 @@ export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProp
         <div className={styles.cornerTopRight} />
         <div className={styles.cornerBottomLeft} />
         <div className={styles.cornerBottomRight} />
-        <p className={styles.value}>{details.trust_score}</p>
+        <p className={styles.value}>
+          {details.trust_score}
+          <span className={styles.maxTrustScore}>/4</span>
+        </p>
         <div className={styles.iconContainer}>
           {variant === TrustScoreVariant.Negative ? <NegativeIcon /> : <PositiveIcon />}
         </div>

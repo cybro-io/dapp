@@ -81,7 +81,16 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
       ) : (
         <section className={clsx(styles.heroSection)}>
           <div className={styles.tetherContainer}>
-            {vault?.icon && <Image src={vault?.icon} alt={''} width={87} height={66} />}
+            {vault?.icon && (
+              <Image
+                className={styles.vaultIcon}
+                src={vault?.icon}
+                alt={''}
+                width={87}
+                height={66}
+              />
+            )}
+            <span className={styles.tokenName}>{vault.token.name}</span>
           </div>
           <Text className={styles.heading} textView={TextView.H1}>
             <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>

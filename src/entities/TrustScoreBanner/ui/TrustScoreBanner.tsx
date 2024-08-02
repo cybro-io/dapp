@@ -9,6 +9,9 @@ import {
 import { ComponentWithProps } from '@/shared/types';
 import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
 
+import AuditorIcon from '../assets/icons/auditor.svg';
+import ShieldIcon from '../assets/icons/shield.svg';
+
 import styles from './TrustScoreBanner.module.scss';
 
 type TrustScoreBannerProps = {
@@ -50,8 +53,13 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
           assets. Safety measures include investments and real-time risk management.
         </Text>
         <div className={styles.inspectedContainer}>
-          <Text textView={TextView.C1}>Inspected by</Text>
-          <Chip>{inspector}</Chip>
+          <Text textView={TextView.C1} className={styles.auditedBy}>
+            <ShieldIcon />
+            Audited by
+          </Text>
+          <div className={styles.auditor}>
+            <AuditorIcon />
+          </div>
         </div>
       </div>
     </div>

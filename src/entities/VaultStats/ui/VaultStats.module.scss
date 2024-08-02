@@ -55,6 +55,12 @@
 }
 
 .card {
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  //align-items: center;
+  gap: 12px;
+
   .firstRow {
     padding: 16px 16px 12px;
   }
@@ -84,6 +90,12 @@
       border-bottom: none;
     }
   }
+}
+
+.cardRow {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 .overallInvestmentValue, .yourDepositValue, .availableFundsValue, .earningsMonthlyValue {
