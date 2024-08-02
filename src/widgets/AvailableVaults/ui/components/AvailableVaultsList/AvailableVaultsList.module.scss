@@ -5,7 +5,7 @@
 
 .table {
   display: grid;
-  grid-template-columns: 2fr repeat(5, 1fr);
+  grid-template-columns: 5fr 1fr repeat(4, 2fr);
   width: 100%;
 }
 
@@ -13,8 +13,9 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  font-family: $unbounded-font;
+  font-family: $poppins-font;
   justify-content: center;
+  text-align: right;
 }
 
 .tableRow {
@@ -22,9 +23,11 @@
 
   .tableCell {
     padding: 15px 0;
+    color: $text-white-body80;
     border-top: 2px solid;
     border-top: 2px solid transparent;
     border-bottom: 2px solid transparent;
+    transition: all 0.3s ease-in-out;
 
     &:first-child {
       padding-left: 15px;
@@ -34,7 +37,7 @@
     }
 
     &:last-child {
-      padding-right: 15px;
+      padding-right: 24px;
       border-bottom-right-radius: 20px;
       border-top-right-radius: 20px;
       border-right: 2px solid transparent;
@@ -52,13 +55,11 @@
       border-color: $text-accent-yellow;
 
       &:first-child {
-        padding-left: 15px;
         border-bottom-left-radius: 20px;
         border-top-left-radius: 20px;
       }
 
       &:last-child {
-        padding-right: 15px;
         border-bottom-right-radius: 20px;
         border-top-right-radius: 20px;
       }
@@ -72,18 +73,24 @@
   .tableCell {
     display: flex;
     flex-direction: row;
-    gap: 6px;
     padding: 8px 0;
     font-family: $poppins-font;
     font-size: 16px;
     font-weight: 400;
     line-height: 150%;
+    text-align: right;
     color: $text-white-body60;
+    gap: 6px;
     align-items: center;
-    justify-content: start;
+    justify-content: end;
 
     &:first-child {
-      padding-left: 15px;
+      padding-left: 24px;
+      justify-content: start;
+    }
+
+    &:nth-child(2) {
+      justify-content: start;
     }
 
     &:last-child {
@@ -101,7 +108,8 @@
 }
 
 .vaultName {
-  margin-bottom: 6px!important;
+  margin-bottom: 6px !important;
+  text-align: left;
 }
 
 .chips {
@@ -109,19 +117,12 @@
   gap: 6px;
 }
 
-.apyCell {
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 150%;
-  color: $text-accent-yellow;
-}
-
-.tvlCell {
-  font-weight: 300;
-}
-
 .providerCell {
-  font-weight: 300;
+  text-align: right;
+  text-decoration: underline;
+  text-decoration-style: dashed;
+  text-decoration-thickness: 1px;
+  text-underline-offset: 6px;
 }
 
 .assetsCell {
@@ -131,11 +132,15 @@
   font-size: 12px;
   font-weight: 500;
   line-height: 150%;
+  align-items: start;
   color: $text-white-body40;
   gap: 2px;
+}
+
+.trustScoreCell {
+  align-items: end;
 }
 
 .loader {
   margin: auto;
 }
-
