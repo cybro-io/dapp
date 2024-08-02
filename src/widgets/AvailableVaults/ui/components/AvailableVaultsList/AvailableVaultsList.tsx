@@ -17,6 +17,7 @@ import styles from './AvailableVaultsList.module.scss';
 type AvailableVaultsGridProps = {
   vaults: VaultsResponseData[];
   skeletons: number[];
+  sort: [SortValue, boolean]; // Receive sort state as prop
   setSort: Dispatch<SetStateAction<[SortValue, boolean]>>;
   balance: Record<string, number>;
   isConnected: boolean;
@@ -57,6 +58,7 @@ const headers = [
 
 export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> = ({
   vaults,
+  sort,
   setSort,
   skeletons,
   balance,
@@ -68,8 +70,8 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
     column: SortValue | null;
     direction: Sort;
   }>({
-    column: null,
-    direction: Sort.Default,
+    column: sort[0], // Initialize with current sort column
+    direction: sort[1] ? Sort.Ascending : Sort.Descending, // Initialize with current sort direction
   });
 
   const getSortIcons = React.useCallback((sort: Sort) => {
@@ -111,6 +113,14 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
     },
     [setSort],
   );
+
+  React.useEffect(() => {
+    // Update local state when sort prop changes
+    setCurrentSort({
+      column: sort[0],
+      direction: sort[1] ? Sort.Ascending : Sort.Descending,
+    });
+  }, [sort]);
 
   if (isLoading) {
     return <Loader className={styles.loader} />;

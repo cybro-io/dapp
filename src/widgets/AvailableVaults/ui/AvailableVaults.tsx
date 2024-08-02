@@ -34,9 +34,25 @@ enum ViewType {
 }
 
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const [viewType, setViewType] = React.useState<ViewType>(ViewType.Card);
+  const [viewType, setViewType] = React.useState<ViewType>(() => {
+    // Check session storage for the initial value
+    if (typeof window !== 'undefined') {
+      return (sessionStorage.getItem('viewType') as ViewType) || ViewType.Card;
+    }
+    return ViewType.Card;
+  });
+
+  const [sort, setSort] = React.useState<[SortValue, boolean]>(() => {
+    // Check session storage for the initial sort value
+    if (typeof window !== 'undefined') {
+      const sortValue = sessionStorage.getItem('sortValue');
+      const sortOrder = sessionStorage.getItem('sortOrder') === 'true'; // Convert to boolean
+      return sortValue ? [sortValue as SortValue, sortOrder] : [SortValue.apy, false];
+    }
+    return [SortValue.apy, false];
+  });
+
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const [sort, setSort] = React.useState<[SortValue, boolean]>([SortValue.name, false]);
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
     { address, sort_by: sort[0], ascending: sort[1] },
     { query: { queryKey: [QueryKey.AvailableVaults, address, sort[0], sort[1]] } },
@@ -50,6 +66,22 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
     },
   );
 
+  // Store viewType in session storage whenever it changes
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('viewType', viewType);
+    }
+  }, [viewType]);
+
+  // Store sort in session storage whenever it changes
+  React.useEffect(() => {
+    if (typeof window !== 'undefined') {
+      sessionStorage.setItem('sortValue', sort[0]);
+      sessionStorage.setItem('sortOrder', String(sort[1])); // Convert boolean to string
+    }
+  }, [sort]);
+
+  // Change viewType if window width is less than 1140px
   React.useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth < 1140 && viewType === ViewType.Table) {
@@ -132,6 +164,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       ) : (
         <AvailableVaultsList
           balance={balance}
+          sort={sort} // Pass current sort state
           setSort={setSort}
           isConnected={isConnected}
           isLoading={isLoading}
