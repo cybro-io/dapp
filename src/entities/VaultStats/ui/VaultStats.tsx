@@ -33,6 +33,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
   tvl,
   provider,
   yourDeposit,
+  overallVaultInvestment,
   availableFunds,
   earningsMonthly,
   viewType = VaultStatsView.Card,
@@ -42,6 +43,57 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
 }) => {
   if (isLoading) {
     return <VaultStatsSkeleton className={className} />;
+  }
+
+  if (viewType === VaultStatsView.Card) {
+    return (
+      <div className={clsx(styles.root, styles[viewType], className)}>
+        <div className={styles.cardRow}>
+          <Link
+            className={styles.cardTitle}
+            viewType={LinkView.Tooltip}
+            tooltipContent={"Vault's APY is calculated as a daily average"}
+            tooltipClassName={styles.tooltipContent}
+          >
+            <Text textView={TextView.C3} className={styles.detailsTitle}>
+              Weekly APY
+            </Text>
+          </Link>
+          <Text
+            textView={TextView.P3}
+            className={clsx(styles.detailsValue, styles.weeklyApyValue, styles.cardValue)}
+          >
+            {apy}%
+          </Text>
+        </div>
+        <div className={styles.cardRow}>
+          <Text textView={TextView.C3} className={styles.detailsTitle}>
+            TVL
+          </Text>
+          <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+            ${numeral(Math.floor(Number(tvl))).format('0.0a')}
+          </Text>
+        </div>
+        <div className={styles.cardRow}>
+          <Text textView={TextView.C3} className={styles.detailsTitle}>
+            Provider
+          </Text>
+          <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+            {provider}
+          </Text>
+        </div>
+        {overallVaultInvestment && (
+          <div className={styles.cardRow}>
+            <Text textView={TextView.C3} className={styles.detailsTitle}>
+              Overall Vault Investments
+            </Text>
+            <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+              {formatUserMoney(overallVaultInvestment)}
+            </Text>
+          </div>
+        )}
+      </div>
+    );
   }
 
   return (
