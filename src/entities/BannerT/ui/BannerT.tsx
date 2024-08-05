@@ -41,26 +41,40 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
   const [firstLineTitle, secondLineTitle] = title.split(/\\n|\n/);
 
   React.useEffect(() => {
-    if (rootRef.current && containerRef.current) {
-      const rootHeight = rootRef.current.offsetHeight; // 426
-      const containerHeight = containerRef.current.offsetHeight; // 500
+    const updateLineCount = () => {
+      if (rootRef.current && containerRef.current) {
+        const rootHeight = rootRef.current.offsetHeight;
+        const containerHeight = containerRef.current.offsetHeight;
 
-      // Calculate free space on each side
-      const freeSpacePerSide = (rootHeight - containerHeight) / 2;
-      setFreeSpacePerSide(freeSpacePerSide);
+        // Calculate free space on each side
+        const freeSpacePerSide = (rootHeight - containerHeight) / 2;
+        setFreeSpacePerSide(freeSpacePerSide);
 
-      // Constants
-      const lineHeight = 2; // Assuming each line is 2px in height
-      const lineMargin = 10; // Margin between lines
+        // Constants
+        const lineHeight = 2; // Assuming each line is 2px in height
+        const lineMargin = 10; // Margin between lines
 
-      // Calculate max lines that can fit in the free space on one side
-      const linesPerSide = Math.floor(freeSpacePerSide / (lineHeight + lineMargin));
+        // Calculate max lines that can fit in the free space on one side
+        const linesPerSide = Math.floor(freeSpacePerSide / (lineHeight + lineMargin));
 
-      // Total line count (top and bottom)
-      const totalLineCount = linesPerSide * 2;
-      setLineCount(totalLineCount);
+        // Total line count (top and bottom)
+        const totalLineCount = linesPerSide * 2;
+        setLineCount(totalLineCount);
+      }
+    };
+
+    const resizeObserver = new ResizeObserver(() => {
+      updateLineCount();
+    });
+
+    if (rootRef.current) {
+      resizeObserver.observe(rootRef.current);
     }
-  }, [rootRef, containerRef]);
+
+    return () => {
+      resizeObserver.disconnect();
+    };
+  }, []);
 
   console.log({ freeSpacePerSide });
 
@@ -80,7 +94,7 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
               className={clsx(styles.line)}
               style={{
                 top: `${freeSpacePerSide - (index + 1) * 10}px`,
-                opacity: initialOpacity - (index * 1.5) / 10,
+                opacity: initialOpacity - (index * 1.2) / 10,
               }}
             ></div>
             {/* Bottom lines */}
@@ -88,7 +102,7 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
               className={clsx(styles.line)}
               style={{
                 bottom: `${freeSpacePerSide - (index + 1) * 10}px`,
-                opacity: initialOpacity - (index * 1.5) / 10,
+                opacity: initialOpacity - (index * 1.2) / 10,
               }}
             ></div>
           </React.Fragment>
