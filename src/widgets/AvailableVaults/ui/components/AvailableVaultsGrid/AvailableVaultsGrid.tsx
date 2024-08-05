@@ -3,6 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
+import { BannerT, BannerTColor, BannerTViewType } from '@/entities/BannerT';
 import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Vault } from '@/entities/Vault';
 import { ConnectWallet } from '@/features/ConnectWallet';
@@ -35,9 +36,9 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
         if (index === 2) {
           return (
             <React.Fragment key={vault.id}>
-              <Banner
-                color={BannerColor.Dark}
-                size={BannerSize.Small}
+              <BannerT
+                color={BannerTColor.Dark}
+                viewType={BannerTViewType.DesktopSmall}
                 className={clsx(styles.pointsHunt, styles.pointsHuntDesktop)}
                 title={'Join the\nPoints Hunt'}
                 Button={
@@ -50,10 +51,31 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   </Button>
                 }
               />
-              <JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerDesktop)} />
-              <Banner
-                color={BannerColor.Accent}
-                size={BannerSize.BigMobile}
+              {/*<JoinCommunityBanner className={clsx(styles.joinBanner, styles.joinBannerDesktop)} />*/}
+              {/*<Banner*/}
+              {/*  color={BannerColor.Accent}*/}
+              {/*  size={BannerSize.BigMobile}*/}
+              {/*  className={styles.referralBannerMobile}*/}
+              {/*  title="Become the&nbsp;CYBRO Evangelist"*/}
+              {/*  description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"*/}
+              {/*  Button={*/}
+              {/*    isConnected ? (*/}
+              {/*      <ReferralLink />*/}
+              {/*    ) : (*/}
+              {/*      <ConnectWallet*/}
+              {/*        className={styles.referralBannerButton}*/}
+              {/*        viewType={ButtonView.Secondary}*/}
+              {/*      />*/}
+              {/*    )*/}
+              {/*  }*/}
+              {/*  caption="Cybro points faq"*/}
+              {/*  captionType={LinkView.Link}*/}
+              {/*  captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}*/}
+              {/*  captionTarget="_blank"*/}
+              {/*/>*/}
+              <BannerT
+                color={BannerTColor.Accent}
+                viewType={BannerTViewType.Mobile}
                 className={styles.referralBannerMobile}
                 title="Become the&nbsp;CYBRO Evangelist"
                 description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
@@ -67,10 +89,8 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                     />
                   )
                 }
-                caption="Cybro points faq"
-                captionType={LinkView.Link}
-                captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
-                captionTarget="_blank"
+                linkText="Cybro points faq"
+                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
               />
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
             </React.Fragment>
@@ -80,12 +100,33 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
         if (index === 3) {
           return (
             <React.Fragment key={vault.id}>
-              <Banner
-                color={BannerColor.Dark}
-                size={BannerSize.BigMobile}
-                className={clsx(styles.pointsHunt, styles.pointsHuntMobile)}
-                title={'Join the\nPoints Hunt'}
-                description="To start racking up CYBRO Points by getting friends onboard, you'll need to grab some CYBRO tokens"
+              {/*<Banner*/}
+              {/*  color={BannerColor.Dark}*/}
+              {/*  size={BannerSize.BigMobile}*/}
+              {/*  className={clsx(styles.pointsHunt, styles.pointsHuntMobile)}*/}
+              {/*  title={'Join the\nPoints Hunt'}*/}
+              {/*  description="To start racking up CYBRO Points by getting friends onboard, you'll need to grab some CYBRO tokens"*/}
+              {/*  Button={*/}
+              {/*    <Button*/}
+              {/*      className={styles.pointsHuntButton}*/}
+              {/*      size={ButtonSize.Medium}*/}
+              {/*      onClick={() => window.open('https://cybro.io/', '_blank')}*/}
+              {/*    >*/}
+              {/*      Buy Cybro Tokens*/}
+              {/*    </Button>*/}
+              {/*  }*/}
+              {/*  caption="Cybro points faq"*/}
+              {/*  captionType={LinkView.Link}*/}
+              {/*  captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}*/}
+              {/*  captionTarget="_blank"*/}
+              {/*/>*/}
+
+              <BannerT
+                color={BannerTColor.Dark}
+                viewType={BannerTViewType.Mobile}
+                className={styles.referralBannerMobile}
+                title="Join the\nPoints Hunt"
+                description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
                 Button={
                   <Button
                     className={styles.pointsHuntButton}
@@ -95,10 +136,8 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                     Buy Cybro Tokens
                   </Button>
                 }
-                caption="Cybro points faq"
-                captionType={LinkView.Link}
-                captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
-                captionTarget="_blank"
+                linkText="watch our detailed Cybro points faq"
+                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
               />
 
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
@@ -109,12 +148,12 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
         if (index === 5) {
           return (
             <React.Fragment key={vault.id}>
-              <Banner
-                color={BannerColor.Accent}
-                size={BannerSize.Big}
+              <BannerT
+                color={BannerTColor.Dark}
+                viewType={BannerTViewType.DesktopLarge}
                 className={styles.referralBannerDesktop}
-                title="Become &nbsp; the CYBRO Evangelist"
-                description="You're ready to go! Invite friends using your unique referral link and earn CYBRO Points"
+                title="Unblock CYBRO\nPreferrals"
+                description="To start racking up CYBRO Points by getting friends onboard, you'll need to grab some CYBRO tokens"
                 Button={
                   isConnected ? (
                     <ReferralLink />
@@ -125,11 +164,25 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                     />
                   )
                 }
-                caption="Cybro points faq"
-                captionType={LinkView.Link}
-                captionHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
-                captionTarget="_blank"
+                linkText="watch our detailed Cybro points faq"
+                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
               />
+              {/*<BannerT*/}
+              {/*  color={BannerTColor.Dark}*/}
+              {/*  viewType={BannerTViewType.DesktopSmall}*/}
+              {/*  className={clsx(styles.pointsHunt, styles.pointsHuntDesktop)}*/}
+              {/*  title="Become the&nbsp;CYBRO Evangelist"*/}
+              {/*  Button={*/}
+              {/*    isConnected ? (*/}
+              {/*      <ReferralLink />*/}
+              {/*    ) : (*/}
+              {/*      <ConnectWallet*/}
+              {/*        className={styles.referralBannerButton}*/}
+              {/*        viewType={ButtonView.Secondary}*/}
+              {/*      />*/}
+              {/*    )*/}
+              {/*  }*/}
+              {/*/>*/}
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
             </React.Fragment>
           );

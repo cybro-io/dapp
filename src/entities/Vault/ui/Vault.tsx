@@ -7,10 +7,6 @@ import clsx from 'clsx';
 import Image from 'next/image';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
-import {
-  HowTrustScoreCountsButton,
-  HowTrustScoreCountsButtonViewType,
-} from '@/entities/HowTrustScoreCounts';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
