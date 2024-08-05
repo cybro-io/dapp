@@ -183,7 +183,7 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
             <div className={clsx(styles.tableCell, styles.tvlCell)}>
               {numeral(Math.floor(Number(vault.tvl))).format('0.0a')}
             </div>
-            <div className={clsx(styles.tableCell, styles.providerCell)}>{vault.provider}</div>
+            <div className={clsx(styles.tableCell, styles.providerCell)}>{vault.provider.name}</div>
             <div className={clsx(styles.tableCell, styles.trustScoreCell)}>
               <TrustScore value={vault.trust_score} viewType={TrustScoreViewType.Small} />
             </div>
