@@ -29,6 +29,14 @@
   .vaults {
     grid-template-columns: 1fr 1fr;
   }
+
+  .pointsHuntDesktop {
+    display: flex;
+  }
+
+  .referralBannerMobile {
+    display: none;
+  }
 }
 
 @media screen and (width >= 1140px) {

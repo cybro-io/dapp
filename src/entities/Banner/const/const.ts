@@ -14,3 +14,9 @@ export enum BannerSize {
   Small = 'small',
   Tiny = 'tiny',
 }
+
+// Tiny banner -- mobile/desktop
+
+// Mobile
+// Desktop
+// DesktopSmall

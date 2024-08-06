@@ -45,7 +45,7 @@
   display: none;
 }
 
-.listViewSwitch {
+.listViewSwitch.listViewSwitch {
   display: none;
 
 }
@@ -60,7 +60,7 @@
   }
 }
 
-@media screen and (width >= 1140px) {
+@media screen and (width >= 1100px) {
   .root {
     padding-right: 100px;
     padding-left: 100px;
@@ -86,7 +86,7 @@
     text-transform: uppercase;
   }
 
-  .listViewSwitch {
+  .listViewSwitch.listViewSwitch {
     display: flex;
   }
 
@@ -102,12 +102,12 @@
   }
 }
 
-.tabList {
+.tabList.tabList {
   background-color: $background-card;
   border-radius: 40px;
 }
 
-.tab {
+.tab.tab {
   span {
     background-color: $background-chips!important;
     border: none;
@@ -115,7 +115,7 @@
   }
 }
 
-.tabContent {
+.tabContent.tabContent {
   display: flex;
   font-family: $poppins-font;
   font-size: 12px;
