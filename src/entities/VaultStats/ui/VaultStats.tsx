@@ -18,7 +18,7 @@ type VaultStatsProps = {
   cybroPoints?: string | number;
   tvl: Nullable<Money>;
   provider: Nullable<string>;
-  overallVaultInvestment?: Money;
+  overallVaultInvestment?: string;
   yourDeposit?: Money;
   availableFunds?: Money;
   earningsMonthly?: string | number;
@@ -102,7 +102,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               <div className={styles.detailsLine}></div>
               {/* Dashed line element */}
               <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
-                {formatUserMoney(overallVaultInvestment)}
+                ${formatUserMoney(overallVaultInvestment)}
               </Text>
             </div>
           </div>
@@ -140,9 +140,27 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
           <Text textView={TextView.C3} className={styles.detailsTitle}>
             Provider
           </Text>
-          <Chip className={styles.detailsChip}>{provider}</Chip>
+          <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.provider)}>
+            {provider}
+          </Text>
         </div>
       </div>
+      {overallVaultInvestment && (
+        <div className={clsx(styles.secondRow)}>
+          <div className={styles.detailsItem}>
+            <Text textView={TextView.C3} className={styles.detailsTitle}>
+              Provider
+            </Text>
+            <Text
+              textView={TextView.P3}
+              className={clsx(styles.detailsValue, styles.vaultInvestment)}
+            >
+              <span className={styles.light}>$</span>
+              {formatUserMoney(overallVaultInvestment)}
+            </Text>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

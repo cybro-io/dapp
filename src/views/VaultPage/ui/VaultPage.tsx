@@ -5,10 +5,11 @@ import React from 'react';
 import { useWeb3ModalAccount } from '@web3modal/ethers/react';
 import clsx from 'clsx';
 import Image from 'next/image';
+import Link from 'next/link';
 
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
-import { QueryKey } from '@/shared/const';
+import { ChainToExplorerUrl, QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
   Nullable,
@@ -23,8 +24,11 @@ import {
   TextView,
   VaultPageHeaderSkeleton,
   CalculatorSkeleton,
+  Button,
+  ButtonView,
+  ButtonSize,
 } from '@/shared/ui';
-import { VaultCurrency } from '@/shared/utils';
+import { isInvalid, VaultCurrency } from '@/shared/utils';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
 import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
@@ -36,7 +40,7 @@ type DashboardPageProps = {
 };
 
 export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
-  const { address, isConnected } = useWeb3ModalAccount();
+  const { address, isConnected, chainId } = useWeb3ModalAccount();
   const { createVaultInstance } = useEthers();
   const [vaultContract, setVaultContract] = React.useState<Nullable<Vault>>();
   const [tokenContract, setTokenContract] = React.useState<Nullable<Token>>();
@@ -122,6 +126,17 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
               </Chip>
             ))}
           </div>
+          {!isInvalid(chainId) && vaultContract?.target && (
+            <Link
+              className={styles.contractDetails}
+              href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`}
+              target="_blank"
+            >
+              <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>
+                View contract details
+              </Button>
+            </Link>
+          )}
         </section>
       )}
       <div className={styles.main}>

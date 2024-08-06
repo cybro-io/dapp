@@ -57,9 +57,9 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
             <ShieldIcon />
             Audited by
           </Text>
-          <div className={styles.auditor}>
-            <AuditorIcon />
-          </div>
+          <Text textView={TextView.P2} className={styles.auditor}>
+            {inspector}
+          </Text>
         </div>
       </div>
     </div>

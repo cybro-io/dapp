@@ -6,7 +6,7 @@
   margin-bottom: 16px;
 }
 
-.tooltip {
+.tooltip.tooltip {
   display: none;
 }
 
@@ -24,7 +24,11 @@
   font-weight: 700;
 }
 
-.vaultDescription {
+.auditor {
+  font-family: $unbounded-font;
+}
+
+.vaultDescription.vaultDescription {
   margin-bottom: 16px;
   color: $text-white-body80;
 }
@@ -120,7 +124,7 @@
     margin-bottom: 12px;
   }
 
-  .tooltip {
+  .tooltip.tooltip {
     display: flex;
   }
 }

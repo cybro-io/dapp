@@ -15,6 +15,10 @@
   color: $text-accent-yellow;
 }
 
+.contractDetails.contractDetails {
+  display: none;
+}
+
 .heading.heading {
   margin-bottom: 12px;
   text-align: center;
@@ -94,8 +98,13 @@
     display: none;
   }
 
+  .chipsContainer {
+    margin-bottom: 20px;
+  }
+
   .desktopDescription {
     display: block;
+    order: 1;
   }
 
   .description {
@@ -142,6 +151,11 @@
   .errorMessage {
     padding: 50px 0 40px;
   }
+
+  .contractDetails.contractDetails {
+    display: flex;
+    order: 3;
+  }
 }
 
 @include desktop {
@@ -181,7 +195,7 @@
     margin-bottom: 18px;
   }
 
-  .heading {
+  .heading.heading {
     margin-bottom: 20px;
   }
 

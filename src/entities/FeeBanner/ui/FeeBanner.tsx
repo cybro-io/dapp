@@ -15,14 +15,17 @@ export const FeeBanner: ComponentWithProps<FeeBannerProps> = ({ className }) => 
       <div className={styles.items}>
         <div className={styles.item}>
           <Text className={clsx(styles.title, styles.gradient)}>Perfomance fee</Text>
+          <div className={styles.line} />
           <Text className={styles.value}>0%</Text>
         </div>
         <div className={styles.item}>
           <Text className={clsx(styles.title, styles.gradient)}>Withdrawal Fee</Text>
+          <div className={styles.line} />
           <Text className={styles.value}>0%</Text>
         </div>
         <div className={styles.item}>
           <Text className={clsx(styles.title, styles.gradient)}>Deposit Fee</Text>
+          <div className={styles.line} />
           <Text className={styles.value}>0%</Text>
         </div>
       </div>

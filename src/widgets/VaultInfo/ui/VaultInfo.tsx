@@ -112,6 +112,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           tokenIcon={vault?.icon}
           yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
+          overallVaultInvestment={vault?.overall_investments_usd}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
@@ -124,6 +125,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           tokenIcon={vault?.icon}
           yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
+          overallVaultInvestment={vault?.overall_investments_usd}
         />
       </section>
       <FeeBanner className={styles.feeBanner} />
@@ -138,41 +140,19 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         <ExtendedVaultSkeleton />
       ) : (
         <React.Fragment>
-          <section className={styles.providerDescription}>
-            <Text
-              className={clsx(styles.title, styles.providerDescriptionTitle)}
-              textView={TextView.H3}
-            >
-              Provider Description
-            </Text>
-            <Text className={styles.description} textView={TextView.P2}>
-              Pac Finance is a DeFi platform on the Blast Layer 2 blockchain, specializing in
-              self-paying loans and margin trading.
-            </Text>
-            <div className={styles.keyFeatures}>
-              <Text className={styles.title} textView={TextView.H4}>
-                Key features include:
+          {vault?.provider.description && (
+            <section className={styles.providerDescription}>
+              <Text
+                className={clsx(styles.title, styles.providerDescriptionTitle)}
+                textView={TextView.H3}
+              >
+                Provider Description
               </Text>
-              <ul className={styles.keyFeaturesList}>
-                <li>
-                  Hybrid Lending: Offers both peer-to-pool and peer-to-peer lending, enhancing
-                  capital efficiency.
-                </li>
-                <li>
-                  Native Yield: Provides additional returns through Blast's innovative yield
-                  mechanism.
-                </li>
-                <li>One-Click Leverage: Simplifies leverage trading, reducing risks and costs.</li>
-                <li>Self-Repaying Loans: Allows future earnings to offset current debts.</li>
-                <li>Zero Gas Fees: Returns gas fees to users, improving cost-efficiency.</li>
-                <li>Developer Points Sharing: Rewards users with points airdropped by Blast.</li>
-                <li>
-                  Pac Finance emphasizes security with open-source protocols and thorough
-                  third-party audits.
-                </li>
-              </ul>
-            </div>
-          </section>
+              <Text className={styles.description} textView={TextView.P2}>
+                {vault.provider.description}
+              </Text>
+            </section>
+          )}
           <section className={styles.extendedVaultDescription}>
             <Text className={styles.title} textView={TextView.H3}>
               Extended Vault Description

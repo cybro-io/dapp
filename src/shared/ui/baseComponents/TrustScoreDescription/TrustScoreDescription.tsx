@@ -32,7 +32,7 @@ export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProp
         <div className={styles.cornerBottomLeft} />
         <div className={styles.cornerBottomRight} />
         <p className={styles.value}>
-          {details.trust_score}
+          {Math.floor(details.trust_score)}
           <span className={styles.maxTrustScore}>/4</span>
         </p>
         <div className={styles.iconContainer}>

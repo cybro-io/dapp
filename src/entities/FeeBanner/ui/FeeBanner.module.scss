@@ -19,9 +19,10 @@
 .item {
   display: flex;
   justify-content: space-between;
+  gap: 8px;
 }
 
-.title, .value {
+.title.title, .value.value {
   font-family: $unbounded-font;
   font-size: 12px;
   font-style: normal;
@@ -31,11 +32,11 @@
   color: white;
 }
 
-.value {
+.value.value {
   opacity: 0.6;
 }
 
-.description {
+.description.description {
   font-family: $poppins-font;
   font-size: 12px;
   font-style: normal;
@@ -56,22 +57,30 @@
   background-clip: text;
 }
 
+.line {
+  flex-grow: 1;
+  height: 2px;
+  margin-top: auto;
+  margin-bottom: 5px;
+  border-bottom: 2px dashed #3A3B45;
+}
+
 @media screen and (width >= 600) {
-  .title, .value {
+  .title.title, .value.value {
     font-size: 16px;
   }
 
-  .description {
+  .description.description {
     font-size: 14px;
   }
 }
 
 @media screen and (width >= 800px) {
-  .title, .value {
+  .title.title, .value.value {
     font-size: 23px;
   }
 
-  .description {
+  .description.description {
     padding-left: 90px;
     font-size: 12px;
   }
