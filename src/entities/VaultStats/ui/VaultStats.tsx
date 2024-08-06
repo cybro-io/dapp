@@ -56,7 +56,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               tooltipClassName={styles.tooltipContent}
             >
               <Text textView={TextView.C3} className={styles.detailsTitle}>
-                Weekly APY
+                APY
               </Text>
             </Link>
             <div className={styles.detailsLine}></div>

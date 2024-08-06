@@ -39,7 +39,7 @@ const headers = [
     title: 'Assets',
   },
   {
-    title: 'Weekly APY',
+    title: 'APY',
     sortName: SortValue.apy,
   },
   {
