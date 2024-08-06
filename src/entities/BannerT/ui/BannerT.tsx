@@ -76,13 +76,8 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
     };
   }, []);
 
-  console.log({ freeSpacePerSide });
-
   return (
-    <div
-      className={clsx(styles.root, styles[viewType], styles[color], className)}
-      ref={rootRef} // Attach ref here
-    >
+    <div className={clsx(styles.root, styles[viewType], styles[color], className)} ref={rootRef}>
       {/* Render lines */}
       {Array.from({ length: lineCount / 2 }).map((_, index) => {
         const initialOpacity = 0.8;

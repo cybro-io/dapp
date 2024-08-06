@@ -9,7 +9,7 @@ import Image from 'next/image';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
-import { Chip, Link, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
+import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
@@ -81,25 +81,10 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, clas
           apy={vault.apy}
           cybroPoints={'20'}
           tvl={vault.tvl}
-          provider={vault.provider}
+          provider={vault.provider.name}
           viewType={VaultStatsView.Card}
         />
-        {/*<div className={styles.trustScoreContainer}>*/}
         <TrustScore value={vault.trust_score} className={styles.trustScore} />
-        {/*<TrustScore*/}
-        {/*  value={vault.trust_score}*/}
-        {/*  className={styles.trustScoreDesktop}*/}
-        {/*  viewType={TrustScoreViewType.Desktop}*/}
-        {/*/>*/}
-        {/*<HowTrustScoreCountsButton*/}
-        {/*  className={styles.howCountsMobile}*/}
-        {/*  viewType={HowTrustScoreCountsButtonViewType.Button}*/}
-        {/*/>*/}
-        {/*<HowTrustScoreCountsButton*/}
-        {/*  className={styles.howCountsDesktop}*/}
-        {/*  viewType={HowTrustScoreCountsButtonViewType.Tooltip}*/}
-        {/*/>*/}
-        {/*</div>*/}
       </div>
     </Link>
   );
