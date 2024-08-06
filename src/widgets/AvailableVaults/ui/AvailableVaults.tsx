@@ -124,14 +124,11 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             setViewType(key as ViewType);
           }}
           classNames={{
-            base: styles.base,
             tabList: styles.tabList,
             tab: styles.tab,
-            panel: styles.tabPanel,
           }}
         >
           <Tab
-            className={styles.switchTab}
             key={ViewType.Table}
             title={
               <p className={styles.tabContent}>
@@ -141,7 +138,6 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
             }
           />
           <Tab
-            className={styles.switchTab}
             key={ViewType.Card}
             title={
               <p className={styles.tabContent}>

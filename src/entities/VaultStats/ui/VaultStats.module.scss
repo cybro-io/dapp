@@ -17,11 +17,13 @@
 }
 
 .detailsTitle {
+  flex-shrink: 0;
   font-family: $poppins-font;
   font-size: 12px !important;
   font-weight: 500 !important;
   line-height: 150% !important;
   text-transform: initial !important;
+  white-space: nowrap;
   color: $text-white-body60 !important;
 }
 
@@ -30,6 +32,7 @@
   font-size: 16px;
   font-weight: 300;
   line-height: 150%;
+  white-space: nowrap;
   color: $text-white-body100;
 }
 
@@ -93,9 +96,22 @@
 }
 
 .cardRow {
+  position: relative;
   display: flex;
   align-items: center;
   justify-content: space-between;
+}
+
+.cardTitleContainer {
+  display: flex;
+  align-items: center;
+  width: 100%;
+}
+
+.detailsLine {
+  flex-grow: 1;
+  margin: 0 10px -8px;
+  border-bottom: 1px dashed $stroke-tableBorder;
 }
 
 .overallInvestmentValue, .yourDepositValue, .availableFundsValue, .earningsMonthlyValue {
