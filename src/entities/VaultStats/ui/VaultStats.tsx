@@ -149,7 +149,7 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
         <div className={clsx(styles.secondRow)}>
           <div className={styles.detailsItem}>
             <Text textView={TextView.C3} className={styles.detailsTitle}>
-              Provider
+              Overall Vault Investments
             </Text>
             <Text
               textView={TextView.P3}
