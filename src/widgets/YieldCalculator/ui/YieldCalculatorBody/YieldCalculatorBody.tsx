@@ -120,18 +120,30 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const onAmountChange = React.useCallback(
     (event: React.ChangeEvent<HTMLInputElement>) => {
-      // Allow only digits and a single decimal point
-      const inputValue = event.target.value.replace(/[^0-9.]/g, '');
+      let inputValue = event.target.value;
 
-      // Remove leading zeros and prevent multiple decimal points
-      const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
-        return index === 0 ? String(Number(part)) : acc + '.' + part;
-      }, '');
+      // Prevent scientific notation and limit the input to digits and a single decimal point
+      if (!isNaN(Number(inputValue))) {
+        // Avoid scientific notation for very large numbers by formatting as a string
+        if (inputValue.includes('e') || inputValue.includes('E')) {
+          const parts = inputValue.split(/[eE]/);
+          const number = parts[0];
+          const exponent = Number(parts[1]);
+          inputValue = (Number(number) * Math.pow(10, exponent)).toFixed(0);
+        }
 
-      debouncedTrackEvent();
+        // Allow only digits and a single decimal point
+        inputValue = inputValue.replace(/[^0-9.]/g, '');
 
-      setSelectedPercent(null);
-      setAmount(cleanedValue);
+        // Remove leading zeros and prevent multiple decimal points
+        const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
+          return index === 0 ? String(Number(part)) : acc + '.' + part;
+        }, '');
+
+        debouncedTrackEvent();
+        setSelectedPercent(null);
+        setAmount(cleanedValue);
+      }
     },
     [debouncedTrackEvent],
   );
