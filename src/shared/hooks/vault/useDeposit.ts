@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { ethers } from 'ethers';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
@@ -37,7 +37,7 @@ export const useDeposit = (
 
   const deposit = React.useCallback(
     async (amount: string) => {
-      const vaultAddress = vaultContract?.target;
+      const vaultAddress = vaultContract?.address;
 
       if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({
@@ -52,13 +52,13 @@ export const useDeposit = (
       try {
         setIsLoading(true);
         const decimals = await tokenContract.decimals();
-        const weiAmount = ethers.parseUnits(amount, decimals);
+        const weiAmount = utils.parseUnits(amount, decimals);
 
         const approveTx = await tokenContract.approve(vaultAddress, weiAmount);
         setButtonMessage('Approving...');
         await approveTx.wait();
 
-        const depositEstimatedGas = await vaultContract.deposit.estimateGas(weiAmount, address);
+        const depositEstimatedGas = await vaultContract.estimateGas.deposit(weiAmount, address);
         const gasLimit = increaseGasLimit(depositEstimatedGas, 1.2);
 
         const depositTx = await vaultContract.deposit(weiAmount, address, { gasLimit });

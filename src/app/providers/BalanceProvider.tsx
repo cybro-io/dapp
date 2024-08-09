@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { ethers } from 'ethers';
+import { ethers, providers } from 'ethers';
 
 import { NATIVE_TOKENS } from '@/shared/const';
 import { Money, Nullable, Token, Vault, VaultMin } from '@/shared/types';
@@ -13,7 +13,7 @@ type BalanceContextProps = {
   vaultDeposit: Record<string, Money>;
   vaultDepositUsd: Record<string, Money>;
   refetchBalance: (
-    provider: Nullable<ethers.Provider>,
+    provider: Nullable<providers.Provider>,
     signer: Nullable<ethers.Signer>,
     tokenContract: Nullable<Token>,
     vaultContract?: Nullable<Vault | VaultMin>,
@@ -30,7 +30,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const getUserBalance = React.useCallback(
     async (
-      provider: Nullable<ethers.Provider>,
+      provider: Nullable<providers.Provider>,
       signer: Nullable<ethers.Signer>,
       tokenContract: Nullable<Token>,
     ) => {
@@ -38,7 +38,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
         let balance;
         let decimals;
 
-        const tokenAddress = tokenContract.target as string;
+        const tokenAddress = tokenContract.address as string;
         const userAddress = await signer.getAddress();
 
         if (!tokenContract) {
@@ -69,7 +69,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
       tokenPrice: Nullable<number>,
     ) => {
       if (vaultContract && signer && !isInvalid(tokenPrice)) {
-        const vaultAddress = vaultContract.target as string;
+        const vaultAddress = vaultContract.address as string;
         const userAddress = await signer.getAddress();
         const sharePrice = await vaultContract.sharePrice();
         const decimals = Number(await vaultContract.decimals());
@@ -77,8 +77,9 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const userTotalShares = await vaultContract.balanceOf(userAddress);
 
         const availableFunds = fromWei(userTotalShares, decimals);
+        // todo: check calculation, after change logic
         const availableFundsTokens = availableFunds
-          ? (userTotalShares * sharePrice) / BigInt(10 ** decimals)
+          ? userTotalShares.mul(sharePrice).div(BigInt(10 ** decimals))
           : 0;
         const availableFundsUsd = convertToUsd(fromWei(availableFundsTokens, decimals), tokenPrice);
 
@@ -98,7 +99,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
 
   const refetchBalance = React.useCallback(
     (
-      provider: Nullable<ethers.Provider>,
+      provider: Nullable<providers.Provider>,
       signer: Nullable<ethers.Signer>,
       tokenContract: Nullable<Token>,
       vaultContract?: Nullable<Vault | VaultMin>,

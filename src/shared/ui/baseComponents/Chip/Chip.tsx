@@ -1,7 +1,10 @@
+'use client';
+
 import React from 'react';
 
 import clsx from 'clsx';
 
+import IconWarning from '@/shared/assets/icons/icon-warning.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { ChipSize, ChipViewType } from '@/shared/ui';
 
@@ -20,6 +23,9 @@ export const Chip: ComponentWithProps<ChipProps> = ({
   className,
 }) => {
   return (
-    <div className={clsx(styles.root, styles[size], styles[viewType], className)}>{children}</div>
+    <div className={clsx(styles.root, styles[size], styles[viewType], className)}>
+      {viewType === ChipViewType.Warning && <IconWarning />}
+      {children}
+    </div>
   );
 };

@@ -4,7 +4,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { Modal, useModal } from '@/app/providers';
+import { ModalId, useModal } from '@/app/providers';
 import {
   HowTrustScoreCountsButtonViewType,
   HowTrustScoreCountsInfo,
@@ -39,7 +39,7 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
     console.log('event', event);
     event.preventDefault();
     event.stopPropagation();
-    openModal(Modal.HowTrustScoreCounts);
+    openModal(ModalId.HowTrustScoreCounts);
   }, []);
 
   return (

@@ -6,13 +6,17 @@ import { ComponentWithProps } from '@/shared/types';
 
 import styles from './IconButton.module.scss';
 
-type IconButtonProps = {
+export type IconButtonProps = {
   icon: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
-export const IconButton: ComponentWithProps<IconButtonProps> = ({ onClick, icon, className }) => {
+export const IconButton: ComponentWithProps<IconButtonProps> = ({
+  icon,
+  className,
+  ...restProps
+}) => {
   return (
-    <button onClick={onClick} className={clsx(styles.root, className)}>
+    <button className={clsx(styles.root, className)} {...restProps}>
       {icon}
     </button>
   );

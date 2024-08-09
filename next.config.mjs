@@ -16,7 +16,7 @@ const nextConfig = {
     return config;
   },
   sassOptions: {
-    prependData: `@import "${path.resolve(__dirname, 'src/shared/styles/variables.scss')}";`,
+    prependData: `@import "/src/shared/styles/variables.scss";`,
   },
   images: {
     remotePatterns: [
@@ -24,6 +24,38 @@ const nextConfig = {
         protocol: 'https',
         hostname: 'linkee.ws',
       },
+      {
+        protocol: 'https',
+        hostname: 's2.coinmarketcap.com',
+      },
+      {
+        protocol: 'https',
+        hostname: "raw.githubusercontent.com",
+      },
+      {
+        protocol: 'https',
+        hostname: 'assets-global.website-files.com',
+      },
+      {
+        protocol: "https",
+        hostname: "l2beat.com",
+      },
+      {
+        protocol: "https",
+        hostname: "res.cloudinary.com",
+      },
+      {
+        protocol: "https",
+        hostname: "rootstock.blockscout.com",
+      },
+      {
+        protocol: "https",
+        hostname: "assets.coingecko.com",
+      },
+      {
+        protocol: "https",
+        hostname: "taikoscan.io",
+      }
     ],
   },
 };

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
