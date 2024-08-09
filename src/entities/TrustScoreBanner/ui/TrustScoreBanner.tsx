@@ -1,12 +1,13 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import {
   HowTrustScoreCountsButton,
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
-import { ComponentWithProps } from '@/shared/types';
+import { AuditorResponseData, ComponentWithProps, Nullable } from '@/shared/types';
 import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
 
 import AuditorIcon from '../assets/icons/auditor.svg';
@@ -15,13 +16,13 @@ import ShieldIcon from '../assets/icons/shield.svg';
 import styles from './TrustScoreBanner.module.scss';
 
 type TrustScoreBannerProps = {
-  inspector: string;
+  auditor: AuditorResponseData;
   trustScoreValue: number;
   isBordered?: boolean;
 };
 
 export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
-  inspector,
+  auditor,
   trustScoreValue,
   isBordered = true,
   className,
@@ -58,7 +59,8 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
             Audited by
           </Text>
           <Text textView={TextView.P2} className={styles.auditor}>
-            {inspector}
+            {/*{auditor.icon && <Image src={auditor.icon} alt={''} />}*/}
+            {auditor.name}
           </Text>
         </div>
       </div>

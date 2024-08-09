@@ -132,7 +132,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
       <SafetyScoreDetails
         vaultId={vault?.id}
         trustScore={vault?.trust_score}
-        inspector={vault?.trust_score_inspector}
+        auditor={vault?.auditors[0]}
         className={styles.safetyScoreDetails}
         isLoading={isLoading}
       />

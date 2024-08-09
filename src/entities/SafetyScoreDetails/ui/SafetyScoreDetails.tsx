@@ -11,6 +11,7 @@ import {
 import { TrustScoreBanner } from '@/entities/TrustScoreBanner';
 import { QueryKey } from '@/shared/const/queryKey';
 import {
+  AuditorResponseData,
   ComponentWithProps,
   Nullable,
   useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
@@ -22,14 +23,14 @@ import ArrowIcon from '../assets/icons/arrow.svg';
 import styles from './SafetyScoreDetails.module.scss';
 
 type SafetyScoreDetailsProps = {
-  inspector: Nullable<string>;
+  auditor: Nullable<AuditorResponseData>;
   trustScore: Nullable<number>;
   vaultId: Nullable<number>;
   isLoading?: boolean;
 };
 
 export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({
-  inspector,
+  auditor,
   trustScore,
   vaultId,
   isLoading = false,
@@ -57,11 +58,11 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
         Safety Score Details
       </Text>
       <div className={styles.container}>
-        {!!trustScore && inspector && (
+        {!!trustScore && auditor && (
           <TrustScoreBanner
             trustScoreValue={trustScore}
             className={styles.trustScoreBanner}
-            inspector={inspector}
+            auditor={auditor}
           />
         )}
         <div className={styles.trustScoreBreakdown}>
