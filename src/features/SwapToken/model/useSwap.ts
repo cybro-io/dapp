@@ -11,6 +11,7 @@ import { WaitForCompleteModal } from '@/features/SwapToken/ui/WaitForCompleteMod
 import { $symbiosis } from '@/shared/lib';
 
 import { SwapCalculateResult } from './useSwapCalculate';
+import { createSwapTransaction } from '@/features/SwapToken/model/useSwapCreateTransaction';
 
 export enum SwapStatus {
   APPROVE_TRANSACTION,
@@ -110,6 +111,14 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     // Wait for transaction to be completed on recipient chain
     await swapping.waitForComplete(receipt);
     setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
+
+    createSwapTransaction({
+      address: from,
+      symbiosisData: {
+        chain_id: transactionRequest.chainId,
+        transaction_hash: receipt.transactionHash,
+      },
+    });
 
     NiceModal.show(SuccessSwapModal, {
       sentSymbol: tokenAmountIn.token.symbol,
