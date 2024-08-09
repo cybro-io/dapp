@@ -11,4 +11,10 @@ export enum TextView {
   C2 = 'c2',
   C3 = 'c3',
   C4 = 'c4',
+  BU1 = 'bu1',
+  BU2 = 'bu2',
+  BU3 = 'bu3',
+  BP1 = 'bp1',
+  BP2 = 'bp2',
+  BP3 = 'bp3',
 }

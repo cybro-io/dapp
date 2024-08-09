@@ -2,14 +2,14 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers/react';
-import { ethers, BrowserProvider } from 'ethers';
+import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { providers, ethers } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
 import { Maybe, Nullable, Token, Vault } from '@/shared/types';
 
 interface EthersContextProps {
-  provider: Nullable<ethers.Provider>;
+  provider: Nullable<providers.Provider>;
   signer: Nullable<ethers.Signer>;
   vaults: { [address: string]: Maybe<Vault> };
   tokens: { [vaultAddress: string]: Maybe<Token> };
@@ -22,7 +22,8 @@ const EthersContext = React.createContext<EthersContextProps | undefined>(undefi
 export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const { walletProvider } = useWeb3ModalProvider();
   const { isConnected } = useWeb3ModalAccount();
-  const [provider, setProvider] = React.useState<Nullable<ethers.Provider>>(null);
+
+  const [provider, setProvider] = React.useState<Nullable<providers.Provider>>(null);
   const [signer, setSigner] = React.useState<Nullable<ethers.Signer>>(null);
   const [vaults, setVaults] = React.useState<{ [address: string]: Vault }>({});
   const [tokens, setTokens] = React.useState<{ [vaultAddress: string]: Token }>({});
@@ -30,7 +31,7 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   React.useEffect(() => {
     const getValues = async () => {
       if (isConnected && walletProvider) {
-        const ethersProvider = new BrowserProvider(walletProvider);
+        const ethersProvider = new providers.Web3Provider(walletProvider);
         const signer = await ethersProvider.getSigner();
 
         setSigner(signer);

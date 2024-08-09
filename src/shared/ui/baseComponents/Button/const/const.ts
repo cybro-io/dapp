@@ -1,6 +1,7 @@
 export enum ButtonView {
   Primary = 'primary',
   Secondary = 'secondary',
+  Accent = 'accent',
 }
 
 export enum ButtonSize {

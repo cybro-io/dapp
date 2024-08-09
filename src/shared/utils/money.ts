@@ -1,11 +1,11 @@
-import { BigNumberish, ethers } from 'ethers';
+import { BigNumberish, ethers, utils } from 'ethers';
 import numeral from 'numeral';
 
 import { Money, Nullable, UserMoney } from '@/shared/types';
 import { isInvalid } from '@/shared/utils/utils';
 
 export const formatUserMoney = (value: Money | string | undefined, maxDecimals = 6): UserMoney => {
-  if (isInvalid(value)) return '0.00';
+  if (isInvalid(value) || Number(value) === 0) return '0.00';
 
   let numericValue: number;
 
@@ -50,7 +50,7 @@ export const formatUserMoney = (value: Money | string | undefined, maxDecimals =
 export const fromWei = (value: Nullable<BigNumberish>, decimals = 18): Money => {
   if (typeof value === 'undefined' || value === null) return null;
 
-  return Number(ethers.formatUnits(value, decimals));
+  return Number(utils.formatUnits(value, decimals));
 };
 
 export const formatMoney = (value: number, decimals = 2): string => {

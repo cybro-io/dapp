@@ -12,7 +12,7 @@ import {
   NavbarMenuToggle,
   Tooltip,
 } from '@nextui-org/react';
-import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -59,7 +59,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
     },
     {
       title: 'Exchange',
-      href: '/4',
+      href: '/3',
       isDisabled: true,
     },
     {

@@ -17,6 +17,7 @@ import {
   EthersProvider,
   ModalContainer,
   ModalProvider,
+  NiceModalProvider,
   ReactQueryProvider,
   ToastProvider,
   Web3Modal,
@@ -64,13 +65,15 @@ export default function RootLayout({
         <EthersProvider>
           <ReactQueryProvider>
             <BalanceProvider>
-              <ModalProvider>
-                <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                  <ToastProvider>{children}</ToastProvider>
-                  <ModalContainer />
-                </body>
-                {!!gaId && <GoogleAnalytics gaId={gaId} />}
-              </ModalProvider>
+              <NiceModalProvider>
+                <ModalProvider>
+                  <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                    <ToastProvider>{children}</ToastProvider>
+                    <ModalContainer />
+                  </body>
+                  {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                </ModalProvider>
+              </NiceModalProvider>
             </BalanceProvider>
           </ReactQueryProvider>
         </EthersProvider>

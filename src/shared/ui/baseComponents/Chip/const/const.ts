@@ -7,4 +7,5 @@ export enum ChipViewType {
   Default = 'default',
   Accent = 'accent',
   Outlined = 'outlined',
+  Warning = 'warning',
 }

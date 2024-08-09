@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Skeleton } from '@nextui-org/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { QueryKey } from '@/shared/const';

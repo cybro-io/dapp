@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 
 import { useBalanceContext, useEthers } from '@/app/providers';
 import { QueryKey } from '@/shared/const';
@@ -21,8 +21,8 @@ export const useBalance = (
   const { isConnected } = useWeb3ModalAccount();
   const { provider, signer, tokens } = useEthers();
   const { balance, refetchBalance, vaultDeposit, vaultDepositUsd } = useBalanceContext();
-  const vaultAddress = vaultContract?.target as string;
-  const tokenAddress = tokenContract?.target as string;
+  const vaultAddress = vaultContract?.address as string;
+  const tokenAddress = tokenContract?.address as string;
 
   const { data } = useGetPriceApiV1MarketDataPriceGet(
     {
