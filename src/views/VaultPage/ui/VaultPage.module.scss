@@ -15,8 +15,8 @@
   color: $text-accent-yellow;
 }
 
-.tetherContainer {
-  margin-bottom: 24px;
+.contractDetails.contractDetails {
+  display: none;
 }
 
 .heading.heading {
@@ -70,13 +70,41 @@
   display: none;
 }
 
+.tokenName {
+  font-family: $poppins-font;
+  font-size: 14px;
+  font-weight: 500;
+  line-height: 120%;
+  text-transform: uppercase;
+}
+
+.tetherContainer {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 24px;
+  align-items: center;
+  justify-content: center;
+  gap: 4px;
+
+  img {
+    width: 40px;
+    height: 40px;
+  }
+}
+
+
 @media screen and (width >= 600px) {
   .mobileDescription {
     display: none;
   }
 
+  .chipsContainer {
+    margin-bottom: 20px;
+  }
+
   .desktopDescription {
     display: block;
+    order: 1;
   }
 
   .description {
@@ -103,6 +131,31 @@
   .yieldBanner {
     margin-bottom: 20px;
   }
+
+  .tokenName {
+    font-size: 16px;
+  }
+
+  .tetherContainer {
+    gap: 6px;
+
+
+    img {
+      width: 60px;
+      height: 60px;
+    }
+  }
+}
+
+@include tablet {
+  .errorMessage {
+    padding: 50px 0 40px;
+  }
+
+  .contractDetails.contractDetails {
+    display: flex;
+    order: 3;
+  }
 }
 
 @include desktop {
@@ -111,16 +164,22 @@
     grid-template-columns: 2fr 1fr;
     padding-right: 38px;
     padding-left: 38px;
-
   }
 
   .rightContent {
+    position: relative;
+    top: 0;
     padding-left: 38px;
   }
 
   .leftContent {
     padding-right: 38px;
     border-right: 1px solid $stroke-tableBorder;
+  }
+
+  .rightContentContainer {
+    position: sticky;
+    top: 100px;
   }
 
   .heroSection {
@@ -136,7 +195,7 @@
     margin-bottom: 18px;
   }
 
-  .heading {
+  .heading.heading {
     margin-bottom: 20px;
   }
 
@@ -161,10 +220,8 @@
     background-color: $background-modal;
     border-radius: 0 0 30px 30px;
   }
-}
 
-@include tablet {
-  .errorMessage {
-    padding: 50px 0 40px;
+  .yieldBanner {
+    margin-bottom: 0;
   }
 }

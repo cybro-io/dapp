@@ -8,6 +8,7 @@ import { ModalId, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
+import { FeeBanner } from '@/entities/FeeBanner/ui';
 import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { ChainToExplorerUrl, YieldSwitchOptions } from '@/shared/const';
@@ -107,10 +108,11 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           apy={vault?.apy}
           cybroPoints={'20'}
           tvl={vault?.tvl}
-          provider={vault?.provider}
+          provider={vault?.provider.name}
           tokenIcon={vault?.icon}
           yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
+          overallVaultInvestment={vault?.overall_investments_usd}
         />
         <VaultStats
           className={styles.vaultStatsDesktop}
@@ -118,18 +120,19 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
           apy={vault?.apy}
           cybroPoints={'20'}
           tvl={vault?.tvl}
-          provider={vault?.provider}
+          provider={vault?.provider.name}
           availableFunds={isConnected && !isInvalid(balance) ? balance : null}
           tokenIcon={vault?.icon}
           yourDeposit={vaultDepositUsd}
           isLoading={isLoading}
+          overallVaultInvestment={vault?.overall_investments_usd}
         />
       </section>
-      {/*<HistoricalApyData className={styles.historicalApyData} />*/}
+      <FeeBanner className={styles.feeBanner} />
       <SafetyScoreDetails
         vaultId={vault?.id}
         trustScore={vault?.trust_score}
-        inspector={vault?.trust_score_inspector}
+        auditor={vault?.auditors[0]}
         className={styles.safetyScoreDetails}
         isLoading={isLoading}
       />
@@ -137,6 +140,19 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         <ExtendedVaultSkeleton />
       ) : (
         <React.Fragment>
+          {vault?.provider.description && (
+            <section className={styles.providerDescription}>
+              <Text
+                className={clsx(styles.title, styles.providerDescriptionTitle)}
+                textView={TextView.H3}
+              >
+                Provider Description
+              </Text>
+              <Text className={styles.description} textView={TextView.P2}>
+                {vault.provider.description}
+              </Text>
+            </section>
+          )}
           <section className={styles.extendedVaultDescription}>
             <Text className={styles.title} textView={TextView.H3}>
               Extended Vault Description

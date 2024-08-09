@@ -21,10 +21,10 @@
 
 .activeTab.activeTab {
   span {
-    background-color: $background-card;
+    background-color: $background-accentBold;
   }
 
   div {
-    color: $button-secondary-defaultLabel!important;
+    color: $button-primary-defaultLabel!important;
   }
 }

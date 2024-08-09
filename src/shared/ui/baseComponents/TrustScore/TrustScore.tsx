@@ -28,7 +28,7 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
       return TrustScoreColor.Danger;
     }
 
-    if (value < 9) {
+    if (value < 8) {
       return TrustScoreColor.Warning;
     }
 
@@ -40,14 +40,25 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
       return 'calc((26.32% * ' + value / 2 + ') - 7px)';
     }
 
-    if (value < 9) {
+    if (value < 8) {
       return 'calc((26.32% + 52.63% * ' + (value - 2) / 7 + ') - 7px)';
     }
 
-    return 'calc((26.32% + 52.63% + 21.05% * ' + (value - 9) + ') - 7px)';
+    return 'calc((26.32% + 52.63% + 21.05% * ' + (value - 8) + ') - 7px)';
   }, [value]);
 
   const trustScoreColor = getTrustScoreColor();
+
+  if (viewType === TrustScoreViewType.Small) {
+    return (
+      <div className={styles.tinyContainer}>
+        <div className={styles.iconContainer}>{TrustScoreColorToIcon[trustScoreColor]}</div>
+        <Text className={clsx(styles.value, styles[trustScoreColor])}>
+          {formatTrustScore(value)}
+        </Text>
+      </div>
+    );
+  }
 
   return (
     <div

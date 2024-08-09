@@ -67,14 +67,26 @@
   line-height: 100%;
 }
 
+.maxTrustScore {
+  font-size: 14px;
+}
+
 .positive {
   .value {
     color: $trustScore-green-100;
+  }
+
+  .maxTrustScore {
+    color: $trustScore-green-50;
   }
 }
 
 .negative {
   .value {
     color: $trustScore-red-100;
+  }
+
+  .maxTrustScore {
+    color: $trustScore-red-50;
   }
 }

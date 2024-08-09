@@ -1,0 +1,11 @@
+.root {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+}
+
+.infinite {
+  max-height: 460px;
+  overflow-y: auto;
+}

@@ -7,6 +7,7 @@ import WarningIcon from '../assets/icons/warning.svg';
 export enum TrustScoreViewType {
   Mobile = 'mobile',
   Desktop = 'desktop',
+  Small = 'small',
 }
 
 export enum TrustScoreColor {

@@ -7,17 +7,23 @@
   }
 }
 
-.trustScoreMobile.trustScoreMobile {
-  margin-bottom: 16px;
-}
-
 .howCountsDesktop.howCountsDesktop {
   display: none;
 }
 
-.iconContainer {
-  width: 38px;
-  height: 38px;
+.tokenContainer {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 5px;
+}
+
+.tokenName {
+  font-family: $poppins-font;
+  font-size: 12px;
+  font-weight: 500;
+  line-height: 150%;
+  color: $text-white-body40;
 }
 
 .root {
@@ -31,14 +37,22 @@
 
 .title {
   display: flex;
-  flex-direction: row;
-  gap: 10px;
+  flex-direction: column;
+  gap: 12px;
   margin-bottom: 12px;
+  min-height: 43px;
   align-items: center;
+  justify-content: center;
 }
 
 .titleText {
-  text-transform: uppercase;
+  font-family: $unbounded-font;
+  font-size: 18px;
+  font-weight: 500;
+  line-height: 120%;
+  text-align: center;
+  color: $text-white-body100;
+  max-width: 190px;
 }
 
 .chipsContainer {
@@ -46,6 +60,7 @@
   align-items: center;
   gap: 5px;
   min-height: 24px;
+  justify-content: center;
 }
 
 .chip {
@@ -62,8 +77,24 @@
   gap: 16px;
 }
 
-.trustScoreDesktop.trustScoreDesktop {
-  display: none;
+.large {
+  .title {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+
+  .tokenContainer {
+    order: 1;
+  }
+
+  .titleText {
+    max-width: 220px;
+    text-align: left;
+  }
+
+  .chipsContainer {
+    justify-content: start;
+  }
 }
 
 @media screen and (width >= 600px) {
@@ -77,14 +108,6 @@
 }
 
 @include desktop {
-  .trustScoreMobile.trustScoreMobile {
-    display: none;
-  }
-
-  .trustScoreDesktop.trustScoreDesktop {
-    display: flex;
-  }
-
   .trustScoreContainer {
     gap: 18px;
     flex-direction: row;

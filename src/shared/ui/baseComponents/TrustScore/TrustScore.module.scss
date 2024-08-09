@@ -227,6 +227,21 @@
 
   .top {
     height: 100%;
-    //flex-direction: column;
+  }
+}
+
+.tinyContainer {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+
+  .value {
+    font-size: 20px;
+    font-weight: 700;
+  }
+
+  svg {
+    width: 22px;
+    height: 22px;
   }
 }

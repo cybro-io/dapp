@@ -1,24 +1,28 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import {
   HowTrustScoreCountsButton,
   HowTrustScoreCountsButtonViewType,
 } from '@/entities/HowTrustScoreCounts';
-import { ComponentWithProps } from '@/shared/types';
+import { AuditorResponseData, ComponentWithProps, Nullable } from '@/shared/types';
 import { Chip, Text, TextView, TrustScore } from '@/shared/ui';
+
+import AuditorIcon from '../assets/icons/auditor.svg';
+import ShieldIcon from '../assets/icons/shield.svg';
 
 import styles from './TrustScoreBanner.module.scss';
 
 type TrustScoreBannerProps = {
-  inspector: string;
+  auditor: AuditorResponseData;
   trustScoreValue: number;
   isBordered?: boolean;
 };
 
 export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
-  inspector,
+  auditor,
   trustScoreValue,
   isBordered = true,
   className,
@@ -50,8 +54,14 @@ export const TrustScoreBanner: ComponentWithProps<TrustScoreBannerProps> = ({
           assets. Safety measures include investments and real-time risk management.
         </Text>
         <div className={styles.inspectedContainer}>
-          <Text textView={TextView.C1}>Inspected by</Text>
-          <Chip>{inspector}</Chip>
+          <Text textView={TextView.C1} className={styles.auditedBy}>
+            <ShieldIcon />
+            Audited by
+          </Text>
+          <Text textView={TextView.P2} className={styles.auditor}>
+            {/*{auditor.icon && <Image src={auditor.icon} alt={''} />}*/}
+            {auditor.name}
+          </Text>
         </div>
       </div>
     </div>
