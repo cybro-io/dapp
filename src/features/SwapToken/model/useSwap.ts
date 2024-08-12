@@ -132,7 +132,6 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     if (String(err?.message).includes('underlying network changed')) {
       swap({ walletProvider, calculate });
       return;
-    } else {
     }
     console.log('Swap error', error);
   }
