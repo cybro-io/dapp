@@ -126,10 +126,10 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
               </Chip>
             ))}
           </div>
-          {!isInvalid(chainId) && vaultContract?.target && (
+          {!isInvalid(chainId) && vaultContract?.address && (
             <Link
               className={styles.contractDetails}
-              href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`}
+              href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.address}`}
               target="_blank"
             >
               <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>
