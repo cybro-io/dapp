@@ -33,6 +33,10 @@
   }
 }
 
+.loader {
+  margin: auto;
+}
+
 @include desktop {
   .root {
     padding: 0;

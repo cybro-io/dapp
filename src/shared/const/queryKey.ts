@@ -5,4 +5,7 @@ export enum QueryKey {
   TokenPrice = 'tokenPrice',
   UserBalance = 'userBalance',
   RefCode = 'refCode',
+  DashboardStats = 'dashboardStats',
+  DashboardHistory = 'dashboardHistory',
+  VaultsCount = 'vaultsCount',
 }

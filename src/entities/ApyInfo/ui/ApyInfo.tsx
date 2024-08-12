@@ -1,42 +1,61 @@
 'use client';
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Switch } from '@nextui-org/switch';
 import clsx from 'clsx';
 
-import { ComponentWithProps } from '@/shared/types';
+import {
+  ComponentWithProps,
+  GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe,
+} from '@/shared/types';
 import { InfoBox, InfoBoxActionType, InfoBoxViewType } from '@/shared/ui';
+import { formatUserMoney } from '@/shared/utils';
 
 import ApyIcon from '../assets/icons/apy.svg';
-import { ApyPeriod, ApyPeriodType, dropdownData } from '../const';
+import { ApyPeriodType, dropdownData } from '../const';
 
 import styles from './ApyInfo.module.scss';
 
 type ApyInfoProps = {
+  apy: string | undefined;
+  apyFiat: string | null | undefined;
+  period: GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe;
+  setPeriod: Dispatch<SetStateAction<GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe>>;
   viewType?: InfoBoxViewType;
+  isLoading?: boolean;
 };
 
 export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
+  apyFiat,
+  apy,
+  period,
+  setPeriod,
   viewType = InfoBoxViewType.Mobile,
+  isLoading,
   className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
-  const [period, setPeriod] = React.useState<ApyPeriod>(ApyPeriod.Today);
   const [periodType, setPeriodType] = React.useState<ApyPeriodType>(ApyPeriodType.Fiat);
 
   const getTitle = React.useCallback(() => {
-    if (period !== ApyPeriod.Today && period !== ApyPeriod.All) {
+    if (
+      period !== GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe.Today &&
+      period !== GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe.All
+    ) {
       return `Last ${period}`;
     }
 
     return period;
   }, [period]);
 
-  const onItemClick = React.useCallback((period: ApyPeriod) => {
-    setPeriod(period);
-    setIsOpened(false);
-  }, []);
+  const onItemClick = React.useCallback(
+    (period: GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe) => {
+      setPeriod(period);
+      setIsOpened(false);
+    },
+    [setPeriod],
+  );
 
   const onPeriodTypeChange = React.useCallback((isSelected: boolean) => {
     isSelected ? setPeriodType(ApyPeriodType.Fiat) : setPeriodType(ApyPeriodType.Percent);
@@ -44,15 +63,15 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
 
   const getValue = React.useCallback(() => {
     if (viewType === InfoBoxViewType.Desktop) {
-      return '14% - $1’100K';
+      return `${Number(apy) * 100}% - $${formatUserMoney(apyFiat)}`;
     }
 
     if (periodType === ApyPeriodType.Fiat) {
-      return '$1’100K';
+      return `$${formatUserMoney(apyFiat)}`;
     }
 
-    return '14%';
-  }, [periodType, viewType]);
+    return `${Number(apy) * 100}%`;
+  }, [apy, apyFiat, periodType, viewType]);
 
   const dropdownItems = React.useMemo(
     () =>
@@ -80,6 +99,7 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
       className={className}
       dropdownButtonContent={getTitle()}
       dropdownItems={dropdownItems}
+      isLoading={isLoading}
       rightContent={
         <Switch
           onValueChange={onPeriodTypeChange}

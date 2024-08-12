@@ -1,7 +1,7 @@
 import { BalanceResponse, Maybe } from '@/shared/types';
 
 export const shortenWalletAddress = (
-  address: Maybe<`0x${string}`>,
+  address: Maybe<`0x${string}` | string>,
   startSlice = 7,
 ): Maybe<string> => {
   if (!address) return;

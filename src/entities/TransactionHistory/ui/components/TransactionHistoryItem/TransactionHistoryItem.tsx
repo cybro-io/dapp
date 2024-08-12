@@ -4,8 +4,11 @@ import clsx from 'clsx';
 import Link from 'next/link';
 
 import DownIcon from '@/shared/assets/icons/chevron-up.svg';
-import { ComponentWithProps } from '@/shared/types';
-import { IconButton, Text, TextView } from '@/shared/ui';
+import { ChainToExplorerUrl } from '@/shared/const';
+import { useToast } from '@/shared/hooks';
+import { ComponentWithProps, DashboardHistoryData } from '@/shared/types';
+import { IconButton, Text, TextView, ToastType } from '@/shared/ui';
+import { formatDate, formatUserMoney, shortenWalletAddress } from '@/shared/utils';
 
 import TestIcon from '../../../assets/icons/arrow-score-up.svg';
 import CopyIcon from '../../../assets/icons/copy.svg';
@@ -14,25 +17,52 @@ import LinkIcon from '../../../assets/icons/maximize.svg';
 import styles from './TransactionHistoryItem.module.scss';
 
 type TransactionHistoryItemProps = {
-  heading: string;
-  date: string;
-  value: string;
-  fee: string;
+  chainId: number;
+  transaction: DashboardHistoryData;
+  onHover: (transaction: string | null) => void;
   isDark?: boolean;
+  isHighlighted?: boolean;
 };
 
 export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemProps> = ({
-  heading,
-  date,
-  value,
-  fee,
+  chainId,
+  transaction,
+  onHover,
   isDark = false,
+  isHighlighted = false,
   className,
 }) => {
+  const { triggerToast } = useToast();
   const [isOpened, setIsOpened] = React.useState(false);
 
+  const onCopyClick = React.useCallback(async () => {
+    try {
+      await navigator.clipboard.writeText(transaction.transaction_hash);
+      triggerToast({
+        message: 'Success',
+        description: 'Tx hash was successfully copied',
+      });
+    } catch (e) {
+      triggerToast({
+        message: 'Error',
+        description: 'Error copying Tx hash',
+        type: ToastType.Error,
+      });
+    }
+  }, [transaction.transaction_hash, triggerToast]);
+
   return (
-    <li className={clsx(styles.root, isOpened && styles.opened, isDark && styles.dark, className)}>
+    <li
+      className={clsx(
+        styles.root,
+        isOpened && styles.opened,
+        isDark && styles.dark,
+        isHighlighted && styles.active,
+        className,
+      )}
+      onMouseOver={() => onHover(transaction.transaction_hash)}
+      onMouseOut={() => onHover(null)}
+    >
       <div className={styles.top}>
         <div className={styles.transactionIconContainer}>
           <TestIcon />
@@ -40,18 +70,18 @@ export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemPr
         <div className={styles.content}>
           <div className={styles.left}>
             <Text className={styles.heading} textView={TextView.P2}>
-              {heading}
+              {transaction.action}
             </Text>
             <Text className={styles.date} textView={TextView.C4}>
-              {date}
+              {formatDate(transaction.ts)}
             </Text>
           </div>
           <div className={styles.right}>
             <Text className={styles.value} textView={TextView.P2}>
-              {value}
+              ${formatUserMoney(transaction.size_usd)}
             </Text>
             <Text className={styles.fee} textView={TextView.C4}>
-              Fee: {fee}
+              Fee: $0
             </Text>
           </div>
         </div>
@@ -69,11 +99,15 @@ export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemPr
           <div className={styles.detailsContainer}>
             <div className={styles.addressContainer}>
               <Text className={styles.address} textView={TextView.P2}>
-                TPgZACb...LtGVRsn
+                {shortenWalletAddress(transaction.transaction_hash)}
               </Text>
-              <IconButton className={styles.copyButton} icon={<CopyIcon />} />
+              <IconButton className={styles.copyButton} icon={<CopyIcon />} onClick={onCopyClick} />
             </div>
-            <Link className={styles.explorerLink} href={''}>
+            <Link
+              className={styles.explorerLink}
+              href={`${ChainToExplorerUrl[chainId]}/tx/${transaction.transaction_hash}`}
+              target="_blank"
+            >
               Explorer
               <div className={styles.explorerIconContainer}>
                 <LinkIcon />
