@@ -50,7 +50,7 @@ export const SelectTokenCard = ({
   return (
     <div
       className={clsx(
-        'p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-4px)] cursor-pointer',
+        'p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-9px)] cursor-pointer',
         isActive ? 'bg-background-chips' : 'bg-transparent',
         !isActive && 'hover:border-stroke-tableBorder hover:border-[1px] hover:border-solid',
       )}

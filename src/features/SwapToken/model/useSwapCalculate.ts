@@ -2,21 +2,19 @@ import React from 'react';
 
 import { utils } from 'ethers';
 import {
-  SwapExactInParams,
-  CrosschainSwapExactInResult,
   Token,
   TokenAmount,
-  BestPoolSwapping,
   ErrorCode,
+  SwapExactInResult,
+  SwapExactInParams,
 } from 'symbiosis-js-sdk';
 
-import { useSymbiosis } from '@/shared/lib';
 import { statusError } from '@/entities/SwapToken';
+import { useSymbiosis } from '@/shared/lib';
 
-export type SwapCalculateResult = CrosschainSwapExactInResult & {
+export type SwapCalculateResult = SwapExactInResult & {
   tokenAmountIn: TokenAmount;
   from: string;
-  swapping: BestPoolSwapping;
 };
 
 interface SwapCalculateData {
@@ -26,11 +24,13 @@ interface SwapCalculateData {
   calculate?: SwapCalculateResult;
 }
 
-type CalculateSwapProps = Pick<SwapExactInParams, 'tokenOut' | 'from' | 'to'> &
-  Partial<Pick<SwapExactInParams, 'slippage' | 'deadline'>> & {
-    tokenIn: Token;
-    amount: string;
-  };
+type CalculateSwapProps = Pick<
+  SwapExactInParams,
+  'tokenOut' | 'from' | 'to' | 'slippage' | 'deadline'
+> & {
+  tokenIn: Token;
+  amount: string;
+};
 
 export const useSwapCalculate = () => {
   const symbiosis = useSymbiosis();
@@ -51,10 +51,19 @@ export const useSwapCalculate = () => {
     to,
     tokenOut,
     tokenIn,
-    slippage = 300,
-    deadline = Date.now() + 20 * 60,
+    slippage,
+    deadline,
   }: CalculateSwapProps) => {
     try {
+      console.log('calculate:', {
+        amount,
+        from,
+        to,
+        tokenOut,
+        tokenIn,
+        slippage,
+        deadline,
+      });
       setCalculateDataWithPrev({
         records: {},
         error: undefined,
@@ -70,18 +79,16 @@ export const useSwapCalculate = () => {
         throw new Error('Incorrect address');
       }
 
-      const swapping = symbiosis.bestPoolSwapping();
-
-      const exactIn = await swapping.exactIn({
-        tokenAmountIn: tokenAmountIn,
-        tokenOut: tokenOut,
-        from: from,
-        to: to,
-        slippage,
-        deadline,
+      const exactIn = await symbiosis.swapExactIn({
+        inTokenAmount: tokenAmountIn,
+        outToken: tokenOut,
+        fromAddress: from,
+        toAddress: to,
+        slippage: slippage * 100,
+        deadline: Date.now() + deadline * 60,
       });
 
-      console.log('calculateSwap:', exactIn);
+      console.log('calculatedSwap:', exactIn);
 
       const records: Record<string, { title: string; value: string }> = {};
 
@@ -118,7 +125,7 @@ export const useSwapCalculate = () => {
       }
 
       setCalculateDataWithPrev({
-        calculate: { ...exactIn, tokenAmountIn, from, swapping },
+        calculate: { ...exactIn, tokenAmountIn, from },
         records,
         isLoadingCalculate: false,
         error: undefined,

@@ -29,7 +29,7 @@ export const SearchInput = ({
           {endContent}
         </div>
       }
-      startContent={<SearchIcon className="text-white" />}
+      startContent={<SearchIcon className="min-w-6 text-white" />}
       classNames={{
         input:
           'data-[has-start-content=true]:pl-[9px] data-[has-end-content=true]:pr-[9px] font-unbounded text-xl heading-6 font-medium truncate',

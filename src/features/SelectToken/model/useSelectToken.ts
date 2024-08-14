@@ -18,12 +18,11 @@ export const useSelectToken = (selectedTokenId: string) => {
     isFavoriteToken,
     onlyFavorite,
     toggleOnlyFavorite,
+    isEmptyFavoriteTokens,
   } = useSwapFavoriteTokens(tokens);
 
-  const { filteredTokens, setSearchToken, searchToken } = useSwapFilteredTokens(
-    favoriteTokens,
-    selectedTokenId,
-  );
+  const { filteredTokens, setSearchToken, searchToken, isEmptyFilteredTokens } =
+    useSwapFilteredTokens(favoriteTokens, selectedTokenId);
 
   const handleToggleFavorite = (state: boolean, uniqueId: string) => {
     state ? addFavoriteToken(uniqueId) : removeFavoriteToken(uniqueId);
@@ -57,5 +56,7 @@ export const useSelectToken = (selectedTokenId: string) => {
     isFavoriteToken,
     handleSelectToken,
     closeModal,
+    isEmptyFilteredTokens,
+    isEmptyFavoriteTokens,
   };
 };

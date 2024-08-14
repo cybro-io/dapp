@@ -31,9 +31,6 @@ export const ExchangeSwap = () => {
     },
   ];
 
-  const { address } = useWeb3ModalAccount();
-  console.log(address);
-
   const disabledKeys = items.filter(({ disabled }) => disabled).map(({ key }) => key);
 
   return (

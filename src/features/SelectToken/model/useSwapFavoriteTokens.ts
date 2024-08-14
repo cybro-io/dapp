@@ -34,6 +34,8 @@ export const useSwapFavoriteTokens = (tokens: Token[]) => {
     setFavoriteTokensStorage(prevState => [...prevState, uniqueTokenId]);
   };
 
+  const isEmptyFavoriteTokens = favoriteTokens.length < 1 && onlyFavorite;
+
   return {
     favoriteTokens,
     removeFavoriteToken,
@@ -41,5 +43,6 @@ export const useSwapFavoriteTokens = (tokens: Token[]) => {
     isFavoriteToken,
     onlyFavorite,
     toggleOnlyFavorite,
+    isEmptyFavoriteTokens,
   };
 };

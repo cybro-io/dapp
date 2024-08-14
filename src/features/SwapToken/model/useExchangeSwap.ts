@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { utils } from 'ethers';
-import { getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
+import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
 import { getAvailableBalance, useSymbiosis } from '@/shared/lib';
@@ -37,13 +37,28 @@ export const useExchangeSwap = () => {
     setBalanceOut,
     setAmountIn,
   } = useExchangeSwapForm({
-    initialTokenIn: tokens[0],
-    initialTokenOut: tokens[1],
+    initialTokenIn:
+      tokens.find(
+        ({ symbol, chainId }) => symbol === 'USDB' && chainId === ChainId.BLAST_MAINNET,
+      ) ?? tokens[0],
+    initialTokenOut:
+      tokens.find(({ symbol, chainId }) => symbol === 'ETH' && chainId === ChainId.BLAST_MAINNET) ??
+      tokens[0],
   });
 
   const { control } = form;
-  const { tokenIn, tokenOut, amountIn, amountOut, priceOutUsd, priceInUsd, balanceOut, balanceIn } =
-    values;
+  const {
+    slippage,
+    deadline,
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    priceOutUsd,
+    priceInUsd,
+    balanceOut,
+    balanceIn,
+  } = values;
 
   // Amount usd from
   const amountInUsd = React.useMemo(() => {
@@ -92,6 +107,8 @@ export const useExchangeSwap = () => {
       to: String(debouncedAddress || defaultAddress),
       from: defaultAddress ?? '',
       amount: debouncedAmountIn,
+      slippage,
+      deadline,
     });
   }, [
     form.formState.isValid,
@@ -100,6 +117,8 @@ export const useExchangeSwap = () => {
     tokenOut,
     defaultAddress,
     debouncedAddress,
+    slippage,
+    deadline,
   ]);
 
   React.useEffect(() => {
@@ -138,7 +157,15 @@ export const useExchangeSwap = () => {
   const isDisabledSubmit =
     isLoadingCalculate || isLoadingSwap || !form.formState.isValid || Boolean(error);
 
+  const handleChangeSettings = ({ deadline, slippage }: { slippage: number; deadline: number }) => {
+    console.log('new settings', { deadline, slippage });
+
+    form.setValue('slippage', slippage);
+    form.setValue('deadline', deadline);
+  };
+
   return {
+    handleChangeSettings,
     setAddress,
     control,
     tokenIn,
