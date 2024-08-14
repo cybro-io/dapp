@@ -4,3 +4,4 @@ export * from './modal';
 export * from './ToastProvider';
 export * from './ReactQueryProvider';
 export * from './BalanceProvider';
+export * from './NiceModalProvider';

@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { ButtonHTMLAttributes } from 'react';
 
 import {
   Dropdown as NextUIDropdown,
@@ -29,6 +29,20 @@ const DropdownViewToArrow: Record<DropdownView, React.FC> = {
   [DropdownView.Flat]: ArrowIcon,
 };
 
+type DropdownButtonProps = Pick<DropdownProps, 'viewType'> &
+  ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const DropdownButton = React.forwardRef(
+  (
+    { children, viewType = DropdownView.Rounded, className, ...props }: DropdownButtonProps,
+    ref: React.ForwardedRef<HTMLButtonElement>,
+  ) => (
+    <button {...props} className={clsx(className, styles.button, styles[viewType])} ref={ref}>
+      {children}
+    </button>
+  ),
+);
+
 export const Dropdown: ComponentWithProps<DropdownProps> = ({
   items,
   buttonContent,
@@ -41,12 +55,12 @@ export const Dropdown: ComponentWithProps<DropdownProps> = ({
   return (
     <NextUIDropdown className={clsx(className)} onOpenChange={setIsOpened}>
       <DropdownTrigger>
-        <button className={clsx(styles.button, styles[viewType])}>
+        <DropdownButton>
           {buttonContent ?? items[0].label}
           <div className={clsx(styles.arrow, isOpened && styles.isOpened)}>
             <ArrowIcon />
           </div>
-        </button>
+        </DropdownButton>
       </DropdownTrigger>
       <DropdownMenu aria-label="Dynamic Actions" items={items}>
         {item => (

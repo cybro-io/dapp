@@ -11,6 +11,8 @@ import styles from './ErrorMessage.module.scss';
 
 type ErrorMessageProps = {};
 
+// @todo why shared component in widget layout
+
 export const ErrorMessage: ComponentWithProps<ErrorMessageProps> = ({ className }) => {
   return (
     <div className={clsx(styles.root, className)}>

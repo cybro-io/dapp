@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3Modal, useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
@@ -26,6 +26,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
   className,
 }) => {
   const { open } = useWeb3Modal();
+
   const { isConnected } = useWeb3ModalAccount();
   const [hasClickedConnect, setHasClickedConnect] = React.useState(false);
 

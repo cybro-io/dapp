@@ -6,7 +6,7 @@ import { ComponentWithProps } from '@/shared/types';
 
 import styles from './IconButton.module.scss';
 
-type IconButtonProps = {
+export type IconButtonProps = {
   icon: React.ReactNode;
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
