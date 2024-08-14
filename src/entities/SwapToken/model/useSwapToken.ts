@@ -1,33 +1,33 @@
 import React from 'react';
 
-import { GAS_TOKEN, isBtc, isTronToken, Token, tokenEquals } from 'symbiosis-js-sdk';
+import { ChainId, GAS_TOKEN, Token, tokenEquals } from 'symbiosis-js-sdk';
 
-import { swapTokens } from '@/entities/SwapToken';
+import { swapTokens, useSwapChains } from '@/entities/SwapToken';
 import { TYPE_SYMBIOSIS, useSymbiosis } from '@/shared/lib';
 
 export const useSwapTokens = () => {
   const symbiosis = useSymbiosis();
+  const swapChains = useSwapChains();
 
   const tokens = React.useMemo(() => {
-    const chains = symbiosis.chains();
-    const gasTokens = Object.values(GAS_TOKEN).filter(
-      token => chains.findIndex(({ id }) => id === token.chainId) !== -1,
-    );
-
     const symbiosisTokens = symbiosis.tokens().map(token => new Token(token));
 
-    const allTokens = gasTokens.concat(
+    const allTokens = Object.values(GAS_TOKEN).concat(
       symbiosisTokens,
       TYPE_SYMBIOSIS === 'mainnet' ? swapTokens : [],
     );
 
     return allTokens.filter(
       (token, index) =>
-        !isTronToken(token) &&
-        !isBtc(token.chainId) &&
+        swapChains.findIndex(({ id }) => id === token.chainId) !== -1 &&
         allTokens.findIndex(findToken => tokenEquals(findToken, token)) === index,
     );
   }, []);
 
-  return { tokens };
+  const findToken = (address: string, chainId: ChainId) =>
+    tokens.find(
+      token => token.address.toLowerCase() === address.toLowerCase() && token.chainId === chainId,
+    );
+
+  return { tokens, findToken };
 };

@@ -1,31 +1,43 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import dayjs from 'dayjs';
+import { utils } from 'ethers';
 import Link from 'next/link';
 
+import { useSwapTokens } from '@/entities/SwapToken';
 import MaximizeIcon from '@/shared/assets/icons/maximize.svg';
-import { ExchangeHistoryDataPoint } from '@/shared/types';
+import { SymbiosisTransaction } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
 import { ExchangeTransactionToken } from './ExchangeTransactionToken';
-import dayjs from 'dayjs';
-import { useMediaQuery } from 'usehooks-ts';
 
 type ExchangeTransactionRowProps = {
-  destination: ExchangeHistoryDataPoint;
-  source: ExchangeHistoryDataPoint;
-  link: string;
   isContained: boolean;
-  createdAt: string;
+  transaction: SymbiosisTransaction;
 };
 
+const preparedTokenAddress = (address: string) =>
+  address === '0x0000000000000000000000000000000000000000' ? '' : address;
+
 export const ExchangeTransactionRow = ({
-  destination,
-  source,
-  link,
   isContained,
-  createdAt,
+  transaction,
 }: ExchangeTransactionRowProps) => {
+  const { from_route, to_route, created_at } = transaction;
+
+  const { findToken } = useSwapTokens();
+
+  const tokenIn = from_route.at(0);
+  const tokenOut = to_route.at(-1);
+
+  if (!tokenIn || !tokenOut) {
+    return null;
+  }
+
+  const findTokenIn = findToken(preparedTokenAddress(tokenIn.token.address), tokenIn.chain_id);
+  const findTokenOut = findToken(preparedTokenAddress(tokenOut.token.address), tokenOut.chain_id);
+
   return (
     <div
       className={clsx(
@@ -34,27 +46,29 @@ export const ExchangeTransactionRow = ({
       )}
     >
       <ExchangeTransactionToken
-        tokenName={source.token.name}
-        amount={Number(source.size)}
-        icon={source.token.icon}
+        tokenName={tokenIn.token.symbol}
+        amount={Number(utils.formatUnits(String(tokenIn.amount), tokenIn.token.decimals))}
+        icon={String(findTokenIn?.icons?.small)}
+        chainIcon={String(findTokenIn?.chain?.icons?.small)}
         directionName="You pay"
       />
       <ExchangeTransactionToken
-        tokenName={destination.token.name}
-        amount={Number(destination.size)}
-        icon={destination.token.icon}
+        tokenName={tokenOut.token.symbol}
+        amount={Number(utils.formatUnits(String(tokenOut.amount), tokenOut.token.decimals))}
+        icon={String(findTokenOut?.icons?.small)}
+        chainIcon={String(findTokenOut?.chain?.icons?.small)}
         directionName="You recieve"
       />
       <div className="flex flex-col justify-between items-end">
         <Link
-          href={link}
+          href={`https://explorer.symbiosis.finance/transactions/${transaction.from_chain_id}/${transaction.hash}`}
           target="_blank"
           className="flex flex-row gap-[5px] items-center font-unbounded font-light"
         >
           <span>Transaction details</span> <MaximizeIcon />
         </Link>
         <Text textView={TextView.C4} className="!font-unbounded !font-light opacity-50">
-          {dayjs(createdAt).format('DD MMM YYYY HH:mm')}
+          {dayjs(created_at).format('DD MMM YYYY HH:mm')}
         </Text>
       </div>
     </div>

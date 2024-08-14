@@ -1,9 +1,9 @@
+import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber } from 'bignumber.js';
 import { useForm } from 'react-hook-form';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 import * as yup from 'yup';
-import { yupResolver } from '@hookform/resolvers/yup';
 
 type ExchangeSwapFormValues = {
   tokenIn: Token;
@@ -15,6 +15,8 @@ type ExchangeSwapFormValues = {
   address: string;
   balanceIn: string;
   balanceOut: string;
+  slippage: number;
+  deadline: number;
 };
 
 type UseExchangeSwapFormProps = {
@@ -37,6 +39,8 @@ export const useExchangeSwapForm = ({
       tokenIn: initialTokenIn,
       tokenOut: initialTokenOut,
       address: '',
+      slippage: 2,
+      deadline: 20,
     },
     mode: 'all',
     resolver: yupResolver<any>(validationSchema),

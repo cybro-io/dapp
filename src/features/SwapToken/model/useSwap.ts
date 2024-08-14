@@ -6,12 +6,12 @@ import { ethers } from 'ethers';
 import { GAS_TOKEN, Token, getChainById } from 'symbiosis-js-sdk';
 
 import TOKEN from '@/app/abi/token.json';
-import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
-import { WaitForCompleteModal } from '@/features/SwapToken/ui/WaitForCompleteModal';
 import { $symbiosis } from '@/shared/lib';
 
+import { SuccessSwapModal } from '../ui/SuccessSwapModal';
+import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
+
 import { SwapCalculateResult } from './useSwapCalculate';
-import { createSwapTransaction } from '@/features/SwapToken/model/useSwapCreateTransaction';
 
 export enum SwapStatus {
   APPROVE_TRANSACTION,
@@ -36,26 +36,16 @@ type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
 const $swapInfo = createStore<SwapInfo | null>(null);
 const setSwapInfo = createEvent<SwapInfo>();
 const setSwapStatus = createEvent<SwapInfo['swapStatus']>();
-
-sample({
-  clock: setSwapInfo,
-  target: $swapInfo,
-});
-
-$swapInfo.on(setSwapStatus, (swapInfo, swapStatus) =>
-  swapInfo ? { ...swapInfo, swapStatus } : swapInfo,
-);
+const swap = createEvent<SwapEvent>();
 
 interface SwapEvent {
   walletProvider: ethers.providers.ExternalProvider;
   calculate: SwapCalculateResult;
 }
 
-const swap = createEvent<SwapEvent>();
-
 const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calculate }) => {
   try {
-    const { transactionRequest, tokenAmountIn, tokenAmountOut, approveTo, from, type, swapping } =
+    const { transactionRequest, tokenAmountIn, tokenAmountOut, approveTo, from, transactionType } =
       calculate;
     setSwapInfo({ ...calculate, swapStatus: null });
 
@@ -70,8 +60,12 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     const ethProvider = new ethers.providers.Web3Provider(walletProvider);
     const signer = ethProvider.getSigner(from);
 
-    if (type !== 'evm' || typeof transactionRequest.chainId !== 'number') {
+    if (transactionType !== 'evm') {
       throw new Error('Unsupported transaction type');
+    }
+
+    if (!('chainId' in transactionRequest) || typeof transactionRequest.chainId !== 'number') {
+      throw new Error("Don't found chain");
     }
 
     const chainConfig = symbiosis.chainConfig(transactionRequest.chainId);
@@ -105,20 +99,16 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     setSwapStatus(SwapStatus.SEND_TRANSACTION);
 
     // Wait for transaction to be mined
-    const receipt = await transactionResponse.wait(1);
+    await transactionResponse.wait(12);
     setSwapStatus(SwapStatus.MINED_TRANSACTION);
 
     // Wait for transaction to be completed on recipient chain
-    await swapping.waitForComplete(receipt);
-    setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
-
-    createSwapTransaction({
-      address: from,
-      symbiosisData: {
-        chain_id: transactionRequest.chainId,
-        transaction_hash: receipt.transactionHash,
-      },
+    await symbiosis.waitForComplete({
+      chainId: transactionResponse.chainId,
+      txId: transactionResponse.hash,
     });
+
+    setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
 
     NiceModal.show(SuccessSwapModal, {
       sentSymbol: tokenAmountIn.token.symbol,
@@ -136,6 +126,15 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     console.log('Swap error', error);
   }
 });
+
+sample({
+  clock: setSwapInfo,
+  target: $swapInfo,
+});
+
+$swapInfo.on(setSwapStatus, (swapInfo, swapStatus) =>
+  swapInfo ? { ...swapInfo, swapStatus } : swapInfo,
+);
 
 sample({
   clock: swap,

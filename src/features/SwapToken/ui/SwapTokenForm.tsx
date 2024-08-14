@@ -5,6 +5,7 @@ import { Token } from 'symbiosis-js-sdk';
 
 import { getUniqueTokenId, SwapTokenCard } from '@/entities/SwapToken';
 import { InputAddress } from '@/entities/SwapToken/ui/InputAddress/InputAddress';
+import { SwapSettingsButton } from '@/features/SwapSettings';
 import { Button, Chip, ChipViewType, SwapButton, Text, TextView } from '@/shared/ui';
 import { AmountInput } from '@/shared/ui/AmountInput';
 
@@ -36,6 +37,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
     balanceIn,
     handleSetPercent,
     setAddress,
+    handleChangeSettings,
   } = useExchangeSwap();
 
   const showSelectTokenModal = (token: Token | null, setToken: (token: Token) => void) => {
@@ -127,14 +129,20 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
           </Chip>
         )}
 
-        {Object.values(records).map(({ title, value }) => (
-          <div key={title} className="px-3 inline-flex items-center gap-1">
-            <Text textView={TextView.C1} className="opacity-80">
-              {title}
-            </Text>
-            <Text textView={TextView.C2}>{value}</Text>
+        <div className="flex flex-row gap-4 justify-between px-3">
+          <div className="flex flex-col gap-2.5">
+            {Object.values(records).map(({ title, value }) => (
+              <div key={title} className="inline-flex items-center gap-1">
+                <Text textView={TextView.C1} className="opacity-80">
+                  {title}
+                </Text>
+                <Text textView={TextView.C2}>{value}</Text>
+              </div>
+            ))}
           </div>
-        ))}
+
+          <SwapSettingsButton onChangeSettings={handleChangeSettings} />
+        </div>
 
         {isConnected && (
           <Button disabled={isDisabledSubmit} type="submit">

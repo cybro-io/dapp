@@ -19,6 +19,7 @@
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
     "@hookform/resolvers": "^3.9.0",
+    "@indexed-finance/multicall": "^2.0.0",
     "@next/third-parties": "^14.2.5",
     "@nextui-org/react": "^2.3.6",
     "@tanstack/react-query": "^5.45.1",
@@ -45,8 +46,8 @@
     "symbiosis-js-sdk": "^3.1.140",
     "tailwindcss": "^3.4.3",
     "usehooks-ts": "^3.1.0",
-    "yup": "^1.4.0",
-    "victory": "^37.0.2"
+    "victory": "^37.0.2",
+    "yup": "^1.4.0"
   },
   "devDependencies": {
     "@svgr/webpack": "^8.1.0",

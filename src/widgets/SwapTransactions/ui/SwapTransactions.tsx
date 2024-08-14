@@ -33,14 +33,11 @@ export const SwapTransactions = () => {
         {items.map(item => (
           <Tab key={item} title={item}>
             <div className="grid">
-              {transactions?.map(({ destination, source, ts, link }, index) => (
+              {transactions?.map((transaction, index) => (
                 <ExchangeTransactionRow
-                  key={ts + index}
-                  source={source}
-                  link={link}
-                  destination={destination}
+                  key={transaction.id}
+                  transaction={transaction}
                   isContained={index % 2 === 0}
-                  createdAt={ts}
                 />
               ))}
             </div>
