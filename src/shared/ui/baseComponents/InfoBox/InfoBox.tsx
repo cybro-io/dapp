@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
 
 import ArrowIcon from '@/shared/assets/icons/chevron-up.svg';
@@ -21,6 +22,7 @@ type InfoBoxProps = {
   actionType?: InfoBoxActionType;
   dropdownButtonContent?: string;
   dropdownItems?: React.ReactNode[];
+  isLoading?: boolean;
 };
 
 export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
@@ -34,6 +36,7 @@ export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
   actionType = InfoBoxActionType.Pure,
   dropdownButtonContent,
   dropdownItems,
+  isLoading = false,
   className,
 }) => {
   const isDropdown = actionType !== InfoBoxActionType.Pure;
@@ -52,9 +55,13 @@ export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
             </div>
             {rightContent && <div className={styles.rightContent}>{rightContent}</div>}
           </div>
-          <Text textView={TextView.H4} className={styles.value}>
-            {value}
-          </Text>
+          {isLoading ? (
+            <Skeleton className="flex rounded-lg w-24 h-8" />
+          ) : (
+            <Text textView={TextView.H4} className={styles.value}>
+              {value}
+            </Text>
+          )}
         </div>
       </div>
       {isDropdown && !!dropdownItems?.length && (
