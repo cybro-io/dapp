@@ -53,3 +53,14 @@
     line-height: 20px;
   }
 }
+
+.emptyText {
+  font-size: 16px;
+  font-family: $poppins-font;
+}
+
+@media screen and (width >= 1100px) {
+  .emptyText {
+    display: none;
+  }
+}

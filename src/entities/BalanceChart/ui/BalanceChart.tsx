@@ -14,7 +14,7 @@ import {
 
 import { CustomTooltip } from '@/entities/BalanceChart/ui/components';
 import { ComponentWithProps, DashboardHistoryData } from '@/shared/types';
-import { Loader } from '@/shared/ui';
+import { Loader, Text } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 import { PeriodTab, periodTabs, TxActionType } from '@/widgets/BalanceHistory';
 import { formatChartDate } from '@/widgets/BalanceHistory/utils';
@@ -44,9 +44,12 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
   const [chartWidth, setChartWidth] = React.useState(0);
   const chartRef = React.useRef<HTMLDivElement>(null);
 
-  const onTabChange = React.useCallback((period: PeriodTab) => {
-    setPeriod(period);
-  }, []);
+  const onTabChange = React.useCallback(
+    (period: PeriodTab) => {
+      setPeriod(period);
+    },
+    [setPeriod],
+  );
 
   const updateWidth = () => {
     setWidth(window.innerWidth);
@@ -75,6 +78,13 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
     tx: item,
   }));
 
+  // if (!isLoading && !chartData.length) {
+  //   return 'No transactions';
+  // }
+  //
+  // console.log(isLoading, 'one');
+  // console.log(chartData, 'two');
+
   return (
     <div ref={chartRef} className={clsx(styles.root, className)}>
       {isLoading ? (
@@ -100,7 +110,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
               />
             )}
           </Tabs>
-          {chartWidth && (
+          {chartWidth && chartData.length ? (
             <VictoryChart
               theme={VictoryTheme.material}
               containerComponent={<VictoryZoomContainer zoomDimension="x" />}
@@ -199,6 +209,8 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
                 ]}
               />
             </VictoryChart>
+          ) : (
+            <Text className={styles.emptyText}>No transactions</Text>
           )}
         </React.Fragment>
       )}

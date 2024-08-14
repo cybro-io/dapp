@@ -66,7 +66,7 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
   }, []);
 
   const chartTransactions = React.useMemo(
-    () => groupTransactions(historyData || [], period),
+    () => groupTransactions(historyData || [], period).reverse(),
     [historyData, period],
   );
 

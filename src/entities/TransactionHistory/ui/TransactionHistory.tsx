@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 import { HistoryViewType } from '@/entities/TransactionHistory/const';
 import { ComponentWithProps, DashboardHistoryData } from '@/shared/types';
-import { IconButton } from '@/shared/ui';
+import { IconButton, Text } from '@/shared/ui';
 import { isEven } from '@/shared/utils';
 
 import ArrowIcon from '../assets/icons/pagination-arrow.svg';
@@ -63,6 +63,7 @@ export const TransactionHistory: ComponentWithProps<TransactionHistoryProps> = (
               />
             ))}
       </ul>
+      {!isLoading && !data.length && <Text className={styles.emptyText}>No transactions</Text>}
       {viewType === HistoryViewType.Pagination && isLoading && (
         <Skeleton className="w-full h-12 rounded-lg" />
       )}
@@ -76,13 +77,13 @@ export const TransactionHistory: ComponentWithProps<TransactionHistoryProps> = (
           />
           <span className={styles.pageInfo}>
             Page <span className={styles.pageNumber}>{currentPage}</span> of{' '}
-            <span className={styles.pageNumber}>{totalPages}</span>
+            <span className={styles.pageNumber}>{totalPages || 1}</span>
           </span>
           <IconButton
             className={clsx(styles.arrowButton, styles.right)}
             icon={<ArrowIcon />}
             onClick={() => setCurrentPage(prev => prev + 1)}
-            disabled={currentPage === totalPages}
+            disabled={currentPage === totalPages || totalPages === 0}
           />
         </div>
       )}
