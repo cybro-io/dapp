@@ -1,0 +1,98 @@
+import React from 'react';
+
+import NiceModal from '@ebay/nice-modal-react';
+import clsx from 'clsx';
+import { FixedSizeList } from 'react-window';
+
+import { getUniqueTokenId } from '@/entities/SwapToken';
+import { useSelectChain, useSelectToken } from '@/features/SelectToken';
+import { Modal, SearchInput, StarIconButton, Text, TextView } from '@/shared/ui';
+
+import { SelectTokenCard } from './SelectTokenCard';
+import { SelectChainsList } from '@/features/SelectToken/ui/SelectChainsList';
+
+type SelectTokenProps = {
+  selectedTokenId: string;
+};
+
+export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTokenId }) => {
+  const {
+    filteredTokens,
+    handleToggleFavorite,
+    registerSearch,
+    isFavoriteToken,
+    registerFavorite,
+    handleSelectToken,
+    closeModal,
+    isEmptyFilteredTokens,
+    isEmptyFavoriteTokens,
+  } = useSelectToken(selectedTokenId);
+
+  return (
+    <Modal
+      scrollBehavior="inside"
+      onClose={closeModal}
+      classNames={{ base: 'sm:min-h-[714px] sm:max-w-[718px]' }}
+    >
+      <Modal.Header>{'Select token\nto send'}</Modal.Header>
+      <Modal.Body className="overflow-hidden">
+        <SearchInput
+          endContent={<StarIconButton {...registerFavorite()} />}
+          placeholder="Symbol or address"
+          {...registerSearch()}
+        />
+
+        <div className="flex flex-row gap-4 flex-1">
+          <SelectChainsList />
+          <div className="rounded-[22px] bg-background-tableRow overflow-auto p-4 pr-1 flex-1">
+            {isEmptyFilteredTokens && (
+              <div className="w-full h-[75px] flex items-center justify-center">
+                <Text textView={TextView.BP3} className="opacity-40">
+                  Nothing found. Try again.
+                </Text>
+              </div>
+            )}
+
+            {isEmptyFavoriteTokens && (
+              <div className="w-full h-[75px] flex items-center justify-center">
+                <Text textView={TextView.BP3} className="opacity-40">
+                  You don’t have any token in your Favourites
+                </Text>
+              </div>
+            )}
+
+            {!isEmptyFilteredTokens && !isEmptyFavoriteTokens && (
+              <FixedSizeList
+                height={518}
+                width={308}
+                itemCount={filteredTokens.length}
+                itemSize={75 + 8}
+              >
+                {({ index, style }) => {
+                  const token = filteredTokens[index];
+                  const uniqueId = getUniqueTokenId(
+                    token.address,
+                    token.chainId,
+                    token.chainFromId,
+                  );
+                  return (
+                    <div style={{ ...style, marginBottom: 8 }}>
+                      <SelectTokenCard
+                        key={index}
+                        token={token}
+                        onClickFavorite={state => handleToggleFavorite(state, uniqueId)}
+                        isFavorite={isFavoriteToken(uniqueId)}
+                        isActive={selectedTokenId === uniqueId}
+                        onSelectToken={handleSelectToken}
+                      />
+                    </div>
+                  );
+                }}
+              </FixedSizeList>
+            )}
+          </div>
+        </div>
+      </Modal.Body>
+    </Modal>
+  );
+});

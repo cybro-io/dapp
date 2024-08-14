@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { Modal } from '@/app/providers';
+import { ModalId } from '@/app/providers';
 import { Maybe } from '@/shared/types';
 
 interface ModalContextType {
-  currentModal: Maybe<Modal>;
-  openModal: (id: Modal, props?: Record<string, any>) => void;
+  currentModal: Maybe<ModalId>;
+  openModal: (id: ModalId, props?: Record<string, any>) => void;
   closeModal: () => void;
   props: Record<string, any>;
 }
@@ -15,10 +15,10 @@ interface ModalContextType {
 const ModalContext = React.createContext<ModalContextType | undefined>(undefined);
 
 export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentModal, setCurrentModal] = React.useState<Maybe<Modal>>(undefined);
+  const [currentModal, setCurrentModal] = React.useState<Maybe<ModalId>>(undefined);
   const [props, setProps] = React.useState<Record<string, any>>({});
 
-  const openModal = (id: Modal, props?: Record<string, any>) => {
+  const openModal = (id: ModalId, props?: Record<string, any>) => {
     setCurrentModal(id);
 
     props && setProps(props);

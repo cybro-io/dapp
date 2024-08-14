@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { ethers } from 'ethers';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
@@ -36,7 +36,7 @@ export const useWithdraw = (
 
   const withdraw = React.useCallback(
     async (amount: string) => {
-      const vaultAddress = vaultContract?.target;
+      const vaultAddress = vaultContract?.address;
       if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
         triggerToast({
           message: `Something went wrong`,
@@ -50,9 +50,9 @@ export const useWithdraw = (
       try {
         setIsLoading(true);
         const decimals = await tokenContract.decimals();
-        const weiAmount = ethers.parseUnits(amount, decimals);
+        const weiAmount = utils.parseUnits(amount, decimals);
 
-        const withdrawEstimatedGas = await vaultContract.redeem.estimateGas(
+        const withdrawEstimatedGas = await vaultContract.estimateGas.redeem(
           weiAmount,
           address,
           address,

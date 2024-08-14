@@ -1,6 +1,7 @@
 .root {
   display: flex;
   flex-direction: row;
+  justify-content: center;
   font-family: $unbounded-font;
   font-weight: 900;
   line-height: 120%;
@@ -72,6 +73,7 @@
 }
 
 .small {
+  @apply h-9;
   padding: 12px 14px;
   font-size: 12px;
   font-weight: 800;

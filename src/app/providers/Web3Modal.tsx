@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { createWeb3Modal, defaultConfig } from '@web3modal/ethers/react';
+import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react';
 
 import { Chain } from '@/shared/const';
 

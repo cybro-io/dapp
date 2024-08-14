@@ -4,14 +4,14 @@ import { HowTrustScoreCountsModal } from '@/entities/HowTrustScoreCounts';
 import { SupportRequestModal } from '@/widgets/SupportRequest';
 import { YieldCalculatorModal } from '@/widgets/YieldCalculator';
 
-export enum Modal {
+export enum ModalId {
   HowTrustScoreCounts,
   YieldCalculator,
   SupportRequest,
 }
 
-export const ModalIdToView: Record<Modal, React.ReactElement> = {
-  [Modal.HowTrustScoreCounts]: <HowTrustScoreCountsModal />,
-  [Modal.YieldCalculator]: <YieldCalculatorModal />,
-  [Modal.SupportRequest]: <SupportRequestModal />,
+export const ModalIdToView: Record<ModalId, React.ReactElement> = {
+  [ModalId.HowTrustScoreCounts]: <HowTrustScoreCountsModal />,
+  [ModalId.YieldCalculator]: <YieldCalculatorModal />,
+  [ModalId.SupportRequest]: <SupportRequestModal />,
 };

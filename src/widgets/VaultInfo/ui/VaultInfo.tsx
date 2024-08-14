@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 import Link from 'next/link';
 
-import { Modal, useModal } from '@/app/providers';
+import { ModalId, useModal } from '@/app/providers';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { Banner, BannerColor, BannerSize } from '@/entities/Banner';
 import { DepositWithdrawTabs } from '@/entities/DepositWithdraw';
@@ -79,7 +79,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
 
   const onTabChange = React.useCallback(
     (activeTab: YieldSwitchOptions) => {
-      openModal(Modal.YieldCalculator, { ...modalProps, activeTab });
+      openModal(ModalId.YieldCalculator, { ...modalProps, activeTab });
       setActiveTab(activeTab);
     },
     [modalProps, openModal],
@@ -95,7 +95,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             deposit={vaultDepositUsd}
             tokenIcon={vault?.icon}
             onButtonClick={() =>
-              openModal(Modal.YieldCalculator, {
+              openModal(ModalId.YieldCalculator, {
                 ...modalProps,
                 activeTab: YieldSwitchOptions.Deposit,
               })
@@ -160,9 +160,9 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             <Text className={styles.description} textView={TextView.P2}>
               {vault?.description}
             </Text>
-            {!isInvalid(chainId) && vaultContract?.target && (
+            {!isInvalid(chainId) && vaultContract?.address && (
               <Link
-                href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.target}`}
+                href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.address}`}
                 target="_blank"
               >
                 <Button
@@ -186,7 +186,7 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
                 <Button
                   className={styles.yieldButton}
                   view={ButtonView.Secondary}
-                  onClick={() => openModal(Modal.YieldCalculator, modalProps)}
+                  onClick={() => openModal(ModalId.YieldCalculator, modalProps)}
                 >
                   Calculate Yield
                 </Button>

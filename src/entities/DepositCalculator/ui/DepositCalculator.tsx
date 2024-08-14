@@ -3,7 +3,7 @@
 import React, { Key } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { PeriodTab } from '@/entities/DepositCalculator/const';

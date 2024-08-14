@@ -1,7 +1,7 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers/react';
-import { ethers } from 'ethers';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { utils } from 'ethers';
 
 import { QueryKey } from '@/shared/const';
 import {
@@ -50,8 +50,9 @@ export const useWithdrawCalculator = (
     const sharePrice = await vaultContract.sharePrice();
     const decimals = Number(await vaultContract.decimals());
 
-    const weiAmountToWithdraw = ethers.parseUnits(amountToWithdraw, decimals);
-    const weiYourWithdraw = (weiAmountToWithdraw * sharePrice) / BigInt(10 ** decimals);
+    const weiAmountToWithdraw = utils.parseUnits(amountToWithdraw, decimals);
+    // todo: check calculation, after change logic
+    const weiYourWithdraw = weiAmountToWithdraw.mul(sharePrice).div(BigInt(10 ** decimals));
 
     const yourWithdrawTokens = fromWei(weiYourWithdraw, decimals);
     const yourWithdrawUsd = convertToUsd(yourWithdrawTokens, tokenPrice);

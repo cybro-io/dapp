@@ -7,6 +7,10 @@ module.exports = {
     './node_modules/@nextui-org/theme/dist/**/*.{js,ts,jsx,tsx}',
   ],
   theme: {
+    fontFamily: {
+      unbounded: ['var(--font-unbounded)', 'sans-serif'],
+      poppins: ['var(--font-poppins)', 'sans-serif'],
+    },
     extend: {},
   },
   darkMode: 'class',
