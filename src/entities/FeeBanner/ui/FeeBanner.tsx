@@ -14,7 +14,7 @@ export const FeeBanner: ComponentWithProps<FeeBannerProps> = ({ className }) => 
     <div className={clsx(styles.root, className)}>
       <div className={styles.items}>
         <div className={styles.item}>
-          <Text className={clsx(styles.title, styles.gradient)}>Perfomance fee</Text>
+          <Text className={clsx(styles.title, styles.gradient)}>Performance fee</Text>
           <div className={styles.line} />
           <Text className={styles.value}>0%</Text>
         </div>
