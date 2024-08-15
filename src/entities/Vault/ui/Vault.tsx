@@ -7,6 +7,7 @@ import clsx from 'clsx';
 import Image from 'next/image';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
+import { VaultChips } from '@/entities/VaultChips';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
@@ -62,13 +63,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, clas
               {vault.name}
             </Text>
           </div>
-          <div className={styles.chipsContainer}>
-            {vault?.badges.slice(0, 3).map(badge => (
-              <Chip className={styles.chip} key={badge}>
-                {badge}
-              </Chip>
-            ))}
-          </div>
+          <VaultChips className={styles.chipsContainer} badges={vault.badges} />
         </div>
         {isConnected && !isInvalid(userBalance) && (
           <AvailableFunds
