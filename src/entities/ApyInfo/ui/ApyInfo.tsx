@@ -7,7 +7,7 @@ import clsx from 'clsx';
 
 import {
   ComponentWithProps,
-  GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe,
+  GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe,
 } from '@/shared/types';
 import { InfoBox, InfoBoxActionType, InfoBoxViewType } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -20,8 +20,8 @@ import styles from './ApyInfo.module.scss';
 type ApyInfoProps = {
   apy: string | undefined;
   apyFiat: string | null | undefined;
-  period: GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe;
-  setPeriod: Dispatch<SetStateAction<GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe>>;
+  period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe;
+  setPeriod: Dispatch<SetStateAction<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>>;
   viewType?: InfoBoxViewType;
   isLoading?: boolean;
 };
@@ -40,8 +40,8 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
 
   const getTitle = React.useCallback(() => {
     if (
-      period !== GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe.Today &&
-      period !== GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe.All
+      period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today &&
+      period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
     ) {
       return `Last ${period}`;
     }
@@ -50,7 +50,7 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   }, [period]);
 
   const onItemClick = React.useCallback(
-    (period: GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe) => {
+    (period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe) => {
       setPeriod(period);
       setIsOpened(false);
     },

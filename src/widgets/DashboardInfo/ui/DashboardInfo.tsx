@@ -10,8 +10,8 @@ import { MyVaultsInfo } from '@/entities/MyVaultsInfo';
 import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
-  GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe,
-  useGetDashboardHistoryApiV1DashboardAddressStatsGet,
+  useGetDashboardStatsApiV1DashboardAddressStatsGet,
+  GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe,
 } from '@/shared/types';
 import { InfoBox, InfoBoxViewType } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -26,15 +26,15 @@ type DashboardInfoProps = {};
 export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ className }) => {
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const [period, setPeriod] =
-    React.useState<GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe>(
-      GetDashboardHistoryApiV1DashboardAddressStatsGetTimeframe.Today,
+    React.useState<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>(
+      GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today,
     );
 
   const {
     data,
     isLoading: isDataLoading,
     isError,
-  } = useGetDashboardHistoryApiV1DashboardAddressStatsGet(
+  } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
     address || '',
     {
       chain_id: chainId || 0,

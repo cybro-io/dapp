@@ -25,7 +25,7 @@ type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
   const { address, chainId } = useWeb3ModalAccount();
-  const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Today);
+  const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.All);
   const [width, setWidth] = React.useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredTransaction, setHoveredTransaction] = React.useState<string | null>(null);
@@ -75,10 +75,6 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
     setCurrentPage(1);
   }, []);
 
-  // if (isLoading || !historyData) {
-  //   return 'Loading...';
-  // }
-
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.container}>
@@ -86,6 +82,25 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
           <Text className={clsx(styles.title, styles.balanceTitle)} textView={TextView.H3}>
             Balance overview
           </Text>
+          <Tabs
+            items={periodTabs}
+            selectedKey={period}
+            onSelectionChange={key => onTabChange(key as PeriodTab)}
+            classNames={{
+              base: clsx(styles.historyTabs, styles.historyTabsMobile),
+              tabList: styles.tabList,
+              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
+              panel: styles.panel,
+            }}
+          >
+            {({ key, title }) => (
+              <Tab
+                className={clsx(styles.tab, key === period && styles.selected)}
+                key={key}
+                title={title}
+              />
+            )}
+          </Tabs>
           <BalanceChart
             period={period}
             setPeriod={setPeriod}
@@ -105,7 +120,7 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
             selectedKey={period}
             onSelectionChange={key => onTabChange(key as PeriodTab)}
             classNames={{
-              base: styles.historyTabs,
+              base: clsx(styles.historyTabs, styles.historyTabsDesktop),
               tabList: styles.tabList,
               tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
               panel: styles.panel,

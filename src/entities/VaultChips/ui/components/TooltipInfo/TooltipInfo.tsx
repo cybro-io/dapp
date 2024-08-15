@@ -28,9 +28,9 @@ export const TooltipInfo: ComponentWithProps<TooltipInfoProps> = ({ chips, class
                 <CircleIcon />
                 {chip}
               </Text>
-              <Text className={styles.itemValue} textView={TextView.C4}>
-                15x
-              </Text>
+              {/*<Text className={styles.itemValue} textView={TextView.C4}>*/}
+              {/*  15x*/}
+              {/*</Text>*/}
             </div>
           );
         })}

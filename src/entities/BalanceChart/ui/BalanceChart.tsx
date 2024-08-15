@@ -78,38 +78,31 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
     tx: item,
   }));
 
-  // if (!isLoading && !chartData.length) {
-  //   return 'No transactions';
-  // }
-  //
-  // console.log(isLoading, 'one');
-  // console.log(chartData, 'two');
-
   return (
     <div ref={chartRef} className={clsx(styles.root, className)}>
       {isLoading ? (
         <Loader className={styles.loader} />
       ) : (
         <React.Fragment>
-          <Tabs
-            items={periodTabs}
-            selectedKey={period}
-            onSelectionChange={key => onTabChange(key as PeriodTab)}
-            classNames={{
-              base: styles.historyTabs,
-              tabList: styles.tabList,
-              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
-              panel: styles.panel,
-            }}
-          >
-            {({ key, title }) => (
-              <Tab
-                className={clsx(styles.tab, key === period && styles.selected)}
-                key={key}
-                title={title}
-              />
-            )}
-          </Tabs>
+          {/*<Tabs*/}
+          {/*  items={periodTabs}*/}
+          {/*  selectedKey={period}*/}
+          {/*  onSelectionChange={key => onTabChange(key as PeriodTab)}*/}
+          {/*  classNames={{*/}
+          {/*    base: styles.historyTabs,*/}
+          {/*    tabList: styles.tabList,*/}
+          {/*    tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),*/}
+          {/*    panel: styles.panel,*/}
+          {/*  }}*/}
+          {/*>*/}
+          {/*  {({ key, title }) => (*/}
+          {/*    <Tab*/}
+          {/*      className={clsx(styles.tab, key === period && styles.selected)}*/}
+          {/*      key={key}*/}
+          {/*      title={title}*/}
+          {/*    />*/}
+          {/*  )}*/}
+          {/*</Tabs>*/}
           {chartWidth && chartData.length ? (
             <VictoryChart
               theme={VictoryTheme.material}
