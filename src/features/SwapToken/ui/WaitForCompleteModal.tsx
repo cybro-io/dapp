@@ -2,7 +2,7 @@ import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
 
-import { getSwapStatus, SwapStatus, useSwap } from '@/features/SwapToken/model/useSwap';
+import { useSwap, getSwapStatus, SwapStatus } from '@/features/SwapToken';
 import TickCircle from '@/shared/assets/icons/tick-circle.svg';
 import { ExchangeDivider, Modal, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
