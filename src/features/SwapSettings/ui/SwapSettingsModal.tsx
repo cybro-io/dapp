@@ -4,7 +4,6 @@ import NiceModal from '@ebay/nice-modal-react';
 import { Input } from '@nextui-org/input';
 import { Radio, RadioGroup } from '@nextui-org/react';
 import clsx from 'clsx';
-import { Controller } from 'react-hook-form';
 
 import { useSwapSettingsForm } from '@/features/SwapSettings';
 import { Button, Modal, Text, TextView } from '@/shared/ui';
@@ -18,93 +17,57 @@ export const SwapSettingsModal = NiceModal.create<SwapSettingsModalProps>(
   ({ defaultSlippage, defaultDeadline }) => {
     const currentModal = NiceModal.useModal();
 
-    const { register, isDisabledSubmit, handleSubmit, control } = useSwapSettingsForm({
-      defaultSlippage,
-      defaultDeadline,
-    });
-
-    const onSubmit = handleSubmit(data => {
-      currentModal.resolve(data);
-      currentModal.remove();
+    const { register, isDisabledSubmit, handleSubmit } = useSwapSettingsForm({
+      slippage: defaultSlippage,
+      deadline: defaultDeadline,
+      onSubmit: data => {
+        currentModal.resolve(data);
+        currentModal.remove();
+      },
     });
 
     return (
       <Modal onClose={() => currentModal.remove()} classNames={{ base: 'max-w-[375px]' }}>
         <Modal.Header>Slippage Settings</Modal.Header>
         <Modal.Body>
-          <form className="flex flex-col gap-4 mt-4" onSubmit={onSubmit}>
+          <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit}>
             <Text textView={TextView.H5}>Slippage Tolerance</Text>
 
             <div className="inline-flex justify-between gap-4">
-              <Controller
-                name="slippage"
-                control={control}
-                render={({ field }) => (
-                  <RadioGroup orientation="horizontal" {...field}>
-                    <Radio
-                      size="sm"
-                      classNames={{
-                        base: 'p-0 m-0',
-                        wrapper: 'hidden',
-                        labelWrapper: 'm-0',
-                        label:
-                          'px-2.5 py-0.5 group-data-[selected=false]:text-opacity-60 group-data-[selected=true]:text-black group-data-[selected=true]:bg-white rounded-full',
-                      }}
-                      value="1"
-                    >
-                      1.0%
-                    </Radio>
-                    <Radio
-                      size="sm"
-                      classNames={{
-                        base: 'p-0 m-0',
-                        wrapper: 'hidden',
-                        labelWrapper: 'm-0',
-                        label:
-                          'px-2.5 py-0.5 group-data-[selected=false]:text-opacity-60 group-data-[selected=true]:text-black group-data-[selected=true]:bg-white rounded-full',
-                      }}
-                      value="1.5"
-                    >
-                      1.5%
-                    </Radio>
-                    <Radio
-                      size="sm"
-                      classNames={{
-                        base: 'p-0 m-0',
-                        wrapper: 'hidden',
-                        labelWrapper: 'm-0',
-                        label:
-                          'px-2.5 py-0.5 group-data-[selected=false]:text-opacity-60 group-data-[selected=true]:text-black group-data-[selected=true]:bg-white rounded-full',
-                      }}
-                      value="2"
-                    >
-                      2.0%
-                    </Radio>
-                  </RadioGroup>
-                )}
-              />
-
-              <Controller
-                name="slippage"
-                control={control}
-                render={({ field }) => (
-                  <Input
+              <RadioGroup orientation="horizontal" {...register('slippage')}>
+                {['1', '1.5', '2'].map(value => (
+                  <Radio
+                    key={value}
                     size="sm"
-                    className="border-stroke-tableBorder flex-1"
-                    radius="full"
                     classNames={{
-                      inputWrapper: clsx(
-                        'px-4 min-h-[24px] h-[24px]',
-                        'bg-background-chips group-data-[focus=true]:bg-background-chips data-[hover=true]:bg-background-chips',
-                        'outline outline-[1px] outline-stroke-tableBorder data-[hover=true]:outline-stroke-whiteBorder',
-                      ),
-                      input: 'font-poppins text-[12px]',
+                      base: 'p-0 m-0',
+                      wrapper: 'hidden',
+                      labelWrapper: 'm-0',
+                      label:
+                        'px-2.5 py-0.5 group-data-[selected=false]:text-opacity-60 group-data-[selected=true]:text-black group-data-[selected=true]:bg-white rounded-full',
                     }}
-                    placeholder="slippage"
-                    endContent={<Text textView={TextView.C4}>%</Text>}
-                    {...field}
-                  />
-                )}
+                    value={value}
+                  >
+                    {value}%
+                  </Radio>
+                ))}
+              </RadioGroup>
+
+              <Input
+                size="sm"
+                className="border-stroke-tableBorder flex-1"
+                radius="full"
+                classNames={{
+                  inputWrapper: clsx(
+                    'px-4 min-h-[24px] h-[24px]',
+                    'bg-background-chips group-data-[focus=true]:bg-background-chips data-[hover=true]:bg-background-chips',
+                    'outline outline-[1px] outline-stroke-tableBorder data-[hover=true]:outline-stroke-whiteBorder',
+                  ),
+                  input: 'font-poppins text-[12px]',
+                }}
+                placeholder="slippage"
+                endContent={<Text textView={TextView.C4}>%</Text>}
+                {...register('slippage')}
               />
             </div>
 

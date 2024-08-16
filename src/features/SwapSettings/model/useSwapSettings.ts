@@ -1,39 +1,30 @@
-import React from 'react';
-
-import { yupResolver } from '@hookform/resolvers/yup';
-import { useForm } from 'react-hook-form';
 import * as yup from 'yup';
+
+import { useForm } from '@/shared/lib';
 
 export type SwapSettings = {
   slippage: number;
   deadline: number;
 };
 
-type UseSwapSettingsProps = {
-  defaultSlippage: number;
-  defaultDeadline: number;
-};
+type UseSwapSettingsProps = SwapSettings & { onSubmit: (values: SwapSettings) => void };
 
 const validationSchema = yup.object().shape({
   slippage: yup.number().typeError('Invalid value').required().min(0.2).max(100),
   deadline: yup.number().typeError('Invalid value').required().min(5).max(60),
 });
 
-export const useSwapSettingsForm = ({ defaultSlippage, defaultDeadline }: UseSwapSettingsProps) => {
-  const { setValue, register, formState, handleSubmit, control } = useForm({
-    defaultValues: {
-      slippage: String(defaultSlippage),
-      deadline: String(defaultDeadline),
+export const useSwapSettingsForm = ({ deadline, slippage, onSubmit }: UseSwapSettingsProps) => {
+  const { setFieldValue, register, isValid, handleSubmit } = useForm({
+    initialValues: {
+      slippage,
+      deadline,
     },
-    resolver: yupResolver<any>(validationSchema),
+    validationSchema,
+    onSubmit,
   });
 
-  React.useEffect(() => {
-    setValue('slippage', defaultSlippage);
-    setValue('deadline', defaultDeadline);
-  }, [defaultDeadline, defaultSlippage, setValue]);
+  const isDisabledSubmit = !isValid;
 
-  const isDisabledSubmit = !formState.isValid;
-
-  return { setValue, register, isDisabledSubmit, handleSubmit, control };
+  return { setFieldValue, register, isDisabledSubmit, handleSubmit };
 };

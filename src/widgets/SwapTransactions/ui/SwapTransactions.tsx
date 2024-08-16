@@ -7,9 +7,10 @@ import { ExchangeTransactionRow } from '@/entities/ExchangeTransaction';
 import { Pagination, Text, TextView } from '@/shared/ui';
 
 import { useSwapTransactions } from '../model/useSwapTransactions';
+import { SwapTransactionsLoader } from './SwapTransactionsLoader';
 
 export const SwapTransactions = () => {
-  const { transactions, setPage, page, totalPages, isLoading, registerTabs } =
+  const { transactions, setPage, page, totalPages, isLoading, registerTabs, isEmptyTransactions } =
     useSwapTransactions();
 
   const items = ['All', 'Swap', 'Exchange'];
@@ -33,13 +34,20 @@ export const SwapTransactions = () => {
         {items.map(item => (
           <Tab key={item} title={item}>
             <div className="grid">
-              {transactions?.map((transaction, index) => (
-                <ExchangeTransactionRow
-                  key={transaction.id}
-                  transaction={transaction}
-                  isContained={index % 2 === 0}
-                />
-              ))}
+              {isLoading && <SwapTransactionsLoader />}
+              {isEmptyTransactions && (
+                <Text textView={TextView.H4} className="!my-60 text-center">
+                  No transactions found
+                </Text>
+              )}
+              {!isLoading &&
+                transactions?.map((transaction, index) => (
+                  <ExchangeTransactionRow
+                    key={transaction.id}
+                    transaction={transaction}
+                    isContained={index % 2 === 0}
+                  />
+                ))}
             </div>
           </Tab>
         ))}
