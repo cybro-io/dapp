@@ -8,4 +8,11 @@ export enum MixpanelEvent {
   CalculatorPeriodChange = 'form_change_period',
   DepositSuccess = 'deposit_success',
   WithdrawalSuccess = 'withdrawal_success',
+
+  ChangeSwapSettings = 'change_swap_settings',
+  ChangeSwapFrom = 'change_swap_from',
+  ChangeSwapTo = 'change_swap_to',
+  SuccessSwap = 'success_swap',
+  ChangeSwapAmount = 'change_swap_amount',
+  ChangeSwapAmountPreset = 'change_swap_amount_preset',
 }

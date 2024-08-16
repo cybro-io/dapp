@@ -1,15 +1,16 @@
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import { Token } from 'symbiosis-js-sdk';
 
 import { getUniqueTokenId, SwapTokenCard } from '@/entities/SwapToken';
 import { InputAddress } from '@/entities/SwapToken';
 import { SwapSettingsButton } from '@/features/SwapSettings';
+import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
 import { Button, Chip, ChipViewType, SwapButton, Text, TextView } from '@/shared/ui';
 import { AmountInput } from '@/shared/ui/AmountInput';
 
 import { useExchangeSwap } from '../model/useExchangeSwap';
-import { Skeleton } from '@nextui-org/react';
 
 type SwapTokenProps = {
   features: {
@@ -19,28 +20,18 @@ type SwapTokenProps = {
 };
 
 export const SwapTokenForm = ({ features }: SwapTokenProps) => {
-  const {
-    register,
-    tokenIn,
-    tokenOut,
-    handleSwapDirection,
-    isConnected,
-    handleChangeToken,
-    isDisabledSubmit,
-    isLoadingCalculate,
-    records,
-    error,
-    amountOutUsd,
-    amountInUsd,
-    onSubmit,
-    balanceOut,
-    balanceIn,
-    handleSetPercent,
-    setAddress,
-    handleChangeSettings,
-    isLoadingOutBalance,
-    isLoadingInBalance,
-  } = useExchangeSwap();
+  const { form, isConnected, isDisabledSubmit, amountOutUsd, amountInUsd, calculateParams } =
+    useExchangeSwap();
+
+  const { isLoadingCalculate, records, error } = calculateParams;
+  const values = form.values;
+
+  const { balance: balanceIn, isLoading: isLoadingInBalance } = useExchangeTokenBalance(
+    values.tokenIn,
+  );
+  const { balance: balanceOut, isLoading: isLoadingOutBalance } = useExchangeTokenBalance(
+    values.tokenOut,
+  );
 
   const showSelectTokenModal = (token: Token | null, setToken: (token: Token) => void) => {
     if (!token) return;
@@ -52,9 +43,9 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
   };
 
   return (
-    <form className="flex flex-col gap-2" onSubmit={onSubmit}>
+    <form className="flex flex-col gap-2" onSubmit={form.handleSubmit}>
       <SwapTokenCard
-        token={tokenIn}
+        token={values.tokenIn}
         balance={
           isLoadingInBalance ? (
             <Skeleton className="rounded-lg">
@@ -65,7 +56,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
           )
         }
         onSelectTokenClick={() =>
-          showSelectTokenModal(tokenIn, token => handleChangeToken(token, 'in'))
+          showSelectTokenModal(values.tokenIn, token => form.handleChangeToken(token, 'in'))
         }
         title="From"
         footer={
@@ -80,16 +71,16 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
         <AmountInput
           placeholder="0"
           label="You send"
-          {...register('amountIn')}
+          {...form.register('amountIn')}
           usd={amountInUsd}
           max={balanceIn}
           showPercent
-          onSelectPercent={handleSetPercent}
+          onSelectPercent={percent => form.handleSetPercent(Number(balanceIn), percent)}
         />
       </SwapTokenCard>
-      <SwapButton type="button" disabled={isLoadingCalculate} onClick={handleSwapDirection} />
+      <SwapButton type="button" disabled={isLoadingCalculate} onClick={form.handleSwapDirection} />
       <SwapTokenCard
-        token={tokenOut}
+        token={values.tokenOut}
         balance={
           isLoadingOutBalance ? (
             <Skeleton className="rounded-lg">
@@ -100,7 +91,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
           )
         }
         onSelectTokenClick={() =>
-          showSelectTokenModal(tokenOut, token => handleChangeToken(token, 'out'))
+          showSelectTokenModal(values.tokenOut, token => form.handleChangeToken(token, 'out'))
         }
         title="To"
         footer={
@@ -109,7 +100,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
               Recipient
             </Text>
             <div className="max-w-[194px]">
-              <InputAddress {...register('address')} onClear={() => setAddress('')} />
+              <InputAddress {...form.register('address')} onClear={() => form.setAddress('')} />
             </div>
           </div>
         }
@@ -117,11 +108,10 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
         <AmountInput
           label="You recieve"
           placeholder="0"
-          {...register('amountOut')}
+          {...form.register('amountOut')}
           disabled
           usd={amountOutUsd}
           max={balanceOut}
-          onSelectPercent={handleSetPercent}
         />
       </SwapTokenCard>
 
@@ -147,7 +137,11 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
             ))}
           </div>
 
-          <SwapSettingsButton onChangeSettings={handleChangeSettings} />
+          <SwapSettingsButton
+            onChangeSettings={form.handleChangeSettings}
+            deadline={values.deadline}
+            slippage={values.slippage}
+          />
         </div>
 
         {isConnected && (

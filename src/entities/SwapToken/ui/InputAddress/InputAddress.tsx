@@ -43,7 +43,7 @@ export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps
           'bg-background-chips group-data-[focus=true]:bg-background-chips data-[hover=true]:bg-background-chips',
           'outline outline-[1px] outline-stroke-tableBorder data-[hover=true]:outline-stroke-whiteBorder',
         ),
-        input: 'font-poppins text-[13px]',
+        input: 'font-poppins text-[13px] pr-0',
       }}
       placeholder="Enter the wallet address"
       isClearable

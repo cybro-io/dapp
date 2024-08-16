@@ -1,10 +1,12 @@
+import React from 'react';
+
 import { BigNumber } from 'bignumber.js';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 import * as yup from 'yup';
 
 import { useForm } from '@/shared/lib';
-import React from 'react';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type ExchangeSwapFormValues = {
   tokenIn: Token;
@@ -14,8 +16,6 @@ type ExchangeSwapFormValues = {
   priceInUsd: number;
   priceOutUsd: number;
   address: string;
-  balanceIn: string;
-  balanceOut: string;
   slippage: number;
   deadline: number;
 };
@@ -28,7 +28,11 @@ type UseExchangeSwapFormProps = {
 };
 
 const validationSchema = yup.object().shape({
-  amountIn: yup.number().typeError('Invalid value').required().positive(),
+  amountIn: yup
+    .number()
+    .typeError('Invalid value')
+    .required('Amount is required')
+    .positive('Amount is positive '),
 });
 
 export const useExchangeSwapForm = ({
@@ -46,8 +50,6 @@ export const useExchangeSwapForm = ({
       address: '',
       slippage: 2,
       deadline: 20,
-      balanceIn: '',
-      balanceOut: '',
       priceInUsd: 0,
       priceOutUsd: 0,
     },
@@ -85,13 +87,6 @@ export const useExchangeSwapForm = ({
     form.setFieldValue('address', address);
   };
 
-  const setBalanceIn = (balance: ExchangeSwapFormValues['balanceIn']) => {
-    form.setFieldValue('balanceIn', balance);
-  };
-  const setBalanceOut = (balance: ExchangeSwapFormValues['balanceOut']) => {
-    form.setFieldValue('balanceOut', balance);
-  };
-
   const handleSwapDirection = () => {
     setDebouncedAmountIn('');
     setDebouncedAddress('');
@@ -107,20 +102,15 @@ export const useExchangeSwapForm = ({
     setPriceInUsd(form.values.priceOutUsd);
     setPriceOutUsd(priceInUsd);
 
-    const balanceIn = form.values.balanceIn;
-    setBalanceIn(form.values.balanceOut);
-    setBalanceOut(balanceIn);
-
     form.setTouched({});
   };
 
-  const handleSetPercent = (percent: number) =>
+  const handleSetPercent = (balance: number, percent: number) => {
+    Mixpanel.track(MixpanelEvent.ChangeSwapAmountPreset, { percent: `${percent * 100}%` });
     setAmountIn(
-      new BigNumber(form.values.balanceIn)
-        .multipliedBy(percent)
-        .dp(6, BigNumber.ROUND_DOWN)
-        .toString(),
+      new BigNumber(balance).multipliedBy(percent).dp(6, BigNumber.ROUND_DOWN).toString(),
     );
+  };
 
   const handleChangeToken = (token: Token, direction: 'in' | 'out') => {
     const setToken = direction === 'in' ? setTokenIn : setTokenOut;
@@ -137,14 +127,30 @@ export const useExchangeSwapForm = ({
     form.setTouched({});
   };
 
+  const handleChangeSettings = ({ deadline, slippage }: { slippage: number; deadline: number }) => {
+    form.setFieldValue('slippage', slippage);
+    form.setFieldValue('deadline', deadline);
+    Mixpanel.track(MixpanelEvent.ChangeSwapSettings, { deadline, slippage });
+  };
+
+  React.useEffect(() => {
+    Mixpanel.track(MixpanelEvent.ChangeSwapFrom, { token: form.values.tokenIn });
+  }, [form.values.tokenIn]);
+
+  React.useEffect(() => {
+    Mixpanel.track(MixpanelEvent.ChangeSwapTo, { token: form.values.tokenOut });
+  }, [form.values.tokenOut]);
+
   React.useEffect(() => {
     if (form.isValid && debouncedAmountIn) {
+      Mixpanel.track(MixpanelEvent.ChangeSwapAmount, { amount: debouncedAmountIn });
+
       onCalculate?.(form.values);
     }
   }, [debouncedAmountIn]);
 
   return {
-    form,
+    ...form,
     handleSwapDirection,
     debouncedAmountIn,
     setAmountOut,
@@ -155,7 +161,6 @@ export const useExchangeSwapForm = ({
     handleChangeToken,
     setAddress,
     debouncedAddress,
-    setBalanceIn,
-    setBalanceOut,
+    handleChangeSettings,
   };
 };
