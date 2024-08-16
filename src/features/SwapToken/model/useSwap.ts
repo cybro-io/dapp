@@ -118,7 +118,9 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
   } catch (error) {
     console.log(error);
 
-    if (String(error.message).includes('underlying network changed')) {
+    const normalizeError = error as Error;
+
+    if (String(normalizeError.message).includes('underlying network changed')) {
       swap({ walletProvider, calculate });
       return;
     }

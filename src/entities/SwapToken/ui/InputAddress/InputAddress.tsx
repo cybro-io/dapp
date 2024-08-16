@@ -1,15 +1,12 @@
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 
-import { Input } from '@nextui-org/input';
+import { Input, InputProps } from '@nextui-org/input';
 import clsx from 'clsx';
 
 import { truncateMiddle } from '@/shared/lib';
 import { DropdownButton } from '@/shared/ui';
 
-type InputAddressProps = Pick<
-  InputHTMLAttributes<HTMLInputElement>,
-  'onChange' | 'id' | 'name' | 'onBlur' | 'value'
-> & {
+type InputAddressProps = Pick<InputProps, 'onChange' | 'id' | 'name' | 'onBlur' | 'value'> & {
   onClear?: () => void;
 };
 
@@ -49,13 +46,13 @@ export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps
         input: 'font-poppins text-[13px]',
       }}
       placeholder="Enter the wallet address"
-      value={renderValue}
       isClearable
       onClear={() => {
         setIsEditing(!isEditing);
         onClear?.();
       }}
       {...restProps}
+      value={renderValue}
       onFocusChange={isFocused => {
         setIsFocused(isFocused);
         if (!isFocused && !value) {

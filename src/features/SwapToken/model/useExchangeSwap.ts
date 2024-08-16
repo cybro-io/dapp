@@ -108,8 +108,8 @@ export const useExchangeSwap = () => {
       amount: String(debouncedAmountIn),
       slippage,
       deadline,
-    }).then(({ calculate }) => {
-      setAmountOut(calculate.tokenAmountOut.toSignificant());
+    }).then(data => {
+      setAmountOut(String(data?.calculate.tokenAmountOut.toSignificant()));
     });
   };
 

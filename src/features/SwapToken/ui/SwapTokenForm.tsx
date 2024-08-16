@@ -57,7 +57,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
         token={tokenIn}
         balance={
           isLoadingInBalance ? (
-            <Skeleton classNames="rounded-lg">
+            <Skeleton className="rounded-lg">
               <div className="h-[18px] w-20 rounded-lg"></div>
             </Skeleton>
           ) : (
@@ -92,7 +92,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
         token={tokenOut}
         balance={
           isLoadingOutBalance ? (
-            <Skeleton classNames="rounded-lg">
+            <Skeleton className="rounded-lg">
               <div className="h-[18px] w-24 rounded-lg"></div>
             </Skeleton>
           ) : (

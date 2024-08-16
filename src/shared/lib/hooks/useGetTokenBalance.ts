@@ -11,7 +11,7 @@ export const useGetTokenBalance = () => {
       return await getAvailableBalance(...props);
     } catch (error) {
       console.error(error);
-      return null;
+      return '';
     } finally {
       setIsLoading(false);
     }

@@ -85,6 +85,8 @@ export const useSwapCalculate = () => {
     } catch (error) {
       console.error(error);
       resetCalculate({ error: getSwapExactError(error) });
+
+      return null;
     }
   };
 

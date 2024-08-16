@@ -8,7 +8,7 @@ export const useForm = <Values extends FormikValues = FormikValues>(data: Formik
   const isError = (name: keyof Values) => touched[name] && Boolean(errors[name]);
 
   const helperText = (name: keyof Values) =>
-    touched[name] && errors[name] ? errors[name] : undefined;
+    touched[name] && errors[name] ? (errors[name] as string) : undefined;
 
   const register = <T = unknown>(name: keyof Values) => ({
     id: name,

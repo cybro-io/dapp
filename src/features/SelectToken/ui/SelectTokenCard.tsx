@@ -91,7 +91,7 @@ export const SelectTokenCard = ({
         </div>
       </div>
       {!isSmallScreen && (
-        <>
+        <React.Fragment>
           <Link
             href={getHrefExplorerFromToken(token)}
             target="_blank"
@@ -108,7 +108,7 @@ export const SelectTokenCard = ({
               onClickFavorite(!isFavorite);
             }}
           />
-        </>
+        </React.Fragment>
       )}
     </div>
   );
