@@ -38,6 +38,7 @@ export const useSwapTransactions = () => {
 
   const totalPages = Math.ceil((data?.data.length ?? 0) / params.limit);
   const transactions = data?.data.slice(offset, offset + limit);
+  const isEmptyTransactions = transactions?.length === 0;
 
   const registerTabs = () => ({
     selectedKey: type,
@@ -45,5 +46,5 @@ export const useSwapTransactions = () => {
       setType(key as GetTransactionsApiV1ExchangeAddressTransactionsGetType),
   });
 
-  return { isLoading, totalPages, page, transactions, setPage, registerTabs };
+  return { isLoading, isEmptyTransactions, totalPages, page, transactions, setPage, registerTabs };
 };

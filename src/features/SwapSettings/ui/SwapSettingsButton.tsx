@@ -6,11 +6,15 @@ import { IconButton } from '@/shared/ui';
 
 import { useSwapSettingsModal } from '../model/useSwapSettingsModal';
 
-type SwapSettingsButtonProps = {
+type SwapSettingsButtonProps = SwapSettings & {
   onChangeSettings: (data: SwapSettings) => void;
 };
 
-export const SwapSettingsButton = ({ onChangeSettings }: SwapSettingsButtonProps) => {
+export const SwapSettingsButton = ({
+  onChangeSettings,
+  slippage,
+  deadline,
+}: SwapSettingsButtonProps) => {
   const { openModal } = useSwapSettingsModal();
 
   return (
@@ -19,7 +23,7 @@ export const SwapSettingsButton = ({ onChangeSettings }: SwapSettingsButtonProps
       className="border-solid border-1 border-stroke-tableBorder p-2.5 rounded-[10px] self-center"
       icon={<SettingsIcon className="text-white" />}
       onClick={() =>
-        openModal({ defaultSlippage: 1, defaultDeadline: 60 }).then(data =>
+        openModal({ defaultSlippage: slippage, defaultDeadline: deadline }).then(data =>
           onChangeSettings(data as SwapSettings),
         )
       }

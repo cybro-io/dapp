@@ -5,7 +5,6 @@ import { utils } from 'ethers';
 import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
-import { useGetTokenBalance, useSymbiosis } from '@/shared/lib';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
@@ -17,25 +16,14 @@ export const useExchangeSwap = () => {
   const { address: defaultAddress, isConnected } = useWeb3ModalAccount();
 
   const { tokens } = useSwapTokens();
-  const { fetchCalculateSwap, records, error, calculate, isLoadingCalculate, resetCalculate } =
-    useSwapCalculate();
-  const { swap, isLoadingSwap, subscribeSuccessSwap } = useSwap();
+  const calculateParams = useSwapCalculate();
 
-  const {
-    form,
-    handleChangeToken,
-    handleSwapDirection,
-    debouncedAmountIn,
-    debouncedAddress,
-    setAmountOut,
-    setPriceInUsd,
-    setPriceOutUsd,
-    handleSetPercent,
-    setAddress,
-    setBalanceIn,
-    setBalanceOut,
-    setAmountIn,
-  } = useExchangeSwapForm({
+  const { fetchCalculateSwap, error, calculate, isLoadingCalculate, resetCalculate } =
+    calculateParams;
+
+  const { swap, isLoadingSwap } = useSwap();
+
+  const form = useExchangeSwapForm({
     initialTokenIn:
       tokens.find(
         ({ symbol, chainId }) => symbol === 'USDB' && chainId === ChainId.BLAST_MAINNET,
@@ -48,23 +36,13 @@ export const useExchangeSwap = () => {
       if (error || !calculate || !walletProvider) return;
       swap({ walletProvider, calculate });
       resetCalculate({});
-      setAmountOut('');
-      setAmountIn('');
+      form.setAmountOut('');
+      form.setAmountIn('');
     },
   });
 
-  const {
-    slippage,
-    deadline,
-    tokenIn,
-    tokenOut,
-    amountIn,
-    amountOut,
-    priceOutUsd,
-    priceInUsd,
-    balanceOut,
-    balanceIn,
-  } = form.values;
+  const { slippage, deadline, tokenIn, tokenOut, amountIn, amountOut, priceOutUsd, priceInUsd } =
+    form.values;
 
   // Amount usd from
   const amountInUsd = React.useMemo(() => {
@@ -93,7 +71,7 @@ export const useExchangeSwap = () => {
   // Reset calculate
   React.useEffect(() => {
     resetCalculate({});
-    setAmountOut('');
+    form.setAmountOut('');
   }, [tokenIn, tokenOut]);
 
   // Calculate swap
@@ -103,83 +81,29 @@ export const useExchangeSwap = () => {
     fetchCalculateSwap({
       tokenIn,
       tokenOut,
-      to: String(debouncedAddress || defaultAddress),
+      to: String(form.debouncedAddress || defaultAddress),
       from: defaultAddress ?? '',
-      amount: String(debouncedAmountIn),
+      amount: String(form.debouncedAmountIn),
       slippage,
       deadline,
     }).then(data => {
-      setAmountOut(String(data?.calculate.tokenAmountOut.toSignificant()));
+      form.setAmountOut(String(data?.calculate.tokenAmountOut.toSignificant()));
     });
   };
 
   React.useEffect(() => {
-    getTokenPriceUsd(tokenOut).then(setPriceOutUsd).catch(setPriceOutUsd);
-    getTokenPriceUsd(tokenIn).then(setPriceInUsd).catch(setPriceInUsd);
+    getTokenPriceUsd(tokenOut).then(form.setPriceOutUsd).catch(form.setPriceOutUsd);
+    getTokenPriceUsd(tokenIn).then(form.setPriceInUsd).catch(form.setPriceInUsd);
   }, []);
-
-  const symbiosis = useSymbiosis();
-
-  const { isLoading: isLoadingInBalance, fetchBalance: fetchInBalance } = useGetTokenBalance();
-  const { isLoading: isLoadingOutBalance, fetchBalance: fetchOutBalance } = useGetTokenBalance();
-
-  const getTokensBalance = () => {
-    if (!defaultAddress) return;
-
-    const providerIn = symbiosis.providers.get(tokenIn.chainId);
-    if (providerIn) {
-      fetchInBalance(tokenIn, providerIn, defaultAddress).then(setBalanceIn).catch(setBalanceIn);
-    }
-
-    const providerOut = symbiosis.providers.get(tokenOut.chainId);
-    if (providerOut) {
-      fetchOutBalance(tokenOut, providerOut, defaultAddress)
-        .then(setBalanceOut)
-        .catch(setBalanceOut);
-    }
-  };
-
-  React.useEffect(() => {
-    getTokensBalance();
-  }, [defaultAddress, tokenOut, tokenIn]);
 
   const isDisabledSubmit = isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);
 
-  const handleChangeSettings = ({ deadline, slippage }: { slippage: number; deadline: number }) => {
-    console.log('new settings', { deadline, slippage });
-
-    form.setFieldValue('slippage', slippage);
-    form.setFieldValue('deadline', deadline);
-  };
-
-  React.useEffect(() => {
-    const subscriber = subscribeSuccessSwap(() => {
-      getTokensBalance();
-    });
-    return () => {
-      subscriber.unsubscribe();
-    };
-  }, []);
   return {
-    onSubmit: form.handleSubmit,
-    register: form.register,
-    handleChangeSettings,
-    setAddress,
-    tokenIn,
-    tokenOut,
-    handleSwapDirection,
     isConnected,
-    handleChangeToken,
-    records,
-    error,
     amountInUsd,
     amountOutUsd,
-    handleSetPercent,
     isDisabledSubmit,
-    isLoadingCalculate,
-    balanceIn,
-    balanceOut,
-    isLoadingInBalance,
-    isLoadingOutBalance,
+    form,
+    calculateParams,
   };
 };

@@ -13,6 +13,7 @@ import { SuccessSwapModal } from '../ui/SuccessSwapModal';
 import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 
 import { SwapCalculateResult } from './useSwapCalculate';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
 
@@ -108,6 +109,8 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     }
 
     setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
+
+    Mixpanel.track(MixpanelEvent.SuccessSwap);
 
     NiceModal.show(SuccessSwapModal, {
       sentSymbol: tokenAmountIn.token.symbol,
