@@ -3,33 +3,16 @@ import { MaxUint256 } from '@ethersproject/constants';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react/compat';
 import { ethers } from 'ethers';
-import { GAS_TOKEN, Token, getChainById } from 'symbiosis-js-sdk';
+import { GAS_TOKEN, getChainById } from 'symbiosis-js-sdk';
 
 import TOKEN from '@/app/abi/token.json';
 import { $symbiosis } from '@/shared/lib';
 
+import { SwapStatus } from '../helpers/getSwapStatus';
 import { SuccessSwapModal } from '../ui/SuccessSwapModal';
 import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 
 import { SwapCalculateResult } from './useSwapCalculate';
-
-export enum SwapStatus {
-  APPROVE_TRANSACTION,
-  SEND_TRANSACTION,
-  MINED_TRANSACTION,
-  COMPLETED_TRANSACTION,
-}
-
-export const getSwapStatus = (status: SwapStatus, tokenIn: Token, tokenOut: Token) => {
-  const statuses: Record<SwapStatus, string> = {
-    [SwapStatus.APPROVE_TRANSACTION]: 'Approving the transaction...',
-    [SwapStatus.SEND_TRANSACTION]: `Sending the transaction to ${tokenIn.chain?.name}...`,
-    [SwapStatus.MINED_TRANSACTION]: 'Waiting for the transaction to be mined...',
-    [SwapStatus.COMPLETED_TRANSACTION]: `Getting ${tokenOut.symbol} on ${tokenOut.chain?.name}...`,
-  };
-
-  return statuses[status];
-};
 
 type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
 
@@ -45,8 +28,16 @@ interface SwapEvent {
 
 const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calculate }) => {
   try {
-    const { transactionRequest, tokenAmountIn, tokenAmountOut, approveTo, from, transactionType } =
-      calculate;
+    const {
+      transactionRequest,
+      tokenAmountIn,
+      tokenAmountOut,
+      approveTo,
+      from,
+      transactionType,
+      kind,
+    } = calculate;
+
     setSwapInfo({ ...calculate, swapStatus: null });
 
     NiceModal.show(WaitForCompleteModal);
@@ -57,8 +48,8 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
       throw new Error('Wallet not connected');
     }
 
-    const ethProvider = new ethers.providers.Web3Provider(walletProvider);
-    const signer = ethProvider.getSigner(from);
+    const provider = new ethers.providers.Web3Provider(walletProvider);
+    const signer = provider.getSigner(from);
 
     if (transactionType !== 'evm') {
       throw new Error('Unsupported transaction type');
@@ -75,6 +66,8 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
       throw new Error('Unsupported chain');
     }
 
+    const swapping = symbiosis.bestPoolSwapping();
+
     const params = {
       chainName: chain.name,
       chainId: `0x${chainConfig.id.toString(16)}`,
@@ -83,7 +76,7 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
       blockExplorerUrls: [chain.explorer],
     };
 
-    await ethProvider.send('wallet_addEthereumChain', [params]);
+    await provider.send('wallet_addEthereumChain', [params]);
 
     // Approve token
     if (!tokenAmountIn.token.isNative) {
@@ -99,14 +92,20 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
     setSwapStatus(SwapStatus.SEND_TRANSACTION);
 
     // Wait for transaction to be mined
-    await transactionResponse.wait(12);
+    const receipt = await transactionResponse.wait(12);
     setSwapStatus(SwapStatus.MINED_TRANSACTION);
 
+    console.log('receipt:', receipt);
+
     // Wait for transaction to be completed on recipient chain
-    await symbiosis.waitForComplete({
-      chainId: transactionResponse.chainId,
-      txId: transactionResponse.hash,
-    });
+    if (kind === 'onchain-swap') {
+      await provider.waitForTransaction(receipt.transactionHash);
+    } else {
+      await symbiosis.waitForComplete({
+        chainId: transactionRequest.chainId,
+        txId: transactionResponse.hash,
+      });
+    }
 
     setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
 
@@ -117,13 +116,12 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
       receivedAmount: tokenAmountOut.toSignificant(),
     }).then();
   } catch (error) {
-    // When changed network
-    const err = error as { message?: string };
-    if (String(err?.message).includes('underlying network changed')) {
+    console.log(error);
+
+    if (String(error.message).includes('underlying network changed')) {
       swap({ walletProvider, calculate });
       return;
     }
-    console.log('Swap error', error);
   }
 });
 
@@ -142,5 +140,9 @@ sample({
 });
 
 export const useSwap = () => {
-  return useUnit({ swap, isLoadingSwap: swapFx.pending, swapInfo: $swapInfo });
+  const units = useUnit({ swap, isLoadingSwap: swapFx.pending, swapInfo: $swapInfo });
+
+  const subscribeSuccessSwap = (watcher: () => void) => swapFx.done.watch(watcher);
+
+  return { ...units, subscribeSuccessSwap };
 };

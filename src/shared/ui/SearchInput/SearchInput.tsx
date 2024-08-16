@@ -32,9 +32,9 @@ export const SearchInput = ({
       startContent={<SearchIcon className="min-w-6 text-white" />}
       classNames={{
         input:
-          'data-[has-start-content=true]:pl-[9px] data-[has-end-content=true]:pr-[9px] font-unbounded text-xl heading-6 font-medium truncate',
+          '!text-xs sm:!text-base data-[has-start-content=true]:pl-[9px] data-[has-end-content=true]:pr-[9px] font-unbounded text-xl heading-6 font-medium truncate',
         inputWrapper:
-          'bg-background-tableRow p-4 h-[76px] data-[hover=true]:bg-background-tableRow group-data-[focus=true]:bg-background-tableRow',
+          'bg-background-tableRow p-4 h-10 sm:h-[76px]  data-[hover=true]:bg-background-tableRow group-data-[focus=true]:bg-background-tableRow',
       }}
     />
   );

@@ -4,8 +4,12 @@ import { Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 export const Balance = ({ children }: React.PropsWithChildren) => {
-  if (typeof children !== 'string') {
+  if (!children) {
     return null;
+  }
+
+  if (typeof children !== 'string') {
+    return children;
   }
 
   return (

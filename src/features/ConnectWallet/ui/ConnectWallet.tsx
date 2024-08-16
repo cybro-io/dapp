@@ -53,6 +53,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
     <React.Fragment>
       {!isConnected ? (
         <Button
+          type="button"
           onClick={onConnectWalletClick}
           className={clsx(styles.root, className)}
           size={buttonSize}

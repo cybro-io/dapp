@@ -5,7 +5,7 @@ import { utils } from 'ethers';
 import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
-import { getAvailableBalance, useSymbiosis } from '@/shared/lib';
+import { useGetTokenBalance, useSymbiosis } from '@/shared/lib';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
@@ -19,7 +19,7 @@ export const useExchangeSwap = () => {
   const { tokens } = useSwapTokens();
   const { fetchCalculateSwap, records, error, calculate, isLoadingCalculate, resetCalculate } =
     useSwapCalculate();
-  const { swap, isLoadingSwap } = useSwap();
+  const { swap, isLoadingSwap, subscribeSuccessSwap } = useSwap();
 
   const {
     form,
@@ -31,7 +31,6 @@ export const useExchangeSwap = () => {
     setPriceInUsd,
     setPriceOutUsd,
     handleSetPercent,
-    values,
     setAddress,
     setBalanceIn,
     setBalanceOut,
@@ -44,9 +43,16 @@ export const useExchangeSwap = () => {
     initialTokenOut:
       tokens.find(({ symbol, chainId }) => symbol === 'ETH' && chainId === ChainId.BLAST_MAINNET) ??
       tokens[0],
+    onCalculate: () => handleCalculateSwap(),
+    onSubmit: () => {
+      if (error || !calculate || !walletProvider) return;
+      swap({ walletProvider, calculate });
+      resetCalculate({});
+      setAmountOut('');
+      setAmountIn('');
+    },
   });
 
-  const { control } = form;
   const {
     slippage,
     deadline,
@@ -58,7 +64,7 @@ export const useExchangeSwap = () => {
     priceInUsd,
     balanceOut,
     balanceIn,
-  } = values;
+  } = form.values;
 
   // Amount usd from
   const amountInUsd = React.useMemo(() => {
@@ -66,7 +72,7 @@ export const useExchangeSwap = () => {
 
     const tokenAmount = new TokenAmount(
       tokenIn,
-      utils.parseUnits(amountIn, tokenIn.decimals).toString(),
+      utils.parseUnits(String(amountIn), tokenIn.decimals).toString(),
     );
 
     return getTokenAmountUsd(tokenAmount, priceInUsd);
@@ -78,7 +84,7 @@ export const useExchangeSwap = () => {
 
     const tokenAmount = new TokenAmount(
       tokenOut,
-      utils.parseUnits(amountOut, tokenOut.decimals).toString(),
+      utils.parseUnits(String(amountOut), tokenOut.decimals).toString(),
     );
 
     return getTokenAmountUsd(tokenAmount, priceOutUsd);
@@ -86,40 +92,26 @@ export const useExchangeSwap = () => {
 
   // Reset calculate
   React.useEffect(() => {
-    resetCalculate();
+    resetCalculate({});
     setAmountOut('');
   }, [tokenIn, tokenOut]);
 
-  // When success calculate then change amount out
-  React.useEffect(() => {
-    if (calculate) {
-      setAmountOut(calculate.tokenAmountOut.toSignificant());
-    }
-  }, [calculate]);
-
-  // Calculate swap when changes: amountIn, tokenIn, tokenOut or address
-  React.useEffect(() => {
-    if (!form.formState.isValid || !defaultAddress) return;
+  // Calculate swap
+  const handleCalculateSwap = () => {
+    if (!defaultAddress) return;
 
     fetchCalculateSwap({
       tokenIn,
       tokenOut,
       to: String(debouncedAddress || defaultAddress),
       from: defaultAddress ?? '',
-      amount: debouncedAmountIn,
+      amount: String(debouncedAmountIn),
       slippage,
       deadline,
+    }).then(({ calculate }) => {
+      setAmountOut(calculate.tokenAmountOut.toSignificant());
     });
-  }, [
-    form.formState.isValid,
-    debouncedAmountIn,
-    tokenIn,
-    tokenOut,
-    defaultAddress,
-    debouncedAddress,
-    slippage,
-    deadline,
-  ]);
+  };
 
   React.useEffect(() => {
     getTokenPriceUsd(tokenOut).then(setPriceOutUsd).catch(setPriceOutUsd);
@@ -127,47 +119,52 @@ export const useExchangeSwap = () => {
   }, []);
 
   const symbiosis = useSymbiosis();
-  React.useEffect(() => {
+
+  const { isLoading: isLoadingInBalance, fetchBalance: fetchInBalance } = useGetTokenBalance();
+  const { isLoading: isLoadingOutBalance, fetchBalance: fetchOutBalance } = useGetTokenBalance();
+
+  const getTokensBalance = () => {
     if (!defaultAddress) return;
 
     const providerIn = symbiosis.providers.get(tokenIn.chainId);
     if (providerIn) {
-      getAvailableBalance(tokenIn, providerIn, defaultAddress)
-        .then(setBalanceIn)
-        .catch(setBalanceIn);
+      fetchInBalance(tokenIn, providerIn, defaultAddress).then(setBalanceIn).catch(setBalanceIn);
     }
 
     const providerOut = symbiosis.providers.get(tokenOut.chainId);
     if (providerOut) {
-      getAvailableBalance(tokenOut, providerOut, defaultAddress)
+      fetchOutBalance(tokenOut, providerOut, defaultAddress)
         .then(setBalanceOut)
         .catch(setBalanceOut);
     }
+  };
+
+  React.useEffect(() => {
+    getTokensBalance();
   }, [defaultAddress, tokenOut, tokenIn]);
 
-  const onSubmit = form.handleSubmit(() => {
-    if (error || !calculate || !walletProvider) return;
-
-    swap({ walletProvider, calculate });
-    resetCalculate();
-    setAmountOut('');
-    setAmountIn('');
-  });
-
-  const isDisabledSubmit =
-    isLoadingCalculate || isLoadingSwap || !form.formState.isValid || Boolean(error);
+  const isDisabledSubmit = isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);
 
   const handleChangeSettings = ({ deadline, slippage }: { slippage: number; deadline: number }) => {
     console.log('new settings', { deadline, slippage });
 
-    form.setValue('slippage', slippage);
-    form.setValue('deadline', deadline);
+    form.setFieldValue('slippage', slippage);
+    form.setFieldValue('deadline', deadline);
   };
 
+  React.useEffect(() => {
+    const subscriber = subscribeSuccessSwap(() => {
+      getTokensBalance();
+    });
+    return () => {
+      subscriber.unsubscribe();
+    };
+  }, []);
   return {
+    onSubmit: form.handleSubmit,
+    register: form.register,
     handleChangeSettings,
     setAddress,
-    control,
     tokenIn,
     tokenOut,
     handleSwapDirection,
@@ -177,11 +174,12 @@ export const useExchangeSwap = () => {
     error,
     amountInUsd,
     amountOutUsd,
-    onSubmit,
     handleSetPercent,
     isDisabledSubmit,
     isLoadingCalculate,
     balanceIn,
     balanceOut,
+    isLoadingInBalance,
+    isLoadingOutBalance,
   };
 };

@@ -1,30 +1,28 @@
-import React from 'react';
+import React, { InputHTMLAttributes } from 'react';
 
 import { Input } from '@nextui-org/input';
 import clsx from 'clsx';
-import { Control, useController } from 'react-hook-form';
 
 import { truncateMiddle } from '@/shared/lib';
 import { DropdownButton } from '@/shared/ui';
 
-type InputAddressProps = {
-  name: string;
-  control: Control<any, any>;
+type InputAddressProps = Pick<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onChange' | 'id' | 'name' | 'onBlur' | 'value'
+> & {
   onClear?: () => void;
 };
 
-export const InputAddress = ({ control, name, onClear }: InputAddressProps) => {
-  const { field } = useController({ name, control });
-
+export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
 
   const renderValue = React.useMemo(
-    () => (isFocused ? field.value : truncateMiddle(field.value)),
-    [field.value, isFocused],
+    () => (isFocused ? String(value) : truncateMiddle(String(value))),
+    [value, isFocused],
   );
 
-  if (!field.value && !isEditing) {
+  if (!value && !isEditing) {
     return (
       <DropdownButton
         type="button"
@@ -51,16 +49,16 @@ export const InputAddress = ({ control, name, onClear }: InputAddressProps) => {
         input: 'font-poppins text-[13px]',
       }}
       placeholder="Enter the wallet address"
-      {...field}
       value={renderValue}
       isClearable
       onClear={() => {
         setIsEditing(!isEditing);
         onClear?.();
       }}
+      {...restProps}
       onFocusChange={isFocused => {
         setIsFocused(isFocused);
-        if (!isFocused && !field.value) {
+        if (!isFocused && !value) {
           setIsEditing(false);
         }
       }}

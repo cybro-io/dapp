@@ -1,16 +1,12 @@
 import React from 'react';
 
 import { utils } from 'ethers';
-import {
-  Token,
-  TokenAmount,
-  ErrorCode,
-  SwapExactInResult,
-  SwapExactInParams,
-} from 'symbiosis-js-sdk';
+import { Token, TokenAmount, SwapExactInResult, SwapExactInParams } from 'symbiosis-js-sdk';
 
-import { statusError } from '@/entities/SwapToken';
 import { useSymbiosis } from '@/shared/lib';
+
+import { getSwapExactError } from '../helpers/getSwapExactError';
+import { prepareCalculateParams } from '../helpers/prepareCalculateParams';
 
 export type SwapCalculateResult = SwapExactInResult & {
   tokenAmountIn: TokenAmount;
@@ -43,32 +39,20 @@ export const useSwapCalculate = () => {
   const setCalculateDataWithPrev = (props: Partial<SwapCalculateData>) =>
     setCalculateData(prevState => ({ ...prevState, ...props }));
 
-  const resetCalculate = () => setCalculateData({ records: {}, isLoadingCalculate: false });
+  const resetCalculate = (props: Partial<SwapCalculateData>) =>
+    setCalculateData({
+      records: {},
+      error: undefined,
+      isLoadingCalculate: false,
+      calculate: undefined,
+      ...props,
+    });
 
-  const fetchCalculateSwap = async ({
-    amount,
-    from,
-    to,
-    tokenOut,
-    tokenIn,
-    slippage,
-    deadline,
-  }: CalculateSwapProps) => {
+  const fetchCalculateSwap = async (props: CalculateSwapProps) => {
     try {
-      console.log('calculate:', {
-        amount,
-        from,
-        to,
-        tokenOut,
-        tokenIn,
-        slippage,
-        deadline,
-      });
-      setCalculateDataWithPrev({
-        records: {},
-        error: undefined,
-        isLoadingCalculate: true,
-      });
+      const { amount, from, to, tokenOut, tokenIn, slippage, deadline } = props;
+
+      resetCalculate({ isLoadingCalculate: true });
 
       const tokenAmountIn = new TokenAmount(
         tokenIn,
@@ -88,58 +72,19 @@ export const useSwapCalculate = () => {
         deadline: Date.now() + deadline * 60,
       });
 
-      console.log('calculatedSwap:', exactIn);
-
-      const records: Record<string, { title: string; value: string }> = {};
-
-      if (exactIn.fee || exactIn.extraFee) {
-        const fee = exactIn.fee;
-        const extraFee = exactIn.extraFee;
-        let value = '';
-        if (fee) {
-          value = `${fee.toSignificant()}% ${fee.token.symbol}`;
-        }
-
-        if (extraFee) {
-          value += `+ ${extraFee.toFixed()}% ${extraFee.token.symbol}`;
-        }
-
-        records.fee = {
-          title: 'Estimated fee',
-          value,
-        };
-      }
-
-      if (exactIn.priceImpact) {
-        records.priceImpact = {
-          title: 'Price impact',
-          value: `${exactIn.priceImpact.toFixed()}%`,
-        };
-      }
-
-      if (exactIn.tokenAmountOutMin) {
-        records.tokenAmountOutMin = {
-          title: 'Minimum received',
-          value: `${exactIn.tokenAmountOutMin.toSignificant()} ${tokenOut.symbol}`,
-        };
-      }
-
-      setCalculateDataWithPrev({
+      const data = {
         calculate: { ...exactIn, tokenAmountIn, from },
-        records,
+        records: prepareCalculateParams(exactIn),
         isLoadingCalculate: false,
         error: undefined,
-      });
+      };
+
+      setCalculateDataWithPrev(data);
+
+      return data;
     } catch (error) {
       console.error(error);
-      const er = error as { message: string; code?: ErrorCode };
-      if (er?.message || er?.code) {
-        setCalculateDataWithPrev({
-          records: {},
-          error: er.code ? statusError[er.code] : er?.message,
-          isLoadingCalculate: false,
-        });
-      }
+      resetCalculate({ error: getSwapExactError(error) });
     }
   };
 

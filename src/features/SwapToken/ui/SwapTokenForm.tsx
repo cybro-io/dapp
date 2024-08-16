@@ -1,15 +1,15 @@
 import React from 'react';
 
-import { Controller } from 'react-hook-form';
 import { Token } from 'symbiosis-js-sdk';
 
 import { getUniqueTokenId, SwapTokenCard } from '@/entities/SwapToken';
-import { InputAddress } from '@/entities/SwapToken/ui/InputAddress/InputAddress';
+import { InputAddress } from '@/entities/SwapToken';
 import { SwapSettingsButton } from '@/features/SwapSettings';
 import { Button, Chip, ChipViewType, SwapButton, Text, TextView } from '@/shared/ui';
 import { AmountInput } from '@/shared/ui/AmountInput';
 
 import { useExchangeSwap } from '../model/useExchangeSwap';
+import { Skeleton } from '@nextui-org/react';
 
 type SwapTokenProps = {
   features: {
@@ -20,6 +20,7 @@ type SwapTokenProps = {
 
 export const SwapTokenForm = ({ features }: SwapTokenProps) => {
   const {
+    register,
     tokenIn,
     tokenOut,
     handleSwapDirection,
@@ -32,12 +33,13 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
     amountOutUsd,
     amountInUsd,
     onSubmit,
-    control,
     balanceOut,
     balanceIn,
     handleSetPercent,
     setAddress,
     handleChangeSettings,
+    isLoadingOutBalance,
+    isLoadingInBalance,
   } = useExchangeSwap();
 
   const showSelectTokenModal = (token: Token | null, setToken: (token: Token) => void) => {
@@ -53,7 +55,15 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
     <form className="flex flex-col gap-2" onSubmit={onSubmit}>
       <SwapTokenCard
         token={tokenIn}
-        balance={balanceIn}
+        balance={
+          isLoadingInBalance ? (
+            <Skeleton classNames="rounded-lg">
+              <div className="h-[18px] w-20 rounded-lg"></div>
+            </Skeleton>
+          ) : (
+            balanceIn
+          )
+        }
         onSelectTokenClick={() =>
           showSelectTokenModal(tokenIn, token => handleChangeToken(token, 'in'))
         }
@@ -67,26 +77,28 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
           </div>
         }
       >
-        <Controller
-          name="amountIn"
-          control={control}
-          render={({ field }) => (
-            <AmountInput
-              placeholder="0"
-              label="You send"
-              {...field}
-              usd={amountInUsd}
-              max={balanceIn}
-              showPercent
-              onSelectPercent={handleSetPercent}
-            />
-          )}
+        <AmountInput
+          placeholder="0"
+          label="You send"
+          {...register('amountIn')}
+          usd={amountInUsd}
+          max={balanceIn}
+          showPercent
+          onSelectPercent={handleSetPercent}
         />
       </SwapTokenCard>
       <SwapButton type="button" disabled={isLoadingCalculate} onClick={handleSwapDirection} />
       <SwapTokenCard
         token={tokenOut}
-        balance={balanceOut}
+        balance={
+          isLoadingOutBalance ? (
+            <Skeleton classNames="rounded-lg">
+              <div className="h-[18px] w-24 rounded-lg"></div>
+            </Skeleton>
+          ) : (
+            balanceOut
+          )
+        }
         onSelectTokenClick={() =>
           showSelectTokenModal(tokenOut, token => handleChangeToken(token, 'out'))
         }
@@ -97,25 +109,19 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
               Recipient
             </Text>
             <div className="max-w-[194px]">
-              <InputAddress name="address" control={control} onClear={() => setAddress('')} />
+              <InputAddress {...register('address')} onClear={() => setAddress('')} />
             </div>
           </div>
         }
       >
-        <Controller
-          name="amountOut"
-          control={control}
-          render={({ field }) => (
-            <AmountInput
-              label="You recieve"
-              placeholder="0"
-              {...field}
-              disabled
-              usd={amountOutUsd}
-              max={balanceOut}
-              onSelectPercent={handleSetPercent}
-            />
-          )}
+        <AmountInput
+          label="You recieve"
+          placeholder="0"
+          {...register('amountOut')}
+          disabled
+          usd={amountOutUsd}
+          max={balanceOut}
+          onSelectPercent={handleSetPercent}
         />
       </SwapTokenCard>
 

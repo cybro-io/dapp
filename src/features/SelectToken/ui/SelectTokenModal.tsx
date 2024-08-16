@@ -1,15 +1,15 @@
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
-import clsx from 'clsx';
 import { FixedSizeList } from 'react-window';
+import AutoSize from 'react-virtualized-auto-sizer';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
-import { useSelectChain, useSelectToken } from '@/features/SelectToken';
+import { useSelectToken } from '@/features/SelectToken';
 import { Modal, SearchInput, StarIconButton, Text, TextView } from '@/shared/ui';
 
 import { SelectTokenCard } from './SelectTokenCard';
-import { SelectChainsList } from '@/features/SelectToken/ui/SelectChainsList';
+import { SelectChainsList } from './SelectChainsList';
 
 type SelectTokenProps = {
   selectedTokenId: string;
@@ -62,33 +62,37 @@ export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTo
             )}
 
             {!isEmptyFilteredTokens && !isEmptyFavoriteTokens && (
-              <FixedSizeList
-                height={518}
-                width={308}
-                itemCount={filteredTokens.length}
-                itemSize={75 + 8}
-              >
-                {({ index, style }) => {
-                  const token = filteredTokens[index];
-                  const uniqueId = getUniqueTokenId(
-                    token.address,
-                    token.chainId,
-                    token.chainFromId,
-                  );
-                  return (
-                    <div style={{ ...style, marginBottom: 8 }}>
-                      <SelectTokenCard
-                        key={index}
-                        token={token}
-                        onClickFavorite={state => handleToggleFavorite(state, uniqueId)}
-                        isFavorite={isFavoriteToken(uniqueId)}
-                        isActive={selectedTokenId === uniqueId}
-                        onSelectToken={handleSelectToken}
-                      />
-                    </div>
-                  );
-                }}
-              </FixedSizeList>
+              <AutoSize>
+                {size => (
+                  <FixedSizeList
+                    height={size.height}
+                    width={size.width}
+                    itemCount={filteredTokens.length}
+                    itemSize={75 + 8}
+                  >
+                    {({ index, style }) => {
+                      const token = filteredTokens[index];
+                      const uniqueId = getUniqueTokenId(
+                        token.address,
+                        token.chainId,
+                        token.chainFromId,
+                      );
+                      return (
+                        <div style={{ ...style, marginBottom: 8 }}>
+                          <SelectTokenCard
+                            key={index}
+                            token={token}
+                            onClickFavorite={state => handleToggleFavorite(state, uniqueId)}
+                            isFavorite={isFavoriteToken(uniqueId)}
+                            isActive={selectedTokenId === uniqueId}
+                            onSelectToken={handleSelectToken}
+                          />
+                        </div>
+                      );
+                    }}
+                  </FixedSizeList>
+                )}
+              </AutoSize>
             )}
           </div>
         </div>

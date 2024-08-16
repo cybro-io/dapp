@@ -8,6 +8,7 @@ import ExportIcon from '@/shared/assets/icons/export.svg';
 import { getAvailableBalance, useSymbiosis } from '@/shared/lib';
 import { Link, StarIconButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
+import { useMediaQuery } from 'usehooks-ts';
 
 type TokenCardProps = {
   token: Token;
@@ -24,6 +25,8 @@ export const SelectTokenCard = ({
   isFavorite,
   onSelectToken,
 }: TokenCardProps) => {
+  const isSmallScreen = useMediaQuery('(max-width: 1279px)');
+
   const getHrefExplorerFromToken = (token: Token) => {
     if (token.address) {
       return `${token.chain?.explorer}/address/${token.address}`;
@@ -50,7 +53,7 @@ export const SelectTokenCard = ({
   return (
     <div
       className={clsx(
-        'p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-9px)] cursor-pointer',
+        'p-2 xl:p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-9px)] cursor-pointer',
         isActive ? 'bg-background-chips' : 'bg-transparent',
         !isActive && 'hover:border-stroke-tableBorder hover:border-[1px] hover:border-solid',
       )}
@@ -63,48 +66,50 @@ export const SelectTokenCard = ({
               setIsLoadedImg(true);
             }}
             src={String(token.icons?.small)}
-            width={32}
-            height={32}
             alt={String(token?.name)}
             data-loaded={isLoadedImg}
-            className="rounded-full data-[loaded=false]:bg-stroke-tableBorder"
+            className="rounded-full data-[loaded=false]:bg-stroke-tableBorder size-6 xl:size-8"
           />
 
           <img
-            className="absolute bottom-0 right-0 border-1 border-solid border-stroke-tableBorder bg-stroke-tableBorder rounded-full"
+            className="absolute bottom-0 right-0 border-1 border-solid border-stroke-tableBorder bg-stroke-tableBorder rounded-full size-2.5 xl:size-[14px]"
             src={String(token.chain?.icons?.small)}
-            width={14}
-            height={14}
             alt={String(token.chain?.name)}
           />
         </div>
 
         <div className="flex flex-col gap-px">
-          <Text textView={TextView.BU1}>{token.symbol}</Text>
+          <Text textView={isSmallScreen ? TextView.P3 : TextView.BU1}>{token.symbol}</Text>
           <div className="inline-flex gap-[5px]">
-            <Text textView={TextView.C4} className="opacity-70">
-              Balance
-            </Text>
+            {!isSmallScreen && (
+              <Text textView={isSmallScreen ? TextView.P3 : TextView.C4} className="opacity-70">
+                Balance
+              </Text>
+            )}
             <Text textView={TextView.C4}>{formatUserMoney(balance)}</Text>
           </div>
         </div>
       </div>
-      <Link
-        href={getHrefExplorerFromToken(token)}
-        target="_blank"
-        onClick={event => {
-          event.stopPropagation();
-        }}
-      >
-        <ExportIcon className="text-stroke-tableBorder" />
-      </Link>
-      <StarIconButton
-        isActive={isFavorite}
-        onClick={event => {
-          event.stopPropagation();
-          onClickFavorite(!isFavorite);
-        }}
-      />
+      {!isSmallScreen && (
+        <>
+          <Link
+            href={getHrefExplorerFromToken(token)}
+            target="_blank"
+            onClick={event => {
+              event.stopPropagation();
+            }}
+          >
+            <ExportIcon className="text-stroke-tableBorder" />
+          </Link>
+          <StarIconButton
+            isActive={isFavorite}
+            onClick={event => {
+              event.stopPropagation();
+              onClickFavorite(!isFavorite);
+            }}
+          />
+        </>
+      )}
     </div>
   );
 };
