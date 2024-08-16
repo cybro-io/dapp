@@ -29,6 +29,7 @@ export const useSwapTransactions = () => {
   const { data, isLoading } = useQuery({
     queryKey: ['transactionsList', address],
     enabled: Boolean(address),
+    refetchInterval: 5000,
     queryFn: () =>
       axios.get(
         `https://api-v2.symbiosis.finance/explorer/v1/transactions/${address}`,

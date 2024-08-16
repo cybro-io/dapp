@@ -11,6 +11,7 @@ import { SymbiosisTransaction } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
 import { ExchangeTransactionToken } from './ExchangeTransactionToken';
+import { useMediaQuery } from 'usehooks-ts';
 
 type ExchangeTransactionRowProps = {
   isContained: boolean;
@@ -24,6 +25,8 @@ export const ExchangeTransactionRow = ({
   isContained,
   transaction,
 }: ExchangeTransactionRowProps) => {
+  const isSmallScreen = useMediaQuery('(max-width: 1279px)');
+
   const { from_route, to_route, created_at } = transaction;
 
   const { findToken } = useSwapTokens();
@@ -37,6 +40,51 @@ export const ExchangeTransactionRow = ({
 
   const findTokenIn = findToken(preparedTokenAddress(tokenIn.token.address), tokenIn.chain_id);
   const findTokenOut = findToken(preparedTokenAddress(tokenOut.token.address), tokenOut.chain_id);
+
+  if (isSmallScreen) {
+    return (
+      <div
+        className={clsx(
+          'grid grid-cols-[4fr_1fr] justify-between rounded-[20px] px-4 py-[13px] min-h-[76px]',
+          isContained && 'bg-background-tableRow',
+        )}
+      >
+        <div className="flex flex-col justify-between gap-2">
+          <div className="flex flex-row gap-2 items-center flex-wrap">
+            <ExchangeTransactionToken
+              tokenName={tokenIn.token.symbol}
+              amount={Number(utils.formatUnits(String(tokenIn.amount), tokenIn.token.decimals))}
+              icon={String(findTokenIn?.icons?.small)}
+              chainIcon={String(findTokenIn?.chain?.icons?.small)}
+              directionName="You pay"
+            />
+            <Text textView={TextView.BP3} className="opacity-60">
+              for
+            </Text>
+            <ExchangeTransactionToken
+              tokenName={tokenOut.token.symbol}
+              amount={Number(utils.formatUnits(String(tokenOut.amount), tokenOut.token.decimals))}
+              icon={String(findTokenOut?.icons?.small)}
+              chainIcon={String(findTokenOut?.chain?.icons?.small)}
+              directionName="You recieve"
+            />
+          </div>
+          <Text textView={TextView.C4} className="!font-unbounded !font-light opacity-50">
+            {dayjs(created_at).format('DD MMM YYYY HH:mm')}
+          </Text>
+        </div>
+
+        <div className="flex justify-end items-center">
+          <Link
+            href={`https://explorer.symbiosis.finance/transactions/${transaction.from_chain_id}/${transaction.hash}`}
+            target="_blank"
+          >
+            <MaximizeIcon className="opacity-40" />
+          </Link>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div

@@ -1,30 +1,32 @@
 'use client';
 
-import React, { InputHTMLAttributes } from 'react';
+import React from 'react';
 
 import clsx from 'clsx';
 
-import { ComponentWithProps } from '@/shared/types';
+import { cleanFloatInput } from '@/shared/lib';
 import { Chip, ChipViewType, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './AmountInput.module.scss';
 import { percentButtons } from './constants';
+import { AmountInputProps } from './types';
 
-export type AmountInputProps = Omit<InputHTMLAttributes<HTMLInputElement>, 'type'> & {
-  helperText?: string;
-  label?: string;
-  usd?: string | number | null;
-  showPercent?: boolean;
-  onSelectPercent?: (percent: number) => void;
-};
-
-export const AmountInput: ComponentWithProps<AmountInputProps> = React.forwardRef(
+export const AmountInput = React.forwardRef(
   (
-    { onChange, onSelectPercent, max, helperText, usd, showPercent, ...props },
+    {
+      onChange,
+      onSelectPercent,
+      max,
+      helperText,
+      usd,
+      showPercent,
+      isPositive = true,
+      ...props
+    }: AmountInputProps,
     ref: React.ForwardedRef<HTMLInputElement>,
   ) => {
-    const { onWheel, className, label } = props;
+    const { className, label } = props;
     const [selectedPercent, setSelectedPercent] = React.useState(0);
 
     const handlePercentChange = (percent: number) => {
@@ -35,20 +37,13 @@ export const AmountInput: ComponentWithProps<AmountInputProps> = React.forwardRe
     };
 
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-      onSelectPercent?.(0);
-      setSelectedPercent(0);
+      handlePercentChange(0);
+
+      event.target.value = cleanFloatInput(event.target.value, isPositive);
       onChange?.(event);
     };
 
-    const numberInputOnWheelPreventChange = (event: React.WheelEvent<HTMLInputElement>) => {
-      // Prevent the input value change
-      event.preventDefault();
-
-      // Prevent the page/container scrolling
-      event.stopPropagation();
-
-      onWheel?.(event);
-    };
+    const isUSDVisible = Boolean(usd);
 
     return (
       <div className="flex flex-col gap-2">
@@ -60,13 +55,11 @@ export const AmountInput: ComponentWithProps<AmountInputProps> = React.forwardRe
         <div className={clsx(styles.inputContainer, !showPercent && '!border-none')}>
           <input
             className={clsx(className, styles.input)}
-            type="number"
             {...props}
             ref={ref}
-            onWheel={numberInputOnWheelPreventChange}
             onChange={handleChange}
           />
-          {Boolean(usd) && <span className={styles.equal}>≈ ${formatUserMoney(usd)}</span>}
+          {isUSDVisible && <span className={styles.equal}>≈ ${formatUserMoney(usd)}</span>}
           {helperText && (
             <Chip viewType={ChipViewType.Warning} className="absolute -bottom-7">
               {helperText}
@@ -75,22 +68,20 @@ export const AmountInput: ComponentWithProps<AmountInputProps> = React.forwardRe
         </div>
         {showPercent && (
           <div className={styles.percentButtons}>
-            {percentButtons.map(({ title, value }) => {
-              return (
-                <button
-                  type="button"
-                  key={value}
-                  className={clsx(
-                    styles.percentButton,
-                    value === selectedPercent && styles.percentButtonSelected,
-                  )}
-                  disabled={!max}
-                  onClick={() => handlePercentChange(value)}
-                >
-                  {title}
-                </button>
-              );
-            })}
+            {percentButtons.map(({ title, value }) => (
+              <button
+                type="button"
+                key={value}
+                className={clsx(
+                  styles.percentButton,
+                  value === selectedPercent && styles.percentButtonSelected,
+                )}
+                disabled={!max}
+                onClick={() => handlePercentChange(value)}
+              >
+                {title}
+              </button>
+            ))}
           </div>
         )}
       </div>

@@ -1,6 +1,7 @@
 import React from 'react';
 
 import clsx from 'clsx';
+import AutoSize from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
 
 import { useSelectChain } from '@/features/SelectToken';
@@ -11,7 +12,7 @@ export const SelectChainsList = () => {
     useSelectChain();
 
   return (
-    <div className="overflow-auto p-2 flex flex-col gap-2 flex-1">
+    <div className="p-2 flex flex-col gap-2 flex-1 h-[466px] overflow-hidden">
       <Text textView={TextView.H5}>Networks:</Text>
       <SearchInput placeholder="Search" {...registerSearchChain()} />
 
@@ -24,32 +25,41 @@ export const SelectChainsList = () => {
       )}
 
       {!isEmptyFilteredChains && (
-        <FixedSizeList height={426} width={303} itemCount={chains.length} itemSize={48 + 8}>
-          {({ index, style }) => {
-            const chain = chains[index];
-            return (
-              <div style={{ ...style, marginBottom: 8 }}>
-                <button
-                  type="button"
-                  className={clsx(
-                    'md:h-12 md:w-[calc(100%-6px)] md:px-4 md:py-2 md:gap-[9px] flex flex-row items-center rounded-[14px]',
-                    'h-[30px] md:w-[calc(100%-6px)] px-2 py-1.5 gap-1',
-                    chain.id === selectedChain ? 'bg-background-chips' : 'bg-transparent',
-                  )}
-                  onClick={() => setSelectedChain(chain.id === selectedChain ? null : chain.id)}
-                >
-                  <img
-                    src={chain.icons.small}
-                    className="size-4 md:size-8 rounded-full bg-stroke-tableBorder"
-                  />
-                  <Text textView={TextView.BU3} className="md:!text-base !text-xs">
-                    {chain.name}
-                  </Text>
-                </button>
-              </div>
-            );
-          }}
-        </FixedSizeList>
+        <AutoSize>
+          {size => (
+            <FixedSizeList
+              height={size.height}
+              width={size.width}
+              itemCount={chains.length}
+              itemSize={48 + 8}
+            >
+              {({ index, style }) => {
+                const chain = chains[index];
+                return (
+                  <div style={{ ...style, marginBottom: 8 }}>
+                    <button
+                      type="button"
+                      className={clsx(
+                        'md:h-12 md:w-[calc(100%-6px)] md:px-4 md:py-2 md:gap-[9px] flex flex-row items-center rounded-[14px]',
+                        'h-[30px] w-[calc(100%-6px)] px-2 py-1.5 gap-1',
+                        chain.id === selectedChain ? 'bg-background-chips' : 'bg-transparent',
+                      )}
+                      onClick={() => setSelectedChain(chain.id === selectedChain ? null : chain.id)}
+                    >
+                      <img
+                        src={chain.icons.small}
+                        className="size-4 md:size-8 rounded-full bg-stroke-tableBorder"
+                      />
+                      <Text textView={TextView.BU3} className="md:!text-base !text-xs">
+                        {chain.name}
+                      </Text>
+                    </button>
+                  </div>
+                );
+              }}
+            </FixedSizeList>
+          )}
+        </AutoSize>
       )}
     </div>
   );

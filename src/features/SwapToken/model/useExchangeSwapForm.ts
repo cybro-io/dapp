@@ -1,15 +1,16 @@
-import { yupResolver } from '@hookform/resolvers/yup';
 import { BigNumber } from 'bignumber.js';
-import { useForm } from 'react-hook-form';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 import * as yup from 'yup';
 
+import { useForm } from '@/shared/lib';
+import React from 'react';
+
 type ExchangeSwapFormValues = {
   tokenIn: Token;
-  amountIn: string;
+  amountIn: number | string;
   tokenOut: Token;
-  amountOut: string;
+  amountOut: number | string;
   priceInUsd: number;
   priceOutUsd: number;
   address: string;
@@ -22,6 +23,8 @@ type ExchangeSwapFormValues = {
 type UseExchangeSwapFormProps = {
   initialTokenIn: Token;
   initialTokenOut: Token;
+  onCalculate: (data: ExchangeSwapFormValues) => void;
+  onSubmit: (data: ExchangeSwapFormValues) => void;
 };
 
 const validationSchema = yup.object().shape({
@@ -31,9 +34,11 @@ const validationSchema = yup.object().shape({
 export const useExchangeSwapForm = ({
   initialTokenOut,
   initialTokenIn,
+  onCalculate,
+  onSubmit,
 }: UseExchangeSwapFormProps) => {
-  const form = useForm<ExchangeSwapFormValues>({
-    defaultValues: {
+  const form = useForm({
+    initialValues: {
       amountIn: '',
       amountOut: '',
       tokenIn: initialTokenIn,
@@ -41,34 +46,51 @@ export const useExchangeSwapForm = ({
       address: '',
       slippage: 2,
       deadline: 20,
+      balanceIn: '',
+      balanceOut: '',
+      priceInUsd: 0,
+      priceOutUsd: 0,
     },
-    mode: 'all',
-    resolver: yupResolver<any>(validationSchema),
+    validateOnMount: true,
+    validationSchema,
+    onSubmit: (data, state) => {
+      onSubmit(data);
+      state.setTouched({});
+    },
   });
 
-  const values = form.watch();
+  const [debouncedAmountIn, setDebouncedAmountIn] = useDebounceValue(form.values.amountIn, 1000);
+  const [debouncedAddress, setDebouncedAddress] = useDebounceValue(form.values.address, 1000);
 
-  const [debouncedAmountIn, setDebouncedAmountIn] = useDebounceValue(values.amountIn, 1000);
-  const [debouncedAddress, setDebouncedAddress] = useDebounceValue(values.address, 1000);
+  const setTokenIn = (token: ExchangeSwapFormValues['tokenIn']) => {
+    form.setFieldValue('tokenIn', token);
+  };
+  const setTokenOut = (token: ExchangeSwapFormValues['tokenOut']) => {
+    form.setFieldValue('tokenOut', token);
+  };
+  const setAmountOut = (amount: ExchangeSwapFormValues['amountOut']) => {
+    form.setFieldValue('amountOut', amount);
+  };
+  const setAmountIn = (amount: ExchangeSwapFormValues['amountIn']) => {
+    form.setFieldValue('amountIn', amount);
+  };
+  const setPriceInUsd = (amount: ExchangeSwapFormValues['priceInUsd']) => {
+    form.setFieldValue('priceInUsd', amount);
+  };
+  const setPriceOutUsd = (amount: ExchangeSwapFormValues['priceOutUsd']) => {
+    form.setFieldValue('priceOutUsd', amount);
+  };
 
-  const setTokenIn = (token: ExchangeSwapFormValues['tokenIn']) => form.setValue('tokenIn', token);
-  const setTokenOut = (token: ExchangeSwapFormValues['tokenOut']) =>
-    form.setValue('tokenOut', token);
-  const setAmountOut = (amount: ExchangeSwapFormValues['amountOut']) =>
-    form.setValue('amountOut', amount);
-  const setAmountIn = (amount: ExchangeSwapFormValues['amountIn']) =>
-    form.setValue('amountIn', amount);
-  const setPriceInUsd = (amount: ExchangeSwapFormValues['priceInUsd']) =>
-    form.setValue('priceInUsd', amount);
-  const setPriceOutUsd = (amount: ExchangeSwapFormValues['priceOutUsd']) =>
-    form.setValue('priceOutUsd', amount);
-  const setAddress = (address: ExchangeSwapFormValues['address']) =>
-    form.setValue('address', address);
+  const setAddress = (address: ExchangeSwapFormValues['address']) => {
+    form.setFieldValue('address', address);
+  };
 
-  const setBalanceIn = (balance: ExchangeSwapFormValues['balanceIn']) =>
-    form.setValue('balanceIn', balance);
-  const setBalanceOut = (balance: ExchangeSwapFormValues['balanceOut']) =>
-    form.setValue('balanceOut', balance);
+  const setBalanceIn = (balance: ExchangeSwapFormValues['balanceIn']) => {
+    form.setFieldValue('balanceIn', balance);
+  };
+  const setBalanceOut = (balance: ExchangeSwapFormValues['balanceOut']) => {
+    form.setFieldValue('balanceOut', balance);
+  };
 
   const handleSwapDirection = () => {
     setDebouncedAmountIn('');
@@ -77,21 +99,27 @@ export const useExchangeSwapForm = ({
     setAmountIn('');
     setAddress('');
 
-    setTokenIn(values.tokenOut);
-    setTokenOut(values.tokenIn);
+    const tokenIn = form.values.tokenIn;
+    setTokenIn(form.values.tokenOut);
+    setTokenOut(tokenIn);
 
-    const priceInUsd = values.priceInUsd;
-    setPriceInUsd(values.priceOutUsd);
+    const priceInUsd = form.values.priceInUsd;
+    setPriceInUsd(form.values.priceOutUsd);
     setPriceOutUsd(priceInUsd);
 
-    const balanceIn = values.balanceIn;
-    setBalanceIn(values.balanceOut);
+    const balanceIn = form.values.balanceIn;
+    setBalanceIn(form.values.balanceOut);
     setBalanceOut(balanceIn);
+
+    form.setTouched({});
   };
 
   const handleSetPercent = (percent: number) =>
     setAmountIn(
-      new BigNumber(values.balanceIn).multipliedBy(percent).dp(6, BigNumber.ROUND_DOWN).toString(),
+      new BigNumber(form.values.balanceIn)
+        .multipliedBy(percent)
+        .dp(6, BigNumber.ROUND_DOWN)
+        .toString(),
     );
 
   const handleChangeToken = (token: Token, direction: 'in' | 'out') => {
@@ -101,13 +129,22 @@ export const useExchangeSwapForm = ({
 
     setToken(token);
     setAmount('');
-    getTokenPriceUsd(token).then(setPrice);
+    getTokenPriceUsd(token).then(amount => {
+      setPrice(amount);
+    });
     setAddress('');
+
+    form.setTouched({});
   };
+
+  React.useEffect(() => {
+    if (form.isValid && debouncedAmountIn) {
+      onCalculate?.(form.values);
+    }
+  }, [debouncedAmountIn]);
 
   return {
     form,
-    values,
     handleSwapDirection,
     debouncedAmountIn,
     setAmountOut,
