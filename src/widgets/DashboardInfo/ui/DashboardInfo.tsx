@@ -1,6 +1,6 @@
 'use client';
 
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
@@ -24,11 +24,19 @@ import styles from './DashboardInfo.module.scss';
 type DashboardInfoProps = {};
 
 export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ className }) => {
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { chainId, isConnected } = useWeb3ModalAccount();
+  const [address, setAddress] = useState<string | null>(null); // State to store address
   const [period, setPeriod] =
     React.useState<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>(
-      GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today,
+      GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,
     );
+
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAddress = localStorage.getItem('address');
+      setAddress(storedAddress);
+    }
+  }, []);
 
   const {
     data,
@@ -42,7 +50,7 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
     },
     {
       query: {
-        queryKey: [QueryKey.DashboardStats, address, period, chainId],
+        queryKey: [QueryKey.DashboardStats, period, chainId, address],
       },
     },
   );

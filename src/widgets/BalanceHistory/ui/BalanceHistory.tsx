@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
@@ -24,13 +24,22 @@ import styles from './BalanceHistory.module.scss';
 type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
-  const { address, chainId } = useWeb3ModalAccount();
-  const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.All);
-  const [width, setWidth] = React.useState(0);
+  const { chainId } = useWeb3ModalAccount();
+  const [period, setPeriod] = useState<PeriodTab>(PeriodTab.All);
+  const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [hoveredTransaction, setHoveredTransaction] = React.useState<string | null>(null);
+  const [hoveredTransaction, setHoveredTransaction] = useState<string | null>(null);
+  const [address, setAddress] = useState<string | null>(null); // State to store address
 
   const { since, to } = getPeriodRange(period);
+
+  // Fetch the address from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAddress = localStorage.getItem('address');
+      setAddress(storedAddress);
+    }
+  }, []);
 
   const { data, isLoading } = useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
     address || '',
@@ -48,7 +57,7 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
 
   const historyData = data?.data?.data;
 
-  React.useEffect(() => {
+  useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
     };

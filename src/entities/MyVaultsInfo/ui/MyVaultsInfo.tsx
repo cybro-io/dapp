@@ -41,7 +41,7 @@ export const MyVaultsInfo: ComponentWithProps<ApyInfoProps> = ({
               {vault.name}
             </Text>
             <Text textView={TextView.C4} className={styles.value}>
-              ${formatUserMoney(vault.balance)}
+              ${formatUserMoney(vault.balance_usd)}
             </Text>
           </div>
         </div>
