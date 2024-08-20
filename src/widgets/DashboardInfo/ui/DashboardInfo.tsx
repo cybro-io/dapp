@@ -24,8 +24,8 @@ import styles from './DashboardInfo.module.scss';
 type DashboardInfoProps = {};
 
 export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ className }) => {
-  const { chainId, isConnected } = useWeb3ModalAccount();
-  const [address, setAddress] = useState<string | null>(null); // State to store address
+  const { address: userAddress, chainId, isConnected } = useWeb3ModalAccount();
+  const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(null); // State to store address
   const [period, setPeriod] =
     React.useState<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>(
       GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,
@@ -34,7 +34,7 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedAddress = localStorage.getItem('address');
-      setAddress(storedAddress);
+      setLocalStorageAddress(storedAddress);
     }
   }, []);
 
@@ -43,14 +43,14 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
     isLoading: isDataLoading,
     isError,
   } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
-    address || '',
+    localStorageAddress || userAddress || '',
     {
       chain_id: chainId || 0,
       timeframe: period,
     },
     {
       query: {
-        queryKey: [QueryKey.DashboardStats, period, chainId, address],
+        queryKey: [QueryKey.DashboardStats, period, chainId, localStorageAddress, userAddress],
       },
     },
   );

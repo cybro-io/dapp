@@ -24,12 +24,12 @@ import styles from './BalanceHistory.module.scss';
 type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
-  const { chainId } = useWeb3ModalAccount();
+  const { address: userAddress, chainId } = useWeb3ModalAccount();
   const [period, setPeriod] = useState<PeriodTab>(PeriodTab.All);
   const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
   const [hoveredTransaction, setHoveredTransaction] = useState<string | null>(null);
-  const [address, setAddress] = useState<string | null>(null); // State to store address
+  const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(null); // State to store address
 
   const { since, to } = getPeriodRange(period);
 
@@ -37,12 +37,12 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
   useEffect(() => {
     if (typeof window !== 'undefined') {
       const storedAddress = localStorage.getItem('address');
-      setAddress(storedAddress);
+      setLocalStorageAddress(storedAddress);
     }
   }, []);
 
   const { data, isLoading } = useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
-    address || '',
+    localStorageAddress || userAddress || '',
     {
       chain_id: chainId || 0,
       since,
@@ -50,7 +50,7 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
     },
     {
       query: {
-        queryKey: [QueryKey.DashboardHistory, address, chainId, since, to],
+        queryKey: [QueryKey.DashboardHistory, localStorageAddress, userAddress, chainId, since, to],
       },
     },
   );
