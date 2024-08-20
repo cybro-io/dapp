@@ -10,6 +10,7 @@ import { Modal, SearchInput, StarIconButton, Text, TextView } from '@/shared/ui'
 
 import { SelectTokenCard } from './SelectTokenCard';
 import { SelectChainsList } from './SelectChainsList';
+import { useMediaQuery } from 'usehooks-ts';
 
 type SelectTokenProps = {
   selectedTokenId: string;
@@ -28,6 +29,8 @@ export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTo
     isEmptyFavoriteTokens,
   } = useSelectToken(selectedTokenId);
 
+  const isSmallScreen = useMediaQuery('(max-width: 1279px)');
+
   return (
     <Modal
       scrollBehavior="inside"
@@ -42,11 +45,11 @@ export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTo
           {...registerSearch()}
         />
 
-        <div className="flex flex-row gap-4 flex-1">
+        <div className="flex flex-row gap-2 xl:gap-4 flex-1 overflow-hidden xl:min-h-0 min-h-[466px]">
           <SelectChainsList />
-          <div className="rounded-[22px] bg-background-tableRow overflow-auto p-4 pr-1 flex-1">
+          <div className="rounded-[22px] bg-background-tableRow overflow-auto p-2 xl:p-4 pr-1 flex-[1.5] xl:flex-1">
             {isEmptyFilteredTokens && (
-              <div className="w-full h-[75px] flex items-center justify-center">
+              <div className="w-full h-[75px] flex items-center justify-center text-center">
                 <Text textView={TextView.BP3} className="opacity-40">
                   Nothing found. Try again.
                 </Text>
@@ -54,7 +57,7 @@ export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTo
             )}
 
             {isEmptyFavoriteTokens && (
-              <div className="w-full h-[75px] flex items-center justify-center">
+              <div className="w-full h-[75px] flex items-center justify-center text-center">
                 <Text textView={TextView.BP3} className="opacity-40">
                   You don’t have any token in your Favourites
                 </Text>
@@ -68,7 +71,7 @@ export const SelectTokenModal = NiceModal.create<SelectTokenProps>(({ selectedTo
                     height={size.height}
                     width={size.width}
                     itemCount={filteredTokens.length}
-                    itemSize={75 + 8}
+                    itemSize={isSmallScreen ? 56 : 83}
                   >
                     {({ index, style }) => {
                       const token = filteredTokens[index];

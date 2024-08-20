@@ -3,8 +3,7 @@ import React from 'react';
 import { Skeleton } from '@nextui-org/react';
 import { Token } from 'symbiosis-js-sdk';
 
-import { getUniqueTokenId, SwapTokenCard } from '@/entities/SwapToken';
-import { InputAddress } from '@/entities/SwapToken';
+import { getUniqueTokenId, InputAddress, SwapTokenCard } from '@/entities/SwapToken';
 import { SwapSettingsButton } from '@/features/SwapSettings';
 import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
 import { Button, Chip, ChipViewType, SwapButton, Text, TextView } from '@/shared/ui';

@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { getAvailableBalance } from '@/shared/lib';
+import { getEthTokenBalance } from '@/shared/lib';
 
 export const useGetTokenBalance = () => {
   const [isLoading, setIsLoading] = React.useState(false);
 
-  const fetchBalance = async (...props: Parameters<typeof getAvailableBalance>) => {
+  const fetchBalance = async (...props: Parameters<typeof getEthTokenBalance>) => {
     try {
       setIsLoading(true);
-      return await getAvailableBalance(...props);
+      return await getEthTokenBalance(...props);
     } catch (error) {
       console.error(error);
       return '';
