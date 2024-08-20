@@ -84,25 +84,6 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
         <Loader className={styles.loader} />
       ) : (
         <React.Fragment>
-          {/*<Tabs*/}
-          {/*  items={periodTabs}*/}
-          {/*  selectedKey={period}*/}
-          {/*  onSelectionChange={key => onTabChange(key as PeriodTab)}*/}
-          {/*  classNames={{*/}
-          {/*    base: styles.historyTabs,*/}
-          {/*    tabList: styles.tabList,*/}
-          {/*    tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),*/}
-          {/*    panel: styles.panel,*/}
-          {/*  }}*/}
-          {/*>*/}
-          {/*  {({ key, title }) => (*/}
-          {/*    <Tab*/}
-          {/*      className={clsx(styles.tab, key === period && styles.selected)}*/}
-          {/*      key={key}*/}
-          {/*      title={title}*/}
-          {/*    />*/}
-          {/*  )}*/}
-          {/*</Tabs>*/}
           {chartWidth && chartData.length ? (
             <VictoryChart
               theme={VictoryTheme.material}
@@ -122,7 +103,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
               />
               <VictoryAxis
                 dependentAxis
-                tickFormat={x => `$${x / 1000}K`}
+                tickFormat={x => `$${formatUserMoney(x)}`}
                 style={{
                   grid: { stroke: 'rgba(255, 255, 255, 0.09)', strokeDasharray: '3,3' },
                   axis: { stroke: 'transparent' },
@@ -152,23 +133,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
                   },
                 }}
                 labels={({ datum }) => ''}
-                // labels={({ datum }) => {
-                //   if (datum.tx.action === TxActionType.Group) {
-                //     return `$${formatUserMoney(datum.tx.size_usd, 2)}`;
-                //   } else {
-                //     return `${datum.tx.action} ${formatUserMoney(datum.tx.size_usd, 2)}`;
-                //   }
-                // }}
-                labelComponent={
-                  <VictoryTooltip flyoutComponent={<CustomTooltip />} />
-                  // <VictoryTooltip
-                  //   flyoutStyle={{ fill: 'rgba(0, 0, 0, 0.8)', stroke: 'none' }}
-                  //   style={{ fontSize: 14, fill: '#FFFFFF' }}
-                  //   pointerLength={0}
-                  //   cornerRadius={5}
-                  //   flyoutPadding={{ top: 8, bottom: 8, left: 12, right: 12 }}
-                  // />
-                }
+                labelComponent={<VictoryTooltip flyoutComponent={<CustomTooltip />} />}
                 events={[
                   {
                     target: 'data',
@@ -210,18 +175,3 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
     </div>
   );
 };
-
-// Today //
-// group by minutes
-
-// Week
-// Group by days
-
-// Month
-// Group by days
-
-// Year
-// Group by months
-
-// All
-// Group by months
