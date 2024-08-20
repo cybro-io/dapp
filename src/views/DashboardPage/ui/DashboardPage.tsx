@@ -15,24 +15,19 @@ import styles from './DashboardPage.module.scss';
 type DashboardPageProps = {};
 
 export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
-  const { isConnected } = useWeb3ModalAccount();
-  const [isToastShown, setToastShown] = React.useState(false);
+  const { isConnected, chainId, address, status } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
-
   const router = useRouter();
 
   React.useEffect(() => {
-    if (!isConnected) {
-      if (!isToastShown) {
-        triggerToast({
-          message: 'Wallet is not connected',
-          description: 'You need to connect your wallet to use the Dashboard',
-        });
-      }
-      setToastShown(true);
+    if (status !== 'reconnecting' && !isConnected) {
+      triggerToast({
+        message: 'Wallet is not connected',
+        description: 'You need to connect your wallet to use the Dashboard',
+      });
       router.push('/');
     }
-  }, [isConnected, isToastShown, router, triggerToast]);
+  }, [isConnected, router, triggerToast, status]);
 
   if (!isConnected) {
     return null;
