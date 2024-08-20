@@ -9,6 +9,7 @@ import Link from 'next/link';
 
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
+import CircleIcon from '@/entities/VaultChips/assets/icons/base-icon.svg';
 import { ChainToExplorerUrl, QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
@@ -121,8 +122,13 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
           </Text>
           <div className={styles.chipsContainer}>
             {vault?.badges.map(badge => (
-              <Chip className={styles.chip} size={ChipSize.Large} key={badge}>
-                {badge}
+              <Chip className={styles.chip} size={ChipSize.Large} key={badge.name}>
+                {badge.icon ? (
+                  <Image src={badge.icon} height={24} width={24} alt={''} />
+                ) : (
+                  <CircleIcon />
+                )}
+                {badge.value + ' ' + badge.name}
               </Chip>
             ))}
           </div>

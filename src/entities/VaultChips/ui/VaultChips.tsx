@@ -2,9 +2,10 @@ import React from 'react';
 
 import { Tooltip } from '@nextui-org/react';
 import clsx from 'clsx';
+import Image from 'next/image';
 
 import { TooltipInfo } from '@/entities/VaultChips/ui/components';
-import { ComponentWithProps } from '@/shared/types';
+import { BadgeVaultsResponseData, ComponentWithProps } from '@/shared/types';
 import { Chip } from '@/shared/ui';
 
 import CircleIcon from '../assets/icons/base-icon.svg';
@@ -13,7 +14,7 @@ import InfoIcon from '../assets/icons/info.svg';
 import styles from './VaultChips.module.scss';
 
 type VaultChipsProps = {
-  badges: string[];
+  badges: BadgeVaultsResponseData[];
 };
 
 export const VaultChips: ComponentWithProps<VaultChipsProps> = ({ badges, className }) => {
@@ -34,9 +35,13 @@ export const VaultChips: ComponentWithProps<VaultChipsProps> = ({ badges, classN
       {!!chipsLength && (
         <React.Fragment>
           {badges.slice(0, 3).map(badge => (
-            <Chip className={styles.chip} key={badge}>
-              <CircleIcon />
-              {badge}
+            <Chip className={styles.chip} key={badge.name}>
+              {badge.icon ? (
+                <Image src={badge.icon} height={20} width={20} alt={''} />
+              ) : (
+                <CircleIcon />
+              )}
+              {badge.value}
             </Chip>
           ))}
           <Tooltip
