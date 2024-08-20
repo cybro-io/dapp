@@ -66,10 +66,12 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   }, []);
 
   const getValue = React.useCallback(() => {
+    if (period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All) {
+      return `${(Number(apy) * 100).toFixed(2)}%`;
+    }
+
     if (viewType === InfoBoxViewType.Desktop) {
-      return period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
-        ? `${(Number(apy) * 100).toFixed(2)}%`
-        : `${(Number(apy) * 100).toFixed(2)}% • $${formatUserMoney(apyFiat)}`;
+      return `${(Number(apy) * 100).toFixed(2)}% • $${formatUserMoney(apyFiat)}`;
     }
 
     if (periodType === ApyPeriodType.Fiat) {
