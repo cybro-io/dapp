@@ -14,6 +14,7 @@ if (!MIXPANEL_ID) {
 mixpanel.init(MIXPANEL_ID, {
   ignore_dnt: true,
   api_host: 'https://hiddenninja.cybro.io',
+  track_pageview: 'url-with-path',
 });
 
 export const Mixpanel = {
