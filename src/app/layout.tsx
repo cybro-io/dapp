@@ -21,6 +21,7 @@ import {
   ReactQueryProvider,
   ToastProvider,
   Web3Modal,
+  WalletBalancesProvider,
 } from './providers';
 
 export const metadata: Metadata = {
@@ -72,11 +73,13 @@ export default function RootLayout({
             <BalanceProvider>
               <NiceModalProvider>
                 <ModalProvider>
-                  <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                    <ToastProvider>{children}</ToastProvider>
-                    <ModalContainer />
-                  </body>
-                  {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                  <WalletBalancesProvider>
+                    <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                      <ToastProvider>{children}</ToastProvider>
+                      <ModalContainer />
+                    </body>
+                    {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                  </WalletBalancesProvider>
                 </ModalProvider>
               </NiceModalProvider>
             </BalanceProvider>
