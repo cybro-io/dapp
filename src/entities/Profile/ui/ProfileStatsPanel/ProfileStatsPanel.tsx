@@ -2,10 +2,10 @@
 
 import React, { useMemo } from 'react';
 
+import { useDisconnect } from '@web3modal/ethers5/react';
 import Image from 'next/image';
 
 import './menu.scss';
-import { useRouter } from 'next/navigation';
 
 import CopyIcon from '@/shared/assets/icons/copy.svg';
 import EthIcon from '@/shared/assets/icons/eth.svg';
@@ -13,12 +13,9 @@ import LogoIcon from '@/shared/assets/icons/logo-mini.svg';
 import ProfileImage from '@/shared/assets/icons/profile.png';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import UsdbIcon from '@/shared/assets/icons/usdb.svg';
-import { truncateMiddle } from '@/shared/lib';
+import { links, truncateMiddle } from '@/shared/lib';
 import { EarnedYieldResponseDataProperty, GetWalletData } from '@/shared/types';
-import { Button } from '@/shared/ui';
 import { formatMoney } from '@/shared/utils';
-
-import { useDisconnect } from '@web3modal/ethers5/react';
 
 type ProfileStatsPanelProps = {
   profileData: GetWalletData;
@@ -99,8 +96,6 @@ export const ProfileStatsPanel = ({
     return 0;
   }, [profileData.balance_usd]);
 
-  const router = useRouter();
-
   return (
     <div className="user-menu z-50 relative">
       <div className="user-menu__header">
@@ -167,7 +162,14 @@ export const ProfileStatsPanel = ({
             <p className="user-menu__offer-desc">
               Deposit in total $1000 or more and unlock a higher yield!
             </p>
-            <Button onClick={() => router.push('/#form')}>Top up cybro balance</Button>
+            <a
+              href={`${links.preSale}/#form`}
+              target="_blank"
+              className={'button button--yellow button--arrow user-menu__offer-btn'}
+              rel="noreferrer"
+            >
+              Top up cybro balance
+            </a>
           </div>
         )}
       </div>
