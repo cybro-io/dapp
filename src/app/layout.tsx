@@ -50,8 +50,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <Script defer data-domain="app.cybro.io" src="https://analytics.cybro.io/js/script.js" />
-      <Script id="hotjar-script">
+      <Script
+        async
+        defer
+        data-domain="app.cybro.io"
+        src="https://analytics.cybro.io/js/script.js"
+      />
+      <Script async id="hotjar-script">
         {`(function(h,o,t,j,a,r){
           h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
           h._hjSettings={hjid:5059762,hjsv:6};
