@@ -8,6 +8,10 @@
   &.dark {
     background-color: transparent;
   }
+
+  &.active {
+    border: 1px solid $text-accent-yellow;
+  }
 }
 
 .top {
@@ -39,6 +43,7 @@
 
 .heading {
   font-weight: 300;
+  text-transform: capitalize;
 }
 
 .value {

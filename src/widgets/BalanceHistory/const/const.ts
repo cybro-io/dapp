@@ -1,4 +1,4 @@
-export enum HistoryTab {
+export enum PeriodTab {
   Today = 'today',
   Week = 'week',
   Month = 'month',
@@ -6,25 +6,31 @@ export enum HistoryTab {
   All = 'all',
 }
 
-export const historyTabs = [
+export enum TxActionType {
+  Deposit = 'deposit',
+  Withdraw = 'withdraw',
+  Group = 'group',
+}
+
+export const periodTabs = [
   {
-    key: HistoryTab.Today,
+    key: PeriodTab.Today,
     title: 'Today',
   },
   {
-    key: HistoryTab.Week,
+    key: PeriodTab.Week,
     title: 'Week',
   },
   {
-    key: HistoryTab.Month,
+    key: PeriodTab.Month,
     title: 'Month',
   },
   {
-    key: HistoryTab.Year,
+    key: PeriodTab.Year,
     title: 'Year',
   },
   {
-    key: HistoryTab.All,
+    key: PeriodTab.All,
     title: 'All',
   },
 ];

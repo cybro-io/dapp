@@ -1,58 +1,85 @@
 'use client';
 
-import React from 'react';
+import React, { Dispatch, SetStateAction } from 'react';
 
 import { Switch } from '@nextui-org/switch';
 import clsx from 'clsx';
 
-import { ComponentWithProps } from '@/shared/types';
+import {
+  ComponentWithProps,
+  GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe,
+} from '@/shared/types';
 import { InfoBox, InfoBoxActionType, InfoBoxViewType } from '@/shared/ui';
+import { formatUserMoney } from '@/shared/utils';
 
 import ApyIcon from '../assets/icons/apy.svg';
-import { ApyPeriod, ApyPeriodType, dropdownData } from '../const';
+import { ApyPeriodType, dropdownData } from '../const';
 
 import styles from './ApyInfo.module.scss';
 
 type ApyInfoProps = {
+  apy: string | undefined;
+  apyFiat: string | null | undefined;
+  period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe;
+  setPeriod: Dispatch<SetStateAction<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>>;
   viewType?: InfoBoxViewType;
+  isLoading?: boolean;
 };
 
 export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
+  apyFiat,
+  apy,
+  period,
+  setPeriod,
   viewType = InfoBoxViewType.Mobile,
+  isLoading,
   className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
-  const [period, setPeriod] = React.useState<ApyPeriod>(ApyPeriod.Today);
   const [periodType, setPeriodType] = React.useState<ApyPeriodType>(ApyPeriodType.Fiat);
 
   const getTitle = React.useCallback(() => {
-    if (period !== ApyPeriod.Today && period !== ApyPeriod.All) {
+    if (
+      period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today &&
+      period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
+    ) {
       return `Last ${period}`;
     }
 
     return period;
   }, [period]);
 
-  const onItemClick = React.useCallback((period: ApyPeriod) => {
-    setPeriod(period);
-    setIsOpened(false);
-  }, []);
+  const onItemClick = React.useCallback(
+    (period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe) => {
+      if (period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All) {
+        setPeriodType(ApyPeriodType.Percent);
+      }
+
+      setPeriod(period);
+      setIsOpened(false);
+    },
+    [setPeriod],
+  );
 
   const onPeriodTypeChange = React.useCallback((isSelected: boolean) => {
     isSelected ? setPeriodType(ApyPeriodType.Fiat) : setPeriodType(ApyPeriodType.Percent);
   }, []);
 
   const getValue = React.useCallback(() => {
+    if (period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All) {
+      return `${(Number(apy) * 100).toFixed(2)}%`;
+    }
+
     if (viewType === InfoBoxViewType.Desktop) {
-      return '14% - $1’100K';
+      return `${(Number(apy) * 100).toFixed(2)}% • $${formatUserMoney(apyFiat)}`;
     }
 
     if (periodType === ApyPeriodType.Fiat) {
-      return '$1’100K';
+      return `$${formatUserMoney(apyFiat)}`;
     }
 
-    return '14%';
-  }, [periodType, viewType]);
+    return `${(Number(apy) * 100).toFixed(2)}%`;
+  }, [apy, apyFiat, period, periodType, viewType]);
 
   const dropdownItems = React.useMemo(
     () =>
@@ -80,24 +107,27 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
       className={className}
       dropdownButtonContent={getTitle()}
       dropdownItems={dropdownItems}
+      isLoading={isLoading}
       rightContent={
-        <Switch
-          onValueChange={onPeriodTypeChange}
-          classNames={{
-            wrapper: clsx(styles.wrapper),
-            thumb: clsx(styles.thumb),
-          }}
-          defaultSelected
-          startContent={<span className={styles.switchContent}>%</span>}
-          endContent={<span className={styles.switchContent}>$</span>}
-          thumbIcon={({ isSelected }) =>
-            !isSelected ? (
-              <span className={clsx(styles.switchContent, styles.selected)}>%</span>
-            ) : (
-              <span className={clsx(styles.switchContent, styles.selected)}>$</span>
-            )
-          }
-        />
+        period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All ? (
+          <Switch
+            onValueChange={onPeriodTypeChange}
+            classNames={{
+              wrapper: clsx(styles.wrapper),
+              thumb: clsx(styles.thumb),
+            }}
+            defaultSelected={periodType === ApyPeriodType.Fiat}
+            startContent={<span className={styles.switchContent}>%</span>}
+            endContent={<span className={styles.switchContent}>$</span>}
+            thumbIcon={({ isSelected }) =>
+              !isSelected ? (
+                <span className={clsx(styles.switchContent, styles.selected)}>%</span>
+              ) : (
+                <span className={clsx(styles.switchContent, styles.selected)}>$</span>
+              )
+            }
+          />
+        ) : undefined
       }
     />
   );

@@ -3,9 +3,64 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  gap: 16px;
+}
+
+.transactionList {
+  width: 100%;
 }
 
 .infinite {
   max-height: 460px;
   overflow-y: auto;
+}
+
+.paginationContainer {
+  display: flex;
+  width: 100%;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  padding: 12px 16px;
+}
+
+.arrowButton {
+  padding: 8px;
+  border-radius: 8px;
+  background: #1A1B25;
+  box-shadow: 0px 1px 2px 0px rgba(16, 24, 40, 0.05);
+
+  &.left {
+    transform: rotate(-180deg);
+  }
+
+  &:disabled {
+    opacity: 0.5;
+  }
+}
+
+.pageInfo {
+  color: rgba(255, 255, 255, 0.30);
+  font-family: $unbounded-font;
+  font-size: 14px;
+  font-weight: 400;
+  line-height: 20px;
+
+  .pageNumber {
+    color: $text-white-body100;
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 20px;
+  }
+}
+
+.emptyText {
+  font-size: 16px;
+  font-family: $poppins-font;
+}
+
+@media screen and (width >= 1100px) {
+  .emptyText {
+    display: none;
+  }
 }

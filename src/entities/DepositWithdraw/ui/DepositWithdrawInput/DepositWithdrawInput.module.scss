@@ -82,7 +82,7 @@
 
 .inputContainer {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 3fr 1fr;
   justify-content: space-between;
   margin-bottom: 8px;
   padding-top: 8px;
@@ -92,16 +92,20 @@
   gap: 24px;
 
   .input {
+    flex-grow: 1;
     font-family: $unbounded-font;
     font-size: 20px;
     line-height: 24px;
+    white-space: nowrap;
     color: $text-white-body100;
     background-color: transparent;
     outline: none;
-    overflow: hidden;
+    max-width: 100%;
+    min-width: 0;
   }
 
   .equal {
+    flex-shrink: 0;
     font-family: $poppins-font;
     font-size: 13px;
     font-weight: 500;

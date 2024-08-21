@@ -7,14 +7,17 @@ import { Maybe } from '@/shared/types';
 
 const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
 
-if (!MIXPANEL_ID) {
-  throw new Error('Mixpannel ID was not found');
-}
+if (typeof window !== 'undefined') {
+  if (!MIXPANEL_ID) {
+    throw new Error('Mixpannel ID was not found');
+  }
 
-mixpanel.init(MIXPANEL_ID, {
-  ignore_dnt: true,
-  api_host: 'https://hiddenninja.cybro.io',
-});
+  mixpanel.init(MIXPANEL_ID, {
+    ignore_dnt: true,
+    api_host: 'https://hiddenninja.cybro.io',
+    track_pageview: 'url-with-path',
+  });
+}
 
 export const Mixpanel = {
   track: (name: MixpanelEvent, props?: Maybe<Dict>) => {

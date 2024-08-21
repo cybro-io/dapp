@@ -1,6 +1,10 @@
+.root {
+  position: relative;
+}
+
 .mainContainer {
   position: relative;
-  z-index: 2;
+  z-index: 5;
   padding: 16px;
   background-color: $background-tableRow;
   border-radius: 20px;
@@ -27,6 +31,8 @@
 
 
 .dropdownContainer {
+  position: absolute;
+  z-index: 4;
   display: flex;
   flex-direction: column;
   width: 100%;

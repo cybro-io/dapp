@@ -1,94 +1,63 @@
 'use client';
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { BalanceChart } from '@/entities/BalanceChart/ui';
 import { TransactionHistory } from '@/entities/TransactionHistory';
 import { HistoryViewType } from '@/entities/TransactionHistory/const';
-import { ComponentWithProps } from '@/shared/types';
+import { QueryKey } from '@/shared/const';
+import {
+  ComponentWithProps,
+  useGetDashboardHistoryApiV1DashboardAddressHistoryGet,
+} from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
+import { getPeriodRange, groupTransactions } from '@/widgets/BalanceHistory/utils';
 
-import { HistoryTab, historyTabs } from '../const';
+import { PeriodTab, periodTabs } from '../const';
 
 import styles from './BalanceHistory.module.scss';
-
-const data = [
-  {
-    heading: 'Withdraw',
-    value: '- $1’100K',
-    fee: '$49',
-    date: '01.01.24 14:42',
-    month: "Jan'24",
-    balance: 45000,
-  },
-  {
-    heading: 'Deposit',
-    value: '+ $500K',
-    fee: '$25',
-    date: '01.02.24 10:30',
-    month: "Feb'24",
-    balance: 50000,
-  },
-  {
-    heading: 'Withdraw',
-    value: '- $300K',
-    fee: '$15',
-    date: '26.03.24 12:15',
-    month: "Mar'24",
-    balance: 60000,
-  },
-  {
-    heading: 'Deposit',
-    value: '+ $700K',
-    fee: '$35',
-    date: '27.04.24 09:50',
-    month: "Apr'24",
-    balance: 80000,
-  },
-  {
-    heading: 'Withdraw',
-    value: '- $200K',
-    fee: '$10',
-    date: '28.05.24 16:05',
-    month: "May'24",
-    balance: 45000,
-  },
-  // {
-  //   heading: 'Deposit',
-  //   value: '+ $900K',
-  //   fee: '$45',
-  //   date: '29.06.24 11:20',
-  //   month: "Jun'24",
-  //   balance: 50000,
-  // },
-  // {
-  //   heading: 'Withdraw',
-  //   value: '- $600K',
-  //   fee: '$30',
-  //   date: '30.07.24 13:35',
-  //   month: "Jul'24",
-  //   balance: 47500,
-  // },
-  // {
-  //   heading: 'Deposit',
-  //   value: '+ $800K',
-  //   fee: '$40',
-  //   date: '31.08.24 08:55',
-  //   month: "Aug'24",
-  //   balance: 55000,
-  // },
-];
 
 type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
-  const [historyPeriod, setHistoryPeriod] = React.useState<HistoryTab>(HistoryTab.Today);
-  const [width, setWidth] = React.useState(0);
+  const { address: userAddress, chainId } = useWeb3ModalAccount();
+  const [period, setPeriod] = useState<PeriodTab>(PeriodTab.All);
+  const [width, setWidth] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
+  const [hoveredTransaction, setHoveredTransaction] = useState<string | null>(null);
+  const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(null); // State to store address
 
-  React.useEffect(() => {
+  const { since, to } = getPeriodRange(period);
+
+  // Fetch the address from localStorage
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      const storedAddress = localStorage.getItem('address');
+      setLocalStorageAddress(storedAddress);
+    }
+  }, []);
+
+  const { data, isLoading } = useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
+    localStorageAddress || userAddress || '',
+    {
+      chain_id: chainId || 0,
+      since,
+      to,
+    },
+    {
+      query: {
+        queryKey: [QueryKey.DashboardHistory, localStorageAddress, userAddress, chainId, since, to],
+      },
+    },
+  );
+
+  const historyData = data?.data?.data;
+
+  useEffect(() => {
     const handleResize = () => {
       setWidth(window.innerWidth);
     };
@@ -105,8 +74,14 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
     };
   }, []);
 
-  const onTabChange = React.useCallback((period: HistoryTab) => {
-    setHistoryPeriod(period);
+  const chartTransactions = React.useMemo(
+    () => groupTransactions(historyData || [], period).reverse(),
+    [historyData, period],
+  );
+
+  const onTabChange = React.useCallback((period: PeriodTab) => {
+    setPeriod(period);
+    setCurrentPage(1);
   }, []);
 
   return (
@@ -116,17 +91,12 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
           <Text className={clsx(styles.title, styles.balanceTitle)} textView={TextView.H3}>
             Balance overview
           </Text>
-          <BalanceChart className={styles.balanceChart} data={data} />
-        </div>
-        <div className={styles.history}>
-          <Text className={clsx(styles.title, styles.historyTitle)} textView={TextView.H3}>
-            History
-          </Text>
           <Tabs
-            items={historyTabs}
-            onSelectionChange={key => onTabChange(key as HistoryTab)}
+            items={periodTabs}
+            selectedKey={period}
+            onSelectionChange={key => onTabChange(key as PeriodTab)}
             classNames={{
-              base: styles.historyTabs,
+              base: clsx(styles.historyTabs, styles.historyTabsMobile),
               tabList: styles.tabList,
               tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
               panel: styles.panel,
@@ -134,16 +104,55 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
           >
             {({ key, title }) => (
               <Tab
-                className={clsx(styles.tab, key === historyPeriod && styles.selected)}
+                className={clsx(styles.tab, key === period && styles.selected)}
+                key={key}
+                title={title}
+              />
+            )}
+          </Tabs>
+          <BalanceChart
+            period={period}
+            setPeriod={setPeriod}
+            hoveredTransaction={hoveredTransaction}
+            setHoveredTransaction={setHoveredTransaction}
+            className={styles.balanceChart}
+            data={chartTransactions}
+            isLoading={isLoading}
+          />
+        </div>
+        <div className={styles.history}>
+          <Text className={clsx(styles.title, styles.historyTitle)} textView={TextView.H3}>
+            History
+          </Text>
+          <Tabs
+            items={periodTabs}
+            selectedKey={period}
+            onSelectionChange={key => onTabChange(key as PeriodTab)}
+            classNames={{
+              base: clsx(styles.historyTabs, styles.historyTabsDesktop),
+              tabList: styles.tabList,
+              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
+              panel: styles.panel,
+            }}
+          >
+            {({ key, title }) => (
+              <Tab
+                className={clsx(styles.tab, key === period && styles.selected)}
                 key={key}
                 title={title}
               />
             )}
           </Tabs>
           <TransactionHistory
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            chainId={chainId || 0}
+            hoveredTransaction={hoveredTransaction}
+            setHoveredTransaction={setHoveredTransaction}
+            data={historyData || []}
             className={styles.transactionHistory}
-            data={data}
             viewType={width >= 1100 ? HistoryViewType.Infinite : HistoryViewType.Pagination}
+            isLoading={isLoading}
           />
         </div>
       </div>
