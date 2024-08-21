@@ -49,15 +49,11 @@ export const useSelectToken = (selectedTokenId: string) => {
     currentModal.remove();
   };
 
-  const { getWalletBalances, walletBalances } = useWalletBalances();
+  const { getWalletBalances } = useWalletBalances();
 
   React.useEffect(() => {
     if (address) getWalletBalances({ address, tokens });
   }, [address]);
-
-  React.useEffect(() => {
-    console.log('wallets: ', walletBalances);
-  }, [walletBalances]);
 
   return {
     address,
