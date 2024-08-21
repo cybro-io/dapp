@@ -1,14 +1,14 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
 import { Token } from 'symbiosis-js-sdk';
+import { useMediaQuery } from 'usehooks-ts';
 
+import { useWalletBalances } from '@/entities/WalletBalance';
 import ExportIcon from '@/shared/assets/icons/export.svg';
-import { getAvailableBalance, useSymbiosis } from '@/shared/lib';
 import { Link, StarIconButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
-import { useMediaQuery } from 'usehooks-ts';
 
 type TokenCardProps = {
   token: Token;
@@ -34,26 +34,19 @@ export const SelectTokenCard = ({
     return `${token.chain?.explorer}/tokens`;
   };
 
-  const { address } = useWeb3ModalAccount();
-  const symbiosis = useSymbiosis();
-
-  const [balance, setBalance] = React.useState<string>('');
   const [isLoadedImg, setIsLoadedImg] = React.useState<boolean>(false);
 
-  React.useEffect(() => {
-    const provider = symbiosis.providers.get(token.chainId);
+  const { isLoadingWalletBalances, walletBalances, findBalanceByToken } = useWalletBalances();
 
-    if (address && provider) {
-      getAvailableBalance(token, symbiosis.getProvider(token.chainId), address)
-        .then(setBalance)
-        .catch(setBalance);
-    }
-  }, [token, address]);
+  const balance = React.useMemo(
+    () => findBalanceByToken(token.chainId, token.address),
+    [walletBalances, token.chainId, token.address],
+  );
 
   return (
     <div
       className={clsx(
-        'p-2 xl:p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-9px)] cursor-pointer',
+        'p-2 xl:p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-4px)] xl:w-[calc(100%-6px)] cursor-pointer',
         isActive ? 'bg-background-chips' : 'bg-transparent',
         !isActive && 'hover:border-stroke-tableBorder hover:border-[1px] hover:border-solid',
       )}
@@ -79,15 +72,22 @@ export const SelectTokenCard = ({
         </div>
 
         <div className="flex flex-col gap-px">
-          <Text textView={isSmallScreen ? TextView.P3 : TextView.BU1}>{token.symbol}</Text>
-          <div className="inline-flex gap-[5px]">
-            {!isSmallScreen && (
-              <Text textView={isSmallScreen ? TextView.P3 : TextView.C4} className="opacity-70">
-                Balance
-              </Text>
-            )}
-            <Text textView={TextView.C4}>{formatUserMoney(balance)}</Text>
-          </div>
+          <Text textView={isSmallScreen ? TextView.P3 : TextView.BP1}>{token.symbol}</Text>
+          {isLoadingWalletBalances && (
+            <Skeleton className="rounded-lg" disableAnimation>
+              <div className="h-[18px] w-6 rounded-lg"></div>
+            </Skeleton>
+          )}
+          {!isLoadingWalletBalances && (
+            <div className="inline-flex gap-[5px]">
+              {!isSmallScreen && (
+                <Text textView={TextView.C4} className="opacity-70">
+                  Balance
+                </Text>
+              )}
+              <Text textView={TextView.C4}>{formatUserMoney(balance)}</Text>
+            </div>
+          )}
         </div>
       </div>
       {!isSmallScreen && (

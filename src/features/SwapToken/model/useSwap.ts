@@ -2,10 +2,11 @@ import NiceModal from '@ebay/nice-modal-react';
 import { MaxUint256 } from '@ethersproject/constants';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react/compat';
-import { ethers } from 'ethers';
+import { ethers, utils } from 'ethers';
 import { GAS_TOKEN, getChainById } from 'symbiosis-js-sdk';
 
 import TOKEN from '@/app/abi/token.json';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { $symbiosis } from '@/shared/lib';
 
 import { SwapStatus } from '../helpers/getSwapStatus';
@@ -13,7 +14,6 @@ import { SuccessSwapModal } from '../ui/SuccessSwapModal';
 import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 
 import { SwapCalculateResult } from './useSwapCalculate';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
 
@@ -67,17 +67,22 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
       throw new Error('Unsupported chain');
     }
 
-    const swapping = symbiosis.bestPoolSwapping();
-
+    const hexChain = `0x${chainConfig.id.toString(16)}`;
     const params = {
       chainName: chain.name,
-      chainId: `0x${chainConfig.id.toString(16)}`,
+      chainId: hexChain,
       rpcUrls: [chainConfig.rpc],
-      nativeCurrency: GAS_TOKEN[chain.id],
+      nativeCurrency: {
+        decimals: GAS_TOKEN[chain.id].decimals,
+        name: GAS_TOKEN[chain.id].name,
+        symbol: GAS_TOKEN[chain.id].symbol,
+      },
       blockExplorerUrls: [chain.explorer],
     };
 
-    await provider.send('wallet_addEthereumChain', [params]);
+    await provider
+      .send('wallet_switchEthereumChain', [{ chainId: hexChain }])
+      .catch(() => provider.send('wallet_addEthereumChain', [params]));
 
     // Approve token
     if (!tokenAmountIn.token.isNative) {

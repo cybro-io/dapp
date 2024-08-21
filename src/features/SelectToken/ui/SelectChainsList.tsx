@@ -3,6 +3,7 @@ import React from 'react';
 import clsx from 'clsx';
 import AutoSize from 'react-virtualized-auto-sizer';
 import { FixedSizeList } from 'react-window';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { useSelectChain } from '@/features/SelectToken';
 import { SearchInput, Text, TextView } from '@/shared/ui';
@@ -10,14 +11,15 @@ import { SearchInput, Text, TextView } from '@/shared/ui';
 export const SelectChainsList = () => {
   const { setSelectedChain, selectedChain, chains, registerSearchChain, isEmptyFilteredChains } =
     useSelectChain();
+  const isSmallScreen = useMediaQuery('(max-width: 1279px)');
 
   return (
-    <div className="p-2 flex flex-col gap-2 flex-1 h-[466px] overflow-hidden">
+    <div className="p-2 flex flex-col gap-2 flex-1 min-w-[142px] overflow-hidden">
       <Text textView={TextView.H5}>Networks:</Text>
       <SearchInput placeholder="Search" {...registerSearchChain()} />
 
       {isEmptyFilteredChains && (
-        <div className="w-full h-[75px] flex items-center justify-center">
+        <div className="w-full h-[75px] flex items-center justify-center text-center">
           <Text textView={TextView.BP3} className="opacity-40">
             Nothing found. Try again.
           </Text>
@@ -28,15 +30,15 @@ export const SelectChainsList = () => {
         <AutoSize>
           {size => (
             <FixedSizeList
-              height={size.height}
+              height={size.height - 16.8 - 16 - (isSmallScreen ? 40 : 76)}
               width={size.width}
               itemCount={chains.length}
-              itemSize={48 + 8}
+              itemSize={isSmallScreen ? 30 : 48}
             >
               {({ index, style }) => {
                 const chain = chains[index];
                 return (
-                  <div style={{ ...style, marginBottom: 8 }}>
+                  <div style={{ ...style }}>
                     <button
                       type="button"
                       className={clsx(
@@ -50,7 +52,10 @@ export const SelectChainsList = () => {
                         src={chain.icons.small}
                         className="size-4 md:size-8 rounded-full bg-stroke-tableBorder"
                       />
-                      <Text textView={TextView.BU3} className="md:!text-base !text-xs">
+                      <Text
+                        textView={isSmallScreen ? TextView.BP2 : TextView.C4}
+                        className="md:!text-base !text-xs"
+                      >
                         {chain.name}
                       </Text>
                     </button>

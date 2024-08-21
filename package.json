@@ -19,7 +19,6 @@
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
     "@hookform/resolvers": "^3.9.0",
-    "@indexed-finance/multicall": "^2.0.0",
     "@next/third-parties": "^14.2.5",
     "@nextui-org/react": "^2.3.6",
     "@tanstack/react-query": "^5.45.1",
@@ -31,6 +30,7 @@
     "dotenv": "^16.4.5",
     "effector": "^23.2.2",
     "effector-react": "^23.2.1",
+    "ethereum-multicall": "^2.26.0",
     "ethers": "^5.7.2",
     "formik": "^2.4.6",
     "framer-motion": "^11.1.9",
