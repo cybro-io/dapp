@@ -1,30 +1,24 @@
-export enum ApyPeriod {
-  Today = 'today',
-  Week = 'week',
-  Month = 'month',
-  Year = 'year',
-  All = 'all',
-}
+import { GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe } from '@/shared/types';
 
 export const dropdownData = [
   {
-    key: ApyPeriod.Today,
+    key: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today,
     title: 'Today',
   },
   {
-    key: ApyPeriod.Week,
+    key: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Week,
     title: 'Week',
   },
   {
-    key: ApyPeriod.Month,
+    key: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Month,
     title: 'Month',
   },
   {
-    key: ApyPeriod.Year,
+    key: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Year,
     title: 'Year',
   },
   {
-    key: ApyPeriod.All,
+    key: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,
     title: 'All',
   },
 ];

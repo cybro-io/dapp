@@ -6,6 +6,7 @@ import Image from 'next/image';
 import Link from 'next/link';
 import numeral from 'numeral';
 
+import { VaultChips } from '@/entities/VaultChips';
 import { ComponentWithProps, SortValue, VaultsResponseData } from '@/shared/types';
 import { Chip, Loader, Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
@@ -165,13 +166,7 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
               <Text className={styles.vaultName} textView={TextView.H5}>
                 {vault.name}
               </Text>
-              <div className={styles.chips}>
-                {vault.badges.map((badge, index) => (
-                  <Chip className={styles.chip} key={badge}>
-                    {badge}
-                  </Chip>
-                ))}
-              </div>
+              <VaultChips className={styles.chips} badges={vault.badges} />
             </div>
             <div className={clsx(styles.tableCell, styles.assetsCell)}>
               <div className={styles.assetTokenContainer}>

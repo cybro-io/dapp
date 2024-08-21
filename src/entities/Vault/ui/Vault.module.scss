@@ -11,6 +11,10 @@
   display: none;
 }
 
+.chipsContainer {
+  min-height: 28px;
+}
+
 .tokenContainer {
   display: flex;
   flex-direction: column;
@@ -53,22 +57,6 @@
   text-align: center;
   color: $text-white-body100;
   max-width: 200px;
-}
-
-.chipsContainer {
-  display: flex;
-  align-items: center;
-  gap: 5px;
-  min-height: 24px;
-  justify-content: center;
-}
-
-.chip {
-  font-family: $poppins-font;
-  font-size: 12px;
-  font-weight: 500;
-  line-height: 150%;
-  text-transform: initial;
 }
 
 .trustScoreContainer {

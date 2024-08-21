@@ -115,6 +115,7 @@
 .chips {
   display: flex;
   gap: 6px;
+  justify-content: start;
 }
 
 .providerCell {

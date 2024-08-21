@@ -1,8 +1,10 @@
 'use client';
 import React from 'react';
 
-import clsx from 'clsx';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useRouter } from 'next/navigation';
 
+import { useToast } from '@/shared/hooks';
 import { ComponentWithProps } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 import { BalanceHistory } from '@/widgets/BalanceHistory';
@@ -13,13 +15,31 @@ import styles from './DashboardPage.module.scss';
 type DashboardPageProps = {};
 
 export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
+  const { isConnected, chainId, address, status } = useWeb3ModalAccount();
+  const { triggerToast } = useToast();
+  const router = useRouter();
+
+  React.useEffect(() => {
+    if (status !== 'reconnecting' && !isConnected) {
+      triggerToast({
+        message: 'Wallet is not connected',
+        description: 'You need to connect your wallet to use the Dashboard',
+      });
+      router.push('/');
+    }
+  }, [isConnected, router, triggerToast, status]);
+
+  if (!isConnected) {
+    return null;
+  }
+
   return (
     <div className={styles.headerContainer}>
       <Text className={styles.header} textView={TextView.H1}>
         Dashboard
       </Text>
-      {/*<DashboardInfo className={styles.dashboardInfo} />*/}
-      {/*<BalanceHistory className={styles.balanceHistory} />*/}
+      <DashboardInfo className={styles.dashboardInfo} />
+      <BalanceHistory className={styles.balanceHistory} />
     </div>
   );
 };

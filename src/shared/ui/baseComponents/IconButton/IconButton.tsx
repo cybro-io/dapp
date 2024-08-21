@@ -11,12 +11,13 @@ export type IconButtonProps = {
 } & React.ButtonHTMLAttributes<HTMLButtonElement>;
 
 export const IconButton: ComponentWithProps<IconButtonProps> = ({
+  onClick,
   icon,
   className,
-  ...restProps
+  ...props
 }) => {
   return (
-    <button className={clsx(styles.root, className)} {...restProps}>
+    <button onClick={onClick} className={clsx(styles.root, className)} {...props}>
       {icon}
     </button>
   );
