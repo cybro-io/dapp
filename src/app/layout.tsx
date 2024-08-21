@@ -21,6 +21,7 @@ import {
   ReactQueryProvider,
   ToastProvider,
   Web3Modal,
+  WalletBalancesProvider,
 } from './providers';
 
 export const metadata: Metadata = {
@@ -50,8 +51,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en" className="dark">
-      <Script defer data-domain="app.cybro.io" src="https://analytics.cybro.io/js/script.js" />
-      <Script id="hotjar-script">
+      <Script
+        async
+        defer
+        data-domain="app.cybro.io"
+        src="https://analytics.cybro.io/js/script.js"
+      />
+      <Script async id="hotjar-script">
         {`(function(h,o,t,j,a,r){
           h.hj=h.hj||function(){(h.hj.q=h.hj.q||[]).push(arguments)};
           h._hjSettings={hjid:5059762,hjsv:6};
@@ -67,11 +73,13 @@ export default function RootLayout({
             <BalanceProvider>
               <NiceModalProvider>
                 <ModalProvider>
-                  <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                    <ToastProvider>{children}</ToastProvider>
-                    <ModalContainer />
-                  </body>
-                  {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                  <WalletBalancesProvider>
+                    <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                      <ToastProvider>{children}</ToastProvider>
+                      <ModalContainer />
+                    </body>
+                    {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                  </WalletBalancesProvider>
                 </ModalProvider>
               </NiceModalProvider>
             </BalanceProvider>

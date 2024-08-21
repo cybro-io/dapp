@@ -6,6 +6,7 @@ import { Footer } from '@/widgets/Footer';
 import { Header } from '@/widgets/Header';
 
 import styles from './BaseLayout.module.scss';
+import { ProfileStatsPopover } from '@/widgets/ProfileStatsPopover';
 
 type BaseLayoutProps = {
   hasFooter?: boolean;
@@ -15,7 +16,7 @@ type BaseLayoutProps = {
 export const BaseLayout: React.FC<BaseLayoutProps> = ({ hasFooter = true, children }) => {
   return (
     <React.Fragment>
-      <Header className={styles.header} />
+      <Header className={styles.header} connectedComponent={<ProfileStatsPopover />} />
       <main className={clsx(styles.main, styles.noFooter)}>
         <div className={styles.mainContent}>{children}</div>
       </main>
