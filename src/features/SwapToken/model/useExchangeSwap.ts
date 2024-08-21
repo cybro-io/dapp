@@ -87,7 +87,7 @@ export const useExchangeSwap = () => {
       slippage,
       deadline,
     }).then(data => {
-      form.setAmountOut(String(data?.calculate.tokenAmountOut.toSignificant()));
+      form.setAmountOut(data?.calculate.tokenAmountOut.toSignificant() ?? '0');
     });
   };
 
