@@ -5,12 +5,23 @@ import { useDebounceValue } from 'usehooks-ts';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
 import { useSelectChain } from '@/features/SelectToken';
+import { useWalletBalances } from '@/entities/WalletBalance';
 
 export const useSwapFilteredTokens = (tokens: Token[], selectedTokenId: string) => {
   const { selectedChain } = useSelectChain();
 
+  const { findBalanceByToken, walletBalances } = useWalletBalances();
+
   const [searchToken, setSearchToken] = React.useState('');
   const [debouncedSearchToken] = useDebounceValue(searchToken, 500);
+
+  const withSortPositiveBalance = (tokens: Token[]) =>
+    tokens.sort((tokenA, tokenB) =>
+      Number(findBalanceByToken(tokenA.chainId, tokenA.address)) >
+      Number(findBalanceByToken(tokenB.chainId, tokenB.address))
+        ? -1
+        : 0,
+    );
 
   const withSortSelected = (tokens: Token[]) =>
     tokens.sort(tokenA =>
@@ -31,11 +42,11 @@ export const useSwapFilteredTokens = (tokens: Token[], selectedTokenId: string) 
 
   const filteredTokens = React.useMemo(() => {
     if (!debouncedSearchToken) {
-      return withFilterByChain(withSortSelected(tokens));
+      return withFilterByChain(withSortSelected(withSortPositiveBalance(tokens)));
     }
 
     return withFilterByChain(withFilterBySymbol(withSortSelected(tokens)));
-  }, [debouncedSearchToken, tokens, selectedChain]);
+  }, [debouncedSearchToken, tokens, selectedChain, walletBalances]);
 
   const isEmptyFilteredTokens = filteredTokens.length < 1 && debouncedSearchToken;
 
