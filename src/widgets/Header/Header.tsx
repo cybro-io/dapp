@@ -19,7 +19,6 @@ import Image from 'next/image';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
-import TetherIcon from '@/shared/assets/icons/tetherTron.svg';
 import { ComponentWithProps } from '@/shared/types';
 import {
   Button,
@@ -55,7 +54,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
     {
       title: 'Dashboard',
       href: '/dashboard',
-      isDisabled: true,
+      isDisabled: false,
     },
     {
       title: 'Exchange',
