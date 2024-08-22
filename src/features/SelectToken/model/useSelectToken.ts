@@ -5,8 +5,6 @@ import { Token } from 'symbiosis-js-sdk';
 import { useSwapTokens } from '@/entities/SwapToken';
 import { useSwapFavoriteTokens } from '@/features/SelectToken';
 import { useSwapFilteredTokens } from '@/features/SelectToken/model/useSwapFilteredTokens';
-import { useWalletBalances } from '@/entities/WalletBalance';
-import React from 'react';
 
 export const useSelectToken = (selectedTokenId: string) => {
   const currentModal = NiceModal.useModal();
@@ -48,12 +46,6 @@ export const useSelectToken = (selectedTokenId: string) => {
     currentModal.resolve(token);
     currentModal.remove();
   };
-
-  const { getWalletBalances } = useWalletBalances();
-
-  React.useEffect(() => {
-    if (address) getWalletBalances({ address, tokens });
-  }, [address]);
 
   return {
     address,

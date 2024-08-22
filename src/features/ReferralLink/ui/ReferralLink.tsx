@@ -10,7 +10,7 @@ import { QueryKey } from '@/shared/const';
 import { useToast } from '@/shared/hooks';
 import {
   ComponentWithProps,
-  useGetProfilePointsApiV1ProfileAddressRefcodeGet,
+  useGetProfileRefcodeApiV1ProfileAddressRefcodeGet,
 } from '@/shared/types';
 import { IconButton, Text, TextView, ToastType } from '@/shared/ui';
 
@@ -23,7 +23,7 @@ type ReferralLinkProps = {};
 export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className }) => {
   const { address } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
-  const { data, isLoading } = useGetProfilePointsApiV1ProfileAddressRefcodeGet(address || '', {
+  const { data, isLoading } = useGetProfileRefcodeApiV1ProfileAddressRefcodeGet(address || '', {
     query: { queryKey: [QueryKey.RefCode, address] },
   });
 

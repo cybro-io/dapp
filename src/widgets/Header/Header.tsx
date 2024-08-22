@@ -10,63 +10,52 @@ import {
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
-  Tooltip,
 } from '@nextui-org/react';
-import { useDisconnect, useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useDisconnect } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
-import Image from 'next/image';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
 import { ComponentWithProps } from '@/shared/types';
-import {
-  Button,
-  ButtonSize,
-  ButtonView,
-  Logo,
-  MenuLink,
-  Socials,
-  Text,
-  TextView,
-} from '@/shared/ui';
-import { shortenWalletAddress } from '@/shared/utils';
+import { Button, ButtonSize, ButtonView, Logo, MenuLink, Socials } from '@/shared/ui';
 
 import styles from './Header.module.scss';
 
-type HeaderProps = {};
+type HeaderProps = {
+  connectedComponent: React.ReactNode;
+};
 
-export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
+const menuItems = [
+  {
+    title: 'Vaults',
+    href: '/',
+  },
+  {
+    title: 'One-click',
+    href: '/one-click',
+    isComingSoon: true,
+  },
+  {
+    title: 'Dashboard',
+    href: '/dashboard',
+    isDisabled: false,
+  },
+  {
+    title: 'Exchange',
+    href: '/exchange',
+    isDisabled: false,
+  },
+  {
+    title: 'Cybro Points',
+    href: '/5',
+    isDisabled: true,
+  },
+];
+
+export const Header: ComponentWithProps<HeaderProps> = ({ className, connectedComponent }) => {
   const { disconnect } = useDisconnect();
-  const { address, isConnected } = useWeb3ModalAccount();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
-
-  const menuItems = [
-    {
-      title: 'Vaults',
-      href: '/',
-    },
-    {
-      title: 'One-click',
-      href: '/one-click',
-      isComingSoon: true,
-    },
-    {
-      title: 'Dashboard',
-      href: '/dashboard',
-      isDisabled: false,
-    },
-    {
-      title: 'Exchange',
-      href: '/exchange',
-      isDisabled: false,
-    },
-    {
-      title: 'Cybro Points',
-      href: '/5',
-      isDisabled: true,
-    },
-  ];
 
   return (
     <Navbar className={clsx(styles.navbar, className)} onMenuOpenChange={setIsMenuOpen}>
@@ -108,30 +97,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className }) => {
           <ConnectWallet
             className={styles.connectWallet}
             buttonSize={ButtonSize.Small}
-            whenConnectedComponent={
-              <Tooltip
-                className={styles.tooltipContainer}
-                content={
-                  <Button
-                    view={ButtonView.Primary}
-                    size={ButtonSize.Small}
-                    onClick={() => disconnect()}
-                  >
-                    Disconnect
-                  </Button>
-                }
-              >
-                <div className={styles.connectedWalletContainer}>
-                  <div className={styles.avatarContainer}>
-                    <Image src={'/avatar.webp'} height={20} width={20} alt={'avatar'} />
-                    {/*<TetherIcon />*/}
-                  </div>
-                  <Text textView={TextView.C3} className={styles.connectedWallet}>
-                    {shortenWalletAddress(address)}
-                  </Text>
-                </div>
-              </Tooltip>
-            }
+            whenConnectedComponent={connectedComponent}
           />
         </NavbarItem>
       </NavbarContent>
