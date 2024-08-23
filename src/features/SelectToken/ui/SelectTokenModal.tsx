@@ -1,16 +1,16 @@
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
-import { FixedSizeList } from 'react-window';
 import AutoSize from 'react-virtualized-auto-sizer';
+import { FixedSizeList } from 'react-window';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
 import { useSelectToken } from '@/features/SelectToken';
 import { Modal, SearchInput, StarIconButton, Text, TextView } from '@/shared/ui';
 
-import { SelectTokenCard } from './SelectTokenCard';
 import { SelectChainsList } from './SelectChainsList';
-import { useMediaQuery } from 'usehooks-ts';
+import { SelectTokenCard } from './SelectTokenCard';
 
 type SelectTokenProps = {
   selectedTokenId: string;

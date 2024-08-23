@@ -115,10 +115,10 @@ export const useExchangeSwapForm = ({
   const handleChangeToken = (token: Token, direction: 'in' | 'out') => {
     const setToken = direction === 'in' ? setTokenIn : setTokenOut;
     const setPrice = direction === 'in' ? setPriceInUsd : setPriceOutUsd;
-    const setAmount = direction === 'in' ? setAmountIn : setAmountOut;
 
     setToken(token);
-    setAmount('');
+    setAmountIn('');
+    setAmountOut('');
     getTokenPriceUsd(token).then(amount => {
       setPrice(amount);
     });
