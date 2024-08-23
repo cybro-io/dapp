@@ -22,6 +22,7 @@ import {
   ToastProvider,
   Web3Modal,
 } from './providers';
+import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -61,6 +62,7 @@ export default function RootLayout({
           a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
       </Script>
+      <NextTopLoader color="#F0D025" showSpinner={false} shadow={false} />
       <Web3Modal>
         <EthersProvider>
           <ReactQueryProvider>
