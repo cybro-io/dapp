@@ -16,21 +16,21 @@ export const prepareCalculateParams = (exactIn: SwapExactInResult) => {
     }
 
     records.fee = {
-      title: 'Estimated fee',
+      label: 'Estimated fee',
       value,
     };
   }
 
   if (exactIn.priceImpact) {
     records.priceImpact = {
-      title: 'Price impact',
+      label: 'Price impact',
       value: `${exactIn.priceImpact.toFixed()}%`,
     };
   }
 
   if (exactIn.tokenAmountOutMin) {
     records.tokenAmountOutMin = {
-      title: 'Minimum received',
+      label: 'Minimum received',
       value: `${exactIn.tokenAmountOutMin.toSignificant()} ${exactIn.tokenAmountOutMin.token.symbol}`,
     };
   }

@@ -25,11 +25,11 @@ import {
 } from './providers';
 
 export const metadata: Metadata = {
-  title: 'CYBRO - the first earn marketplace on Blast L2',
+  label: 'CYBRO - the first earn marketplace on Blast L2',
   description:
     'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
   openGraph: {
-    title: 'CYBRO - the first earn marketplace on Blast L2',
+    label: 'CYBRO - the first earn marketplace on Blast L2',
     description:
       'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
   },
