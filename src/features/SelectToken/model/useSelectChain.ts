@@ -2,7 +2,7 @@ import React from 'react';
 
 import { createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react';
-import { ChainId } from 'symbiosis-js-sdk';
+import { Chain, ChainId } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 
 import { useSwapChains } from '@/entities/SwapToken';
@@ -26,12 +26,21 @@ export const useSelectChain = () => {
   const [searchChain, setSearchChain] = React.useState('');
   const [debouncedSearchChain] = useDebounceValue(searchChain, 500);
 
+  const chainsWithSorted = (chains: Chain[]) =>
+    chains
+      .sort((chainA, chainB) => (chainA.name < chainB.name ? -1 : 1))
+      .sort(chain =>
+        chain.name.toLowerCase() === 'ethereum' || chain.name.toLowerCase() === 'blast' ? -1 : 0,
+      );
+
   const filteredChains = React.useMemo(() => {
+    const sortedChains = chainsWithSorted(swapChains);
+
     return debouncedSearchChain
-      ? swapChains.filter(chain =>
+      ? sortedChains.filter(chain =>
           chain.name.toLowerCase().includes(debouncedSearchChain.toLowerCase()),
         )
-      : swapChains;
+      : sortedChains;
   }, [swapChains, debouncedSearchChain]);
 
   const registerSearchChain = () => ({
