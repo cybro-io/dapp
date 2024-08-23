@@ -60,3 +60,11 @@
 .isOpened {
   transform: rotate(0deg);
 }
+
+.selected {
+  background-color: white;
+
+  span {
+    color: $text-black-body100;
+  }
+}

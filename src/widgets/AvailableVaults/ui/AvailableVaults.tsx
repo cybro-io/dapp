@@ -81,22 +81,6 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
     }
   }, [sort]);
 
-  // Change viewType if window width is less than 1140px
-  React.useEffect(() => {
-    const handleResize = () => {
-      if (window.innerWidth < 1140 && viewType === ViewType.Table) {
-        setViewType(ViewType.Card);
-      }
-    };
-
-    window.addEventListener('resize', handleResize);
-    handleResize();
-
-    return () => {
-      window.removeEventListener('resize', handleResize);
-    };
-  }, [viewType]);
-
   const vaults = data?.data?.data || [];
   const balance = React.useMemo(
     () => transformBalances(balanceData?.data?.data || []),
@@ -160,7 +144,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       ) : (
         <AvailableVaultsList
           balance={balance}
-          sort={sort} // Pass current sort state
+          sort={sort}
           setSort={setSort}
           isConnected={isConnected}
           isLoading={isLoading}
