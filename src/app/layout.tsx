@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 
 import { poppins, unbounded } from '@/app/fonts';
 import icon from '@/shared/assets/icons/favicon.ico';
@@ -23,14 +24,13 @@ import {
   Web3Modal,
   WalletBalancesProvider,
 } from './providers';
-import NextTopLoader from 'nextjs-toploader';
 
 export const metadata: Metadata = {
-  label: 'CYBRO - the first earn marketplace on Blast L2',
+  title: 'CYBRO - the first earn marketplace on Blast L2',
   description:
     'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
   openGraph: {
-    label: 'CYBRO - the first earn marketplace on Blast L2',
+    title: 'CYBRO - the first earn marketplace on Blast L2',
     description:
       'CYBRO is an earn marketplace where users can choose investment tools based on desired returns and risk levels, including staking, farming, and lending',
   },
