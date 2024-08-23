@@ -2,10 +2,10 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { Tvl } from '@/entities/Tvl';
 import { ComponentWithProps } from '@/shared/types';
 import { Socials, Text, TextView } from '@/shared/ui';
 import { AvailableVaults } from '@/widgets/AvailableVaults';
+import { ProfilePortfolio } from '@/widgets/ProfilePortfolio';
 
 import styles from './HomePage.module.scss';
 
@@ -31,8 +31,10 @@ export const HomePage: ComponentWithProps<HomePageProps> = props => {
           <Socials />
         </div>
       </section>
-
-      <AvailableVaults className={styles.availableVaults} />
+      <div className="px-0 2lg:px-[100px] flex flex-col gap-6 2lg:gap-8 pt-6 2lg:pt-0">
+        <ProfilePortfolio />
+        <AvailableVaults />
+      </div>
     </React.Fragment>
   );
 };
