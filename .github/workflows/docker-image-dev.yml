@@ -37,3 +37,4 @@ jobs:
             NEXT_PUBLIC_TYPE=${{ secrets.NEXT_PUBLIC_TYPE }}
             NEXT_PUBLIC_GA_ID=${{ secrets.NEXT_PUBLIC_GA_ID }}
             NEXT_PUBLIC_PRESALE_URL=${{ secrets.NEXT_PUBLIC_PRESALE_URL }}
+            NEXT_PUBLIC_SENTRY_DSN=${{ secrets.NEXT_PUBLIC_SENTRY_DSN }}
