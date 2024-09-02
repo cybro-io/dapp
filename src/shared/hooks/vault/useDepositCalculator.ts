@@ -1,7 +1,20 @@
 import React from 'react';
 
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
+
 import { PeriodTab } from '@/entities/DepositCalculator';
-import { Maybe, Money, useGetPriceApiV1MarketDataPriceGet } from '@/shared/types';
+import { useSwapTokens } from '@/entities/SwapToken';
+import { SwapCalculateResult, useSwapCalculate } from '@/features/SwapToken';
+import { useToast } from '@/shared/hooks';
+import {
+  Maybe,
+  Money,
+  Nullable,
+  Token as TokenContract,
+  useGetPriceApiV1MarketDataPriceGet,
+} from '@/shared/types';
+import { ToastType } from '@/shared/ui';
 import { convertToUsd, VaultCurrency } from '@/shared/utils';
 
 type UseDepositCalculator = {
@@ -13,20 +26,40 @@ type UseDepositCalculator = {
   profitUsd: Money;
   balanceAfter: Money;
   balanceAfterText: string;
+  isLoadingCalculate: boolean;
+  swapCalculate: SwapCalculateResult | undefined;
+  selectedTokenPriceInUsd: number;
 };
 
 export const useDepositCalculator = (
   amountToDeposit: Maybe<string> = '0',
-  balance: Money,
+  balance: Money | string,
   token: VaultCurrency,
   chainId: number,
   period: PeriodTab,
   yearlyApy: number,
+  selectedToken: Token | null,
+  tokenContract: Nullable<TokenContract>,
+  setButtonMessage: (message: string | null) => void,
+  setAmount: (amount: string) => void,
 ): UseDepositCalculator => {
+  const { fetchCalculateSwap, isLoadingCalculate, calculate, error } = useSwapCalculate();
+
+  const [selectedTokenPriceInUsd, setSelectedTokenPriceInUsd] = React.useState<number>(0);
+
+  React.useEffect(() => {
+    if (selectedToken) getTokenPriceUsd(selectedToken).then(setSelectedTokenPriceInUsd);
+  }, [selectedToken]);
+
+  const { triggerToast } = useToast();
+
   const { data } = useGetPriceApiV1MarketDataPriceGet({
     token,
     chain_id: chainId,
   });
+
+  const { address } = useWeb3ModalAccount();
+  const { findToken } = useSwapTokens();
 
   const tokenPrice = Number(data?.data?.data?.price);
 
@@ -42,7 +75,7 @@ export const useDepositCalculator = (
   React.useEffect(() => {
     const fetchData = async () => {
       if (balance) {
-        const availableFundsUsd = convertToUsd(balance, tokenPrice);
+        const availableFundsUsd = convertToUsd(Number(balance), tokenPrice);
         const entryAmountUsd = convertToUsd(Number(amountToDeposit), tokenPrice);
 
         setAvailableFundsUsd(availableFundsUsd);
@@ -50,20 +83,87 @@ export const useDepositCalculator = (
       }
     };
 
-    fetchData();
-  }, [amountToDeposit, balance, tokenPrice]);
+    if (!selectedToken) fetchData();
+
+    if (selectedToken) {
+      const availableFundsUsd = convertToUsd(Number(balance), selectedTokenPriceInUsd);
+      const entryAmountUsd = convertToUsd(Number(amountToDeposit), selectedTokenPriceInUsd);
+
+      setAvailableFundsUsd(availableFundsUsd);
+      setEntryAmountUsd(entryAmountUsd);
+    }
+  }, [amountToDeposit, balance, tokenPrice, selectedTokenPriceInUsd, selectedToken]);
+
+  const clearValues = () => {
+    setButtonMessage(null);
+    setAmount('0');
+    setProfitTokens(0);
+    setProfitUsd(0);
+    setBalanceAfter(0);
+  };
 
   const getProfit = React.useCallback(
-    (apy: number) => {
-      const profitTokens = Number(amountToDeposit) * (apy / 100);
-      const profitUsd = convertToUsd(profitTokens, tokenPrice);
-      const balanceAfter = Number(amountToDeposit) + profitTokens;
+    async (apy: number) => {
+      try {
+        if (Number(amountToDeposit) <= 0) {
+          // clearValues();
+          return;
+        }
 
-      setBalanceAfter(balanceAfter);
-      setProfitUsd(profitUsd);
-      setProfitTokens(profitTokens);
+        let profitTokens = Number(amountToDeposit) * (apy / 100);
+        let balanceAfter = Number(amountToDeposit) + profitTokens;
+
+        if (selectedToken) {
+          if (!address) {
+            throw new Error('Not connected');
+          }
+
+          const tokenOut = findToken(tokenContract?.address || '', chainId);
+
+          if (!tokenOut) {
+            throw new Error('Token not found');
+          }
+
+          setButtonMessage('Finding best rates...');
+
+          const result = await fetchCalculateSwap({
+            from: address,
+            to: address,
+            amount: Number(amountToDeposit).toString(),
+            deadline: 20,
+            slippage: 2,
+            tokenIn: selectedToken,
+            tokenOut,
+          });
+
+          if (!result) {
+            throw new Error('Something went wrong');
+          }
+
+          setButtonMessage(null);
+
+          const receive = result?.calculate.tokenAmountOut.toSignificant() ?? 0;
+
+          profitTokens = Number(receive) * (apy / 100);
+          balanceAfter = Number(receive) + profitTokens;
+        }
+
+        const profitUsd = convertToUsd(profitTokens, tokenPrice);
+
+        setBalanceAfter(balanceAfter);
+        setProfitUsd(profitUsd);
+        setProfitTokens(profitTokens);
+      } catch (error) {
+        clearValues();
+        triggerToast({
+          message: `Something went wrong`,
+          description:
+            'We were unable to complete the current operation. Try again or connect feedback.',
+          type: ToastType.Error,
+        });
+      }
     },
-    [amountToDeposit, tokenPrice],
+    [amountToDeposit, tokenPrice, selectedToken],
   );
 
   const getYearly = React.useCallback(() => {
@@ -112,5 +212,8 @@ export const useDepositCalculator = (
     profitUsd,
     balanceAfter,
     balanceAfterText,
+    isLoadingCalculate,
+    swapCalculate: calculate,
+    selectedTokenPriceInUsd,
   };
 };

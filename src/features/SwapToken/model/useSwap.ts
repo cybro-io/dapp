@@ -2,7 +2,7 @@ import NiceModal from '@ebay/nice-modal-react';
 import { MaxUint256 } from '@ethersproject/constants';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react/compat';
-import { ethers, utils } from 'ethers';
+import { ethers } from 'ethers';
 import { GAS_TOKEN, getChainById } from 'symbiosis-js-sdk';
 
 import TOKEN from '@/app/abi/token.json';
@@ -10,7 +10,6 @@ import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { $symbiosis } from '@/shared/lib';
 
 import { SwapStatus } from '../helpers/getSwapStatus';
-import { SuccessSwapModal } from '../ui/SuccessSwapModal';
 import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 
 import { SwapCalculateResult } from './useSwapCalculate';
@@ -29,15 +28,7 @@ interface SwapEvent {
 
 const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calculate }) => {
   try {
-    const {
-      transactionRequest,
-      tokenAmountIn,
-      tokenAmountOut,
-      approveTo,
-      from,
-      transactionType,
-      kind,
-    } = calculate;
+    const { transactionRequest, tokenAmountIn, approveTo, from, transactionType, kind } = calculate;
 
     setSwapInfo({ ...calculate, swapStatus: null });
 
@@ -117,12 +108,7 @@ const swapFx = createEffect<SwapEvent, void, void>(async ({ walletProvider, calc
 
     Mixpanel.track(MixpanelEvent.SuccessSwap);
 
-    NiceModal.show(SuccessSwapModal, {
-      sentSymbol: tokenAmountIn.token.symbol,
-      sentAmount: tokenAmountIn.toSignificant(),
-      receivedSymbol: tokenAmountOut.token.symbol,
-      receivedAmount: tokenAmountOut.toSignificant(),
-    }).then();
+    NiceModal.remove(WaitForCompleteModal);
   } catch (error) {
     console.log(error);
 
@@ -152,7 +138,8 @@ sample({
 export const useSwap = () => {
   const units = useUnit({ swap, isLoadingSwap: swapFx.pending, swapInfo: $swapInfo });
 
-  const subscribeSuccessSwap = (watcher: () => void) => swapFx.done.watch(watcher);
+  const subscribeSuccessSwap = (watcher?: (params: SwapEvent['calculate']) => void) =>
+    swapFx.done.watch(({ params }) => watcher?.(params.calculate));
 
   return { ...units, subscribeSuccessSwap };
 };
