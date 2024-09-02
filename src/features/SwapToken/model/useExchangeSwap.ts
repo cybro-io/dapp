@@ -10,6 +10,8 @@ import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
 import { useSwap } from './useSwap';
 import { useSwapCalculate } from './useSwapCalculate';
+import NiceModal from '@ebay/nice-modal-react';
+import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
 
 export const useExchangeSwap = () => {
   const { walletProvider } = useWeb3ModalProvider();
@@ -21,7 +23,7 @@ export const useExchangeSwap = () => {
   const { fetchCalculateSwap, error, calculate, isLoadingCalculate, resetCalculate } =
     calculateParams;
 
-  const { swap, isLoadingSwap } = useSwap();
+  const { swap, isLoadingSwap, subscribeSuccessSwap } = useSwap();
 
   const form = useExchangeSwapForm({
     initialTokenIn:
@@ -94,6 +96,19 @@ export const useExchangeSwap = () => {
   React.useEffect(() => {
     getTokenPriceUsd(tokenOut).then(form.setPriceOutUsd).catch(form.setPriceOutUsd);
     getTokenPriceUsd(tokenIn).then(form.setPriceInUsd).catch(form.setPriceInUsd);
+
+    const subscription = subscribeSuccessSwap(({ tokenAmountOut, tokenAmountIn }) => {
+      NiceModal.show(SuccessSwapModal, {
+        sentSymbol: tokenAmountIn.token.symbol,
+        sentAmount: tokenAmountIn.toSignificant(),
+        receivedSymbol: tokenAmountOut.token.symbol,
+        receivedAmount: tokenAmountOut.toSignificant(),
+      }).then();
+    });
+
+    return () => {
+      subscription.unsubscribe();
+    };
   }, []);
 
   const isDisabledSubmit = isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);

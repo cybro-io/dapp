@@ -15,18 +15,12 @@ import {
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
 
-type UseDeposit = {
-  deposit: (amount: string) => Promise<void>;
-  isLoading: boolean;
-  buttonMessage: string | null;
-};
-
 export const useDeposit = (
   currency: VaultCurrency,
   vaultContract: Nullable<Vault>,
   tokenContract: Nullable<Token>,
   vaultId: number,
-): UseDeposit => {
+) => {
   const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
@@ -87,5 +81,5 @@ export const useDeposit = (
     [vaultContract, tokenContract, isConnected, address, triggerToast, mutate, vaultId, currency],
   );
 
-  return { deposit, isLoading, buttonMessage };
+  return { deposit, isLoading, buttonMessage, setButtonMessage };
 };
