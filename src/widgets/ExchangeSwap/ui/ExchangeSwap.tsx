@@ -2,7 +2,6 @@ import React from 'react';
 
 import { Card } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { useSelectTokenModal } from '@/features/SelectToken';
