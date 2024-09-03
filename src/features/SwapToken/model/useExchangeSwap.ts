@@ -1,20 +1,19 @@
 import React from 'react';
 
-import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import NiceModal from '@ebay/nice-modal-react';
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import { utils } from 'ethers';
 import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
+import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
 import { useSwap } from './useSwap';
 import { useSwapCalculate } from './useSwapCalculate';
-import NiceModal from '@ebay/nice-modal-react';
-import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
 
 export const useExchangeSwap = () => {
-  const { walletProvider } = useWeb3ModalProvider();
   const { address: defaultAddress, isConnected } = useWeb3ModalAccount();
 
   const { tokens } = useSwapTokens();
@@ -34,9 +33,9 @@ export const useExchangeSwap = () => {
       tokens.find(({ symbol, chainId }) => symbol === 'ETH' && chainId === ChainId.BLAST_MAINNET) ??
       tokens[0],
     onCalculate: () => handleCalculateSwap(),
-    onSubmit: () => {
-      if (error || !calculate || !walletProvider) return;
-      swap({ walletProvider, calculate });
+    onSubmit: async () => {
+      if (error || !calculate) return;
+      swap(calculate);
       resetCalculate({});
       form.setAmountOut('');
       form.setAmountIn('');
@@ -89,7 +88,9 @@ export const useExchangeSwap = () => {
       slippage,
       deadline,
     }).then(data => {
-      form.setAmountOut(data?.calculate.tokenAmountOut.toSignificant() ?? '0');
+      if (typeof data !== 'string') {
+        form.setAmountOut(data.calculate.tokenAmountOut.toSignificant() ?? '0');
+      }
     });
   };
 
@@ -112,6 +113,7 @@ export const useExchangeSwap = () => {
   }, []);
 
   const isDisabledSubmit = isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);
+  const isDisabledInputValue = isLoadingCalculate || isLoadingSwap;
 
   return {
     isConnected,
@@ -120,5 +122,6 @@ export const useExchangeSwap = () => {
     isDisabledSubmit,
     form,
     calculateParams,
+    isDisabledInputValue,
   };
 };

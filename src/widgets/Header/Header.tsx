@@ -117,9 +117,13 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className, connectedCo
             </NavbarMenuItem>
           ))}
           <Socials />
-          <Button view={ButtonView.Primary} onClick={() => disconnect()}>
-            Disconnect
-          </Button>
+          <ConnectWallet
+            whenConnectedComponent={
+              <Button view={ButtonView.Primary} onClick={() => disconnect()}>
+                Disconnect
+              </Button>
+            }
+          />
         </div>
         {/*<div className={styles.mobileMenuBottom}>*/}
         {/*  <Button onClick={() => disconnect()}>Disconnect</Button>*/}

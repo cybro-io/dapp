@@ -24,6 +24,7 @@ import { ComponentWithProps, Nullable, Token as TokenContract, Vault } from '@/s
 import { debounce, formatMoney, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
+import { useDebounceValue } from 'usehooks-ts';
 
 type YieldCalculatorProps = {
   vaultId: number;
@@ -49,11 +50,10 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   chain,
   className,
 }) => {
-  const { walletProvider } = useWeb3ModalProvider();
-
   const [selectedToken, setSelectedToken] = React.useState<Token | null>(null);
 
   const [amount, setAmount] = React.useState<string>('0');
+  const [debouncedAmount] = useDebounceValue(amount, 500);
   const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
 
@@ -84,7 +84,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     deposit,
     isLoading: isDepositLoading,
     buttonMessage: depositButtonMessage,
-  } = useDeposit(currency, vaultContract, tokenContract, vaultId);
+  } = useDeposit(currency, vaultContract, tokenContract, vaultId, chainId);
 
   const {
     availableFundsUsd: depositAvailableFundsUsd,
@@ -98,7 +98,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     swapCalculate,
     isLoadingCalculate,
   } = useDepositCalculator(
-    amount,
+    debouncedAmount,
     userBalance,
     currency,
     chainId,
@@ -213,22 +213,15 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   );
 
   const submitDeposit = React.useCallback(async () => {
-    if (!amount) {
+    if (!debouncedAmount) {
       return;
     }
 
     try {
       if (swapCalculate) {
-        if (!walletProvider) {
-          throw new Error('walletProvider is undefined');
-        }
-
         const depAmount = swapCalculate.tokenAmountOut.toSignificant();
 
-        swap({
-          walletProvider,
-          calculate: swapCalculate,
-        });
+        swap(swapCalculate);
 
         const subscription = subscribeSuccessSwap(async () => {
           subscription.unsubscribe();
@@ -238,14 +231,14 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
           refetchBalance();
         });
       } else {
-        await deposit(amount);
+        await deposit(debouncedAmount);
         setAmount('0');
         refetchBalance();
       }
     } catch (error) {
       console.error(error);
     }
-  }, [amount, deposit, refetchBalance]);
+  }, [debouncedAmount, deposit, refetchBalance]);
 
   const submitWithdraw = React.useCallback(async () => {
     if (!amount) {

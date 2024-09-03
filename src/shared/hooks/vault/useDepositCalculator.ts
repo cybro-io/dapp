@@ -106,7 +106,7 @@ export const useDepositCalculator = (
     async (apy: number) => {
       try {
         if (Number(amountToDeposit) <= 0) {
-          // clearValues();
+          if (calculate) clearValues();
           return;
         }
 
@@ -115,7 +115,7 @@ export const useDepositCalculator = (
 
         if (selectedToken) {
           if (!address) {
-            throw new Error('Not connected');
+            throw new Error('Wallet not connected');
           }
 
           const tokenOut = findToken(tokenContract?.address || '', chainId);
@@ -136,8 +136,8 @@ export const useDepositCalculator = (
             tokenOut,
           });
 
-          if (!result) {
-            throw new Error('Something went wrong');
+          if (typeof result === 'string') {
+            throw new Error(result);
           }
 
           setButtonMessage(null);
@@ -155,10 +155,14 @@ export const useDepositCalculator = (
         setProfitTokens(profitTokens);
       } catch (error) {
         clearValues();
+
+        const description =
+          (error as { message: string }).message ??
+          'We were unable to complete the current operation. Try again or connect feedback.';
+
         triggerToast({
           message: `Something went wrong`,
-          description:
-            'We were unable to complete the current operation. Try again or connect feedback.',
+          description,
           type: ToastType.Error,
         });
       }

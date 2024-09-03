@@ -27,8 +27,8 @@ export const Modal = ({ children, classNames, ...restProps }: ModalProps) => {
       defaultOpen={true}
       closeButton={<IconButton icon={<CloseIcon />} />}
       classNames={{
-        backdrop: clsx(classNames?.backdrop, 'bg-transparent'),
-        wrapper: clsx(classNames?.wrapper, 'backdrop-blur-[32px] bg-background-bgBlur'),
+        backdrop: clsx(classNames?.backdrop, 'bg-transparent z-[1001]'),
+        wrapper: clsx(classNames?.wrapper, 'backdrop-blur-[32px] bg-background-bgBlur z-[1001]'),
         base: clsx(
           classNames?.base,
           'rounded-b-none rounded-t-[30px] md:rounded-[30px] bg-background-modal',
