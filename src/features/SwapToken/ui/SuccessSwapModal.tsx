@@ -19,7 +19,7 @@ export const SuccessSwapModal = NiceModal.create(
     const currentModal = NiceModal.useModal();
 
     return (
-      <Modal onClose={() => currentModal.remove()}>
+      <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
         <Modal.Header>Swap</Modal.Header>
         <div
           className={
