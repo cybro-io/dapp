@@ -35,6 +35,8 @@ import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
 import styles from './VaultPage.module.scss';
+import { $symbiosis } from '@/shared/lib';
+import { providers } from 'ethers';
 
 type DashboardPageProps = {
   vaultId: number;
@@ -56,10 +58,15 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   React.useEffect(() => {
     const initContracts = async () => {
-      if (vault && isConnected) {
+      const provider = $symbiosis.getState().getProvider(vault?.chain_id ?? 0);
+
+      if (vault && isConnected && provider) {
+        console.log('vault: ', vault);
+
         const { vault: createdVault, token: createdToken } = await createVaultInstance(
           vault.address,
           vault.abi,
+          provider,
         );
 
         setVaultContract(createdVault);

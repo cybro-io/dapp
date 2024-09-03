@@ -1,10 +1,16 @@
+'use client';
+
 import React from 'react';
 
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
+import { Token } from 'symbiosis-js-sdk';
 
 import { DepositCalculator, PeriodTab } from '@/entities/DepositCalculator';
 import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
+import { useSwap } from '@/features/SwapToken';
+import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import {
@@ -14,17 +20,18 @@ import {
   useWithdrawCalculator,
   useDepositCalculator,
 } from '@/shared/hooks';
-import { ComponentWithProps, Nullable, Token, Vault } from '@/shared/types';
+import { ComponentWithProps, Nullable, Token as TokenContract, Vault } from '@/shared/types';
 import { debounce, formatMoney, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
+import { useDebounceValue } from 'usehooks-ts';
 
 type YieldCalculatorProps = {
   vaultId: number;
   tokenIcon: string;
   apy: number;
   vaultContract: Nullable<Vault>;
-  tokenContract: Nullable<Token>;
+  tokenContract: Nullable<TokenContract>;
   currency: VaultCurrency;
   actionType: YieldSwitchOptions;
   chainId: number;
@@ -43,21 +50,42 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   chain,
   className,
 }) => {
+  const [selectedToken, setSelectedToken] = React.useState<Token | null>(null);
+
   const [amount, setAmount] = React.useState<string>('0');
+  const [debouncedAmount] = useDebounceValue(amount, 500);
   const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
   const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
+
+  const { balance: selectedTokenBalance, isLoading: isLoadingSelectedTokenBalance } =
+    useExchangeTokenBalance(selectedToken);
+
   const { balance, refetchBalance, vaultDepositUsd, vaultDeposit } = useBalance(
     tokenContract,
     vaultContract,
     chainId,
     currency,
   );
+
+  const userBalance = React.useMemo(
+    () => (selectedToken ? selectedTokenBalance : balance),
+    [selectedTokenBalance, selectedToken, balance],
+  );
+
   const { yourWithdraw, yourWithdrawUsd, currentRate, timer } = useWithdrawCalculator(
     vaultContract,
     amount,
     currency,
     chainId,
   );
+
+  const {
+    setButtonMessage,
+    deposit,
+    isLoading: isDepositLoading,
+    buttonMessage: depositButtonMessage,
+  } = useDeposit(currency, vaultContract, tokenContract, vaultId, chainId);
+
   const {
     availableFundsUsd: depositAvailableFundsUsd,
     entryAmountUsd,
@@ -67,12 +95,23 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     profitTokens,
     balanceAfter,
     balanceAfterText,
-  } = useDepositCalculator(amount, balance, currency, chainId, period, apy);
-  const {
-    deposit,
-    isLoading: isDepositLoading,
-    buttonMessage: depositButtonMessage,
-  } = useDeposit(currency, vaultContract, tokenContract, vaultId);
+    swapCalculate,
+    isLoadingCalculate,
+  } = useDepositCalculator(
+    debouncedAmount,
+    userBalance,
+    currency,
+    chainId,
+    period,
+    apy,
+    selectedToken,
+    tokenContract,
+    setButtonMessage,
+    setAmount,
+  );
+
+  const { swap, subscribeSuccessSwap, isLoadingSwap } = useSwap();
+
   const {
     withdraw,
     isLoading: isWithdrawLoading,
@@ -96,7 +135,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   }, [actionType, entryAmountUsd, yourWithdrawUsd]);
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
-    const availableBalance = actionType === YieldSwitchOptions.Deposit ? balance : vaultDeposit;
+    const availableBalance =
+      actionType === YieldSwitchOptions.Deposit ? Number(userBalance) : vaultDeposit;
 
     if (availableBalance === null) {
       return true;
@@ -109,9 +149,13 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       isDepositLoading ||
       isWithdrawLoading
     );
-  }, [actionType, balance, vaultDeposit, amount, isDepositLoading, isWithdrawLoading]);
+  }, [actionType, userBalance, vaultDeposit, amount, isDepositLoading, isWithdrawLoading]);
 
-  const isSubmitButtonDisabled = getIsSubmitButtonDisabled();
+  const isSubmitButtonDisabled =
+    getIsSubmitButtonDisabled() ||
+    isLoadingCalculate ||
+    isLoadingSwap ||
+    isLoadingSelectedTokenBalance;
 
   const debouncedTrackEvent = React.useMemo(
     () => debounce(() => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually), 3000),
@@ -150,12 +194,12 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const onPercentButtonClick = React.useCallback(
     (value: number) => {
-      if (balance === null || vaultDeposit === null) {
+      if (userBalance === null || vaultDeposit === null) {
         return;
       }
 
       if (actionType === YieldSwitchOptions.Deposit) {
-        setAmount(formatMoney(balance * value, 8));
+        setAmount(formatMoney(Number(userBalance) * value, 8));
       }
 
       if (actionType === YieldSwitchOptions.Withdraw) {
@@ -165,22 +209,36 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);
       setSelectedPercent(value);
     },
-    [actionType, balance, vaultDeposit],
+    [actionType, userBalance, vaultDeposit],
   );
 
   const submitDeposit = React.useCallback(async () => {
-    if (!amount) {
+    if (!debouncedAmount) {
       return;
     }
 
     try {
-      await deposit(amount);
-      setAmount('0');
-      refetchBalance();
+      if (swapCalculate) {
+        const depAmount = swapCalculate.tokenAmountOut.toSignificant();
+
+        swap(swapCalculate);
+
+        const subscription = subscribeSuccessSwap(async () => {
+          subscription.unsubscribe();
+
+          await deposit(depAmount);
+          setAmount('0');
+          refetchBalance();
+        });
+      } else {
+        await deposit(debouncedAmount);
+        setAmount('0');
+        refetchBalance();
+      }
     } catch (error) {
       console.error(error);
     }
-  }, [amount, deposit, refetchBalance]);
+  }, [debouncedAmount, deposit, refetchBalance]);
 
   const submitWithdraw = React.useCallback(async () => {
     if (!amount) {
@@ -199,13 +257,19 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   return (
     <div className={clsx(styles.root, className)}>
       <DepositWithdrawInput
+        tokenAddress={tokenContract?.address ?? ''}
+        chainId={chainId}
+        swapCalculate={swapCalculate}
+        isLoadingCalculate={isLoadingCalculate}
+        setSelectedToken={setSelectedToken}
+        selectedToken={selectedToken}
         currency={currency}
         tokenIcon={tokenIcon}
         activeTab={actionType}
         userValue={amount}
         userValueUsd={userValueUsd}
         setUserValue={onAmountChange}
-        userBalance={balance}
+        userBalance={userBalance}
         availableFunds={vaultDeposit}
         availableFundsUsd={availableFundsUsd}
         selectedPercent={selectedPercent}
@@ -215,6 +279,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
       {actionType === YieldSwitchOptions.Deposit && (
         <DepositCalculator
+          isLoadingCalculate={isLoadingCalculate}
           isButtonDisabled={isSubmitButtonDisabled}
           apy={currentApy}
           deposit={submitDeposit}
@@ -225,6 +290,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
           profitTokens={profitTokens}
           profitUsd={profitUsd}
           text={text}
+          withSwap={selectedToken !== null}
         />
       )}
       {actionType === YieldSwitchOptions.Withdraw && (

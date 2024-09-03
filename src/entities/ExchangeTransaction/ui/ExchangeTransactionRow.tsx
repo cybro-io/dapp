@@ -31,8 +31,8 @@ export const ExchangeTransactionRow = ({
 
   const { findToken } = useSwapTokens();
 
-  const tokenIn = from_route.at(0);
-  const tokenOut = to_route.at(-1);
+  const tokenIn = from_route?.at(0);
+  const tokenOut = to_route?.at(-1);
 
   if (!tokenIn || !tokenOut) {
     return null;

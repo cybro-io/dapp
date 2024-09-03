@@ -1,9 +1,16 @@
+import { createStore } from 'effector';
+import { useUnit } from 'effector-react';
 import { isBtc, isTronChainId } from 'symbiosis-js-sdk';
 
-import { useSymbiosis } from '@/shared/lib';
+import { $symbiosis } from '@/shared/lib';
+
+export const $swapChains = createStore(
+  $symbiosis
+    .getState()
+    .chains()
+    .filter(chain => !isTronChainId(chain.id) && !isBtc(chain.id)),
+);
 
 export const useSwapChains = () => {
-  const symbiosis = useSymbiosis();
-
-  return symbiosis.chains().filter(chain => !isTronChainId(chain.id) && !isBtc(chain.id));
+  return useUnit($swapChains);
 };

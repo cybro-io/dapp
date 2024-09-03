@@ -6,11 +6,14 @@ import clsx from 'clsx';
 import { truncateMiddle } from '@/shared/lib';
 import { DropdownButton } from '@/shared/ui';
 
-type InputAddressProps = Pick<InputProps, 'onChange' | 'id' | 'name' | 'onBlur' | 'value'> & {
+type InputAddressProps = Pick<
+  InputProps,
+  'onChange' | 'id' | 'name' | 'onBlur' | 'value' | 'disabled'
+> & {
   onClear?: () => void;
 };
 
-export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps) => {
+export const InputAddress = ({ onClear, value, disabled, ...restProps }: InputAddressProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -23,6 +26,7 @@ export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps
     return (
       <DropdownButton
         type="button"
+        disabled={disabled}
         onClick={() => {
           setIsEditing(true);
         }}
@@ -52,6 +56,7 @@ export const InputAddress = ({ onClear, value, ...restProps }: InputAddressProps
         onClear?.();
       }}
       {...restProps}
+      disabled={disabled}
       value={renderValue}
       onFocusChange={isFocused => {
         setIsFocused(isFocused);

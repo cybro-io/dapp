@@ -2,12 +2,17 @@
 
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
 import Image from 'next/image';
+import { Token } from 'symbiosis-js-sdk';
 
+import { getUniqueTokenId } from '@/entities/SwapToken';
+import { useSelectTokenModal } from '@/features/SelectToken';
+import { SwapCalculateResult } from '@/features/SwapToken';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Maybe, Money } from '@/shared/types';
-import { Text, TextView } from '@/shared/ui';
+import { DropdownButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
@@ -20,11 +25,17 @@ type DepositWithdrawInputProps = {
   setUserValue: (event: React.ChangeEvent<HTMLInputElement>) => void;
   activeTab: string | number;
   chain: string;
-  userBalance: Money;
+  userBalance: Money | string;
   availableFunds?: Money;
   availableFundsUsd?: Money;
   selectedPercent: number | null;
   setSelectedPercent: (value: number) => void;
+  selectedToken: Token | null;
+  setSelectedToken: (token: Token | null) => void;
+  isLoadingCalculate: boolean;
+  swapCalculate: SwapCalculateResult | undefined;
+  chainId: number;
+  tokenAddress: string;
 };
 
 export const percentButtons = [
@@ -64,6 +75,12 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   selectedPercent,
   setSelectedPercent,
   className,
+  setSelectedToken,
+  selectedToken,
+  swapCalculate,
+  isLoadingCalculate,
+  chainId,
+  tokenAddress,
 }) => {
   const getData = React.useCallback(() => {
     if (activeTab === YieldSwitchOptions.Deposit) {
@@ -93,6 +110,20 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
     }, 0);
   };
 
+  const { openModal } = useSelectTokenModal();
+
+  const handleSelectToken = () => {
+    openModal(
+      selectedToken ? getUniqueTokenId(selectedToken.address, selectedToken.chainId) : '',
+      token =>
+        setSelectedToken(
+          tokenAddress === token.address && chainId === token.chainId ? null : token,
+        ),
+    );
+  };
+
+  const isSelectedToken = selectedToken && activeTab === YieldSwitchOptions.Deposit;
+
   return (
     <div className={clsx(styles.calculator, className)}>
       <div className={styles.userInfo}>
@@ -113,24 +144,60 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           </Text>
           <div className={styles.value}>
             <div className={styles.iconContainer}>
-              <Image src={tokenIcon} alt={''} height={24} width={24} />
+              <Image
+                src={isSelectedToken ? String(selectedToken.icons?.small) : tokenIcon}
+                alt={''}
+                height={24}
+                width={24}
+              />
             </div>
             <div className={styles.tokenValue}>
               <Text className={styles.value} textView={TextView.P1}>
                 {activeTab === YieldSwitchOptions.Withdraw && 'cy'}
-                {currency}
+                {isSelectedToken ? selectedToken.symbol : currency}
               </Text>
               <Text className={styles.network} textView={TextView.C3}>
-                On {chain}
+                On {isSelectedToken ? String(selectedToken.chain?.name) : chain}
               </Text>
             </div>
           </div>
+
+          {activeTab === YieldSwitchOptions.Deposit && (
+            <DropdownButton
+              className="w-fit absolute right-0 left-0 mx-auto bottom-[-22px]"
+              type="button"
+              onClick={handleSelectToken}
+              disabled={isLoadingCalculate}
+            >
+              Change
+            </DropdownButton>
+          )}
         </div>
       </div>
       <div className={styles.userInput}>
-        <Text className={styles.label} textView={TextView.C3}>
-          Entry Amount
-        </Text>
+        <div className="flex flex-row justify-between">
+          <Text className={styles.label} textView={TextView.C3}>
+            Entry Amount
+          </Text>
+          {isSelectedToken && (
+            <div className="flex flex-row gap-1 items-center">
+              <Image src={tokenIcon} alt={''} height={13} width={13} className="size-[13px]" />
+
+              {isLoadingCalculate ? (
+                <Skeleton
+                  classNames={{
+                    base: 'rounded-lg w-6 h-[18px] dark:bg-background-tableRow',
+                  }}
+                />
+              ) : (
+                <Text textView={TextView.C4}>
+                  {formatUserMoney(swapCalculate?.tokenAmountOut.toSignificant())}
+                </Text>
+              )}
+            </div>
+          )}
+        </div>
+
         <div className={styles.inputContainer}>
           <input
             className={styles.input}
@@ -139,6 +206,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             onChange={setUserValue}
             placeholder={'0'}
             onWheel={numberInputOnWheelPreventChange}
+            disabled={isLoadingCalculate}
           />
           <span className={styles.equal}>≈ ${formatUserMoney(userValueUsd)}</span>
         </div>
@@ -151,6 +219,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
                   styles.percentButton,
                   value === selectedPercent && styles.percentButtonSelected,
                 )}
+                disabled={isLoadingCalculate}
                 onClick={() => setSelectedPercent(value)}
               >
                 {title}
