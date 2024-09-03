@@ -167,6 +167,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
               className="w-fit absolute right-0 left-0 mx-auto bottom-[-22px]"
               type="button"
               onClick={handleSelectToken}
+              disabled={isLoadingCalculate}
             >
               Change
             </DropdownButton>
@@ -178,7 +179,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           <Text className={styles.label} textView={TextView.C3}>
             Entry Amount
           </Text>
-          {selectedToken && (
+          {isSelectedToken && (
             <div className="flex flex-row gap-1 items-center">
               <Image src={tokenIcon} alt={''} height={13} width={13} className="size-[13px]" />
 
@@ -205,6 +206,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             onChange={setUserValue}
             placeholder={'0'}
             onWheel={numberInputOnWheelPreventChange}
+            disabled={isLoadingCalculate}
           />
           <span className={styles.equal}>≈ ${formatUserMoney(userValueUsd)}</span>
         </div>
@@ -217,6 +219,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
                   styles.percentButton,
                   value === selectedPercent && styles.percentButtonSelected,
                 )}
+                disabled={isLoadingCalculate}
                 onClick={() => setSelectedPercent(value)}
               >
                 {title}

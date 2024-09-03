@@ -1,7 +1,11 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
-import { utils } from 'ethers';
+import {
+  useSwitchNetwork,
+  useWeb3ModalAccount,
+  useWeb3ModalProvider,
+} from '@web3modal/ethers5/react';
+import { ethers, utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
@@ -20,6 +24,7 @@ export const useDeposit = (
   vaultContract: Nullable<Vault>,
   tokenContract: Nullable<Token>,
   vaultId: number,
+  chainId: number,
 ) => {
   const { triggerToast } = useToast();
   const [isLoading, setIsLoading] = React.useState(false);
@@ -28,6 +33,8 @@ export const useDeposit = (
 
   const { tokens, signer, provider } = useEthers();
   const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
+  const { switchNetwork } = useSwitchNetwork();
+  const { walletProvider } = useWeb3ModalProvider();
 
   const deposit = React.useCallback(
     async (amount: string) => {
@@ -45,17 +52,31 @@ export const useDeposit = (
 
       try {
         setIsLoading(true);
+
+        if (!walletProvider) {
+          throw new Error('Wallet provider is not available');
+        }
+
+        await switchNetwork(chainId);
+
         const decimals = await tokenContract.decimals();
         const weiAmount = utils.parseUnits(amount, decimals);
 
-        const approveTx = await tokenContract.approve(vaultAddress, weiAmount);
+        const provider = new ethers.providers.Web3Provider(walletProvider);
+        const signer = provider.getSigner();
+
+        const token = new ethers.Contract(tokenContract.address, tokenContract.interface, signer);
+
+        const vault = new ethers.Contract(vaultAddress, vaultContract.interface, signer);
+
+        const approveTx = await token.approve(vaultAddress, weiAmount);
         setButtonMessage('Approving...');
         await approveTx.wait();
 
-        const depositEstimatedGas = await vaultContract.estimateGas.deposit(weiAmount, address);
+        const depositEstimatedGas = await vault.estimateGas.deposit(weiAmount, address);
         const gasLimit = increaseGasLimit(depositEstimatedGas, 1.2);
 
-        const depositTx = await vaultContract.deposit(weiAmount, address, { gasLimit });
+        const depositTx = await vault.deposit(weiAmount, address, { gasLimit });
         setButtonMessage('Depositing...');
         await depositTx.wait();
 
@@ -67,6 +88,7 @@ export const useDeposit = (
           description: 'Check your updated Vault Balance or explore the contract.',
         });
       } catch (error: any) {
+        console.error('error deposit: ', error);
         triggerToast({
           message: `Something went wrong`,
           description:

@@ -147,7 +147,7 @@ export const useExchangeSwapForm = ({
 
       onCalculate?.(form.values);
     }
-  }, [debouncedAmountIn]);
+  }, [debouncedAmountIn, debouncedAddress]);
 
   return {
     ...form,
