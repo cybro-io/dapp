@@ -6,7 +6,7 @@ import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react';
 
 import { Chain } from '@/shared/const';
 import { $swapChains } from '@/entities/SwapToken';
-import { GAS_TOKEN } from 'symbiosis-js-sdk';
+import { ChainId, GAS_TOKEN } from 'symbiosis-js-sdk';
 import { $symbiosis } from '@/shared/lib';
 
 type Web3ModalProps = {
@@ -35,7 +35,8 @@ const mainChains = $swapChains.getState().map(chain => {
     name: chain.name,
     currency: GAS_TOKEN[chain.id].symbol ?? 'Unknown',
     explorerUrl: chain.explorer,
-    rpcUrl: chainConfig.rpc,
+    rpcUrl:
+      chain.id === ChainId.BLAST_MAINNET ? `https://rpc.ankr.com/blast/${anrkId}` : chainConfig.rpc,
   };
 });
 
