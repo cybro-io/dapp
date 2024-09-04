@@ -72,7 +72,7 @@ export const useDeposit = (
 
         const allowance = (await token.allowance(address, vaultAddress)) as BigNumber;
 
-        if (weiAmount.gt(allowance)) {
+        if (allowance.lt(weiAmount)) {
           const approveTx = await token.approve(vaultAddress, weiAmount);
           setButtonMessage('Approving...');
           await approveTx.wait();
