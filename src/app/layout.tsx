@@ -68,7 +68,6 @@ export default function RootLayout({
           a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
       </Script>
-      <NextTopLoader color="#F0D025" showSpinner={false} shadow={false} />
       <Web3Modal>
         <EthersProvider>
           <ReactQueryProvider>
@@ -77,6 +76,7 @@ export default function RootLayout({
                 <ModalProvider>
                   <WalletBalancesProvider>
                     <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
+                      <NextTopLoader color="#F0D025" showSpinner={false} shadow={false} />
                       <ToastProvider>{children}</ToastProvider>
                       <ModalContainer />
                     </body>

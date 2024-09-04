@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { Skeleton } from '@nextui-org/react';
@@ -18,7 +20,7 @@ type SwapTokenProps = {
   };
 };
 
-export const SwapTokenForm = ({ features }: SwapTokenProps) => {
+const SwapTokenForm = ({ features }: SwapTokenProps) => {
   const {
     form,
     isConnected,
@@ -171,3 +173,5 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
     </form>
   );
 };
+
+export default SwapTokenForm;

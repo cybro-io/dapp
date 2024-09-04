@@ -86,21 +86,19 @@ export const Header: ComponentWithProps<HeaderProps> = ({ className, connectedCo
         </NavbarContent>
       </div>
 
-      <NavbarContent justify="end">
+      <div className="justify-end">
         {/*<NavbarItem className={styles.languageDropdown}>*/}
         {/*  <LanguageChange />*/}
         {/*</NavbarItem>*/}
         {/*<NavbarItem className={styles.darkModeSwitch}>*/}
         {/*  <DarkModeSwitch />*/}
         {/*</NavbarItem>*/}
-        <NavbarItem>
-          <ConnectWallet
-            className={styles.connectWallet}
-            buttonSize={ButtonSize.Small}
-            whenConnectedComponent={connectedComponent}
-          />
-        </NavbarItem>
-      </NavbarContent>
+        <ConnectWallet
+          className={styles.connectWallet}
+          buttonSize={ButtonSize.Small}
+          whenConnectedComponent={connectedComponent}
+        />
+      </div>
 
       <NavbarMenu className={clsx(styles.mobileMenu)}>
         <div className={styles.mobileMenuTop}>
