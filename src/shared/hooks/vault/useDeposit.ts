@@ -5,7 +5,7 @@ import {
   useWeb3ModalAccount,
   useWeb3ModalProvider,
 } from '@web3modal/ethers5/react';
-import { ethers, utils } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
@@ -18,6 +18,7 @@ import {
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
+import TOKEN from '@/app/abi/token.json';
 
 export const useDeposit = (
   currency: VaultCurrency,
@@ -65,13 +66,17 @@ export const useDeposit = (
         const provider = new ethers.providers.Web3Provider(walletProvider);
         const signer = provider.getSigner();
 
-        const token = new ethers.Contract(tokenContract.address, tokenContract.interface, signer);
+        const token = new ethers.Contract(tokenContract.address, TOKEN, signer);
 
         const vault = new ethers.Contract(vaultAddress, vaultContract.interface, signer);
 
-        const approveTx = await token.approve(vaultAddress, weiAmount);
-        setButtonMessage('Approving...');
-        await approveTx.wait();
+        const allowance = (await token.allowance(address, vaultAddress)) as BigNumber;
+
+        if (weiAmount.gt(allowance)) {
+          const approveTx = await token.approve(vaultAddress, weiAmount);
+          setButtonMessage('Approving...');
+          await approveTx.wait();
+        }
 
         const depositEstimatedGas = await vault.estimateGas.deposit(weiAmount, address);
         const gasLimit = increaseGasLimit(depositEstimatedGas, 1.2);
