@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
