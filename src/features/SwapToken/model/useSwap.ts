@@ -1,8 +1,7 @@
 import NiceModal from '@ebay/nice-modal-react';
-import { MaxUint256 } from '@ethersproject/constants';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react/compat';
-import { ethers } from 'ethers';
+import { BigNumber, ethers, utils } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
 import { web3Modal } from '@/app/providers';
@@ -53,10 +52,20 @@ const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
 
   // Approve token
   if (!tokenAmountIn.token.isNative) {
-    const tokenContract = new ethers.Contract(tokenAmountIn.token.address, TOKEN, signer);
-    const approveResponse = await tokenContract.approve(approveTo, MaxUint256);
+    const approveAmount = utils.parseUnits(
+      tokenAmountIn.toSignificant(),
+      tokenAmountIn.token.decimals,
+    );
 
-    await approveResponse.wait(1);
+    const tokenContract = new ethers.Contract(tokenAmountIn.token.address, TOKEN, signer);
+
+    const allowance = (await tokenContract.allowance(from, approveTo)) as BigNumber;
+
+    if (allowance.lt(approveAmount)) {
+      const approveResponse = await tokenContract.approve(approveTo, approveAmount);
+      await approveResponse.wait(1);
+    }
+
     setSwapStatus(SwapStatus.APPROVE_TRANSACTION);
   }
 
