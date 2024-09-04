@@ -49,21 +49,21 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
     }
   }, [isConnected, hasClickedConnect]);
 
+  if (isConnected) {
+    return whenConnectedComponent;
+  }
+
   return (
-    <React.Fragment>
-      {!isConnected ? (
-        <Button
-          type="button"
-          onClick={onConnectWalletClick}
-          className={clsx(styles.root, className)}
-          size={buttonSize}
-          view={viewType}
-        >
-          Connect Wallet
-        </Button>
-      ) : (
-        whenConnectedComponent
-      )}
-    </React.Fragment>
+    <Button
+      type="button"
+      onClick={onConnectWalletClick}
+      className={clsx(styles.root, className)}
+      size={buttonSize}
+      view={viewType}
+    >
+      Connect Wallet
+    </Button>
   );
 };
+
+export default ConnectWallet;
