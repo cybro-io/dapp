@@ -16,6 +16,7 @@ import { DropdownButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type DepositWithdrawInputProps = {
   currency: string;
@@ -113,12 +114,16 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   const { openModal } = useSelectTokenModal();
 
   const handleSelectToken = () => {
+    Mixpanel.track(MixpanelEvent.ChangeZapInToken);
+
     openModal(
       selectedToken ? getUniqueTokenId(selectedToken.address, selectedToken.chainId) : '',
-      token =>
+      token => {
+        Mixpanel.track(MixpanelEvent.ChangeZapInTokenSuccess);
         setSelectedToken(
           tokenAddress === token.address && chainId === token.chainId ? null : token,
-        ),
+        );
+      },
     );
   };
 

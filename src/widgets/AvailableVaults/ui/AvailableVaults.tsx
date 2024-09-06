@@ -6,6 +6,7 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
+import { Tvl } from '@/entities/Tvl';
 import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
@@ -114,7 +115,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
           Available Vaults
           <span className={styles.counter}>{vaults.length}</span>
         </Text>
-        {/*<Tvl className={styles.chip} />*/}
+        <Tvl className={styles.chip} />
         <Tabs
           className={styles.listViewSwitch}
           selectedKey={viewType}

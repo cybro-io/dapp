@@ -19,6 +19,7 @@ import {
 import { ToastType } from '@/shared/ui';
 import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
 import TOKEN from '@/app/abi/token.json';
+import { MaxUint256 } from '@ethersproject/constants';
 
 export const useDeposit = (
   currency: VaultCurrency,
@@ -73,7 +74,7 @@ export const useDeposit = (
         const allowance = (await token.allowance(address, vaultAddress)) as BigNumber;
 
         if (allowance.lt(weiAmount)) {
-          const approveTx = await token.approve(vaultAddress, weiAmount);
+          const approveTx = await token.approve(vaultAddress, MaxUint256);
           setButtonMessage('Approving...');
           await approveTx.wait();
         }
