@@ -99,7 +99,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
           Available Vaults
           <span className={styles.counter}>{vaults.length}</span>
         </Text>
-        <Tvl className={styles.chip} />
+        <Tvl className={clsx(styles.chip, 'visible 2lg:invisible')} />
         <Tabs
           className={styles.listViewSwitch}
           selectedKey={viewType}
