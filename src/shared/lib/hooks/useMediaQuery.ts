@@ -1,21 +1,24 @@
-import { theme } from '../../../../tailwind.config';
 import { useMediaQuery as useMediaQueryUHT } from 'usehooks-ts';
 
-const mediaQueries = {
-  sm: `(max-width: ${theme.screens.sm})`,
-  md: `(max-width: ${theme.screens.md})`,
-  lg: `(max-width: ${theme.screens.lg})`,
-  '2lg': `(max-width: ${theme.screens['2lg']})`,
-  xl: `(max-width: ${theme.screens.xl})`,
-  '2xl': `(max-width: ${theme.screens['2xl']})`,
+import { theme } from '../../../../tailwind.config';
+
+type Breakpoint = keyof typeof theme.screens;
+
+const getMediaQuery = () => {
+  return Object.fromEntries(
+    Object.keys(theme.screens).map(key => [
+      key,
+      `(max-width: ${theme.screens[key as Breakpoint]})`,
+    ]),
+  ) as Record<keyof typeof theme.screens, string>;
 };
 
 export const useMediaQuery = (
-  query: keyof typeof mediaQueries,
+  query: Breakpoint,
   options?: {
     defaultValue?: boolean;
     initializeWithValue?: boolean;
   },
 ) => {
-  return useMediaQueryUHT(mediaQueries[query], options);
+  return useMediaQueryUHT(getMediaQuery()[query], options);
 };
