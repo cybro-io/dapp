@@ -20,6 +20,9 @@ import { DropdownItem } from './types';
 
 type DropdownProps = {
   items: DropdownItem[];
+  selectedTitle: any;
+  selectedKey: any;
+  setSelected: (...props: any[]) => void;
   buttonContent?: string | React.ReactNode;
   viewType?: DropdownView;
 };
@@ -47,31 +50,38 @@ export const Dropdown: ComponentWithProps<DropdownProps> = ({
   items,
   buttonContent,
   viewType = DropdownView.Rounded,
+  selectedTitle,
+  selectedKey,
+  setSelected,
   className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
   const ArrowIcon = DropdownViewToArrow[viewType];
 
+  console.log({ selectedTitle, selectedKey });
+
+  console.log(items, 'items');
+
   return (
     <NextUIDropdown className={clsx(className)} onOpenChange={setIsOpened}>
       <DropdownTrigger>
         <DropdownButton>
-          {buttonContent ?? items[0].label}
+          {buttonContent ?? selectedTitle}
           <div className={clsx(styles.arrow, isOpened && styles.isOpened)}>
             <ArrowIcon />
           </div>
         </DropdownButton>
       </DropdownTrigger>
-      <DropdownMenu aria-label="Dynamic Actions" items={items}>
-        {item => (
+      <DropdownMenu>
+        {items.map(item => (
           <NextUIDropdownItem
             key={item.key}
-            color={item.key === 'delete' ? 'danger' : 'default'}
-            className={item.key === 'delete' ? 'text-danger' : ''}
+            onClick={event => setSelected(item.key, event)}
+            className={clsx(selectedKey === item.key && styles.selected)}
           >
             {item.label}
           </NextUIDropdownItem>
-        )}
+        ))}
       </DropdownMenu>
     </NextUIDropdown>
   );

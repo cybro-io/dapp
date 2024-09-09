@@ -3,7 +3,6 @@ export * from './Dropdown';
 export * from './Logo';
 export * from './MenuLink';
 export * from './Text';
-export * from './LanguageChange';
 export * from './Chip';
 export * from './TrustScore';
 export * from './Link';

@@ -103,7 +103,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
               />
               <VictoryAxis
                 dependentAxis
-                tickFormat={x => `$${formatUserMoney(x)}`}
+                tickFormat={x => `$${formatUserMoney(x, 2)}`}
                 style={{
                   grid: { stroke: 'rgba(255, 255, 255, 0.09)', strokeDasharray: '3,3' },
                   axis: { stroke: 'transparent' },

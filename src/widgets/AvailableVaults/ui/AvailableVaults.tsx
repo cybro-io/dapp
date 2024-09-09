@@ -128,7 +128,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       ) : (
         <AvailableVaultsList
           balance={balance}
-          sort={sort} // Pass current sort state
+          sort={sort}
           setSort={setSort}
           isConnected={isConnected}
           isLoading={isLoading}
