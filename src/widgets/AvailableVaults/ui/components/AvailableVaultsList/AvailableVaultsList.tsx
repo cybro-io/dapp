@@ -12,6 +12,7 @@ import UpIcon from '../../../assets/icons/up.svg';
 import styles from './AvailableVaultsList.module.scss';
 import { VaultListCompactItem } from './VaultListCompactItem';
 import { VaultListItem } from './VaultListItem';
+import { Skeleton } from '@nextui-org/react';
 
 type AvailableVaultsGridProps = {
   vaults: VaultsResponseData[];
@@ -134,14 +135,20 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
 
   const dropdownSortItems = headers.filter(item => !!item.key);
 
-  if (isLoading) {
-    return <Loader className={styles.loader} />;
-  }
-
   return (
     <div className={clsx(styles.root, className)}>
-      <div className={styles.table}>
-        <div className={styles.mobileSort}>
+      {isLoading &&
+        skeletons.map((_, index) => (
+          <Skeleton
+            disableAnimation={index % 2 !== 0}
+            classNames={{
+              base: 'rounded-lg w-full h-[84px] odd:dark:bg-background-tableRow dark:bg-transparent',
+            }}
+          />
+        ))}
+      {!isLoading && (
+        <div className={styles.table}>
+          <div className={styles.mobileSort}>
           <Text textView={TextView.P3} className={styles.sortBy}>
             Sort by
           </Text>
@@ -154,38 +161,40 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
           />
         </div>
         <div className={styles.tableHeader}>
-          {headers.map(header => {
-            if (!header.key) {
-              return (
-                <div key={header.label} className={styles.tableCell}>
-                  {header.label}
-                </div>
-              );
-            }
+            {headers.map(header => {
+              if (!header.key) {
+                return (
+                  <div key={header.label} className={styles.tableCell}>
+                    {header.label}
+                  </div>
+                );
+              }
 
-            return (
-              <button
-                key={header.label}
-                className={styles.tableCell}
-                onClick={() => handleSort(header.key)}
-              >
-                {header.label}
-                <div className={styles.sortButtonsContainer}>
-                  {getSortIcons(
-                    currentSort.column === header.key ? currentSort.direction : Sort.Default,
-                  )}
-                </div>
-              </button>
-            );
-          })}
+              return (
+                <button
+                  key={header.label}
+                  className={styles.tableCell}
+                  onClick={() => handleSort(header.key)}
+                >
+                  {header.label}
+                  <div className={styles.sortButtonsContainer}>
+                    {getSortIcons(
+                      currentSort.column === header.key ? currentSort.direction : Sort.Default,
+                    )}
+                  </div>
+                </button>
+              );
+            })}
+          </div>
+          {vaults.map((vault, index) => (
+            <React.Fragment>
+              <VaultListItem className={styles.tableVault} index={index} vault=
+                {vault} />
+              <VaultListCompactItem className={styles.compactVault} index={index} vault={vault} />
+              </React.Fragment>
+          ))}
         </div>
-        {vaults.map((vault, index) => (
-          <React.Fragment>
-            <VaultListItem className={styles.tableVault} index={index} vault={vault} />
-            <VaultListCompactItem className={styles.compactVault} index={index} vault={vault} />
-          </React.Fragment>
-        ))}
-      </div>
+      )}
     </div>
   );
 };

@@ -18,7 +18,7 @@ export const Tvl: ComponentWithProps<TvlProps> = ({ className }) => {
   const tvl = data?.data?.data?.tvl as string;
 
   if (isLoading) {
-    return <TvlSkeleton />;
+    return <TvlSkeleton className={className} />;
   }
 
   return (
