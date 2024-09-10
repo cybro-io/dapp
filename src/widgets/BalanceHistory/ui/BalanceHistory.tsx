@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
+import { ChainId } from 'symbiosis-js-sdk';
 
 import { BalanceChart } from '@/entities/BalanceChart/ui';
 import { TransactionHistory } from '@/entities/TransactionHistory';
@@ -24,7 +25,7 @@ import styles from './BalanceHistory.module.scss';
 type BalanceHistoryProps = {};
 
 export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
-  const { address: userAddress, chainId } = useWeb3ModalAccount();
+  const { address: userAddress } = useWeb3ModalAccount();
   const [period, setPeriod] = useState<PeriodTab>(PeriodTab.All);
   const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -44,13 +45,13 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
   const { data, isLoading } = useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
     localStorageAddress || userAddress || '',
     {
-      chain_id: chainId || 0,
+      chain_id: ChainId.BLAST_MAINNET,
       since,
       to,
     },
     {
       query: {
-        queryKey: [QueryKey.DashboardHistory, localStorageAddress, userAddress, chainId, since, to],
+        queryKey: [QueryKey.DashboardHistory, localStorageAddress, userAddress, since, to],
       },
     },
   );
@@ -146,7 +147,7 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
           <TransactionHistory
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
-            chainId={chainId || 0}
+            chainId={ChainId.BLAST_MAINNET}
             hoveredTransaction={hoveredTransaction}
             setHoveredTransaction={setHoveredTransaction}
             data={historyData || []}

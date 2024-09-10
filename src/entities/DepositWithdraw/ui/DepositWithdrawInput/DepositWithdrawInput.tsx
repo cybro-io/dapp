@@ -39,6 +39,8 @@ type DepositWithdrawInputProps = {
   tokenAddress: string;
 };
 
+const isActiveZapIn = process.env.NEXT_PUBLIC_ZAP_IN_ON === 'true';
+
 export const percentButtons = [
   {
     title: '5%',
@@ -167,7 +169,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             </div>
           </div>
 
-          {activeTab === YieldSwitchOptions.Deposit && (
+          {activeTab === YieldSwitchOptions.Deposit && isActiveZapIn && (
             <DropdownButton
               className="w-fit absolute right-0 left-0 mx-auto bottom-[-22px]"
               type="button"

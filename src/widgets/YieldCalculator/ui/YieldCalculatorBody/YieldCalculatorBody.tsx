@@ -110,6 +110,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     setAmount,
   );
 
+  const isSelectedToken = selectedToken && actionType === YieldSwitchOptions.Deposit;
   const { swap, subscribeSuccessSwap, isLoadingSwap } = useSwap();
 
   const {
@@ -218,7 +219,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     }
 
     try {
-      if (swapCalculate) {
+      if (swapCalculate && isSelectedToken) {
         const depAmount = swapCalculate.tokenAmountOut.toSignificant();
 
         swap(swapCalculate);
