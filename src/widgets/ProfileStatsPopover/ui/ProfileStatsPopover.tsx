@@ -13,6 +13,7 @@ import { truncateMiddle } from '@/shared/lib';
 import { formatMoney } from '@/shared/utils';
 
 import { useUserToggle } from '../model/useUserToggle';
+import { Skeleton } from '@nextui-org/react';
 
 type ProfileStatsPopoverProps = {
   className?: string;
@@ -21,7 +22,7 @@ type ProfileStatsPopoverProps = {
 export const ProfileStatsPopover = ({ className }: ProfileStatsPopoverProps) => {
   const [isOpened, setOpen] = React.useState(false);
 
-  const { address, userProfile, earnedYield } = useUserToggle();
+  const { address, userProfile, earnedYield, isLoading } = useUserToggle();
 
   return (
     <div className={clsx('user-toggle__wrapper', className)}>
@@ -38,15 +39,24 @@ export const ProfileStatsPopover = ({ className }: ProfileStatsPopoverProps) => 
           </div>
           <div className="user-toggle__inner landscape">
             <span className="user-toggle__money">
-              {userProfile ? formatMoney(userProfile.balance) : ''}
+              {isLoading ? (
+                <Skeleton
+                  classNames={{
+                    base: 'w-6 h-[14px] rounded-lg dark:bg-background-tableRow',
+                  }}
+                />
+              ) : (
+                formatMoney(userProfile?.balance ?? 0)
+              )}
             </span>
             <LogoIcon className="user-toggle__currency" />
           </div>
         </div>
       </button>
-      {isOpened && userProfile && earnedYield && (
+      {isOpened && (
         <div className="user-toggle__menu">
           <ProfileStatsPanel
+            isLoading={isLoading}
             address={address}
             profileData={userProfile}
             earnedYield={earnedYield}
