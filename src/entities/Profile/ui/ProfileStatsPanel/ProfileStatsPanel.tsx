@@ -111,7 +111,7 @@ export const ProfileStatsPanel = ({
         <div className="user-menu__copy">
           <Image src={ProfileImage} alt="profile" className={'user-menu__logo'} />
           {address ? (
-            <>
+            <React.Fragment>
               <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
               <div className="user-menu__copy-box">
                 <button
@@ -124,7 +124,7 @@ export const ProfileStatsPanel = ({
                 </button>
                 <span className="user-menu__copy-label">Copied!</span>
               </div>
-            </>
+            </React.Fragment>
           ) : (
             <Skeleton
               classNames={{ base: 'w-20 h-[22px] rounded-lg dark:bg-background-tableRow' }}
