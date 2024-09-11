@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { ApyInfo } from '@/entities/ApyInfo';

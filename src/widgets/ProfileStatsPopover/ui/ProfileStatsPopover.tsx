@@ -35,7 +35,13 @@ export const ProfileStatsPopover = ({ className }: ProfileStatsPopoverProps) => 
         </div>
         <div className={'user-toggle__content'}>
           <div className="user-toggle__inner">
-            <span className="user-toggle__name">{truncateMiddle(address, 3)}</span>
+            {address ? (
+              <span className="user-toggle__name">{truncateMiddle(address, 3)}</span>
+            ) : (
+              <Skeleton
+                classNames={{ base: 'w-11 h-[14px] rounded-lg dark:bg-background-tableRow' }}
+              />
+            )}
           </div>
           <div className="user-toggle__inner landscape">
             <span className="user-toggle__money">

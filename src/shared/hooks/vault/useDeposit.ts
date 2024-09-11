@@ -1,10 +1,6 @@
 import React from 'react';
 
-import {
-  useSwitchNetwork,
-  useWeb3ModalAccount,
-  useWeb3ModalProvider,
-} from '@web3modal/ethers5/react';
+import { useSwitchNetwork, useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { BigNumber, ethers, utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
@@ -20,6 +16,7 @@ import { ToastType } from '@/shared/ui';
 import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
 import TOKEN from '@/app/abi/token.json';
 import { MaxUint256 } from '@ethersproject/constants';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 export const useDeposit = (
   currency: VaultCurrency,

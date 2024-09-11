@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { useRouter } from 'next/navigation';
 
 import { useToast } from '@/shared/hooks';
@@ -15,7 +15,7 @@ import styles from './DashboardPage.module.scss';
 type DashboardPageProps = {};
 
 export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
-  const { isConnected, chainId, address, status } = useWeb3ModalAccount();
+  const { isConnected, status } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
   const router = useRouter();
 

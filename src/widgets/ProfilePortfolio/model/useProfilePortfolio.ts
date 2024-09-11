@@ -1,4 +1,4 @@
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 import {
   GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe,
@@ -9,7 +9,7 @@ export const useProfilePortfolio = () => {
   const { address, chainId, isConnected } = useWeb3ModalAccount();
 
   const { data, isLoading } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
-    address,
+    address!,
     {
       chain_id: chainId ?? 0,
       timeframe: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,

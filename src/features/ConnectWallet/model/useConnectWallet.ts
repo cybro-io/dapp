@@ -1,8 +1,9 @@
 import React from 'react';
 
-import { useWeb3Modal, useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 type UseConnectWalletProps = {
   isForm?: boolean;
@@ -27,7 +28,7 @@ export const useConnectWallet = ({ isForm, onWalletConnect }: UseConnectWalletPr
   }, [isForm, open]);
 
   React.useEffect(() => {
-    if (hasClickedConnect && isConnected) {
+    if (hasClickedConnect && isConnected && address) {
       onWalletConnect?.(address, chainId);
       Mixpanel.track(MixpanelEvent.ConnectWalletSuccess);
       setHasClickedConnect(false); // Reset the state after tracking
