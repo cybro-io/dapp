@@ -36,7 +36,7 @@ const generateIndex = () => {
 
   // Update the main index.ts
   const mainIndexPath = path.resolve(__dirname, '../types/index.ts');
-  const mainIndexExport = 'export * from \'./__generated\';\n';
+  const mainIndexExport = "export * from './__generated';\n";
 
   if (fs.existsSync(mainIndexPath)) {
     const mainIndexContent = fs.readFileSync(mainIndexPath, { encoding: 'utf-8' });

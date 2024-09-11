@@ -149,18 +149,18 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
       {!isLoading && (
         <div className={styles.table}>
           <div className={styles.mobileSort}>
-          <Text textView={TextView.P3} className={styles.sortBy}>
-            Sort by
-          </Text>
-          <Dropdown
-            items={dropdownSortItems}
-            viewType={DropdownView.Flat}
-            selectedTitle={headers.find(({ key, label }) => sort[0] === key)?.label}
-            selectedKey={sort[0]}
-            setSelected={handleDropdownSort}
-          />
-        </div>
-        <div className={styles.tableHeader}>
+            <Text textView={TextView.P3} className={styles.sortBy}>
+              Sort by
+            </Text>
+            <Dropdown
+              items={dropdownSortItems}
+              viewType={DropdownView.Flat}
+              selectedTitle={headers.find(({ key, label }) => sort[0] === key)?.label}
+              selectedKey={sort[0]}
+              setSelected={handleDropdownSort}
+            />
+          </div>
+          <div className={styles.tableHeader}>
             {headers.map(header => {
               if (!header.key) {
                 return (
@@ -188,10 +188,9 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
           </div>
           {vaults.map((vault, index) => (
             <React.Fragment>
-              <VaultListItem className={styles.tableVault} index={index} vault=
-                {vault} />
+              <VaultListItem className={styles.tableVault} index={index} vault={vault} />
               <VaultListCompactItem className={styles.compactVault} index={index} vault={vault} />
-              </React.Fragment>
+            </React.Fragment>
           ))}
         </div>
       )}

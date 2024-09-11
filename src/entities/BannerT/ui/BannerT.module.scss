@@ -8,7 +8,7 @@
   left: 50%;
   width: 85%;
   height: 2px;
-  background: linear-gradient(to right, transparent, #F0D025 50%, transparent);
+  background: linear-gradient(to right, transparent, #f0d025 50%, transparent);
   //opacity: 0.8;
   transform: translateX(-50%);
 }
@@ -27,9 +27,7 @@
 
 .mobile {
   .container {
-    clip-path: polygon(
-                    15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%
-    );
+    clip-path: polygon(15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%);
   }
 
   .innerContainer {
@@ -68,9 +66,7 @@
   }
 
   .container {
-    clip-path: polygon(
-                    10% 0%, 100% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 100%, 0% 10%
-    );
+    clip-path: polygon(10% 0%, 100% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 100%, 0% 10%);
   }
 
   .innerContainer {
@@ -88,9 +84,7 @@
   .container {
     display: grid;
     grid-template-columns: 1fr max-content;
-    clip-path: polygon(
-                    5% 0%, 100% 0%, 100% 10%, 100% 90%, 95% 100%, 10% 100%, 0% 100%, 0% 10%
-    );
+    clip-path: polygon(5% 0%, 100% 0%, 100% 10%, 100% 90%, 95% 100%, 10% 100%, 0% 100%, 0% 10%);
     padding-right: 18px;
   }
 
@@ -131,11 +125,11 @@
 .dark {
   .container {
     background: repeating-linear-gradient(
-                    135deg,
-                    $background-modal,
-                    $background-modal 50px,
-                    $background-window 50px,
-                    $background-window 100px
+      135deg,
+      $background-modal,
+      $background-modal 50px,
+      $background-window 50px,
+      $background-window 100px
     );
   }
 
@@ -148,7 +142,7 @@
 
 .accent {
   .container {
-    background: linear-gradient(90deg, #F0D025 0%, #FFF627 50%, #F0D025 100%);
+    background: linear-gradient(90deg, #f0d025 0%, #fff627 50%, #f0d025 100%);
   }
 
   .title {
