@@ -2,6 +2,7 @@
 
 import React, { Key } from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
@@ -12,7 +13,7 @@ import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
-import { formatMoney, formatUserMoney } from '@/shared/utils';
+import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositCalculator.module.scss';
 
@@ -27,6 +28,8 @@ type DepositCalculatorProps = {
   profitTokens: Money;
   balanceAfter: Money;
   balanceAfterText: string;
+  isLoadingCalculate: boolean;
+  withSwap: boolean;
 };
 
 const periods = [
@@ -56,9 +59,9 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
   balanceAfter,
   balanceAfterText,
   className,
+  isLoadingCalculate,
+  withSwap,
 }) => {
-  const { isConnected } = useWeb3ModalAccount();
-
   const onTabChange = React.useCallback(
     (currentTab: Key) => {
       setPeriod(currentTab as PeriodTab);
@@ -82,8 +85,24 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
             Projected Yield after Fees:
           </Text>
           <div className={styles.yieldValuesContainer}>
-            <Text className={styles.resultValue}>+ {formatUserMoney(profitTokens || 0)}</Text>
-            <Text className={styles.resultActualValue}>≈ ${formatUserMoney(profitUsd)}</Text>
+            {isLoadingCalculate ? (
+              <Skeleton
+                classNames={{
+                  base: 'rounded-lg w-28 h-6 dark:bg-background-tableRow',
+                }}
+              />
+            ) : (
+              <Text className={styles.resultValue}>+ {formatUserMoney(profitTokens || 0)}</Text>
+            )}
+            {isLoadingCalculate ? (
+              <Skeleton
+                classNames={{
+                  base: 'rounded-lg w-20 h-[17px] dark:bg-background-tableRow',
+                }}
+              />
+            ) : (
+              <Text className={styles.resultActualValue}>≈ ${formatUserMoney(profitUsd)}</Text>
+            )}
           </div>
           <div className={styles.yieldPercents}>
             <div>
@@ -98,14 +117,23 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
 
       <Text textView={TextView.C2} className={styles.balanceAfter}>
         balance after {balanceAfterText}{' '}
-        <span className={styles.balanceAfterValue}>{formatUserMoney(balanceAfter || 0, 8)}</span>
+        {isLoadingCalculate ? (
+          <Skeleton
+            as="span"
+            classNames={{
+              base: 'rounded-lg w-20 h-5 dark:bg-background-tableRow',
+            }}
+          />
+        ) : (
+          <span className={styles.balanceAfterValue}>{formatUserMoney(balanceAfter || 0, 8)}</span>
+        )}
       </Text>
 
       <ConnectWallet
         className={styles.connectButton}
         whenConnectedComponent={
           <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
-            {buttonMessage || 'Deposit'}
+            {buttonMessage || (withSwap ? 'Swap & Deposit' : 'Deposit')}
           </Button>
         }
         isForm

@@ -8,19 +8,14 @@
     "prettier",
     "plugin:@tanstack/eslint-plugin-query/recommended"
   ],
-  "plugins": [
-    "@tanstack/query"
-  ],
+  "plugins": ["@tanstack/query"],
   "rules": {
     "no-shadow": "off",
     "no-nested-ternary": "warn",
     "no-console": [
       "warn",
       {
-        "allow": [
-          "warn",
-          "error"
-        ]
+        "allow": ["warn", "error"]
       }
     ],
     "no-plusplus": [
@@ -33,9 +28,7 @@
       "warn",
       {
         "props": true,
-        "ignorePropertyModificationsForRegex": [
-          ".*[Rr]ef"
-        ]
+        "ignorePropertyModificationsForRegex": [".*[Rr]ef"]
       }
     ],
     "no-use-before-define": "off",
@@ -62,10 +55,7 @@
     "react/jsx-filename-extension": [
       1,
       {
-        "extensions": [
-          ".tsx",
-          ".jsx"
-        ]
+        "extensions": [".tsx", ".jsx"]
       }
     ],
     "react/jsx-no-undef": "warn",
@@ -74,10 +64,7 @@
     "react/require-default-props": "off",
     "react/jsx-key": "warn",
     "react/no-unescaped-entities": "warn",
-    "react/jsx-fragments": [
-      "error",
-      "element"
-    ],
+    "react/jsx-fragments": ["error", "element"],
     "react/jsx-no-constructed-context-values": "warn",
     "react/function-component-definition": "off",
     "react/no-unstable-nested-components": "warn",
@@ -111,14 +98,7 @@
     "import/order": [
       "warn",
       {
-        "groups": [
-          "builtin",
-          "external",
-          "internal",
-          "parent",
-          "sibling",
-          "index"
-        ],
+        "groups": ["builtin", "external", "internal", "parent", "sibling", "index"],
         "pathGroups": [
           {
             "pattern": "react",
@@ -151,9 +131,7 @@
             "position": "before"
           }
         ],
-        "pathGroupsExcludedImportTypes": [
-          "react"
-        ],
+        "pathGroupsExcludedImportTypes": ["react"],
         "newlines-between": "always",
         "alphabetize": {
           "order": "asc",
@@ -170,11 +148,7 @@
         "destructuring": "all"
       }
     ],
-    "id-denylist": [
-      "warn",
-      "err",
-      "e"
-    ],
+    "id-denylist": ["warn", "err", "e"],
     "default-param-last": "off",
     "guard-for-in": "warn",
     "promise/always-return": "off"

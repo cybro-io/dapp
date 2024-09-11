@@ -13,7 +13,11 @@ interface EthersContextProps {
   signer: Nullable<ethers.Signer>;
   vaults: { [address: string]: Maybe<Vault> };
   tokens: { [vaultAddress: string]: Maybe<Token> };
-  createVaultInstance: (vaultAddress: string, abi: any) => Promise<{ vault: Vault; token: Token }>;
+  createVaultInstance: (
+    vaultAddress: string,
+    abi: any,
+    vaultProvider: providers.StaticJsonRpcProvider,
+  ) => Promise<{ vault: Vault; token: Token }>;
   createTokenInstance: (tokenAddress: string) => Token;
 }
 
@@ -43,7 +47,7 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [isConnected, walletProvider]);
 
   const createVaultInstance = React.useCallback(
-    async (vaultAddress: string, abi: any) => {
+    async (vaultAddress: string, abi: any, vaultProvider: providers.StaticJsonRpcProvider) => {
       if (!isConnected) {
         throw new Error('Wallet is not connected');
       }
@@ -56,10 +60,18 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         return { vault: vaults[vaultAddress], token: tokens[vaultAddress] };
       }
 
-      const vaultInstance = new ethers.Contract(vaultAddress, abi, signer) as unknown as Vault;
+      const vaultInstance = new ethers.Contract(
+        vaultAddress,
+        abi,
+        vaultProvider,
+      ) as unknown as Vault;
 
       const tokenAddress = await vaultInstance.asset();
-      const tokenInstance = new ethers.Contract(tokenAddress, TOKEN, signer) as unknown as Token;
+      const tokenInstance = new ethers.Contract(
+        tokenAddress,
+        TOKEN,
+        vaultProvider,
+      ) as unknown as Token;
 
       setVaults(prevContracts => ({
         ...prevContracts,

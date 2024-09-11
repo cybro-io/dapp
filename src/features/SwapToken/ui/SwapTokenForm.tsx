@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import { Skeleton } from '@nextui-org/react';
@@ -18,9 +20,16 @@ type SwapTokenProps = {
   };
 };
 
-export const SwapTokenForm = ({ features }: SwapTokenProps) => {
-  const { form, isConnected, isDisabledSubmit, amountOutUsd, amountInUsd, calculateParams } =
-    useExchangeSwap();
+const SwapTokenForm = ({ features }: SwapTokenProps) => {
+  const {
+    form,
+    isConnected,
+    isDisabledSubmit,
+    isDisabledInputValue,
+    amountOutUsd,
+    amountInUsd,
+    calculateParams,
+  } = useExchangeSwap();
 
   const { isLoadingCalculate, records, error } = calculateParams;
   const values = form.values;
@@ -44,6 +53,7 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
   return (
     <form className="flex flex-col gap-2" onSubmit={form.handleSubmit}>
       <SwapTokenCard
+        isDisabled={isDisabledInputValue}
         token={values.tokenIn}
         balance={
           isLoadingInBalance ? (
@@ -74,11 +84,17 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
           usd={amountInUsd}
           max={balanceIn}
           showPercent
+          disabled={isDisabledInputValue}
           onSelectPercent={percent => form.handleSetPercent(Number(balanceIn), percent)}
         />
       </SwapTokenCard>
-      <SwapButton type="button" disabled={isLoadingCalculate} onClick={form.handleSwapDirection} />
+      <SwapButton
+        type="button"
+        disabled={isDisabledInputValue}
+        onClick={form.handleSwapDirection}
+      />
       <SwapTokenCard
+        isDisabled={isDisabledInputValue}
         token={values.tokenOut}
         balance={
           isLoadingOutBalance ? (
@@ -99,7 +115,11 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
               Recipient
             </Text>
             <div className="max-w-[194px]">
-              <InputAddress {...form.register('address')} onClear={() => form.setAddress('')} />
+              <InputAddress
+                {...form.register('address')}
+                onClear={() => form.setAddress('')}
+                disabled={isDisabledInputValue}
+              />
             </div>
           </div>
         }
@@ -153,3 +173,5 @@ export const SwapTokenForm = ({ features }: SwapTokenProps) => {
     </form>
   );
 };
+
+export default SwapTokenForm;

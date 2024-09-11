@@ -9,7 +9,7 @@ import { useProfilePortfolio } from '../model/useProfilePortfolio';
 import { ProfilePortfolioDesktop } from './ProfilePortfolioDesktop';
 import { ProfilePortfolioMobile } from './ProfilePortfolioMobile';
 
-export const ProfilePortfolio = () => {
+const ProfilePortfolio = () => {
   const { isLoading, fields, isPortfolioUnavailable } = useProfilePortfolio();
 
   const isSmallScreen = useMediaQuery('sm');
@@ -24,3 +24,5 @@ export const ProfilePortfolio = () => {
 
   return <ProfilePortfolioDesktop fields={fields} isLoading={isLoading} />;
 };
+
+export default ProfilePortfolio;

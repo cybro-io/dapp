@@ -6,7 +6,7 @@ import { Token } from 'symbiosis-js-sdk';
 import { useSwap } from '@/features/SwapToken';
 import { useGetTokenBalance, useSymbiosis } from '@/shared/lib';
 
-export const useExchangeTokenBalance = (token: Token) => {
+export const useExchangeTokenBalance = (token: Token | null) => {
   const { subscribeSuccessSwap } = useSwap();
   const { address } = useWeb3ModalAccount();
   const symbiosis = useSymbiosis();
@@ -24,6 +24,8 @@ export const useExchangeTokenBalance = (token: Token) => {
   };
 
   React.useEffect(() => {
+    if (!token) return;
+
     getTokenBalance(token, address);
 
     const subscriber = subscribeSuccessSwap(() => {

@@ -37,7 +37,7 @@
 }
 
 .provider {
-  border-bottom: 1px dashed white
+  border-bottom: 1px dashed white;
 }
 
 .vaultInvestment {
@@ -68,7 +68,8 @@
   }
 }
 
-.availableFundsValue, .yourDepositValue {
+.availableFundsValue,
+.yourDepositValue {
   gap: 5px;
   font-size: 18px !important;
 }
@@ -129,7 +130,10 @@
   border-bottom: 1px dashed $stroke-tableBorder;
 }
 
-.overallInvestmentValue, .yourDepositValue, .availableFundsValue, .earningsMonthlyValue {
+.overallInvestmentValue,
+.yourDepositValue,
+.availableFundsValue,
+.earningsMonthlyValue {
   display: flex;
   flex-direction: row;
   align-items: center;

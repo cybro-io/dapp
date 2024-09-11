@@ -6,6 +6,7 @@ import { Tab, Tabs } from '@nextui-org/tabs';
 import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
+import { Tvl } from '@/entities/Tvl';
 import { QueryKey } from '@/shared/const';
 import {
   ComponentWithProps,
@@ -15,6 +16,7 @@ import {
 import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
 import { Text, TextView } from '@/shared/ui';
 import { transformBalances } from '@/shared/utils';
+import { AvailableVaultsViewType, useAvailableVaultsView } from '@/widgets/AvailableVaults';
 import { AvailableVaultsGrid } from '@/widgets/AvailableVaults/ui/components';
 import { AvailableVaultsList } from '@/widgets/AvailableVaults/ui/components/AvailableVaultsList';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
@@ -28,19 +30,8 @@ type AvailableVaultsProps = {};
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-enum ViewType {
-  Card = 'grid',
-  Table = 'list',
-}
-
 export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
-  const [viewType, setViewType] = React.useState<ViewType>(() => {
-    // Check session storage for the initial value
-    if (typeof window !== 'undefined') {
-      return (sessionStorage.getItem('viewType') as ViewType) || ViewType.Card;
-    }
-    return ViewType.Card;
-  });
+  const { viewType, setViewType } = useAvailableVaultsView();
 
   const [sort, setSort] = React.useState<[SortValue, boolean]>(() => {
     // Check session storage for the initial sort value
@@ -65,13 +56,6 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
       query: { queryKey: [QueryKey.UserBalance, address, chainId] },
     },
   );
-
-  // Store viewType in session storage whenever it changes
-  React.useEffect(() => {
-    if (typeof window !== 'undefined') {
-      sessionStorage.setItem('viewType', viewType);
-    }
-  }, [viewType]);
 
   // Store sort in session storage whenever it changes
   React.useEffect(() => {
@@ -98,14 +82,14 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
           Available Vaults
           <span className={styles.counter}>{vaults.length}</span>
         </Text>
-        {/*<Tvl className={styles.chip} />*/}
+        <Tvl className={clsx(styles.chip, 'visible 2lg:invisible')} />
         <Tabs
           className={styles.listViewSwitch}
           selectedKey={viewType}
           size="sm"
-          defaultSelectedKey={ViewType.Card}
+          defaultSelectedKey={AvailableVaultsViewType.Card}
           onSelectionChange={key => {
-            setViewType(key as ViewType);
+            setViewType(key as AvailableVaultsViewType);
           }}
           classNames={{
             tabList: styles.tabList,
@@ -113,19 +97,19 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
           }}
         >
           <Tab
-            key={ViewType.Table}
+            key={AvailableVaultsViewType.Table}
             title={
               <p className={styles.tabContent}>
-                {viewType === ViewType.Table && 'Table view'}
+                {viewType === AvailableVaultsViewType.Table && 'Table view'}
                 <ListIcon />
               </p>
             }
           />
           <Tab
-            key={ViewType.Card}
+            key={AvailableVaultsViewType.Card}
             title={
               <p className={styles.tabContent}>
-                {viewType === ViewType.Card && 'Card view'}
+                {viewType === AvailableVaultsViewType.Card && 'Card view'}
                 <GridIcon />
               </p>
             }
@@ -133,7 +117,7 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
         </Tabs>
       </div>
 
-      {viewType === ViewType.Card ? (
+      {viewType === AvailableVaultsViewType.Card ? (
         <AvailableVaultsGrid
           balance={balance}
           isConnected={isConnected}

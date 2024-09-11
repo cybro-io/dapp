@@ -1,5 +1,8 @@
+'use client';
+
 import React from 'react';
 
+import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 import Image from 'next/image';
 import { Token } from 'symbiosis-js-sdk';
 
@@ -8,7 +11,6 @@ import { DropdownButton, Text, TextView } from '@/shared/ui';
 import { Balance } from './Balance';
 import styles from './SwapTokenCard.module.scss';
 import { Title } from './Title';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
 
 export type SwapTokenCardProps = React.PropsWithChildren & {
   token: Token | null;
@@ -16,6 +18,7 @@ export type SwapTokenCardProps = React.PropsWithChildren & {
   title?: React.ReactNode;
   balance: React.ReactNode;
   footer?: React.ReactNode;
+  isDisabled?: boolean;
 };
 
 export const SwapTokenCard = ({
@@ -25,6 +28,7 @@ export const SwapTokenCard = ({
   onSelectTokenClick,
   children,
   footer,
+  isDisabled,
 }: SwapTokenCardProps) => {
   const { address } = useWeb3ModalAccount();
 
@@ -62,6 +66,7 @@ export const SwapTokenCard = ({
           className="w-fit absolute right-4 -bottom-4"
           type="button"
           onClick={onSelectTokenClick}
+          disabled={isDisabled}
         >
           Change token
         </DropdownButton>

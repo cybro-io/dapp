@@ -27,7 +27,7 @@ export const WaitForCompleteModal = NiceModal.create(() => {
   const tokenOut = tokenAmountOut.token;
 
   return (
-    <Modal onClose={() => currentModal.remove()}>
+    <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
       <Modal.Header>Waiting for completion</Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-4 justify-center items-center rounded-[22px] bg-background-window p-4">

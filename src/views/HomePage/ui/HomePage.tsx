@@ -2,6 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
+import { Tvl } from '@/entities/Tvl';
 import { ComponentWithProps } from '@/shared/types';
 import { Socials, Text, TextView } from '@/shared/ui';
 import { AvailableVaults } from '@/widgets/AvailableVaults';
@@ -27,7 +28,7 @@ export const HomePage: ComponentWithProps<HomePageProps> = props => {
           Select the ideal vault for your strategy and boost your portfolio today.
         </Text>
         <div className={styles.bottomContainer}>
-          {/*<Tvl />*/}
+          <Tvl />
           <Socials />
         </div>
       </section>

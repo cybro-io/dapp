@@ -22,6 +22,7 @@ export const AmountInput = React.forwardRef(
       usd,
       showPercent,
       isPositive = true,
+      disabled,
       ...props
     }: AmountInputProps,
     ref: React.ForwardedRef<HTMLInputElement>,
@@ -58,6 +59,7 @@ export const AmountInput = React.forwardRef(
             {...props}
             ref={ref}
             onChange={handleChange}
+            disabled={disabled}
           />
           {isUSDVisible && <span className={styles.equal}>≈ ${formatUserMoney(usd)}</span>}
           {helperText && (
@@ -76,7 +78,7 @@ export const AmountInput = React.forwardRef(
                   styles.percentButton,
                   value === selectedPercent && styles.percentButtonSelected,
                 )}
-                disabled={!max}
+                disabled={!max || disabled}
                 onClick={() => handlePercentChange(value)}
               >
                 {title}

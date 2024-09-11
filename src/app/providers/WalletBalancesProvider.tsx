@@ -17,6 +17,10 @@ export const WalletBalancesProvider = ({ children }: React.PropsWithChildren) =>
     if (address && tokens && !isLoadingWalletBalances) getWalletBalances({ address, tokens });
   }, [address, tokens, isLoadingWalletBalances]);
 
+  React.useEffect(() => {
+    if (address && !isLoadingWalletBalances) handleGetWalletBalances();
+  }, [address]);
+
   useInterval(handleGetWalletBalances, 60000);
 
   return <React.Fragment>{children}</React.Fragment>;

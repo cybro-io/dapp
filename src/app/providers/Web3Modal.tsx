@@ -5,6 +5,9 @@ import React from 'react';
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react';
 
 import { Chain } from '@/shared/const';
+import { $swapChains } from '@/entities/SwapToken';
+import { ChainId, GAS_TOKEN } from 'symbiosis-js-sdk';
+import { $symbiosis } from '@/shared/lib';
 
 type Web3ModalProps = {
   children: React.ReactNode;
@@ -24,15 +27,18 @@ const testChains = [
   },
 ];
 
-const mainChains = [
-  {
-    chainId: Chain.BlastMain,
-    name: 'Blast',
-    currency: 'ETH',
-    explorerUrl: 'https://blastscan.io',
-    rpcUrl: `https://rpc.ankr.com/blast/${anrkId}`,
-  },
-];
+const mainChains = $swapChains.getState().map(chain => {
+  const chainConfig = $symbiosis.getState().chainConfig(chain.id);
+
+  return {
+    chainId: chain.id,
+    name: chain.name,
+    currency: GAS_TOKEN[chain.id].symbol ?? 'Unknown',
+    explorerUrl: chain.explorer,
+    rpcUrl:
+      chain.id === ChainId.BLAST_MAINNET ? `https://rpc.ankr.com/blast/${anrkId}` : chainConfig.rpc,
+  };
+});
 
 const metadata = {
   name: 'CYBRO',
@@ -48,7 +54,7 @@ const ethersConfig = defaultConfig({
   metadata,
 });
 
-createWeb3Modal({
+export const web3Modal = createWeb3Modal({
   ethersConfig,
   chains,
   projectId,
