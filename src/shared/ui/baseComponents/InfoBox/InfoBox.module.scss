@@ -29,7 +29,6 @@
   display: none;
 }
 
-
 .dropdownContainer {
   position: absolute;
   z-index: 4;
@@ -70,7 +69,8 @@
   }
 }
 
-.select, .dropdown {
+.select,
+.dropdown {
   padding-bottom: 18px;
   gap: 10px;
 }

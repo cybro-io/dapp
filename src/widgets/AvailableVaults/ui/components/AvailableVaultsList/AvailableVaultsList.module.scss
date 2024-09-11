@@ -64,7 +64,8 @@
   margin: auto;
 }
 
-.tableVault.tableVault, .tableHeader.tableHeader {
+.tableVault.tableVault,
+.tableHeader.tableHeader {
   display: none;
 }
 
@@ -92,7 +93,8 @@
     display: none;
   }
 
-  .tableVault.tableVault, .tableHeader.tableHeader {
+  .tableVault.tableVault,
+  .tableHeader.tableHeader {
     display: contents;
   }
 

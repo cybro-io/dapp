@@ -60,10 +60,6 @@
 }
 
 @media screen and (width >= 1100px) {
-  .root {
-
-  }
-
   .top {
     display: flex;
     flex-direction: row;
@@ -107,7 +103,7 @@
 
 .tab.tab {
   span {
-    background-color: $background-chips!important;
+    background-color: $background-chips !important;
     border: none;
     border-radius: 40px;
   }
