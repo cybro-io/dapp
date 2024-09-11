@@ -1,5 +1,5 @@
 import NiceModal from '@ebay/nice-modal-react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { Token } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';

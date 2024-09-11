@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import Image from 'next/image';
 import { Token } from 'symbiosis-js-sdk';
 

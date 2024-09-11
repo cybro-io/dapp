@@ -15,13 +15,13 @@ import ProfileImage from '@/shared/assets/icons/profile.png';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import UsdbIcon from '@/shared/assets/icons/usdb.svg';
 import { links, truncateMiddle } from '@/shared/lib';
-import { EarnedYieldResponseDataProperty, GetWalletResponseData } from '@/shared/types';
+import { EarnedYieldResponseDataProperty, GetWalletResponseData, Maybe } from '@/shared/types';
 import { formatMoney } from '@/shared/utils';
 
 type ProfileStatsPanelProps = {
   profileData?: GetWalletResponseData;
   earnedYield?: EarnedYieldResponseDataProperty;
-  address: string;
+  address: Maybe<string>;
   isLoading?: boolean;
 };
 
@@ -110,18 +110,26 @@ export const ProfileStatsPanel = ({
         </div>
         <div className="user-menu__copy">
           <Image src={ProfileImage} alt="profile" className={'user-menu__logo'} />
-          <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
-          <div className="user-menu__copy-box">
-            <button
-              className="user-menu__copy-btn"
-              onClick={() => {
-                navigator.clipboard.writeText(`${address}`);
-              }}
-            >
-              <CopyIcon className="user-menu__copy-icon" />
-            </button>
-            <span className="user-menu__copy-label">Copied!</span>
-          </div>
+          {address ? (
+            <>
+              <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
+              <div className="user-menu__copy-box">
+                <button
+                  className="user-menu__copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${address}`);
+                  }}
+                >
+                  <CopyIcon className="user-menu__copy-icon" />
+                </button>
+                <span className="user-menu__copy-label">Copied!</span>
+              </div>
+            </>
+          ) : (
+            <Skeleton
+              classNames={{ base: 'w-20 h-[22px] rounded-lg dark:bg-background-tableRow' }}
+            />
+          )}
         </div>
       </div>
       <div className="user-menu__content">

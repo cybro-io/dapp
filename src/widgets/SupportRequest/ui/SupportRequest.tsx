@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';

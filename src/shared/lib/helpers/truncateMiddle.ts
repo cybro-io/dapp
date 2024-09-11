@@ -1,4 +1,8 @@
 export const truncateMiddle = (str: string, sliceLength = 5, separator = '...') => {
+  if (!str) {
+    return '';
+  }
+
   if (str.length <= sliceLength * 2 + separator.length) {
     return str;
   }

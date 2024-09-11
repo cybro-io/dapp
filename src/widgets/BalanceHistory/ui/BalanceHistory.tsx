@@ -3,7 +3,7 @@
 import React, { useState, useEffect } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import { ChainId } from 'symbiosis-js-sdk';
 
