@@ -95,14 +95,14 @@ export const ExchangeTransactionRow = ({
     >
       <ExchangeTransactionToken
         tokenName={tokenIn.token.symbol}
-        amount={Number(utils.formatUnits(String(tokenIn.amount), tokenIn.token.decimals))}
+        amount={Number(utils.formatUnits(String(Number(tokenIn.amount).toLocaleString('fullwide', {useGrouping:false})), tokenIn.token.decimals))}
         icon={String(findTokenIn?.icons?.small)}
         chainIcon={String(findTokenIn?.chain?.icons?.small)}
         directionName="You pay"
       />
       <ExchangeTransactionToken
         tokenName={tokenOut.token.symbol}
-        amount={Number(utils.formatUnits(String(tokenOut.amount), tokenOut.token.decimals))}
+        amount={Number(utils.formatUnits(String(Number(tokenOut.amount).toLocaleString('fullwide', {useGrouping:false})), tokenOut.token.decimals))}
         icon={String(findTokenOut?.icons?.small)}
         chainIcon={String(findTokenOut?.chain?.icons?.small)}
         directionName="You recieve"
