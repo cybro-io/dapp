@@ -86,7 +86,7 @@ export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemPr
           </div>
         </div>
         <IconButton
-          className={styles.downButton}
+          className={clsx(styles.downButton, isOpened && styles.isOpened)}
           icon={<DownIcon />}
           onClick={() => setIsOpened(prev => !prev)}
         />
