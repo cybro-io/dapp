@@ -84,7 +84,7 @@ export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
           )}
           <button className={styles.dropdownButton} onClick={setIsOpened}>
             {dropdownButtonContent}
-            <div className={styles.arrowIconContainer}>
+            <div className={clsx(styles.arrowIconContainer, isOpened && styles.isOpened)}>
               <ArrowIcon />
             </div>
           </button>

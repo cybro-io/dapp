@@ -38,7 +38,7 @@ export const SwapTokenCard = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.tokenCard}>
+      <div className={styles.tokenCard} onClick={onSelectTokenClick}>
         <div className={styles.header}>
           <SwapTokenCard.Title title={title} />
           <SwapTokenCard.Balance>{balance}</SwapTokenCard.Balance>

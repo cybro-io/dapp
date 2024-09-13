@@ -100,3 +100,13 @@
     padding-bottom: 8px;
   }
 }
+
+.downButton {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  transform: rotate(180deg);
+}
+
+.isOpened {
+  transform: rotate(0deg);
+}
