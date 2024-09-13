@@ -14,7 +14,7 @@ import styles from './DashboardPage.module.scss';
 
 type DashboardPageProps = {};
 
-export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
+const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
   const { isConnected, status } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
   const router = useRouter();
@@ -43,3 +43,5 @@ export const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ classNam
     </div>
   );
 };
+
+export default DashboardPage;
