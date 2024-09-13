@@ -25,12 +25,13 @@ import GridIcon from '../assets/icons/grid.svg';
 import ListIcon from '../assets/icons/list.svg';
 
 import styles from './AvailableVaults.module.scss';
+import { Skeleton } from '@nextui-org/react';
 
 type AvailableVaultsProps = {};
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
+const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
   const { viewType, setViewType } = useAvailableVaultsView();
 
   const [sort, setSort] = React.useState<[SortValue, boolean]>(() => {
@@ -139,3 +140,5 @@ export const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ clas
     </section>
   );
 };
+
+export default AvailableVaults;
