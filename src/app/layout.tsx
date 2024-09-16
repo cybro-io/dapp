@@ -24,6 +24,7 @@ import {
   Web3Modal,
   WalletBalancesProvider,
 } from './providers';
+import { SafaryAnalytics } from './safary-analytics';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -68,6 +69,7 @@ export default function RootLayout({
           a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
       </Script>
+      <SafaryAnalytics />
       <Web3Modal>
         <EthersProvider>
           <ReactQueryProvider>
