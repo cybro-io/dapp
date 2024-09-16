@@ -13,8 +13,7 @@
     "generate-index": "node src/shared/script/generate-index.mjs",
     "codegen-sc-with-index": "npm run codegen-sc && npm run generate-index",
     "codegen-api-with-index": "npm run codegen-api && npm run generate-index",
-    "codegen": "npm run codegen-sc && npm run codegen-api && npm run generate-index",
-    "postinstall": "npm run codegen"
+    "codegen": "npm run codegen-sc && npm run codegen-api && npm run generate-index"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
