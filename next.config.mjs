@@ -65,6 +65,7 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  compress: false,
 };
 
 export default withSentryConfig(
