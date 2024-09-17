@@ -3,7 +3,7 @@
 import React from 'react';
 
 import { Divider } from '@nextui-org/react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { BaseLayout } from '@/app/layouts';

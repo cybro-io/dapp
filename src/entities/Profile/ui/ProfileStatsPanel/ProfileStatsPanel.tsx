@@ -2,6 +2,7 @@
 
 import React, { useMemo } from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import { useDisconnect } from '@web3modal/ethers5/react';
 import Image from 'next/image';
 
@@ -14,19 +15,21 @@ import ProfileImage from '@/shared/assets/icons/profile.png';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import UsdbIcon from '@/shared/assets/icons/usdb.svg';
 import { links, truncateMiddle } from '@/shared/lib';
-import { EarnedYieldResponseDataProperty, GetWalletData } from '@/shared/types';
+import { EarnedYieldResponseDataProperty, GetWalletResponseData, Maybe } from '@/shared/types';
 import { formatMoney } from '@/shared/utils';
 
 type ProfileStatsPanelProps = {
-  profileData: GetWalletData;
-  earnedYield: EarnedYieldResponseDataProperty;
-  address: string;
+  profileData?: GetWalletResponseData;
+  earnedYield?: EarnedYieldResponseDataProperty;
+  address: Maybe<string>;
+  isLoading?: boolean;
 };
 
 export const ProfileStatsPanel = ({
   profileData,
   earnedYield,
   address,
+  isLoading,
 }: ProfileStatsPanelProps) => {
   const { disconnect } = useDisconnect();
 
@@ -35,19 +38,19 @@ export const ProfileStatsPanel = ({
       list: [
         {
           label: 'CYBRO Balance',
-          value: formatMoney(profileData.balance),
+          value: formatMoney(profileData?.balance ?? 0),
           leftIcon: LogoIcon,
           isNativeYieldInfo: false,
         },
         {
           label: 'CYBRO Points',
-          value: `${profileData.points} pts`,
+          value: `${profileData?.points ?? 0} pts`,
           isNativeYieldInfo: false,
         },
         {
           label: 'Referral rewards',
           leftIcon: TetherIcon,
-          value: `${formatMoney(Number(profileData?.affiliate_balance))}`,
+          value: `${formatMoney(Number(profileData?.affiliate_balance ?? 0))}`,
         },
         {
           label: 'Total Earned',
@@ -89,12 +92,12 @@ export const ProfileStatsPanel = ({
   };
 
   const userBalance = useMemo(() => {
-    if (profileData.balance_usd && Number(profileData.balance_usd)) {
+    if (profileData?.balance_usd && Number(profileData.balance_usd)) {
       return Number(profileData.balance_usd);
     }
 
     return 0;
-  }, [profileData.balance_usd]);
+  }, [profileData?.balance_usd]);
 
   return (
     <div className="user-menu z-50 relative">
@@ -107,18 +110,26 @@ export const ProfileStatsPanel = ({
         </div>
         <div className="user-menu__copy">
           <Image src={ProfileImage} alt="profile" className={'user-menu__logo'} />
-          <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
-          <div className="user-menu__copy-box">
-            <button
-              className="user-menu__copy-btn"
-              onClick={() => {
-                navigator.clipboard.writeText(`${address}`);
-              }}
-            >
-              <CopyIcon className="user-menu__copy-icon" />
-            </button>
-            <span className="user-menu__copy-label">Copied!</span>
-          </div>
+          {address ? (
+            <React.Fragment>
+              <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
+              <div className="user-menu__copy-box">
+                <button
+                  className="user-menu__copy-btn"
+                  onClick={() => {
+                    navigator.clipboard.writeText(`${address}`);
+                  }}
+                >
+                  <CopyIcon className="user-menu__copy-icon" />
+                </button>
+                <span className="user-menu__copy-label">Copied!</span>
+              </div>
+            </React.Fragment>
+          ) : (
+            <Skeleton
+              classNames={{ base: 'w-20 h-[22px] rounded-lg dark:bg-background-tableRow' }}
+            />
+          )}
         </div>
       </div>
       <div className="user-menu__content">
@@ -126,7 +137,7 @@ export const ProfileStatsPanel = ({
           {data.list.map(
             (item, index) =>
               (!item.isNativeYieldInfo ||
-                (item.isNativeYieldInfo && profileData.claimable_yield_enrolled)) && (
+                (item.isNativeYieldInfo && profileData?.claimable_yield_enrolled)) && (
                 <div
                   key={'userMenuItem' + index}
                   className={`user-menu__item${item.label === null ? ' user-menu__item-compact' : ''}`}
@@ -138,7 +149,17 @@ export const ProfileStatsPanel = ({
                     {item.leftIcon ? (
                       <item.leftIcon className="user-menu__item-currency-left" />
                     ) : null}
-                    <span className="user-menu__item-value">{item.value}</span>
+                    <span className="user-menu__item-value">
+                      {isLoading ? (
+                        <Skeleton
+                          classNames={{
+                            base: 'w-12 h-[22px] rounded-lg dark:bg-background-tableRow',
+                          }}
+                        />
+                      ) : (
+                        item.value
+                      )}
+                    </span>
                     {/*{item.additionValue ? (*/}
                     {/*  <span className="user-menu__item-addition">{item.additionValue}</span>*/}
                     {/*) : null}*/}
@@ -147,7 +168,7 @@ export const ProfileStatsPanel = ({
               ),
           )}
         </ul>
-        {!!userBalance && profileData.claimable_yield_enrolled && (
+        {!!userBalance && profileData?.claimable_yield_enrolled && (
           <p className="user-menu__desc">
             <span>{formattedDescription.firstPart}</span>
             {formattedDescription.boldText ? <b>{formattedDescription.boldText}</b> : null}
@@ -156,7 +177,7 @@ export const ProfileStatsPanel = ({
             ) : null}
           </p>
         )}
-        {!profileData.claimable_yield_enrolled && (
+        {!profileData?.claimable_yield_enrolled && (
           <div className="user-menu__offer">
             <span className="user-menu__offer-title">Boost your Yield Now</span>
             <p className="user-menu__offer-desc">

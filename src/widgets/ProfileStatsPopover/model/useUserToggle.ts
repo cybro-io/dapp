@@ -1,4 +1,4 @@
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 import {
   useGetProfileApiV1ProfileAddressGet,
@@ -8,19 +8,26 @@ import {
 export const useUserToggle = () => {
   const { address } = useWeb3ModalAccount();
 
-  const { data: userProfile } = useGetProfileApiV1ProfileAddressGet(address, {
-    query: {
-      enabled: Boolean(address),
-      select: data => data.data.data,
-    },
-  });
+  const { data: userProfile, isLoading: isLoadingUserProfile } =
+    useGetProfileApiV1ProfileAddressGet(address!, {
+      query: {
+        enabled: Boolean(address),
+        select: data => data.data.data,
+      },
+    });
 
-  const { data: earnedYield } = useGetProfileEarnedYieldApiV1ProfileAddressEarnedYieldGet(address, {
-    query: {
-      enabled: Boolean(address),
-      select: data => data.data.data,
-    },
-  });
+  const { data: earnedYield, isLoading: isLoadingEarnedYield } =
+    useGetProfileEarnedYieldApiV1ProfileAddressEarnedYieldGet(address!, {
+      query: {
+        enabled: Boolean(address),
+        select: data => data.data.data,
+      },
+    });
 
-  return { address, userProfile, earnedYield };
+  return {
+    address,
+    userProfile,
+    earnedYield,
+    isLoading: isLoadingEarnedYield || isLoadingUserProfile,
+  };
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Link from 'next/link';
 
@@ -160,9 +160,9 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
             <Text className={styles.description} textView={TextView.P2}>
               {vault?.description}
             </Text>
-            {!isInvalid(chainId) && vaultContract?.address && (
+            {!isInvalid(vault?.chain_id) && vaultContract?.address && (
               <Link
-                href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.address}`}
+                href={`${ChainToExplorerUrl[vault?.chain_id]}/address/${vaultContract.address}`}
                 target="_blank"
               >
                 <Button

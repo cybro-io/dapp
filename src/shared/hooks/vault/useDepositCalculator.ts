@@ -1,6 +1,6 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 
 import { PeriodTab } from '@/entities/DepositCalculator';

@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -139,10 +139,10 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
               </Chip>
             ))}
           </div>
-          {!isInvalid(chainId) && vaultContract?.address && (
+          {!isInvalid(vault?.chain_id) && vaultContract?.address && (
             <Link
               className={styles.contractDetails}
-              href={`${ChainToExplorerUrl[chainId]}/address/${vaultContract.address}`}
+              href={`${ChainToExplorerUrl[vault?.chain_id]}/address/${vaultContract.address}`}
               target="_blank"
             >
               <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>

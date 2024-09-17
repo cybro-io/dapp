@@ -1,7 +1,7 @@
 import React, { Key } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import axios, { AxiosResponse } from 'axios';
 
 import {

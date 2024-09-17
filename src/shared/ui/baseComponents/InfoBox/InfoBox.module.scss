@@ -29,7 +29,6 @@
   display: none;
 }
 
-
 .dropdownContainer {
   position: absolute;
   z-index: 4;
@@ -70,7 +69,8 @@
   }
 }
 
-.select, .dropdown {
+.select,
+.dropdown {
   padding-bottom: 18px;
   gap: 10px;
 }
@@ -195,4 +195,14 @@
       color: $text-white-body40;
     }
   }
+}
+
+.arrowIconContainer {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
+  transform: rotate(180deg);
+}
+
+.isOpened {
+  transform: rotate(0deg);
 }

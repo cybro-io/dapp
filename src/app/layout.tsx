@@ -7,6 +7,7 @@ import { GoogleAnalytics } from '@next/third-parties/google';
 import clsx from 'clsx';
 import type { Metadata } from 'next';
 import Script from 'next/script';
+import NextTopLoader from 'nextjs-toploader';
 
 import { poppins, unbounded } from '@/app/fonts';
 import icon from '@/shared/assets/icons/favicon.ico';
@@ -23,7 +24,7 @@ import {
   Web3Modal,
   WalletBalancesProvider,
 } from './providers';
-import NextTopLoader from 'nextjs-toploader';
+import { SafaryAnalytics } from './safary-analytics';
 
 export const metadata: Metadata = {
   title: 'CYBRO - the first earn marketplace on Blast L2',
@@ -68,6 +69,7 @@ export default function RootLayout({
           a.appendChild(r);
       })(window,document,'https://static.hotjar.com/c/hotjar-','.js?sv=');`}
       </Script>
+      <SafaryAnalytics />
       <Web3Modal>
         <EthersProvider>
           <ReactQueryProvider>

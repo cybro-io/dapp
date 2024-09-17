@@ -16,6 +16,7 @@ import { DropdownButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type DepositWithdrawInputProps = {
   currency: string;
@@ -37,6 +38,8 @@ type DepositWithdrawInputProps = {
   chainId: number;
   tokenAddress: string;
 };
+
+const isActiveZapIn = process.env.NEXT_PUBLIC_ZAP_IN_ON === 'true';
 
 export const percentButtons = [
   {
@@ -113,12 +116,16 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
   const { openModal } = useSelectTokenModal();
 
   const handleSelectToken = () => {
+    Mixpanel.track(MixpanelEvent.ChangeZapInToken);
+
     openModal(
       selectedToken ? getUniqueTokenId(selectedToken.address, selectedToken.chainId) : '',
-      token =>
+      token => {
+        Mixpanel.track(MixpanelEvent.ChangeZapInTokenSuccess);
         setSelectedToken(
           tokenAddress === token.address && chainId === token.chainId ? null : token,
-        ),
+        );
+      },
     );
   };
 
@@ -162,7 +169,7 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             </div>
           </div>
 
-          {activeTab === YieldSwitchOptions.Deposit && (
+          {activeTab === YieldSwitchOptions.Deposit && isActiveZapIn && (
             <DropdownButton
               className="w-fit absolute right-0 left-0 mx-auto bottom-[-22px]"
               type="button"

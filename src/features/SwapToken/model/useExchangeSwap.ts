@@ -1,7 +1,7 @@
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { utils } from 'ethers';
 import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 

@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { ApyInfo } from '@/entities/ApyInfo';
@@ -20,11 +20,12 @@ import DepositIcon from '../assets/icons/deposit.svg';
 import YieldIcon from '../assets/icons/yield.svg';
 
 import styles from './DashboardInfo.module.scss';
+import { ChainId } from 'symbiosis-js-sdk';
 
 type DashboardInfoProps = {};
 
 export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ className }) => {
-  const { address: userAddress, chainId, isConnected } = useWeb3ModalAccount();
+  const { address: userAddress } = useWeb3ModalAccount();
   const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(null); // State to store address
   const [period, setPeriod] =
     React.useState<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>(
@@ -45,12 +46,12 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
   } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
     localStorageAddress || userAddress || '',
     {
-      chain_id: chainId || 0,
+      chain_id: ChainId.BLAST_MAINNET,
       timeframe: period,
     },
     {
       query: {
-        queryKey: [QueryKey.DashboardStats, period, chainId, localStorageAddress, userAddress],
+        queryKey: [QueryKey.DashboardStats, period, localStorageAddress, userAddress],
       },
     },
   );

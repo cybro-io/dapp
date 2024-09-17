@@ -2,7 +2,7 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@web3modal/ethers5/react';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import Image from 'next/image';
 import { Token } from 'symbiosis-js-sdk';
 
@@ -38,7 +38,7 @@ export const SwapTokenCard = ({
 
   return (
     <div className={styles.container}>
-      <div className={styles.tokenCard}>
+      <div className={styles.tokenCard} onClick={onSelectTokenClick}>
         <div className={styles.header}>
           <SwapTokenCard.Title title={title} />
           <SwapTokenCard.Balance>{balance}</SwapTokenCard.Balance>

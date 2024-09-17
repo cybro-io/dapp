@@ -14,7 +14,8 @@
   align-items: center;
   gap: 8px;
 
-  &:not(:disabled):active, &:active > * {
+  &:not(:disabled):active,
+  &:active > * {
     opacity: 0.8;
   }
 }

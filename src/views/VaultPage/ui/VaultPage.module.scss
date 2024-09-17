@@ -3,10 +3,11 @@
   flex-direction: column;
   padding-top: 40px;
   padding-bottom: 40px;
-  background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
-  url('/HeroBgMobile.webp') -30px center / auto 100% no-repeat,
-  url('/RectBg.svg') repeat,
-  url('/CybroBgGrey.svg') 0 30px / 100% no-repeat;
+  background:
+    linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
+    url('/HeroBgMobile.webp') -30px center / auto 100% no-repeat,
+    url('/RectBg.svg') repeat,
+    url('/CybroBgGrey.svg') 0 30px / 100% no-repeat;
   justify-content: center;
   align-items: center;
 }
@@ -43,7 +44,7 @@
     height: 37px;
     background-color: $text-accent-logoYellow;
     opacity: 0.7;
-    filter: blur(36px)
+    filter: blur(36px);
   }
 }
 
@@ -92,7 +93,6 @@
   }
 }
 
-
 @media screen and (width >= 600px) {
   .mobileDescription {
     display: none;
@@ -139,7 +139,6 @@
   .tetherContainer {
     gap: 6px;
 
-
     img {
       width: 60px;
       height: 60px;
@@ -185,10 +184,11 @@
   .heroSection {
     padding-top: 32px;
     padding-bottom: 95px;
-    background: linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
-    url('/HeroBg.webp') right 0 no-repeat,
-    url('/RectBg.svg') repeat,
-    url('/CybroBgGrey.svg') top / 100% no-repeat;
+    background:
+      linear-gradient(180deg, rgb(17 18 26 / 0%) 0%, $background-window 100%),
+      url('/HeroBg.webp') right 0 no-repeat,
+      url('/RectBg.svg') repeat,
+      url('/CybroBgGrey.svg') top / 100% no-repeat;
   }
 
   .tetherContainer {
@@ -205,7 +205,7 @@
       width: 229px;
       height: 134px;
       opacity: 0.24;
-      filter: blur(65px)
+      filter: blur(65px);
     }
   }
 

@@ -1,6 +1,5 @@
 # Cybro App
 
-
 ### Getting Started
 
 You will need to put the env file to the project root
@@ -13,7 +12,6 @@ npm install
 
 Then, run the development server:
 
-
 ```bash
 npm run dev
 ```
@@ -23,17 +21,21 @@ Open [http://localhost:3000](http://localhost:3000) with your browser to see the
 ### Other scripts
 
 ### Production build
+
 #### Generate types for Smart Contracts and API types and hooks
+
 ```bash
 npm run codegen
 ```
 
 #### Generate types for Smart Contracts
+
 ```bash
 npm run codegen-sc-with-index
 ```
 
 #### Generate API types and hooks
+
 ```bash
 npm run codegen-api-with-index
 ```
@@ -45,15 +47,16 @@ npm run build
 ```
 
 #### Start the production build
+
 ```bash
 npm run start
 ```
 
 ### Lint
+
 ```bash
 npm run lint
 ```
-
 
 ### Client Package
 
@@ -69,7 +72,7 @@ Client package's file structure is based on [Feature-Sliced Design methodology](
 
 `app/` is the topmost layer which **contains client application's global configuration files and providers that, once set up, are very unlikely to change** in the future. Examples: Localization settings, environment variables, theme configuration.
 
->**Note:** Since Next.js is being used, we store pages in this directory as well. Given that `app/` is supposed to store configuration settings and environment variables which may (and highly likely will) be needed across the application, **it is permitted to import _only_ those configuration settings on the lower layers**. Other than that, one must not import any other functionality from the `app/` directory.
+> **Note:** Since Next.js is being used, we store pages in this directory as well. Given that `app/` is supposed to store configuration settings and environment variables which may (and highly likely will) be needed across the application, **it is permitted to import _only_ those configuration settings on the lower layers**. Other than that, one must not import any other functionality from the `app/` directory.
 
 ##### 1.4. `widgets/`
 
@@ -83,7 +86,7 @@ Client package's file structure is based on [Feature-Sliced Design methodology](
 
 `entities/` stores common (feature-agnostic) `constants`, `types`, `hooks` and `utils` **specific to certain _business entities_** and mainly serving as **an interface to a database entity**. It's unlikely that `components` will fall into this directory.
 
->**Note:** Rule of thumb to define whether or not the object in question **is a business entity** is to check if it **has a corresponding table defined in the database.**
+> **Note:** Rule of thumb to define whether or not the object in question **is a business entity** is to check if it **has a corresponding table defined in the database.**
 
 ##### 1.7. `shared/`
 
@@ -104,7 +107,8 @@ The lowest-level layer, `shared/`, **contains project-agnostic, general purpose,
 3.2. Unlike top-level sections and slices, **segments within the same slice are allowed to have cross imports**.
 
 3.3. **It's forbidden to create directories inside segments**.
->**The only exception:** breaking of a single, logically cohesive unit into multiple pieces (Example: `SomeProvider/` containing `SomeContext.ts` and `SomeProvider.tsx` files)
+
+> **The only exception:** breaking of a single, logically cohesive unit into multiple pieces (Example: `SomeProvider/` containing `SomeContext.ts` and `SomeProvider.tsx` files)
 
 #### TL:DR - A Right Place for a Module
 
@@ -168,7 +172,7 @@ const hours = 60 * 60 * 1000;
 
 // good
 const HOURS = 60 * 60 * 1000;
-````
+```
 
 #### 1.5. Use underscore (`_`) prefix for unused variables
 

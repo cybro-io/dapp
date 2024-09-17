@@ -2,11 +2,12 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { providers, ethers } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
 import { Maybe, Nullable, Token, Vault } from '@/shared/types';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 interface EthersContextProps {
   provider: Nullable<providers.Provider>;

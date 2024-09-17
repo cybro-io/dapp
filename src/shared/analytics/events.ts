@@ -15,4 +15,9 @@ export enum MixpanelEvent {
   SuccessSwap = 'success_swap',
   ChangeSwapAmount = 'change_swap_amount',
   ChangeSwapAmountPreset = 'change_swap_amount_preset',
+
+  ChangeZapInToken = 'change_zap_in_token',
+  ChangeZapInTokenSuccess = 'change_zap_in_token_success',
+
+  ChangeVaultListStyle = 'change_vault_list_style',
 }

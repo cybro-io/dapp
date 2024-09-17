@@ -1,4 +1,5 @@
 import NiceModal from '@ebay/nice-modal-react';
+import { MaxUint256 } from '@ethersproject/constants';
 import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react/compat';
 import { BigNumber, ethers, utils } from 'ethers';
@@ -9,8 +10,9 @@ import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { $symbiosis } from '@/shared/lib';
 
 import { SwapStatus } from '../helpers/getSwapStatus';
-import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 import { ErrorSwapModal } from '../ui/ErrorSwapModal';
+import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
+
 import { SwapCalculateResult } from './useSwapCalculate';
 
 type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
@@ -62,7 +64,7 @@ const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
     const allowance = (await tokenContract.allowance(from, approveTo)) as BigNumber;
 
     if (allowance.lt(approveAmount)) {
-      const approveResponse = await tokenContract.approve(approveTo, approveAmount);
+      const approveResponse = await tokenContract.approve(approveTo, MaxUint256);
       await approveResponse.wait(1);
     }
 

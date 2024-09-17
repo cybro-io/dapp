@@ -24,7 +24,8 @@
 .tooltipChip {
   transition: all 0.3s ease-in-out;
 
-  &:hover, &.open {
+  &:hover,
+  &.open {
     background-color: $background-accentBold;
 
     color: $text-black-body100;
