@@ -65,6 +65,9 @@ const nextConfig = {
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
+  optimization: {
+    minimize: process.env.DISABLE_MINIMIZE !== "true",
+  },
   compress: false,
 };
 
