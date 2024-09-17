@@ -62,6 +62,10 @@ const nextConfig = {
       },
     ],
   },
+  eslint: {
+    // we run linters separately in CI
+    ignoreDuringBuilds: true,
+  },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
   },
