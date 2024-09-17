@@ -29,7 +29,9 @@ type TransactionHistoryProps = {
 
 const skeletons = [1, 2, 3, 4, 5];
 
-export const TransactionHistory: ComponentWithProps<TransactionHistoryProps> = ({
+export const TransactionHistory: ComponentWithProps<
+  TransactionHistoryProps
+> = ({
   data,
   chainId,
   currentPage,
@@ -51,7 +53,9 @@ export const TransactionHistory: ComponentWithProps<TransactionHistoryProps> = (
     <div className={clsx(styles.root, className)}>
       <ul className={clsx(styles.transactionList, styles[viewType])}>
         {isLoading
-          ? skeletons.map(item => <Skeleton key={item} className="w-full h-16 rounded-lg mb-4" />)
+          ? skeletons.map((item) => (
+              <Skeleton key={item} className="w-full h-16 rounded-lg mb-4" />
+            ))
           : currentTransactions.map((tx, index) => (
               <TransactionHistoryItem
                 transaction={tx}
@@ -63,30 +67,34 @@ export const TransactionHistory: ComponentWithProps<TransactionHistoryProps> = (
               />
             ))}
       </ul>
-      {!isLoading && !data.length && <Text className={styles.emptyText}>No transactions</Text>}
+      {!isLoading && !data.length && (
+        <Text className={styles.emptyText}>No transactions</Text>
+      )}
       {viewType === HistoryViewType.Pagination && isLoading && (
         <Skeleton className="w-full h-12 rounded-lg" />
       )}
-      {viewType === HistoryViewType.Pagination && setCurrentPage && !isLoading && (
-        <div className={styles.paginationContainer}>
-          <IconButton
-            className={clsx(styles.arrowButton, styles.left)}
-            icon={<ArrowIcon />}
-            onClick={() => setCurrentPage(prev => prev - 1)}
-            disabled={currentPage === 1}
-          />
-          <span className={styles.pageInfo}>
-            Page <span className={styles.pageNumber}>{currentPage}</span> of{' '}
-            <span className={styles.pageNumber}>{totalPages || 1}</span>
-          </span>
-          <IconButton
-            className={clsx(styles.arrowButton, styles.right)}
-            icon={<ArrowIcon />}
-            onClick={() => setCurrentPage(prev => prev + 1)}
-            disabled={currentPage === totalPages || totalPages === 0}
-          />
-        </div>
-      )}
+      {viewType === HistoryViewType.Pagination &&
+        setCurrentPage &&
+        !isLoading && (
+          <div className={styles.paginationContainer}>
+            <IconButton
+              className={clsx(styles.arrowButton, styles.left)}
+              icon={<ArrowIcon />}
+              onClick={() => setCurrentPage((prev) => prev - 1)}
+              disabled={currentPage === 1}
+            />
+            <span className={styles.pageInfo}>
+              Page <span className={styles.pageNumber}>{currentPage}</span> of{' '}
+              <span className={styles.pageNumber}>{totalPages || 1}</span>
+            </span>
+            <IconButton
+              className={clsx(styles.arrowButton, styles.right)}
+              icon={<ArrowIcon />}
+              onClick={() => setCurrentPage((prev) => prev + 1)}
+              disabled={currentPage === totalPages || totalPages === 0}
+            />
+          </div>
+        )}
     </div>
   );
 };

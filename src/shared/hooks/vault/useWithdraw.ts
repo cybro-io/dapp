@@ -15,7 +15,11 @@ import {
   Vault,
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
-import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
+import {
+  formatUserMoney,
+  increaseGasLimit,
+  VaultCurrency,
+} from '@/shared/utils';
 
 type UseWithdraw = {
   withdraw: (amount: string) => Promise<void>;
@@ -65,9 +69,16 @@ export const useWithdraw = (
         const provider = new ethers.providers.Web3Provider(walletProvider);
         const signer = provider.getSigner();
 
-        const vault = new ethers.Contract(vaultAddress, vaultContract.interface, signer) as Vault;
+        const vault = new ethers.Contract(
+          vaultAddress,
+          vaultContract.interface,
+          signer,
+        ) as Vault;
 
-        const allowance = (await vault.allowance(address, address)) as BigNumber;
+        const allowance = (await vault.allowance(
+          address,
+          address,
+        )) as BigNumber;
 
         if (allowance.lt(weiAmount)) {
           const approveTx = await vault.approve(address, MaxUint256);
@@ -75,19 +86,29 @@ export const useWithdraw = (
           await approveTx.wait();
         }
 
-        const withdrawEstimatedGas = await vault.estimateGas.redeem(weiAmount, address, address);
+        const withdrawEstimatedGas = await vault.estimateGas.redeem(
+          weiAmount,
+          address,
+          address,
+        );
         const gasLimit = increaseGasLimit(withdrawEstimatedGas, 1.2);
 
-        const withdrawTx = await vault.redeem(weiAmount, address, address, { gasLimit });
+        const withdrawTx = await vault.redeem(weiAmount, address, address, {
+          gasLimit,
+        });
         setButtonMessage('Redeeming...');
         await withdrawTx.wait();
 
-        mutate({ vaultId, data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' } });
+        mutate({
+          vaultId,
+          data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' },
+        });
         Mixpanel.track(MixpanelEvent.WithdrawalSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} withdrawn`,
-          description: 'Check the balance of the wallet connected to the platform.',
+          description:
+            'Check the balance of the wallet connected to the platform.',
         });
       } catch (error: any) {
         triggerToast({
@@ -101,7 +122,16 @@ export const useWithdraw = (
         setButtonMessage(null);
       }
     },
-    [vaultContract, tokenContract, isConnected, address, triggerToast, mutate, vaultId, currency],
+    [
+      vaultContract,
+      tokenContract,
+      isConnected,
+      address,
+      triggerToast,
+      mutate,
+      vaultId,
+      currency,
+    ],
   );
 
   return { withdraw, isLoading, buttonMessage };

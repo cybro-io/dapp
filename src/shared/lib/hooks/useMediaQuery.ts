@@ -6,7 +6,7 @@ type Breakpoint = keyof typeof theme.screens;
 
 const getMediaQuery = () => {
   return Object.fromEntries(
-    Object.keys(theme.screens).map(key => [
+    Object.keys(theme.screens).map((key) => [
       key,
       `(max-width: ${theme.screens[key as Breakpoint]})`,
     ]),

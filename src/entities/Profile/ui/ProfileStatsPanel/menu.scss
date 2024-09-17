@@ -46,7 +46,8 @@
     transform: translateY(-50%);
     width: 14px;
     height: 14px;
-    background: url('../../../../shared/assets/icons/exit.svg') 50% 50% no-repeat;
+    background: url('../../../../shared/assets/icons/exit.svg') 50% 50%
+      no-repeat;
   }
 }
 
@@ -334,7 +335,8 @@
       margin-left: 8px;
       min-width: 14px;
       min-height: 12px;
-      background: url('../../../../shared/assets/icons/double-left-arrow.svg') 50% 50% no-repeat;
+      background: url('../../../../shared/assets/icons/double-left-arrow.svg')
+        50% 50% no-repeat;
       transition: all 0.35s ease;
       pointer-events: none;
     }

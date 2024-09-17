@@ -32,7 +32,9 @@ export const YieldCalculator: ComponentWithProps<YieldCalculatorProps> = ({
   chain,
   className,
 }) => {
-  const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
+  const [activeTab, setActiveTab] = React.useState<any>(
+    YieldSwitchOptions.Deposit,
+  );
 
   return (
     <div className={clsx(styles.root, className)}>

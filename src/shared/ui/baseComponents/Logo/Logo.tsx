@@ -15,7 +15,11 @@ type LogoProps = {
   width?: number;
 };
 
-export const Logo: ComponentWithProps<LogoProps> = ({ height, width, className }) => {
+export const Logo: ComponentWithProps<LogoProps> = ({
+  height,
+  width,
+  className,
+}) => {
   return (
     <Link className={clsx(styles.root, className)} href={'/'}>
       <LogoIcon height={height} width={width} />

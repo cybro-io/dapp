@@ -6,8 +6,13 @@ import { SelectTokenModal } from '@/features/SelectToken';
 export const useSelectTokenModal = () => {
   const modalSelectToken = NiceModal.useModal(SelectTokenModal);
 
-  const openModal = (selectedTokenId: string, callback: (token: Token) => void) => {
-    modalSelectToken.show({ selectedTokenId }).then(token => callback(token as Token));
+  const openModal = (
+    selectedTokenId: string,
+    callback: (token: Token) => void,
+  ) => {
+    modalSelectToken
+      .show({ selectedTokenId })
+      .then((token) => callback(token as Token));
   };
 
   return { openModal };

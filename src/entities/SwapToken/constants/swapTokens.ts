@@ -12,5 +12,6 @@ interface TokenData {
 }
 
 export const swapTokens = (tokens as TokenData[]).map(
-  ({ logoURI, ...restToken }) => new Token({ ...restToken, icons: { small: logoURI } }),
+  ({ logoURI, ...restToken }) =>
+    new Token({ ...restToken, icons: { small: logoURI } }),
 );

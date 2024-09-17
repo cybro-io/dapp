@@ -2,10 +2,10 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import Image from 'next/image';
 import { Token } from 'symbiosis-js-sdk';
 
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { DropdownButton, Text, TextView } from '@/shared/ui';
 
 import { Balance } from './Balance';
@@ -44,7 +44,12 @@ export const SwapTokenCard = ({
           <SwapTokenCard.Balance>{balance}</SwapTokenCard.Balance>
         </div>
         <div className={styles.content}>
-          <Image src={token.icons?.small ?? ''} width={32} height={32} alt={token.name ?? ''} />
+          <Image
+            src={token.icons?.small ?? ''}
+            width={32}
+            height={32}
+            alt={token.name ?? ''}
+          />
           <div className="flex flex-col gap-px">
             <Text textView={TextView.BU1}>{token.symbol}</Text>
             <div className="inline-flex gap-[5px] items-center">

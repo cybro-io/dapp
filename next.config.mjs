@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  webpack: config => {
+  webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
 
     config.module.rules.push({
@@ -66,7 +66,7 @@ const nextConfig = {
     removeConsole: process.env.NODE_ENV === 'production',
   },
   optimization: {
-    minimize: process.env.DISABLE_MINIMIZE !== "true",
+    minimize: process.env.DISABLE_MINIMIZE !== 'true',
   },
   compress: false,
 };

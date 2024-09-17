@@ -33,7 +33,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <p className={styles.sectionHeading}>Follow us</p>
           <ul className={clsx(styles.sectionList)}>
             <li className={clsx(styles.socialItem, styles.sectionItem)}>
-              <Link className={styles.socialLink} href="https://x.com/Cybro_io" target="_blank">
+              <Link
+                className={styles.socialLink}
+                href="https://x.com/Cybro_io"
+                target="_blank"
+              >
                 <TwitterIcon />
                 <span>Twitter</span>
               </Link>
@@ -49,7 +53,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
               </Link>
             </li>
             <li className={clsx(styles.socialItem, styles.sectionItem)}>
-              <Link className={styles.socialLink} href="https://t.me/cybro_io" target="_blank">
+              <Link
+                className={styles.socialLink}
+                href="https://t.me/cybro_io"
+                target="_blank"
+              >
                 <TelegramIcon />
                 <span>Telegram</span>
               </Link>
@@ -60,7 +68,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
           <p className={styles.sectionHeading}>Legal</p>
           <ul className={clsx(styles.sectionList)}>
             <li className={styles.sectionItem}>
-              <a href={'/Cybro Blast L2 Terms.pdf'} target="_blank" rel="noreferrer">
+              <a
+                href={'/Cybro Blast L2 Terms.pdf'}
+                target="_blank"
+                rel="noreferrer"
+              >
                 Terms and Conditions
               </a>
             </li>

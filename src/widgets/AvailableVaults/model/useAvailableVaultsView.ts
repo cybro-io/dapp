@@ -10,10 +10,11 @@ import { AvailableVaultsViewType } from './types';
 const AVAILABLE_VAULTS_VIEW_KEY = 'availableVaultsView';
 
 export const useAvailableVaultsView = () => {
-  const [viewType, setAvailableVaultsView] = useLocalStorage<AvailableVaultsViewType>(
-    AVAILABLE_VAULTS_VIEW_KEY,
-    AvailableVaultsViewType.Table,
-  );
+  const [viewType, setAvailableVaultsView] =
+    useLocalStorage<AvailableVaultsViewType>(
+      AVAILABLE_VAULTS_VIEW_KEY,
+      AvailableVaultsViewType.Table,
+    );
 
   const isLessThanLargeScreen = useMediaQuery('2lg');
 
@@ -22,5 +23,8 @@ export const useAvailableVaultsView = () => {
     Mixpanel.track(MixpanelEvent.ChangeVaultListStyle, { viewType });
   };
 
-  return { viewType: isLessThanLargeScreen ? AvailableVaultsViewType.Card : viewType, setViewType };
+  return {
+    viewType: isLessThanLargeScreen ? AvailableVaultsViewType.Card : viewType,
+    setViewType,
+  };
 };

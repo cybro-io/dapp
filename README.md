@@ -144,10 +144,10 @@ const onChange = (name: string) => ...;
 
 ```ts
 // bad
-const dates = products.map(el => el.date);
+const dates = products.map((el) => el.date);
 
 // good
-const dates = products.map(product => product.date);
+const dates = products.map((product) => product.date);
 ```
 
 #### 1.3. Use verbs such as **is**, **has** or **can** as prefix to name boolean variables

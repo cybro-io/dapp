@@ -5,7 +5,7 @@ import { fileURLToPath } from 'url';
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
-const ensureDirectoryExistence = filePath => {
+const ensureDirectoryExistence = (filePath) => {
   const dirname = path.dirname(filePath);
   if (fs.existsSync(dirname)) {
     return true;
@@ -22,8 +22,8 @@ const generateIndex = () => {
   ensureDirectoryExistence(indexPath);
 
   const exports = folders
-    .filter(folder => fs.existsSync(path.resolve(generatedDir, folder)))
-    .map(folder => {
+    .filter((folder) => fs.existsSync(path.resolve(generatedDir, folder)))
+    .map((folder) => {
       if (folder === 'api') {
         return `export * from './${folder}/fastAPI';`;
       }
@@ -39,12 +39,16 @@ const generateIndex = () => {
   const mainIndexExport = "export * from './__generated';\n";
 
   if (fs.existsSync(mainIndexPath)) {
-    const mainIndexContent = fs.readFileSync(mainIndexPath, { encoding: 'utf-8' });
+    const mainIndexContent = fs.readFileSync(mainIndexPath, {
+      encoding: 'utf-8',
+    });
     if (!mainIndexContent.includes(mainIndexExport)) {
       fs.appendFileSync(mainIndexPath, mainIndexExport);
       console.log('Appended export statement to src/shared/types/index.ts.');
     } else {
-      console.log('Export statement already exists in src/shared/types/index.ts.');
+      console.log(
+        'Export statement already exists in src/shared/types/index.ts.',
+      );
     }
   } else {
     ensureDirectoryExistence(mainIndexPath);

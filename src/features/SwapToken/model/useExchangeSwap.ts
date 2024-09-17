@@ -1,12 +1,17 @@
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { utils } from 'ethers';
-import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
+import {
+  ChainId,
+  getTokenAmountUsd,
+  getTokenPriceUsd,
+  TokenAmount,
+} from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
 import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
@@ -19,19 +24,27 @@ export const useExchangeSwap = () => {
   const { tokens } = useSwapTokens();
   const calculateParams = useSwapCalculate();
 
-  const { fetchCalculateSwap, error, calculate, isLoadingCalculate, resetCalculate } =
-    calculateParams;
+  const {
+    fetchCalculateSwap,
+    error,
+    calculate,
+    isLoadingCalculate,
+    resetCalculate,
+  } = calculateParams;
 
   const { swap, isLoadingSwap, subscribeSuccessSwap } = useSwap();
 
   const form = useExchangeSwapForm({
     initialTokenIn:
       tokens.find(
-        ({ symbol, chainId }) => symbol === 'USDB' && chainId === ChainId.BLAST_MAINNET,
+        ({ symbol, chainId }) =>
+          symbol === 'USDB' && chainId === ChainId.BLAST_MAINNET,
       ) ?? tokens[0],
     initialTokenOut:
-      tokens.find(({ symbol, chainId }) => symbol === 'ETH' && chainId === ChainId.BLAST_MAINNET) ??
-      tokens[0],
+      tokens.find(
+        ({ symbol, chainId }) =>
+          symbol === 'ETH' && chainId === ChainId.BLAST_MAINNET,
+      ) ?? tokens[0],
     onCalculate: () => handleCalculateSwap(),
     onSubmit: async () => {
       if (error || !calculate) return;
@@ -42,8 +55,16 @@ export const useExchangeSwap = () => {
     },
   });
 
-  const { slippage, deadline, tokenIn, tokenOut, amountIn, amountOut, priceOutUsd, priceInUsd } =
-    form.values;
+  const {
+    slippage,
+    deadline,
+    tokenIn,
+    tokenOut,
+    amountIn,
+    amountOut,
+    priceOutUsd,
+    priceInUsd,
+  } = form.values;
 
   // Amount usd from
   const amountInUsd = React.useMemo(() => {
@@ -87,7 +108,7 @@ export const useExchangeSwap = () => {
       amount: String(form.debouncedAmountIn),
       slippage,
       deadline,
-    }).then(data => {
+    }).then((data) => {
       if (typeof data !== 'string') {
         form.setAmountOut(data.calculate.tokenAmountOut.toSignificant() ?? '0');
       }
@@ -95,24 +116,31 @@ export const useExchangeSwap = () => {
   };
 
   React.useEffect(() => {
-    getTokenPriceUsd(tokenOut).then(form.setPriceOutUsd).catch(form.setPriceOutUsd);
-    getTokenPriceUsd(tokenIn).then(form.setPriceInUsd).catch(form.setPriceInUsd);
+    getTokenPriceUsd(tokenOut)
+      .then(form.setPriceOutUsd)
+      .catch(form.setPriceOutUsd);
+    getTokenPriceUsd(tokenIn)
+      .then(form.setPriceInUsd)
+      .catch(form.setPriceInUsd);
 
-    const subscription = subscribeSuccessSwap(({ tokenAmountOut, tokenAmountIn }) => {
-      NiceModal.show(SuccessSwapModal, {
-        sentSymbol: tokenAmountIn.token.symbol,
-        sentAmount: tokenAmountIn.toSignificant(),
-        receivedSymbol: tokenAmountOut.token.symbol,
-        receivedAmount: tokenAmountOut.toSignificant(),
-      }).then();
-    });
+    const subscription = subscribeSuccessSwap(
+      ({ tokenAmountOut, tokenAmountIn }) => {
+        NiceModal.show(SuccessSwapModal, {
+          sentSymbol: tokenAmountIn.token.symbol,
+          sentAmount: tokenAmountIn.toSignificant(),
+          receivedSymbol: tokenAmountOut.token.symbol,
+          receivedAmount: tokenAmountOut.toSignificant(),
+        }).then();
+      },
+    );
 
     return () => {
       subscription.unsubscribe();
     };
   }, []);
 
-  const isDisabledSubmit = isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);
+  const isDisabledSubmit =
+    isLoadingCalculate || isLoadingSwap || !form.isValid || Boolean(error);
   const isDisabledInputValue = isLoadingCalculate || isLoadingSwap;
 
   return {

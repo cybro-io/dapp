@@ -21,12 +21,20 @@ type BalanceContextProps = {
   ) => void;
 };
 
-const BalanceContext = React.createContext<BalanceContextProps | undefined>(undefined);
+const BalanceContext = React.createContext<BalanceContextProps | undefined>(
+  undefined,
+);
 
-export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const [balance, setBalance] = React.useState<Record<string, Money>>({});
-  const [vaultDeposit, setVaultDeposit] = React.useState<Record<string, Money>>({});
-  const [vaultDepositUsd, setVaultDepositUsd] = React.useState<Record<string, Money>>({});
+  const [vaultDeposit, setVaultDeposit] = React.useState<Record<string, Money>>(
+    {},
+  );
+  const [vaultDepositUsd, setVaultDepositUsd] = React.useState<
+    Record<string, Money>
+  >({});
 
   const getUserBalance = React.useCallback(
     async (
@@ -53,7 +61,7 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
           decimals = await tokenContract.decimals();
         }
 
-        setBalance(prevBalance => ({
+        setBalance((prevBalance) => ({
           ...prevBalance,
           [tokenAddress]: fromWei(balance, Number(decimals)),
         }));
@@ -81,14 +89,17 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
         const availableFundsTokens = availableFunds
           ? userTotalShares.mul(sharePrice).div(BigInt(10 ** decimals))
           : 0;
-        const availableFundsUsd = convertToUsd(fromWei(availableFundsTokens, decimals), tokenPrice);
+        const availableFundsUsd = convertToUsd(
+          fromWei(availableFundsTokens, decimals),
+          tokenPrice,
+        );
 
-        setVaultDeposit(prevState => ({
+        setVaultDeposit((prevState) => ({
           ...prevState,
           [vaultAddress]: availableFunds,
         }));
 
-        setVaultDepositUsd(prevState => ({
+        setVaultDepositUsd((prevState) => ({
           ...prevState,
           [vaultAddress]: availableFundsUsd,
         }));
@@ -116,7 +127,11 @@ export const BalanceProvider: React.FC<{ children: React.ReactNode }> = ({ child
     [balance, refetchBalance, vaultDeposit, vaultDepositUsd],
   );
 
-  return <BalanceContext.Provider value={contextValue}>{children}</BalanceContext.Provider>;
+  return (
+    <BalanceContext.Provider value={contextValue}>
+      {children}
+    </BalanceContext.Provider>
+  );
 };
 
 export const useBalanceContext = (): BalanceContextProps => {

@@ -6,7 +6,9 @@ export const useAuthWallet = () => {
   });
 
   const authWallet = async (address: string, chainId: number) =>
-    mutateAsync({ address, params: { chain_id: chainId } }).catch(console.error);
+    mutateAsync({ address, params: { chain_id: chainId } }).catch(
+      console.error,
+    );
 
   return { authWallet };
 };
