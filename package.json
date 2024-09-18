@@ -7,15 +7,15 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint",
-    "lint:css": "stylelint '**/*.scss'",
     "linter": "eslint '{**/*,*}.{js,ts,jsx,tsx}'",
     "linter:fix": "eslint --fix '{**/*,*}.{js,ts,jsx,tsx}'",
+    "stylelint": "stylelint '**/*.scss'",
+    "stylelint:fix": "stylelint '**/*.scss' --fix",
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "lint:staged": "lint-staged",
     "lint:all": "npm run lint:css && npm run prettier:fix && npm run linter:fix",
-    "test": "npm run prettier && npm run linter",
+    "test": "npm run prettier && npm run linter && npm run stylelint",
     "codegen-sc": "typechain --target ethers-v5 --out-dir src/shared/types/__generated/contracts './src/app/abi/*.json'",
     "codegen-api": "npx orval",
     "generate-index": "node src/shared/script/generate-index.mjs",
@@ -28,7 +28,8 @@
     "*.{js,ts,jsx,tsx}": [
       "prettier --write",
       "eslint --fix"
-    ]
+    ],
+    "*.{scss}": "prettier-stylelint --write"
   },
   "dependencies": {
     "@ebay/nice-modal-react": "^1.2.13",
@@ -91,12 +92,13 @@
     "husky": "^9.1.6",
     "lint-staged": "^15.2.10",
     "orval": "^6.30.2",
-    "prettier": "^3.2.5",
+    "prettier": "^3.3.3",
     "recharts": "^2.12.7",
     "sass": "^1.77.0",
     "stylelint": "^16.5.0",
     "stylelint-config-standard": "^36.0.0",
     "stylelint-order": "^6.0.4",
+    "stylelint-prettier": "^5.0.2",
     "stylelint-scss": "^6.3.0",
     "ts-node": "^10.9.2",
     "typechain": "^8.3.2",
