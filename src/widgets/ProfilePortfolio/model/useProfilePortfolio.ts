@@ -18,7 +18,7 @@ export const useProfilePortfolio = () => {
   );
 
   const fields = [
-    { label: 'Total Deposit', value: data?.your_deposit ?? '' },
+    { label: 'Valuation', value: data?.your_deposit ?? '' },
     { label: 'APY', value: `${(Number(data?.apy) * 100).toFixed(2)}%` },
     { label: 'Monthly Yield', value: data?.accrued_yield ?? '' },
   ];
