@@ -1,3 +1,5 @@
+'use client';
+
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
@@ -6,21 +8,46 @@ import InOutShadowIcon from '@/shared/assets/icons/in-out-shadow.svg';
 import { Button, ButtonView, Heading, Modal } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
-type SuccessSwapModalProps = {
+type SentSuccessModalProps = {
+  title?: string;
   sentSymbol: string;
   sentAmount: string;
   receivedSymbol: string;
   receivedAmount: string;
-  link: string;
+
+  onPrimaryAction?: () => void;
+  onSecondaryAction?: () => void;
+  secondaryActionName?: string;
+  primaryActionName?: string;
 };
 
-export const SuccessSwapModal = NiceModal.create(
-  ({ receivedSymbol, sentSymbol, receivedAmount, sentAmount, link }: SuccessSwapModalProps) => {
+export const SentSuccessModal = NiceModal.create(
+  ({
+    title,
+    receivedSymbol,
+    sentSymbol,
+    receivedAmount,
+    sentAmount,
+    primaryActionName,
+    secondaryActionName,
+    onSecondaryAction,
+    onPrimaryAction,
+  }: SentSuccessModalProps) => {
     const currentModal = NiceModal.useModal();
+
+    const handlePrimary = () => {
+      currentModal.remove();
+      onPrimaryAction?.();
+    };
+
+    const handleSecondary = () => {
+      currentModal.remove();
+      onSecondaryAction?.();
+    };
 
     return (
       <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
-        <Modal.Header>Swap</Modal.Header>
+        <Modal.Header>{title || 'Sent'}</Modal.Header>
         <div
           className={
             'pointer-events-none absolute bg-[url("/SwapSuccesBg.png")] bg-cover w-[375px] h-[199px] top-[64px]'
@@ -43,10 +70,12 @@ export const SuccessSwapModal = NiceModal.create(
             <Heading>received</Heading>
           </div>
           <div className="mt-6 flex flex-col gap-2">
-            <Button view={ButtonView.Secondary} onClick={() => window.open(link, '_blank')}>
-              Explore transaction
-            </Button>
-            <Button onClick={() => currentModal.remove()}>To home page</Button>
+            {secondaryActionName && (
+              <Button view={ButtonView.Secondary} onClick={handleSecondary}>
+                {secondaryActionName}
+              </Button>
+            )}
+            {primaryActionName && <Button onClick={handlePrimary}>{primaryActionName}</Button>}
           </div>
         </Modal.Body>
       </Modal>

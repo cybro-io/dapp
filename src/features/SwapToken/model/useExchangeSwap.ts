@@ -1,12 +1,12 @@
 import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { utils } from 'ethers';
 import { ChainId, getTokenAmountUsd, getTokenPriceUsd, TokenAmount } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
-import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
+import { useWeb3ModalAccount } from '@/shared/lib';
+import { SentSuccessModal } from '@/shared/ui';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
@@ -99,11 +99,13 @@ export const useExchangeSwap = () => {
     getTokenPriceUsd(tokenIn).then(form.setPriceInUsd).catch(form.setPriceInUsd);
 
     const subscription = subscribeSuccessSwap(({ tokenAmountOut, tokenAmountIn }) => {
-      NiceModal.show(SuccessSwapModal, {
+      NiceModal.show(SentSuccessModal, {
         sentSymbol: tokenAmountIn.token.symbol,
         sentAmount: tokenAmountIn.toSignificant(),
         receivedSymbol: tokenAmountOut.token.symbol,
         receivedAmount: tokenAmountOut.toSignificant(),
+        primaryActionName: 'To home page',
+        title: 'Swap',
       }).then();
     });
 

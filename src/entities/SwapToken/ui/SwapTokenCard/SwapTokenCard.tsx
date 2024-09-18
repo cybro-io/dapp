@@ -2,81 +2,95 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import Image from 'next/image';
-import { Token } from 'symbiosis-js-sdk';
 
 import { DropdownButton, Text, TextView } from '@/shared/ui';
 
 import { Balance } from './Balance';
 import styles from './SwapTokenCard.module.scss';
 import { Title } from './Title';
+import { Skeleton } from '@nextui-org/react';
 
 export type SwapTokenCardProps = React.PropsWithChildren & {
-  token: Token | null;
-  onSelectTokenClick: () => void;
+  tokenName?: string;
+  tokenIcon?: string;
+  chainName?: string;
+  chainIcon?: string;
+
+  onActionClick: () => void;
   title?: React.ReactNode;
-  balance: React.ReactNode;
+  balance?: React.ReactNode;
   footer?: React.ReactNode;
   isDisabled?: boolean;
+  actionName?: string;
+  isShowFooter?: boolean;
 };
 
 export const SwapTokenCard = ({
   title,
-  token,
   balance,
-  onSelectTokenClick,
+  onActionClick,
   children,
   footer,
   isDisabled,
+  actionName = 'Change token',
+  isShowFooter,
+  tokenIcon,
+  tokenName,
+  chainIcon,
+  chainName,
 }: SwapTokenCardProps) => {
-  const { address } = useWeb3ModalAccount();
-
-  if (!token) {
-    return null;
-  }
-
   return (
     <div className={styles.container}>
-      <div className={styles.tokenCard} onClick={onSelectTokenClick}>
+      <div className={styles.tokenCard} onClick={onActionClick}>
         <div className={styles.header}>
           <SwapTokenCard.Title title={title} />
           <SwapTokenCard.Balance>{balance}</SwapTokenCard.Balance>
         </div>
         <div className={styles.content}>
-          <Image src={token.icons?.small ?? ''} width={32} height={32} alt={token.name ?? ''} />
-          <div className="flex flex-col gap-px">
-            <Text textView={TextView.BU1}>{token.symbol}</Text>
-            <div className="inline-flex gap-[5px] items-center">
-              <Image
-                className="rounded-full"
-                src={token.chain?.icons?.small ?? ''}
-                width={14}
-                height={14}
-                alt={token.chain?.name ?? ''}
-              />
+          <Skeleton isLoaded={Boolean(tokenIcon)} classNames={{ base: 'rounded-full' }}>
+            <Image src={tokenIcon!} width={32} height={32} alt={tokenName!} />
+          </Skeleton>
 
-              <Text textView={TextView.C4} className="opacity-40">
-                On {token.chain?.name}
-              </Text>
-            </div>
+          <div className="flex flex-col gap-px">
+            <Skeleton isLoaded={Boolean(tokenName)} classNames={{ base: 'rounded-lg' }}>
+              <Text textView={TextView.BU1}>{tokenName ?? 'Token'}</Text>
+            </Skeleton>
+            {chainIcon && chainName && (
+              <div className="inline-flex gap-[5px] items-center">
+                <Image
+                  className="rounded-full"
+                  src={chainIcon}
+                  width={14}
+                  height={14}
+                  alt={chainName}
+                />
+
+                <Text textView={TextView.C4} className="opacity-40">
+                  On {chainName}
+                </Text>
+              </div>
+            )}
           </div>
         </div>
         <DropdownButton
           className="w-fit absolute right-4 -bottom-4"
           type="button"
-          onClick={onSelectTokenClick}
+          onClick={onActionClick}
           disabled={isDisabled}
         >
-          Change token
+          {actionName}
         </DropdownButton>
       </div>
 
       <div className="px-4">{children}</div>
 
-      {address && <div className="h-divider bg-stroke-tableBorder" />}
-
-      {address && <div className="px-4">{footer}</div>}
+      {isShowFooter && footer && (
+        <React.Fragment>
+          <div className="h-divider bg-stroke-tableBorder" />
+          <div className="px-4">{footer}</div>
+        </React.Fragment>
+      )}
     </div>
   );
 };

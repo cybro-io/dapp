@@ -8,9 +8,9 @@ import TOKEN from '@/app/abi/token.json';
 import { web3Modal } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { $symbiosis } from '@/shared/lib';
+import { UnknownSwapModal } from '@/shared/ui';
 
 import { SwapStatus } from '../helpers/getSwapStatus';
-import { ErrorSwapModal } from '../ui/ErrorSwapModal';
 import { WaitForCompleteModal } from '../ui/WaitForCompleteModal';
 
 import { SwapCalculateResult } from './useSwapCalculate';
@@ -101,7 +101,11 @@ const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
 swapFx.fail.watch(({ error }) => {
   console.error('Swap failed:', error);
   NiceModal.remove(WaitForCompleteModal);
-  NiceModal.show(ErrorSwapModal).then();
+  NiceModal.show(UnknownSwapModal, {
+    title: 'Swap',
+    primaryActionName: 'Try again',
+    secondaryActionName: 'To home page',
+  }).then();
 });
 
 sample({
