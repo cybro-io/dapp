@@ -22,7 +22,6 @@ import YieldIcon from '../assets/icons/yield.svg';
 
 import styles from './DashboardInfo.module.scss';
 
-
 type DashboardInfoProps = {};
 
 export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({

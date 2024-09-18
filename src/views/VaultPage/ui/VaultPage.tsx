@@ -7,7 +7,6 @@ import { providers } from 'ethers';
 import Image from 'next/image';
 import Link from 'next/link';
 
-
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
 import CircleIcon from '@/entities/VaultChips/assets/icons/base-icon.svg';
@@ -38,7 +37,6 @@ import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
 import styles from './VaultPage.module.scss';
-
 
 type DashboardPageProps = {
   vaultId: number;

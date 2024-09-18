@@ -8,8 +8,6 @@ import Link from 'next/link';
 import LogoIcon from '@/shared/assets/icons/logo.svg';
 import { ComponentWithProps } from '@/shared/types';
 
-import styles from './Logo.module.scss';
-
 type LogoProps = {
   height?: number;
   width?: number;

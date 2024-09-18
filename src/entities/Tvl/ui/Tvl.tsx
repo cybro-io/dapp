@@ -8,8 +8,6 @@ import { ComponentWithProps, useGetTvlApiV1CommonTvlGet } from '@/shared/types';
 import { Chip, ChipViewType, TvlSkeleton } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
-import styles from './Tvl.module.scss';
-
 type TvlProps = {};
 
 export const Tvl: ComponentWithProps<TvlProps> = ({ className }) => {

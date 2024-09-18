@@ -1,6 +1,5 @@
 import React from 'react';
 
-
 import { useBalanceContext, useEthers } from '@/app/providers';
 import { QueryKey } from '@/shared/const';
 import { useWeb3ModalAccount } from '@/shared/lib';
