@@ -19,8 +19,8 @@
     font-size: 62px;
     font-weight: 600;
     line-height: 120%;
-    text-transform: uppercase;
     text-align: center;
+    text-transform: uppercase;
   }
 
   .headingBackground {
@@ -39,16 +39,16 @@
     position: relative;
 
     &::before {
-      content: '';
       position: absolute;
-      width: 411px;
-      height: 113px;
       right: 0;
       left: 0;
+      width: 411px;
+      height: 113px;
       margin: 0 auto;
       background-color: $text-accent-logoYellow;
       opacity: 0.2;
       filter: blur(65px);
+      content: '';
     }
   }
 }

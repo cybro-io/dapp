@@ -6,18 +6,18 @@
 }
 
 .chip.chip {
+  display: flex;
   font-family: $poppins-font;
   font-size: 13px;
   font-weight: 500;
   line-height: 130%;
   text-transform: initial;
-  display: flex;
   align-items: center;
 }
 
 .infoChip {
-  height: 28px;
   width: 28px;
+  height: 28px;
   justify-content: center;
 }
 
@@ -26,9 +26,8 @@
 
   &:hover,
   &.open {
-    background-color: $background-accentBold;
-
     color: $text-black-body100;
+    background-color: $background-accentBold;
 
     svg {
       fill: $text-black-body100;
@@ -37,8 +36,8 @@
 }
 
 .tooltipContainer {
-  border-radius: 20px;
   padding: 16px;
   background-color: $background-tooltip;
+  border-radius: 20px;
   backdrop-filter: blur(32.5px);
 }
