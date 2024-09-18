@@ -29,14 +29,14 @@ module.exports = {
     ],
     'order/order': ['custom-properties', 'declarations'],
     'order/properties-order': [
-      '/* Positioning */',
+      // Positioning
       'position',
       'top',
       'right',
       'bottom',
       'left',
       'z-index',
-      '/* Display & Box Model */',
+      // Display & Box Model
       'display',
       'flex',
       'flex-basis',
@@ -76,7 +76,7 @@ module.exports = {
       'padding-right',
       'padding-bottom',
       'padding-left',
-      '/* Typography */',
+      // Typography
       'font-family',
       'font-size',
       'font-smoothing',
@@ -95,7 +95,7 @@ module.exports = {
       'word-break',
       'word-spacing',
       'word-wrap',
-      '/* Visual */',
+      // Visual
       'color',
       'background',
       'background-color',
@@ -136,7 +136,7 @@ module.exports = {
       'overflow',
       'overflow-x',
       'overflow-y',
-      '/* Misc */',
+      // Misc
       'transition',
       'animation',
       'transform',
