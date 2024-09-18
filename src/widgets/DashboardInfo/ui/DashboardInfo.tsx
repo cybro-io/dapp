@@ -64,7 +64,7 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
       <div className={styles.mobile}>
         <InfoBox
           icon={<DepositIcon />}
-          title={'Your deposit'}
+          title={'Portfolio valuation'}
           value={`$${formatUserMoney(statsData?.your_deposit)}`}
           isLoading={isLoading}
         />
@@ -87,7 +87,7 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({ classNam
       <div className={styles.desktop}>
         <InfoBox
           icon={<DepositIcon />}
-          title={'Your deposit'}
+          title={'Portfolio valuation'}
           value={`$${formatUserMoney(statsData?.your_deposit)}`}
           viewType={InfoBoxViewType.Desktop}
           isLoading={isLoading}
