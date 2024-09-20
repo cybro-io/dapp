@@ -10,6 +10,7 @@ module.exports = {
         ignoreAtRules: ['tailwind'],
       },
     ],
+    'import-notation': 'string',
     // TODO check and remove offs
     'no-descending-specificity': null,
     'selector-class-pattern': null,
