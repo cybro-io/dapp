@@ -14,7 +14,7 @@
     "prettier": "prettier --check .",
     "prettier:fix": "prettier --write .",
     "lint:staged": "lint-staged",
-    "lint:all": "npm run lint:css && npm run prettier:fix && npm run linter:fix",
+    "lint:all": "npm run linter:fix && npm run prettier:fix && npm run stylelint:fix",
     "test": "npm run prettier && npm run linter && npm run stylelint",
     "codegen-sc": "typechain --target ethers-v5 --out-dir src/shared/types/__generated/contracts './src/app/abi/*.json'",
     "codegen-api": "npx orval",
