@@ -7,7 +7,9 @@ export const ExchangeDivider = () => {
   return (
     <div className="h-11 w-full relative flex items-center">
       <div
-        className={'bg-[url("/RectBg.svg")] h-[31px] bg-repeat bg-left bg-[length:27px] flex-1'}
+        className={
+          'bg-[url("/RectBg.svg")] h-[31px] bg-repeat bg-left bg-[length:27px] flex-1'
+        }
       />
       <div className="absolute inset-0 flex justify-center items-center">
         <InOutIcon className="text-text-accent-logoYellow" />

@@ -17,7 +17,10 @@ type VaultChipsProps = {
   badges: BadgeVaultsResponseData[];
 };
 
-export const VaultChips: ComponentWithProps<VaultChipsProps> = ({ badges, className }) => {
+export const VaultChips: ComponentWithProps<VaultChipsProps> = ({
+  badges,
+  className,
+}) => {
   const [isTooltipOpen, setIsTooltipOpen] = React.useState(false);
   const chipsLength = badges.length;
   const notVisibleChipsLength = chipsLength - 3;
@@ -27,14 +30,14 @@ export const VaultChips: ComponentWithProps<VaultChipsProps> = ({ badges, classN
     event?.preventDefault();
     event?.stopPropagation();
 
-    setIsTooltipOpen(prevState => !prevState);
+    setIsTooltipOpen((prevState) => !prevState);
   };
 
   return (
     <div className={clsx(styles.root, className)}>
       {!!chipsLength && (
         <React.Fragment>
-          {badges.slice(0, 3).map(badge => (
+          {badges.slice(0, 3).map((badge) => (
             <Chip className={styles.chip} key={badge.name}>
               {badge.icon ? (
                 <Image src={badge.icon} height={20} width={20} alt={''} />

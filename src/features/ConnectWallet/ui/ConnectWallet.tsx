@@ -10,8 +10,6 @@ import { Button, ButtonSize, ButtonView } from '@/shared/ui';
 
 import { useConnectWallet } from '../model/useConnectWallet';
 
-import styles from './ConnectWallet.module.scss';
-
 type ConnectWalletProps = {
   whenConnectedComponent?: React.ReactNode;
   buttonSize?: ButtonSize;

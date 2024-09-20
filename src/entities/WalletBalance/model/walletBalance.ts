@@ -2,30 +2,39 @@ import { createEffect, createEvent, createStore, sample } from 'effector';
 import { useUnit } from 'effector-react';
 import { ChainId, isBtc, isTronChainId, Token } from 'symbiosis-js-sdk';
 
-import { $symbiosis, getEthGasBalanceByChain, getEthTokensBalanceByChain } from '@/shared/lib';
+import {
+  $symbiosis,
+  getEthGasBalanceByChain,
+  getEthTokensBalanceByChain,
+} from '@/shared/lib';
 
 type GetWalletBalancesProps = {
   address: string;
   tokens: Token[];
 };
 
-export const $walletBalances = createStore<Map<ChainId, Record<string, string>>>(
-  new Map<ChainId, Record<string, string>>(),
-);
+export const $walletBalances = createStore<
+  Map<ChainId, Record<string, string>>
+>(new Map<ChainId, Record<string, string>>());
 
 const getWalletBalances = createEvent<GetWalletBalancesProps>();
 
-const getWalletBalancesFunc = async ({ address, tokens }: GetWalletBalancesProps) => {
+const getWalletBalancesFunc = async ({
+  address,
+  tokens,
+}: GetWalletBalancesProps) => {
   try {
     const symbiosis = $symbiosis.getState();
 
-    const chains = symbiosis.chains().filter(chain => !isBtc(chain.id) && !isTronChainId(chain.id));
+    const chains = symbiosis
+      .chains()
+      .filter((chain) => !isBtc(chain.id) && !isTronChainId(chain.id));
 
-    const promises = chains.map(chain =>
+    const promises = chains.map((chain) =>
       getEthTokensBalanceByChain(
         chain.id,
         address,
-        tokens.filter(token => token.chainId === chain.id && token.address),
+        tokens.filter((token) => token.chainId === chain.id && token.address),
       ),
     );
 
@@ -33,7 +42,7 @@ const getWalletBalancesFunc = async ({ address, tokens }: GetWalletBalancesProps
 
     const map = new Map<ChainId, Record<string, string>>();
 
-    balances.forEach(balance => {
+    balances.forEach((balance) => {
       Object.entries(balance).forEach(([key, value]) => {
         map.set(Number(key) as unknown as ChainId, value);
       });

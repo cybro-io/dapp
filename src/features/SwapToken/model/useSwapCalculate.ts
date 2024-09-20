@@ -1,7 +1,12 @@
 import React from 'react';
 
 import { utils } from 'ethers';
-import { Token, TokenAmount, SwapExactInResult, SwapExactInParams } from 'symbiosis-js-sdk';
+import {
+  Token,
+  TokenAmount,
+  SwapExactInResult,
+  SwapExactInParams,
+} from 'symbiosis-js-sdk';
 
 import { useSymbiosis } from '@/shared/lib';
 
@@ -37,7 +42,7 @@ export const useSwapCalculate = () => {
   });
 
   const setCalculateDataWithPrev = (props: Partial<SwapCalculateData>) =>
-    setCalculateData(prevState => ({ ...prevState, ...props }));
+    setCalculateData((prevState) => ({ ...prevState, ...props }));
 
   const resetCalculate = (props: Partial<SwapCalculateData>) =>
     setCalculateData({

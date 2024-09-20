@@ -1,9 +1,9 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { utils } from 'ethers';
 
 import { QueryKey } from '@/shared/const';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Maybe,
   Money,
@@ -52,7 +52,9 @@ export const useWithdrawCalculator = (
 
     const weiAmountToWithdraw = utils.parseUnits(amountToWithdraw, decimals);
     // todo: check calculation, after change logic
-    const weiYourWithdraw = weiAmountToWithdraw.mul(sharePrice).div(BigInt(10 ** decimals));
+    const weiYourWithdraw = weiAmountToWithdraw
+      .mul(sharePrice)
+      .div(BigInt(10 ** decimals));
 
     const yourWithdrawTokens = fromWei(weiYourWithdraw, decimals);
     const yourWithdrawUsd = convertToUsd(yourWithdrawTokens, tokenPrice);

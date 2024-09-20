@@ -12,43 +12,43 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from 'ethers';
+import type { FunctionFragment, Result } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-} from "./common";
+} from './common';
 
 export interface TokenInterface extends utils.Interface {
   functions: {
-    "balanceOf(address)": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "approve(address,uint256)": FunctionFragment;
-    "allowance(address,address)": FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'approve(address,uint256)': FunctionFragment;
+    'allowance(address,address)': FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "balanceOf" | "decimals" | "approve" | "allowance"
+    nameOrSignatureOrTopic: 'balanceOf' | 'decimals' | 'approve' | 'allowance',
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "approve",
-    values: [string, BigNumberish]
+    functionFragment: 'approve',
+    values: [string, BigNumberish],
   ): string;
   encodeFunctionData(
-    functionFragment: "allowance",
-    values: [string, string]
+    functionFragment: 'allowance',
+    values: [string, string],
   ): string;
 
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "approve", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "allowance", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'approve', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'allowance', data: BytesLike): Result;
 
   events: {};
 }
@@ -63,15 +63,15 @@ export interface Token extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -87,13 +87,13 @@ export interface Token extends BaseContract {
     approve(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: Overrides & { from?: string },
     ): Promise<ContractTransaction>;
 
     allowance(
       _owner: string,
       _spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<[BigNumber]>;
   };
 
@@ -104,13 +104,13 @@ export interface Token extends BaseContract {
   approve(
     spender: string,
     value: BigNumberish,
-    overrides?: Overrides & { from?: string }
+    overrides?: Overrides & { from?: string },
   ): Promise<ContractTransaction>;
 
   allowance(
     _owner: string,
     _spender: string,
-    overrides?: CallOverrides
+    overrides?: CallOverrides,
   ): Promise<BigNumber>;
 
   callStatic: {
@@ -121,13 +121,13 @@ export interface Token extends BaseContract {
     approve(
       spender: string,
       value: BigNumberish,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<boolean>;
 
     allowance(
       _owner: string,
       _spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
@@ -141,20 +141,20 @@ export interface Token extends BaseContract {
     approve(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: Overrides & { from?: string },
     ): Promise<BigNumber>;
 
     allowance(
       _owner: string,
       _spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<BigNumber>;
   };
 
   populateTransaction: {
     balanceOf(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
 
     decimals(overrides?: CallOverrides): Promise<PopulatedTransaction>;
@@ -162,13 +162,13 @@ export interface Token extends BaseContract {
     approve(
       spender: string,
       value: BigNumberish,
-      overrides?: Overrides & { from?: string }
+      overrides?: Overrides & { from?: string },
     ): Promise<PopulatedTransaction>;
 
     allowance(
       _owner: string,
       _spender: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
   };
 }

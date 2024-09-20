@@ -11,7 +11,12 @@ import { TxActionType } from '@/widgets/BalanceHistory';
 
 import styles from './CustomTooltip.module.scss';
 
-export const CustomTooltip: ComponentWithProps<FlyoutProps> = ({ x, y, datum, className }) => {
+export const CustomTooltip: ComponentWithProps<FlyoutProps> = ({
+  x,
+  y,
+  datum,
+  className,
+}) => {
   const tx = (datum as any)?.tx as DashboardHistoryData;
 
   const getValue = React.useCallback(() => {

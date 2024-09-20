@@ -55,7 +55,9 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
         const lineMargin = 10; // Margin between lines
 
         // Calculate max lines that can fit in the free space on one side
-        const linesPerSide = Math.floor(freeSpacePerSide / (lineHeight + lineMargin));
+        const linesPerSide = Math.floor(
+          freeSpacePerSide / (lineHeight + lineMargin),
+        );
 
         // Total line count (top and bottom)
         const totalLineCount = linesPerSide * 2;
@@ -77,7 +79,10 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
   }, []);
 
   return (
-    <div className={clsx(styles.root, styles[viewType], styles[color], className)} ref={rootRef}>
+    <div
+      className={clsx(styles.root, styles[viewType], styles[color], className)}
+      ref={rootRef}
+    >
       {/* Render lines */}
       {Array.from({ length: lineCount / 2 }).map((_, index) => {
         const initialOpacity = 0.8;
@@ -109,7 +114,8 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
             {firstLineTitle}
             {secondLineTitle && (
               <React.Fragment>
-                <br /> <span className={styles.titleAccent}>{secondLineTitle}</span>
+                <br />{' '}
+                <span className={styles.titleAccent}>{secondLineTitle}</span>
               </React.Fragment>
             )}
           </Text>
@@ -118,18 +124,46 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
               {description}
             </Text>
           )}
-          {color === BannerTColor.Accent && viewType === BannerTViewType.Mobile && (
-            <Image className={styles.image} src={accentBg} alt={''} height={248} width={215} />
-          )}
-          {color === BannerTColor.Accent && viewType === BannerTViewType.DesktopSmall && (
-            <Image className={styles.image} src={accentBg} alt={''} height={208} width={188} />
-          )}
-          {color === BannerTColor.Dark && viewType === BannerTViewType.Mobile && (
-            <Image className={styles.image} src={darkBg} alt={''} height={248} width={215} />
-          )}
-          {color === BannerTColor.Dark && viewType === BannerTViewType.DesktopSmall && (
-            <Image className={styles.image} src={darkBg} alt={''} height={208} width={188} />
-          )}
+          {color === BannerTColor.Accent &&
+            viewType === BannerTViewType.Mobile && (
+              <Image
+                className={styles.image}
+                src={accentBg}
+                alt={''}
+                height={248}
+                width={215}
+              />
+            )}
+          {color === BannerTColor.Accent &&
+            viewType === BannerTViewType.DesktopSmall && (
+              <Image
+                className={styles.image}
+                src={accentBg}
+                alt={''}
+                height={208}
+                width={188}
+              />
+            )}
+          {color === BannerTColor.Dark &&
+            viewType === BannerTViewType.Mobile && (
+              <Image
+                className={styles.image}
+                src={darkBg}
+                alt={''}
+                height={248}
+                width={215}
+              />
+            )}
+          {color === BannerTColor.Dark &&
+            viewType === BannerTViewType.DesktopSmall && (
+              <Image
+                className={styles.image}
+                src={darkBg}
+                alt={''}
+                height={208}
+                width={188}
+              />
+            )}
           <div className={styles.buttonContainer}>{Button}</div>
           {linkText && (
             <Link
@@ -142,12 +176,26 @@ export const BannerT: ComponentWithProps<BannerTProps> = ({
             </Link>
           )}
         </div>
-        {color === BannerTColor.Accent && viewType === BannerTViewType.DesktopLarge && (
-          <Image className={styles.largeImage} src={accentBg} alt={''} height={300} width={300} />
-        )}
-        {color === BannerTColor.Dark && viewType === BannerTViewType.DesktopLarge && (
-          <Image className={styles.largeImage} src={darkBg} alt={''} height={300} width={300} />
-        )}
+        {color === BannerTColor.Accent &&
+          viewType === BannerTViewType.DesktopLarge && (
+            <Image
+              className={styles.largeImage}
+              src={accentBg}
+              alt={''}
+              height={300}
+              width={300}
+            />
+          )}
+        {color === BannerTColor.Dark &&
+          viewType === BannerTViewType.DesktopLarge && (
+            <Image
+              className={styles.largeImage}
+              src={darkBg}
+              alt={''}
+              height={300}
+              width={300}
+            />
+          )}
       </div>
     </div>
   );

@@ -8,7 +8,10 @@ export const ErrorSwapModal = NiceModal.create(() => {
   const currentModal = NiceModal.useModal();
 
   return (
-    <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+    <Modal
+      classNames={{ base: 'w-[375px]' }}
+      onClose={() => currentModal.remove()}
+    >
       <Modal.Header>Swap</Modal.Header>
       <div
         className={
@@ -17,7 +20,10 @@ export const ErrorSwapModal = NiceModal.create(() => {
       />
       <Modal.Body className="pt-4 gap-4 relative">
         <div className="flex flex-col gap-2">
-          <Button view={ButtonView.Secondary} onClick={() => currentModal.remove()}>
+          <Button
+            view={ButtonView.Secondary}
+            onClick={() => currentModal.remove()}
+          >
             To home page
           </Button>
           <Button onClick={() => currentModal.remove()}>Try again</Button>

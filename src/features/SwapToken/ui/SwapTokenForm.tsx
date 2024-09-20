@@ -5,10 +5,21 @@ import React from 'react';
 import { Skeleton } from '@nextui-org/react';
 import { Token } from 'symbiosis-js-sdk';
 
-import { getUniqueTokenId, InputAddress, SwapTokenCard } from '@/entities/SwapToken';
+import {
+  getUniqueTokenId,
+  InputAddress,
+  SwapTokenCard,
+} from '@/entities/SwapToken';
 import { SwapSettingsButton } from '@/features/SwapSettings';
 import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
-import { Button, Chip, ChipViewType, SwapButton, Text, TextView } from '@/shared/ui';
+import {
+  Button,
+  Chip,
+  ChipViewType,
+  SwapButton,
+  Text,
+  TextView,
+} from '@/shared/ui';
 import { AmountInput } from '@/shared/ui/AmountInput';
 
 import { useExchangeSwap } from '../model/useExchangeSwap';
@@ -16,7 +27,10 @@ import { useExchangeSwap } from '../model/useExchangeSwap';
 type SwapTokenProps = {
   features: {
     connectWallet: React.ReactElement;
-    selectToken: (selectedTokenId: string, callback: (token: Token) => void) => void;
+    selectToken: (
+      selectedTokenId: string,
+      callback: (token: Token) => void,
+    ) => void;
   };
 };
 
@@ -34,14 +48,15 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
   const { isLoadingCalculate, records, error } = calculateParams;
   const values = form.values;
 
-  const { balance: balanceIn, isLoading: isLoadingInBalance } = useExchangeTokenBalance(
-    values.tokenIn,
-  );
-  const { balance: balanceOut, isLoading: isLoadingOutBalance } = useExchangeTokenBalance(
-    values.tokenOut,
-  );
+  const { balance: balanceIn, isLoading: isLoadingInBalance } =
+    useExchangeTokenBalance(values.tokenIn);
+  const { balance: balanceOut, isLoading: isLoadingOutBalance } =
+    useExchangeTokenBalance(values.tokenOut);
 
-  const showSelectTokenModal = (token: Token | null, setToken: (token: Token) => void) => {
+  const showSelectTokenModal = (
+    token: Token | null,
+    setToken: (token: Token) => void,
+  ) => {
     if (!token) return;
 
     features.selectToken(
@@ -65,7 +80,9 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
           )
         }
         onSelectTokenClick={() =>
-          showSelectTokenModal(values.tokenIn, token => form.handleChangeToken(token, 'in'))
+          showSelectTokenModal(values.tokenIn, (token) =>
+            form.handleChangeToken(token, 'in'),
+          )
         }
         title="From"
         footer={
@@ -85,7 +102,9 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
           max={balanceIn}
           showPercent
           disabled={isDisabledInputValue}
-          onSelectPercent={percent => form.handleSetPercent(Number(balanceIn), percent)}
+          onSelectPercent={(percent) =>
+            form.handleSetPercent(Number(balanceIn), percent)
+          }
         />
       </SwapTokenCard>
       <SwapButton
@@ -106,7 +125,9 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
           )
         }
         onSelectTokenClick={() =>
-          showSelectTokenModal(values.tokenOut, token => form.handleChangeToken(token, 'out'))
+          showSelectTokenModal(values.tokenOut, (token) =>
+            form.handleChangeToken(token, 'out'),
+          )
         }
         title="To"
         footer={

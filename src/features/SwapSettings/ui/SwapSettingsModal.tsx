@@ -20,14 +20,17 @@ export const SwapSettingsModal = NiceModal.create<SwapSettingsModalProps>(
     const { register, isDisabledSubmit, handleSubmit } = useSwapSettingsForm({
       slippage: defaultSlippage,
       deadline: defaultDeadline,
-      onSubmit: data => {
+      onSubmit: (data) => {
         currentModal.resolve(data);
         currentModal.remove();
       },
     });
 
     return (
-      <Modal onClose={() => currentModal.remove()} classNames={{ base: 'max-w-[375px]' }}>
+      <Modal
+        onClose={() => currentModal.remove()}
+        classNames={{ base: 'max-w-[375px]' }}
+      >
         <Modal.Header>Slippage Settings</Modal.Header>
         <Modal.Body>
           <form className="flex flex-col gap-4 mt-4" onSubmit={handleSubmit}>
@@ -35,7 +38,7 @@ export const SwapSettingsModal = NiceModal.create<SwapSettingsModalProps>(
 
             <div className="inline-flex justify-between gap-4">
               <RadioGroup orientation="horizontal" {...register('slippage')}>
-                {['1', '1.5', '2'].map(value => (
+                {['1', '1.5', '2'].map((value) => (
                   <Radio
                     key={value}
                     size="sm"
@@ -72,8 +75,9 @@ export const SwapSettingsModal = NiceModal.create<SwapSettingsModalProps>(
             </div>
 
             <Text textView={TextView.BP3} className="opacity-60">
-              Slippage Tolerance is the maximum price change you're willing to accept for your trade
-              to complete. If the price changes more than this, swaps will be handled specially.
+              Slippage Tolerance is the maximum price change you're willing to
+              accept for your trade to complete. If the price changes more than
+              this, swaps will be handled specially.
             </Text>
             <div />
             <Text textView={TextView.H5}>On-chain Trades Deadline</Text>

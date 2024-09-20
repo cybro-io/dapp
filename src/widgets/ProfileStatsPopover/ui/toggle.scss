@@ -1,4 +1,4 @@
-@import '@/shared/styles/variables.scss';
+@import url('@/shared/styles/variables.scss');
 
 .user-toggle__wrapper {
   position: relative;
@@ -6,20 +6,20 @@
 
 .user-toggle__menu {
   position: absolute;
-  margin-top: 10px;
   right: 0;
+  margin-top: 10px;
 }
 
 .user-toggle {
+  position: relative;
   display: flex;
+  padding: 0 15px 0 6px;
+  background: #000000;
+  border-radius: 6px;
+  transition: all 0.35s ease;
   justify-content: flex-start;
   align-items: center;
-  border-radius: 6px;
-  background: #000;
-  padding: 0 15px 0 6px;
   min-height: 27px;
-  position: relative;
-  transition: all 0.35s ease;
 
   @include tablet {
     min-height: 42px;
@@ -37,23 +37,23 @@
   }
 
   &::after {
-    content: '';
     position: absolute;
+    top: 50%;
+    right: 8px;
     width: 8px;
     height: 6px;
-    top: 50%;
-    transform: translateY(-50%);
-    right: 8px;
-    transition: all 0.35s ease;
     background: url('../../../shared/assets/icons/triangle.svg') 50% 0 no-repeat;
+    transition: all 0.35s ease;
+    transform: translateY(-50%);
+    content: '';
   }
 }
 
 .user-toggle__profile {
+  display: flex;
   width: 20px;
   height: 20px;
   border-radius: 50%;
-  display: flex;
   justify-content: center;
   align-items: center;
 
@@ -66,29 +66,29 @@
     position: relative;
 
     &::before {
-      content: '';
       position: absolute;
-      width: 5px;
-      height: 5px;
       top: -1px;
       right: -1px;
-      background: #f00;
+      width: 5px;
+      height: 5px;
+      background: #ff0000;
       border-radius: 50%;
+      content: '';
       pointer-events: none;
 
       @include tablet {
-        width: 9px;
-        height: 9px;
         top: -3px;
         right: -3px;
+        width: 9px;
+        height: 9px;
       }
     }
   }
 }
 
 .user-toggle__profile-icon {
-  height: 100%;
   width: auto;
+  height: 100%;
   max-width: 100%;
 }
 
@@ -99,21 +99,21 @@
 }
 
 .user-toggle__inner {
+  position: relative;
   display: flex;
+  padding: 0 10px;
   justify-content: flex-start;
   align-items: center;
-  padding: 0 10px;
-  position: relative;
 
   &::before {
-    content: '';
     position: absolute;
-    left: 0;
     top: 50%;
+    left: 0;
     width: 1px;
     height: 20px;
+    background: rgb(255 255 255 / 30%);
     transform: translateY(-50%);
-    background: rgba(255, 255, 255, 0.3);
+    content: '';
     pointer-events: none;
   }
 
@@ -131,10 +131,10 @@
 }
 
 .user-toggle__name {
-  color: rgba(255, 255, 255, 0.7);
   font-size: 12px;
   font-weight: 300;
   line-height: 120%;
+  color: rgb(255 255 255 / 70%);
 }
 
 .user-toggle__money {

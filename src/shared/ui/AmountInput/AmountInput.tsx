@@ -53,7 +53,12 @@ export const AmountInput = React.forwardRef(
             {label}
           </Text>
         )}
-        <div className={clsx(styles.inputContainer, !showPercent && '!border-none')}>
+        <div
+          className={clsx(
+            styles.inputContainer,
+            !showPercent && '!border-none',
+          )}
+        >
           <input
             className={clsx(className, styles.input)}
             {...props}
@@ -61,9 +66,14 @@ export const AmountInput = React.forwardRef(
             onChange={handleChange}
             disabled={disabled}
           />
-          {isUSDVisible && <span className={styles.equal}>≈ ${formatUserMoney(usd)}</span>}
+          {isUSDVisible && (
+            <span className={styles.equal}>≈ ${formatUserMoney(usd)}</span>
+          )}
           {helperText && (
-            <Chip viewType={ChipViewType.Warning} className="absolute -bottom-7">
+            <Chip
+              viewType={ChipViewType.Warning}
+              className="absolute -bottom-7"
+            >
               {helperText}
             </Chip>
           )}

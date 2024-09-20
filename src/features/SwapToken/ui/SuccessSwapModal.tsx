@@ -15,11 +15,20 @@ type SuccessSwapModalProps = {
 };
 
 export const SuccessSwapModal = NiceModal.create(
-  ({ receivedSymbol, sentSymbol, receivedAmount, sentAmount, link }: SuccessSwapModalProps) => {
+  ({
+    receivedSymbol,
+    sentSymbol,
+    receivedAmount,
+    sentAmount,
+    link,
+  }: SuccessSwapModalProps) => {
     const currentModal = NiceModal.useModal();
 
     return (
-      <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+      <Modal
+        classNames={{ base: 'w-[375px]' }}
+        onClose={() => currentModal.remove()}
+      >
         <Modal.Header>Swap</Modal.Header>
         <div
           className={
@@ -43,7 +52,10 @@ export const SuccessSwapModal = NiceModal.create(
             <Heading>received</Heading>
           </div>
           <div className="mt-6 flex flex-col gap-2">
-            <Button view={ButtonView.Secondary} onClick={() => window.open(link, '_blank')}>
+            <Button
+              view={ButtonView.Secondary}
+              onClick={() => window.open(link, '_blank')}
+            >
               Explore transaction
             </Button>
             <Button onClick={() => currentModal.remove()}>To home page</Button>
