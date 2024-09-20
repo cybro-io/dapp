@@ -19,7 +19,7 @@ export const Logo: ComponentWithProps<LogoProps> = ({
   className,
 }) => {
   return (
-    <Link className={clsx(styles.root, className)} href={'/'}>
+    <Link className={clsx(className)} href={'/'}>
       <LogoIcon height={height} width={width} />
     </Link>
   );

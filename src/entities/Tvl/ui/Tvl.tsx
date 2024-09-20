@@ -20,10 +20,7 @@ export const Tvl: ComponentWithProps<TvlProps> = ({ className }) => {
   }
 
   return (
-    <Chip
-      viewType={ChipViewType.Outlined}
-      className={clsx(styles.root, className)}
-    >
+    <Chip viewType={ChipViewType.Outlined} className={clsx(className)}>
       Cybro TVL ${formatUserMoney(tvl)}
     </Chip>
   );

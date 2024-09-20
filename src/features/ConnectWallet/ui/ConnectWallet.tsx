@@ -39,7 +39,7 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
     <Button
       type="button"
       onClick={handleConnect}
-      className={clsx(styles.root, className)}
+      className={clsx(className)}
       size={buttonSize}
       view={viewType}
     >
