@@ -63,7 +63,7 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   ) : (
                     <ConnectWallet
                       className={styles.referralBannerButton}
-                      viewType={ButtonView.Secondary}
+                      view={ButtonView.Secondary}
                     />
                   )
                 }
@@ -117,7 +117,7 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   ) : (
                     <ConnectWallet
                       className={styles.referralBannerButton}
-                      viewType={ButtonView.Secondary}
+                      view={ButtonView.Secondary}
                     />
                   )
                 }

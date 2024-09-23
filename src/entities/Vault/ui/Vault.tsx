@@ -2,25 +2,30 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
-import { VaultChips } from '@/entities/VaultChips';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
-import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
+import { Chip, ChipViewType, Link, Text, TextView, TrustScore } from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
 type VaultProps = {
   vault: VaultsResponseData;
-  userBalance: number;
+  userBalance?: number;
+  linkClassName?: string;
 };
 
-export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, className }) => {
+export const Vault: ComponentWithProps<VaultProps> = ({
+  vault,
+  userBalance,
+  className,
+  linkClassName,
+}) => {
   const { isConnected } = useWeb3ModalAccount();
   const [componentWidth, setComponentWidth] = React.useState<number>(0);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -42,7 +47,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, clas
   }, []);
 
   return (
-    <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
+    <Link className={clsx(styles.link, linkClassName)} href={`/vaults/${vault.id}`}>
       <div
         className={clsx(styles.root, componentWidth > 390 && styles.large, className)}
         ref={rootRef}
@@ -63,7 +68,14 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, clas
               {vault.name}
             </Text>
           </div>
-          <VaultChips className={styles.chipsContainer} badges={vault.badges} />
+
+          <div className={styles.chipsContainer}>
+            {vault.badges.slice(0, 1).map(badge => (
+              <Chip key={badge.name} viewType={ChipViewType.Green}>
+                {badge.name}
+              </Chip>
+            ))}
+          </div>
         </div>
         {isConnected && !isInvalid(userBalance) && (
           <AvailableFunds

@@ -86,6 +86,12 @@ $desktop-width: 1100px;
 $desktop-width-default: 1024px;
 $app-max-width: 1560px;
 
+/** CHIPS **/
+$chips-blue-dark: #1B1A5A;
+$chips-blue-light: #B7B6FF;
+$chips-green-dark: #1F3E1C;
+$chips-green-light: #83FF81;
+
 @mixin laptop {
   @media (min-width: #{$laptop-width}) {
     @content;

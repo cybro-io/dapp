@@ -1,5 +1,6 @@
 export enum ChipSize {
   Small = 'sm',
+  Medium = 'md',
   Large = 'lg',
 }
 
@@ -8,4 +9,6 @@ export enum ChipViewType {
   Accent = 'accent',
   Outlined = 'outlined',
   Warning = 'warning',
+  Blue = 'blue',
+  Green = 'green',
 }

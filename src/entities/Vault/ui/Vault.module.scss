@@ -12,7 +12,9 @@
 }
 
 .chipsContainer {
-  min-height: 28px;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
 }
 
 .tokenContainer {
@@ -78,10 +80,6 @@
   .titleText {
     max-width: 220px;
     text-align: left;
-  }
-
-  .chipsContainer {
-    justify-content: start;
   }
 }
 
