@@ -3,9 +3,9 @@
 import React from 'react';
 
 import clsx from 'clsx';
-import { providers } from 'ethers';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
@@ -80,6 +80,14 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({
 
   const vaultName = vault?.name || '';
   const [firstLineTitle, secondLineTitle] = vaultName.split(/\\n|\n/);
+
+  React.useEffect(() => {
+    const error = data?.data?.error;
+
+    if (error === 'Vault not found') {
+      notFound();
+    }
+  }, [data?.data.error]);
 
   if (isError) {
     return <ErrorMessage className={styles.errorMessage} />;
