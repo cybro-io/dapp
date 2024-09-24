@@ -4,6 +4,7 @@ import clsx from 'clsx';
 import dayjs from 'dayjs';
 import { utils } from 'ethers';
 import Link from 'next/link';
+import { useMediaQuery } from 'usehooks-ts';
 
 import { useSwapTokens } from '@/entities/SwapToken';
 import MaximizeIcon from '@/shared/assets/icons/maximize.svg';
@@ -11,7 +12,6 @@ import { SymbiosisTransaction } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
 import { ExchangeTransactionToken } from './ExchangeTransactionToken';
-import { useMediaQuery } from 'usehooks-ts';
 
 type ExchangeTransactionRowProps = {
   isContained: boolean;
@@ -38,8 +38,14 @@ export const ExchangeTransactionRow = ({
     return null;
   }
 
-  const findTokenIn = findToken(preparedTokenAddress(tokenIn.token.address), tokenIn.chain_id);
-  const findTokenOut = findToken(preparedTokenAddress(tokenOut.token.address), tokenOut.chain_id);
+  const findTokenIn = findToken(
+    preparedTokenAddress(tokenIn.token.address),
+    tokenIn.chain_id,
+  );
+  const findTokenOut = findToken(
+    preparedTokenAddress(tokenOut.token.address),
+    tokenOut.chain_id,
+  );
 
   if (isSmallScreen) {
     return (
@@ -53,7 +59,12 @@ export const ExchangeTransactionRow = ({
           <div className="flex flex-row gap-2 items-center flex-wrap">
             <ExchangeTransactionToken
               tokenName={tokenIn.token.symbol}
-              amount={Number(utils.formatUnits(String(tokenIn.amount), tokenIn.token.decimals))}
+              amount={Number(
+                utils.formatUnits(
+                  String(tokenIn.amount),
+                  tokenIn.token.decimals,
+                ),
+              )}
               icon={String(findTokenIn?.icons?.small)}
               chainIcon={String(findTokenIn?.chain?.icons?.small)}
               directionName="You pay"
@@ -63,13 +74,21 @@ export const ExchangeTransactionRow = ({
             </Text>
             <ExchangeTransactionToken
               tokenName={tokenOut.token.symbol}
-              amount={Number(utils.formatUnits(String(tokenOut.amount), tokenOut.token.decimals))}
+              amount={Number(
+                utils.formatUnits(
+                  String(tokenOut.amount),
+                  tokenOut.token.decimals,
+                ),
+              )}
               icon={String(findTokenOut?.icons?.small)}
               chainIcon={String(findTokenOut?.chain?.icons?.small)}
               directionName="You recieve"
             />
           </div>
-          <Text textView={TextView.C4} className="!font-unbounded !font-light opacity-50">
+          <Text
+            textView={TextView.C4}
+            className="!font-unbounded !font-light opacity-50"
+          >
             {dayjs(created_at).format('DD MMM YYYY HH:mm')}
           </Text>
         </div>
@@ -95,14 +114,32 @@ export const ExchangeTransactionRow = ({
     >
       <ExchangeTransactionToken
         tokenName={tokenIn.token.symbol}
-        amount={Number(utils.formatUnits(String(Number(tokenIn.amount).toLocaleString('fullwide', {useGrouping:false})), tokenIn.token.decimals))}
+        amount={Number(
+          utils.formatUnits(
+            String(
+              Number(tokenIn.amount).toLocaleString('fullwide', {
+                useGrouping: false,
+              }),
+            ),
+            tokenIn.token.decimals,
+          ),
+        )}
         icon={String(findTokenIn?.icons?.small)}
         chainIcon={String(findTokenIn?.chain?.icons?.small)}
         directionName="You pay"
       />
       <ExchangeTransactionToken
         tokenName={tokenOut.token.symbol}
-        amount={Number(utils.formatUnits(String(Number(tokenOut.amount).toLocaleString('fullwide', {useGrouping:false})), tokenOut.token.decimals))}
+        amount={Number(
+          utils.formatUnits(
+            String(
+              Number(tokenOut.amount).toLocaleString('fullwide', {
+                useGrouping: false,
+              }),
+            ),
+            tokenOut.token.decimals,
+          ),
+        )}
         icon={String(findTokenOut?.icons?.small)}
         chainIcon={String(findTokenOut?.chain?.icons?.small)}
         directionName="You recieve"
@@ -115,7 +152,10 @@ export const ExchangeTransactionRow = ({
         >
           <span>Transaction details</span> <MaximizeIcon />
         </Link>
-        <Text textView={TextView.C4} className="!font-unbounded !font-light opacity-50">
+        <Text
+          textView={TextView.C4}
+          className="!font-unbounded !font-light opacity-50"
+        >
           {dayjs(created_at).format('DD MMM YYYY HH:mm')}
         </Text>
       </div>

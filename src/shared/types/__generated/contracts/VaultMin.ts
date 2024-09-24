@@ -9,40 +9,40 @@ import type {
   PopulatedTransaction,
   Signer,
   utils,
-} from "ethers";
-import type { FunctionFragment, Result } from "@ethersproject/abi";
-import type { Listener, Provider } from "@ethersproject/providers";
+} from 'ethers';
+import type { FunctionFragment, Result } from '@ethersproject/abi';
+import type { Listener, Provider } from '@ethersproject/providers';
 import type {
   TypedEventFilter,
   TypedEvent,
   TypedListener,
   OnEvent,
-} from "./common";
+} from './common';
 
 export interface VaultMinInterface extends utils.Interface {
   functions: {
-    "asset()": FunctionFragment;
-    "sharePrice()": FunctionFragment;
-    "decimals()": FunctionFragment;
-    "balanceOf(address)": FunctionFragment;
+    'asset()': FunctionFragment;
+    'sharePrice()': FunctionFragment;
+    'decimals()': FunctionFragment;
+    'balanceOf(address)': FunctionFragment;
   };
 
   getFunction(
-    nameOrSignatureOrTopic: "asset" | "sharePrice" | "decimals" | "balanceOf"
+    nameOrSignatureOrTopic: 'asset' | 'sharePrice' | 'decimals' | 'balanceOf',
   ): FunctionFragment;
 
-  encodeFunctionData(functionFragment: "asset", values?: undefined): string;
+  encodeFunctionData(functionFragment: 'asset', values?: undefined): string;
   encodeFunctionData(
-    functionFragment: "sharePrice",
-    values?: undefined
+    functionFragment: 'sharePrice',
+    values?: undefined,
   ): string;
-  encodeFunctionData(functionFragment: "decimals", values?: undefined): string;
-  encodeFunctionData(functionFragment: "balanceOf", values: [string]): string;
+  encodeFunctionData(functionFragment: 'decimals', values?: undefined): string;
+  encodeFunctionData(functionFragment: 'balanceOf', values: [string]): string;
 
-  decodeFunctionResult(functionFragment: "asset", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "sharePrice", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "decimals", data: BytesLike): Result;
-  decodeFunctionResult(functionFragment: "balanceOf", data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'asset', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'sharePrice', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'decimals', data: BytesLike): Result;
+  decodeFunctionResult(functionFragment: 'balanceOf', data: BytesLike): Result;
 
   events: {};
 }
@@ -57,15 +57,15 @@ export interface VaultMin extends BaseContract {
   queryFilter<TEvent extends TypedEvent>(
     event: TypedEventFilter<TEvent>,
     fromBlockOrBlockhash?: string | number | undefined,
-    toBlock?: string | number | undefined
+    toBlock?: string | number | undefined,
   ): Promise<Array<TEvent>>;
 
   listeners<TEvent extends TypedEvent>(
-    eventFilter?: TypedEventFilter<TEvent>
+    eventFilter?: TypedEventFilter<TEvent>,
   ): Array<TypedListener<TEvent>>;
   listeners(eventName?: string): Array<Listener>;
   removeAllListeners<TEvent extends TypedEvent>(
-    eventFilter: TypedEventFilter<TEvent>
+    eventFilter: TypedEventFilter<TEvent>,
   ): this;
   removeAllListeners(eventName?: string): this;
   off: OnEvent<this>;
@@ -122,7 +122,7 @@ export interface VaultMin extends BaseContract {
 
     balanceOf(
       account: string,
-      overrides?: CallOverrides
+      overrides?: CallOverrides,
     ): Promise<PopulatedTransaction>;
   };
 }

@@ -18,6 +18,8 @@
 }
 
 .arrow {
+  display: flex;
+  transition: transform 0.3s ease-in-out;
   transform: rotate(180deg);
 }
 
@@ -46,11 +48,6 @@
   .arrow svg {
     opacity: 0.3;
   }
-}
-
-.arrow {
-  display: flex;
-  transition: transform 0.3s ease-in-out;
 }
 
 .isOpened {

@@ -13,7 +13,12 @@ type InputAddressProps = Pick<
   onClear?: () => void;
 };
 
-export const InputAddress = ({ onClear, value, disabled, ...restProps }: InputAddressProps) => {
+export const InputAddress = ({
+  onClear,
+  value,
+  disabled,
+  ...restProps
+}: InputAddressProps) => {
   const [isEditing, setIsEditing] = React.useState(false);
   const [isFocused, setIsFocused] = React.useState(false);
 
@@ -58,7 +63,7 @@ export const InputAddress = ({ onClear, value, disabled, ...restProps }: InputAd
       {...restProps}
       disabled={disabled}
       value={renderValue}
-      onFocusChange={isFocused => {
+      onFocusChange={(isFocused) => {
         setIsFocused(isFocused);
         if (!isFocused && !value) {
           setIsEditing(false);

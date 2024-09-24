@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-import { PaginationItemType, usePagination, UsePaginationProps } from '@nextui-org/use-pagination';
+import {
+  PaginationItemType,
+  usePagination,
+  UsePaginationProps,
+} from '@nextui-org/use-pagination';
 
 import { Button, ButtonSize, ButtonView } from '@/shared/ui';
 
@@ -10,7 +14,11 @@ import { PaginationItem } from './PaginationItem';
 
 type PaginationProps = UsePaginationProps & { isDisabled?: boolean };
 
-export const Pagination = ({ showControls, isDisabled, ...props }: PaginationProps) => {
+export const Pagination = ({
+  showControls,
+  isDisabled,
+  ...props
+}: PaginationProps) => {
   const { activePage, setPage, next, previous, range } = usePagination(props);
 
   return (
@@ -27,7 +35,10 @@ export const Pagination = ({ showControls, isDisabled, ...props }: PaginationPro
       )}
       <div className="flex-1 inline-flex gap-0.5 justify-center">
         {range
-          .filter(item => typeof item === 'number' || item === PaginationItemType.DOTS)
+          .filter(
+            (item) =>
+              typeof item === 'number' || item === PaginationItemType.DOTS,
+          )
           .map((item, index) => (
             <PaginationItem
               key={`page-${item}-${index}`}

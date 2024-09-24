@@ -39,7 +39,11 @@ export const Link: ComponentWithProps<LinkProps> = ({
   switch (viewType) {
     case LinkView.Link:
       return (
-        <NextLink className={clsx(styles.text, className)} href={href || ''} target={target}>
+        <NextLink
+          className={clsx(styles.text, className)}
+          href={href || ''}
+          target={target}
+        >
           {children}
         </NextLink>
       );
@@ -60,7 +64,9 @@ export const Link: ComponentWithProps<LinkProps> = ({
           closeDelay={100}
         >
           <div className={clsx(styles.tooltipContainer, className)}>
-            <p className={clsx(styles.tooltipText, textClassName)}>{children}</p>
+            <p className={clsx(styles.tooltipText, textClassName)}>
+              {children}
+            </p>
             <div>
               <InfoIcon />
             </div>

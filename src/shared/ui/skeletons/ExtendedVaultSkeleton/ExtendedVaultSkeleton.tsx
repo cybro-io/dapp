@@ -6,9 +6,9 @@ import { ComponentWithProps } from '@/shared/types';
 
 type ExtendedVaultSkeletonProps = {};
 
-export const ExtendedVaultSkeleton: ComponentWithProps<ExtendedVaultSkeletonProps> = ({
-  className,
-}) => {
+export const ExtendedVaultSkeleton: ComponentWithProps<
+  ExtendedVaultSkeletonProps
+> = ({ className }) => {
   return (
     <Card className="w-full p-4 space-y-5" radius="lg">
       <div className="space-y-3">

@@ -21,7 +21,9 @@ type ApyInfoProps = {
   apy: string | undefined;
   apyFiat: string | null | undefined;
   period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe;
-  setPeriod: Dispatch<SetStateAction<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>>;
+  setPeriod: Dispatch<
+    SetStateAction<GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe>
+  >;
   viewType?: InfoBoxViewType;
   isLoading?: boolean;
 };
@@ -36,11 +38,14 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   className,
 }) => {
   const [isOpened, setIsOpened] = React.useState(false);
-  const [periodType, setPeriodType] = React.useState<ApyPeriodType>(ApyPeriodType.Fiat);
+  const [periodType, setPeriodType] = React.useState<ApyPeriodType>(
+    ApyPeriodType.Fiat,
+  );
 
   const getTitle = React.useCallback(() => {
     if (
-      period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today &&
+      period !==
+        GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.Today &&
       period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
     ) {
       return `Last ${period}`;
@@ -51,7 +56,9 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
 
   const onItemClick = React.useCallback(
     (period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe) => {
-      if (period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All) {
+      if (
+        period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
+      ) {
         setPeriodType(ApyPeriodType.Percent);
       }
 
@@ -62,11 +69,15 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   );
 
   const onPeriodTypeChange = React.useCallback((isSelected: boolean) => {
-    isSelected ? setPeriodType(ApyPeriodType.Fiat) : setPeriodType(ApyPeriodType.Percent);
+    isSelected
+      ? setPeriodType(ApyPeriodType.Fiat)
+      : setPeriodType(ApyPeriodType.Percent);
   }, []);
 
   const getValue = React.useCallback(() => {
-    if (period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All) {
+    if (
+      period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
+    ) {
       return `${(Number(apy) * 100).toFixed(2)}%`;
     }
 
@@ -101,7 +112,7 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
       title={'APY'}
       value={getValue()}
       isOpened={isOpened}
-      setIsOpened={() => setIsOpened(prev => !prev)}
+      setIsOpened={() => setIsOpened((prev) => !prev)}
       viewType={viewType}
       actionType={InfoBoxActionType.Select}
       className={className}
@@ -109,7 +120,8 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
       dropdownItems={dropdownItems}
       isLoading={isLoading}
       rightContent={
-        period !== GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All ? (
+        period !==
+        GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All ? (
           <Switch
             onValueChange={onPeriodTypeChange}
             classNames={{
@@ -121,9 +133,13 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
             endContent={<span className={styles.switchContent}>$</span>}
             thumbIcon={({ isSelected }) =>
               !isSelected ? (
-                <span className={clsx(styles.switchContent, styles.selected)}>%</span>
+                <span className={clsx(styles.switchContent, styles.selected)}>
+                  %
+                </span>
               ) : (
-                <span className={clsx(styles.switchContent, styles.selected)}>$</span>
+                <span className={clsx(styles.switchContent, styles.selected)}>
+                  $
+                </span>
               )
             }
           />

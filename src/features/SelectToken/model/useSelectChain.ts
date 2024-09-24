@@ -29,15 +29,18 @@ export const useSelectChain = () => {
   const chainsWithSorted = (chains: Chain[]) =>
     chains
       .sort((chainA, chainB) => (chainA.name < chainB.name ? -1 : 1))
-      .sort(chain =>
-        chain.name.toLowerCase() === 'ethereum' || chain.name.toLowerCase() === 'blast' ? -1 : 0,
+      .sort((chain) =>
+        chain.name.toLowerCase() === 'ethereum' ||
+        chain.name.toLowerCase() === 'blast'
+          ? -1
+          : 0,
       );
 
   const filteredChains = React.useMemo(() => {
     const sortedChains = chainsWithSorted(swapChains);
 
     return debouncedSearchChain
-      ? sortedChains.filter(chain =>
+      ? sortedChains.filter((chain) =>
           chain.name.toLowerCase().includes(debouncedSearchChain.toLowerCase()),
         )
       : sortedChains;
@@ -48,7 +51,13 @@ export const useSelectChain = () => {
     onValueChange: setSearchChain,
   });
 
-  const isEmptyFilteredChains = filteredChains.length < 1 && debouncedSearchChain;
+  const isEmptyFilteredChains =
+    filteredChains.length < 1 && debouncedSearchChain;
 
-  return { ...unit, chains: filteredChains, registerSearchChain, isEmptyFilteredChains };
+  return {
+    ...unit,
+    chains: filteredChains,
+    registerSearchChain,
+    isEmptyFilteredChains,
+  };
 };

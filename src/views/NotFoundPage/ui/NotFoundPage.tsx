@@ -15,7 +15,9 @@ import styles from './NotFoundPage.module.scss';
 
 type NotFoundPageProps = {};
 
-export const NotFoundPage: ComponentWithProps<NotFoundPageProps> = ({ className }) => {
+export const NotFoundPage: ComponentWithProps<NotFoundPageProps> = ({
+  className,
+}) => {
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.title}>

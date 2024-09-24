@@ -10,9 +10,9 @@ import { SupportRequest } from './SupportRequest';
 
 type SupportRequestModalProps = {};
 
-export const SupportRequestModal: ComponentWithProps<SupportRequestModalProps> = ({
-  className,
-}) => {
+export const SupportRequestModal: ComponentWithProps<
+  SupportRequestModalProps
+> = ({ className }) => {
   return (
     <ModalLayout title={'Support'}>
       <SupportRequest />

@@ -15,7 +15,10 @@ type TooltipInfoProps = {
   chips: BadgeVaultsResponseData[];
 };
 
-export const TooltipInfo: ComponentWithProps<TooltipInfoProps> = ({ chips, className }) => {
+export const TooltipInfo: ComponentWithProps<TooltipInfoProps> = ({
+  chips,
+  className,
+}) => {
   return (
     <div className={clsx(styles.root, className)}>
       <Text className={styles.title} textView={TextView.C1}>
@@ -25,7 +28,10 @@ export const TooltipInfo: ComponentWithProps<TooltipInfoProps> = ({ chips, class
         {chips.map((chip, index) => {
           return (
             <div
-              className={clsx(styles.chipItem, !isEven(index + 1) && styles.dark)}
+              className={clsx(
+                styles.chipItem,
+                !isEven(index + 1) && styles.dark,
+              )}
               key={chip.name}
             >
               <Text className={styles.itemTitle} textView={TextView.C4}>

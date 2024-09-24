@@ -24,8 +24,15 @@ const swap = createEvent<SwapEvent>();
 
 type SwapEvent = SwapCalculateResult;
 
-const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
-  const { transactionRequest, tokenAmountIn, approveTo, from, transactionType, kind } = calculate;
+const swapFx = createEffect<SwapEvent, void, void>(async (calculate) => {
+  const {
+    transactionRequest,
+    tokenAmountIn,
+    approveTo,
+    from,
+    transactionType,
+    kind,
+  } = calculate;
 
   setSwapInfo({ ...calculate, swapStatus: null });
 
@@ -43,7 +50,10 @@ const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
     throw new Error('Unsupported transaction type');
   }
 
-  if (!('chainId' in transactionRequest) || typeof transactionRequest.chainId !== 'number') {
+  if (
+    !('chainId' in transactionRequest) ||
+    typeof transactionRequest.chainId !== 'number'
+  ) {
     throw new Error("Don't found chain");
   }
 
@@ -59,12 +69,22 @@ const swapFx = createEffect<SwapEvent, void, void>(async calculate => {
       tokenAmountIn.token.decimals,
     );
 
-    const tokenContract = new ethers.Contract(tokenAmountIn.token.address, TOKEN, signer);
+    const tokenContract = new ethers.Contract(
+      tokenAmountIn.token.address,
+      TOKEN,
+      signer,
+    );
 
-    const allowance = (await tokenContract.allowance(from, approveTo)) as BigNumber;
+    const allowance = (await tokenContract.allowance(
+      from,
+      approveTo,
+    )) as BigNumber;
 
     if (allowance.lt(approveAmount)) {
-      const approveResponse = await tokenContract.approve(approveTo, MaxUint256);
+      const approveResponse = await tokenContract.approve(
+        approveTo,
+        MaxUint256,
+      );
       await approveResponse.wait(1);
     }
 
@@ -119,7 +139,11 @@ sample({
 });
 
 export const useSwap = () => {
-  const units = useUnit({ swap, isLoadingSwap: swapFx.pending, swapInfo: $swapInfo });
+  const units = useUnit({
+    swap,
+    isLoadingSwap: swapFx.pending,
+    swapInfo: $swapInfo,
+  });
 
   const subscribeSuccessSwap = (watcher?: (params: SwapEvent) => void) =>
     swapFx.done.watch(({ params }) => watcher?.(params));

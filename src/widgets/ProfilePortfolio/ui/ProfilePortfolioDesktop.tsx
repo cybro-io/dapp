@@ -9,7 +9,10 @@ import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
 
 import { ProfilePortfolioType } from './types';
 
-export const ProfilePortfolioDesktop = ({ fields, isLoading }: ProfilePortfolioType) => {
+export const ProfilePortfolioDesktop = ({
+  fields,
+  isLoading,
+}: ProfilePortfolioType) => {
   const router = useRouter();
 
   if (isLoading) {
@@ -29,12 +32,18 @@ export const ProfilePortfolioDesktop = ({ fields, isLoading }: ProfilePortfolioT
           Your portfolio:
         </Text>
         <div className="flex flex-col md:flex-row flex-wrap justify-between gap-x-[35px]">
-          {fields.map(field => (
-            <div key={field.label} className="flex flex-row items-center gap-[7px]">
+          {fields.map((field) => (
+            <div
+              key={field.label}
+              className="flex flex-row items-center gap-[7px]"
+            >
               <Text textView={TextView.C4} className="!text-text-black-body60">
                 {field.label}
               </Text>
-              <Text textView={TextView.BU2} className="!text-text-black-body100">
+              <Text
+                textView={TextView.BU2}
+                className="!text-text-black-body100"
+              >
                 {field.value}
               </Text>
             </div>

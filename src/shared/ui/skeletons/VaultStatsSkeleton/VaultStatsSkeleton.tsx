@@ -9,7 +9,9 @@ import { ComponentWithProps } from '@/shared/types';
 
 type VaultInfoSkeletonProps = {};
 
-export const VaultStatsSkeleton: ComponentWithProps<VaultInfoSkeletonProps> = ({ className }) => {
+export const VaultStatsSkeleton: ComponentWithProps<VaultInfoSkeletonProps> = ({
+  className,
+}) => {
   return (
     <Card className={clsx(className, 'space-y-5 p-4')} radius="lg">
       <div className="flex w-full gap-5">

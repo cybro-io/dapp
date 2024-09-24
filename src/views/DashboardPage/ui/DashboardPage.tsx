@@ -1,10 +1,10 @@
 'use client';
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { useRouter } from 'next/navigation';
 
 import { useToast } from '@/shared/hooks';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 import { BalanceHistory } from '@/widgets/BalanceHistory';
@@ -14,7 +14,9 @@ import styles from './DashboardPage.module.scss';
 
 type DashboardPageProps = {};
 
-const DashboardPage: ComponentWithProps<DashboardPageProps> = ({ className }) => {
+const DashboardPage: ComponentWithProps<DashboardPageProps> = ({
+  className,
+}) => {
   const { isConnected, status } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
   const router = useRouter();

@@ -1,9 +1,9 @@
 import React, { Key } from 'react';
 
 import { useQuery } from '@tanstack/react-query';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import axios, { AxiosResponse } from 'axios';
 
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   GetTransactionsApiV1ExchangeAddressTransactionsGetType,
   SymbiosisTransaction,
@@ -11,7 +11,9 @@ import {
 
 export const useSwapTransactions = () => {
   const [type, setType] =
-    React.useState<GetTransactionsApiV1ExchangeAddressTransactionsGetType>('All');
+    React.useState<GetTransactionsApiV1ExchangeAddressTransactionsGetType>(
+      'All',
+    );
 
   const [page, setPage] = React.useState(1);
 
@@ -46,5 +48,13 @@ export const useSwapTransactions = () => {
       setType(key as GetTransactionsApiV1ExchangeAddressTransactionsGetType),
   });
 
-  return { isLoading, isEmptyTransactions, totalPages, page, transactions, setPage, registerTabs };
+  return {
+    isLoading,
+    isEmptyTransactions,
+    totalPages,
+    page,
+    transactions,
+    setPage,
+    registerTabs,
+  };
 };

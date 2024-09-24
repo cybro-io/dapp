@@ -1,9 +1,8 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
-
 import { useBalanceContext, useEthers } from '@/app/providers';
 import { QueryKey } from '@/shared/const';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Nullable,
   Token,
@@ -20,7 +19,8 @@ export const useBalance = (
 ) => {
   const { isConnected } = useWeb3ModalAccount();
   const { provider, signer, tokens } = useEthers();
-  const { balance, refetchBalance, vaultDeposit, vaultDepositUsd } = useBalanceContext();
+  const { balance, refetchBalance, vaultDeposit, vaultDepositUsd } =
+    useBalanceContext();
   const vaultAddress = vaultContract?.address as string;
   const tokenAddress = tokenContract?.address as string;
 
@@ -36,7 +36,13 @@ export const useBalance = (
 
   React.useEffect(() => {
     if (provider && signer && tokenContract && isConnected) {
-      refetchBalance(provider, signer, tokenContract, vaultContract, tokenPrice);
+      refetchBalance(
+        provider,
+        signer,
+        tokenContract,
+        vaultContract,
+        tokenPrice,
+      );
     }
   }, [
     provider,
@@ -54,6 +60,12 @@ export const useBalance = (
     vaultDeposit: vaultDeposit[vaultAddress],
     vaultDepositUsd: vaultDepositUsd[vaultAddress],
     refetchBalance: () =>
-      refetchBalance(provider, signer, tokenContract, vaultContract, tokenPrice),
+      refetchBalance(
+        provider,
+        signer,
+        tokenContract,
+        vaultContract,
+        tokenPrice,
+      ),
   };
 };

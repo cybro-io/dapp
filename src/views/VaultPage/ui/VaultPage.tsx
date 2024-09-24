@@ -2,15 +2,17 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 import { useEthers } from '@/app/providers';
 import { Banner, BannerSize } from '@/entities/Banner';
 import CircleIcon from '@/entities/VaultChips/assets/icons/base-icon.svg';
 import { ChainToExplorerUrl, QueryKey } from '@/shared/const';
+import { useWeb3ModalAccount } from '@/shared/lib';
+import { $symbiosis } from '@/shared/lib';
 import {
   ComponentWithProps,
   Nullable,
@@ -35,15 +37,14 @@ import { VaultInfo } from '@/widgets/VaultInfo';
 import { YieldCalculator } from '@/widgets/YieldCalculator';
 
 import styles from './VaultPage.module.scss';
-import { $symbiosis } from '@/shared/lib';
-import { providers } from 'ethers';
-import { notFound } from 'next/navigation';
 
 type DashboardPageProps = {
   vaultId: number;
 };
 
-export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) => {
+export const VaultPage: ComponentWithProps<DashboardPageProps> = ({
+  vaultId,
+}) => {
   const { address, isConnected, chainId } = useWeb3ModalAccount();
   const { createVaultInstance } = useEthers();
   const [vaultContract, setVaultContract] = React.useState<Nullable<Vault>>();
@@ -64,11 +65,8 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
       if (vault && isConnected && provider) {
         console.log('vault: ', vault);
 
-        const { vault: createdVault, token: createdToken } = await createVaultInstance(
-          vault.address,
-          vault.abi,
-          provider,
-        );
+        const { vault: createdVault, token: createdToken } =
+          await createVaultInstance(vault.address, vault.abi, provider);
 
         setVaultContract(createdVault);
         setTokenContract(createdToken);
@@ -114,13 +112,20 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             <span className={styles.tokenName}>{vault.token.name}</span>
           </div>
           <Text className={styles.heading} textView={TextView.H1}>
-            <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>
+            <span
+              className={clsx(
+                styles.headingBackground,
+                styles.headingBackgroundTop,
+              )}
+            >
               <span className={styles.accent}>{firstLineTitle}</span>
             </span>
             {secondLineTitle && (
               <React.Fragment>
                 <br />
-                <span className={styles.headingBackground}>{secondLineTitle}</span>
+                <span className={styles.headingBackground}>
+                  {secondLineTitle}
+                </span>
               </React.Fragment>
             )}
           </Text>
@@ -137,8 +142,12 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
             {vault?.description}
           </Text>
           <div className={styles.chipsContainer}>
-            {vault?.badges.map(badge => (
-              <Chip className={styles.chip} size={ChipSize.Large} key={badge.name}>
+            {vault?.badges.map((badge) => (
+              <Chip
+                className={styles.chip}
+                size={ChipSize.Large}
+                key={badge.name}
+              >
                 {badge.icon ? (
                   <Image src={badge.icon} height={24} width={24} alt={''} />
                 ) : (
@@ -154,7 +163,11 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
               href={`${ChainToExplorerUrl[vault?.chain_id]}/address/${vaultContract.address}`}
               target="_blank"
             >
-              <Button className={styles.button} view={ButtonView.Secondary} size={ButtonSize.Small}>
+              <Button
+                className={styles.button}
+                view={ButtonView.Secondary}
+                size={ButtonSize.Small}
+              >
                 View contract details
               </Button>
             </Link>

@@ -5,7 +5,12 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { ComponentWithProps } from '@/shared/types';
-import { Text, TrustScoreColor, TrustScoreColorToIcon, TrustScoreViewType } from '@/shared/ui';
+import {
+  Text,
+  TrustScoreColor,
+  TrustScoreColorToIcon,
+  TrustScoreViewType,
+} from '@/shared/ui';
 import { formatTrustScore } from '@/shared/utils';
 
 import PointerIcon from './assets/icons/pointer.svg';
@@ -52,7 +57,9 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
   if (viewType === TrustScoreViewType.Small) {
     return (
       <div className={clsx(styles.tinyContainer, className)}>
-        <div className={styles.iconContainer}>{TrustScoreColorToIcon[trustScoreColor]}</div>
+        <div className={styles.iconContainer}>
+          {TrustScoreColorToIcon[trustScoreColor]}
+        </div>
         <Text className={clsx(styles.value, styles[trustScoreColor])}>
           {formatTrustScore(value)}
         </Text>
@@ -62,13 +69,20 @@ export const TrustScore: ComponentWithProps<TrustScoreProps> = ({
 
   return (
     <div
-      className={clsx(styles.root, !isBordered && styles.notBordered, styles[viewType], className)}
+      className={clsx(
+        styles.root,
+        !isBordered && styles.notBordered,
+        styles[viewType],
+        className,
+      )}
     >
       <div className={styles.cornerTopLeft} />
       <div className={styles.cornerTopRight} />
       <div className={styles.cornerBottomLeft} />
       <div className={styles.cornerBottomRight} />
-      <div className={styles.iconContainer}>{TrustScoreColorToIcon[trustScoreColor]}</div>
+      <div className={styles.iconContainer}>
+        {TrustScoreColorToIcon[trustScoreColor]}
+      </div>
       <div className={styles.container}>
         <div className={styles.top}>
           <Text className={styles.title}>Trust Score</Text>

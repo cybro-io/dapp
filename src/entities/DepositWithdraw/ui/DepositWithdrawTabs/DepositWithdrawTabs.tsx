@@ -25,12 +25,9 @@ type DepositWithdrawTabsProps = {
   size?: 'sm' | 'md' | 'lg';
 };
 
-export const DepositWithdrawTabs: ComponentWithProps<DepositWithdrawTabsProps> = ({
-  activeTab,
-  setActiveTab,
-  size = 'lg',
-  className,
-}) => {
+export const DepositWithdrawTabs: ComponentWithProps<
+  DepositWithdrawTabsProps
+> = ({ activeTab, setActiveTab, size = 'lg', className }) => {
   return (
     <Tabs
       className={clsx(styles.tabs, className)}

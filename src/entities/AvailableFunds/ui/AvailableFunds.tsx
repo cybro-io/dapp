@@ -51,7 +51,9 @@ export const AvailableFunds: ComponentWithProps<AvailableFundsProps> = ({
           </Text>
           <Text className={styles.fundsValue} textView={TextView.P3}>
             <span className={styles.tetherIconContainer}>
-              {tokenIcon && <Image src={tokenIcon} alt={''} height={16} width={16} />}
+              {tokenIcon && (
+                <Image src={tokenIcon} alt={''} height={16} width={16} />
+              )}
             </span>
             {value}
           </Text>
