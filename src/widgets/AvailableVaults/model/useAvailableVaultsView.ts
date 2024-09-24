@@ -16,15 +16,10 @@ export const useAvailableVaultsView = () => {
       AvailableVaultsViewType.Table,
     );
 
-  const isLessThanLargeScreen = useMediaQuery('2lg');
-
   const setViewType = (viewType: AvailableVaultsViewType) => {
     setAvailableVaultsView(viewType);
     Mixpanel.track(MixpanelEvent.ChangeVaultListStyle, { viewType });
   };
 
-  return {
-    viewType: isLessThanLargeScreen ? AvailableVaultsViewType.Card : viewType,
-    setViewType,
-  };
+  return { viewType, setViewType };
 };
