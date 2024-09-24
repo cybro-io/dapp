@@ -129,6 +129,21 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         />
       </section>
       <FeeBanner className={styles.feeBanner} />
+
+      {vault?.provider.description && (
+        <section className={styles.providerDescription}>
+          <Text
+            className={clsx(styles.title, styles.providerDescriptionTitle)}
+            textView={TextView.H3}
+          >
+            Provider Description
+          </Text>
+          <Text className={styles.description} textView={TextView.P2}>
+            {vault.provider.description}
+          </Text>
+        </section>
+      )}
+
       <SafetyScoreDetails
         vaultId={vault?.id}
         trustScore={vault?.trust_score}
@@ -140,19 +155,6 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         <ExtendedVaultSkeleton />
       ) : (
         <React.Fragment>
-          {vault?.provider.description && (
-            <section className={styles.providerDescription}>
-              <Text
-                className={clsx(styles.title, styles.providerDescriptionTitle)}
-                textView={TextView.H3}
-              >
-                Provider Description
-              </Text>
-              <Text className={styles.description} textView={TextView.P2}>
-                {vault.provider.description}
-              </Text>
-            </section>
-          )}
           <section className={styles.extendedVaultDescription}>
             <Text className={styles.title} textView={TextView.H3}>
               Extended Vault Description

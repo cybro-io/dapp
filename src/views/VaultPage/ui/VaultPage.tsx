@@ -37,6 +37,7 @@ import { YieldCalculator } from '@/widgets/YieldCalculator';
 import styles from './VaultPage.module.scss';
 import { $symbiosis } from '@/shared/lib';
 import { providers } from 'ethers';
+import { notFound } from 'next/navigation';
 
 type DashboardPageProps = {
   vaultId: number;
@@ -81,6 +82,14 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({ vaultId }) =
 
   const vaultName = vault?.name || '';
   const [firstLineTitle, secondLineTitle] = vaultName.split(/\\n|\n/);
+
+  React.useEffect(() => {
+    const error = data?.data?.error;
+
+    if (error === 'Vault not found') {
+      notFound();
+    }
+  }, [data?.data.error]);
 
   if (isError) {
     return <ErrorMessage className={styles.errorMessage} />;
