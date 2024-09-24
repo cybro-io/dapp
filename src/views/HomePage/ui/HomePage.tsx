@@ -39,7 +39,7 @@ export const HomePage: ComponentWithProps<HomePageProps> = (props) => {
         </div>
       </section>
       <div className="px-0 2lg:px-[100px] flex flex-col gap-6 2lg:gap-8 pt-6 2lg:pt-0">
-        <ProfilePortfolio />
+        {/*<ProfilePortfolio />*/}
         <AvailableVaults />
       </div>
     </React.Fragment>
