@@ -75,21 +75,23 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   }, []);
 
   const getValue = React.useCallback(() => {
+    const apyPercent = `${Number(apy).toFixed(2)}%`;
+
     if (
       period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
     ) {
-      return `${(Number(apy) * 100).toFixed(2)}%`;
+      return apyPercent;
     }
 
     if (viewType === InfoBoxViewType.Desktop) {
-      return `${(Number(apy) * 100).toFixed(2)}% • $${formatUserMoney(apyFiat)}`;
+      return `${apyPercent} • $${formatUserMoney(apyFiat)}`;
     }
 
     if (periodType === ApyPeriodType.Fiat) {
       return `$${formatUserMoney(apyFiat)}`;
     }
 
-    return `${(Number(apy) * 100).toFixed(2)}%`;
+    return apyPercent;
   }, [apy, apyFiat, period, periodType, viewType]);
 
   const dropdownItems = React.useMemo(
