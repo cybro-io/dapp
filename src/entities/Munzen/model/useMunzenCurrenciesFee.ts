@@ -1,57 +1,14 @@
-import React from 'react';
+import { AxiosResponse } from 'axios';
 
-import { MunzenFee } from '@/entities/Munzen/model/types';
+import { MunzenFee } from '@/entities/Munzen';
+import { useGetFeesApiV1MunzenCurrenciesFeesInstrumentGet } from '@/shared/types';
 
-export const useMunzenCurrenciesFee = () => {
-  const [fee, setFee] = React.useState<MunzenFee | undefined>();
-  const [isLoading, setLoading] = React.useState(false);
+export const useMunzenCurrenciesFee = (instrument: string) => {
+  const { data, isLoading } = useGetFeesApiV1MunzenCurrenciesFeesInstrumentGet(instrument, {
+    query: { queryKey: [instrument], enabled: Boolean(instrument) },
+  });
 
-  const mockAsync = async () => {
-    setLoading(true);
-    setTimeout(async () => {
-      setFee({
-        providerFee: {
-          type: 'max',
-          value: [
-            [
-              {
-                type: 'money',
-                value: {
-                  amount: 2.5,
-                  currency: 'EUR',
-                },
-              },
-            ],
-            [
-              {
-                type: 'percent',
-                value: 2.9,
-              },
-            ],
-          ],
-        },
-        networkFee: {
-          type: 'money',
-          value: {
-            amount: 0.000357,
-            currency: 'USDT',
-          },
-        },
-        networkFeeFiat: {
-          type: 'money',
-          value: {
-            amount: 0.000321,
-            currency: 'EUR',
-          },
-        },
-      });
-      setLoading(false);
-    }, 3000);
-  };
-
-  React.useEffect(() => {
-    mockAsync();
-  }, []);
+  const fee = (data as AxiosResponse<{ result: MunzenFee | null }> | undefined)?.data.result;
 
   return { fee, isLoading };
 };

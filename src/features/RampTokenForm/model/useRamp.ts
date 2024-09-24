@@ -2,7 +2,7 @@ import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
 
-import { useMunzenCurrencies, useMunzenRates } from '@/entities/Munzen';
+import { useMunzenCurrencies, useMunzenCurrenciesFee, useMunzenRates } from '@/entities/Munzen';
 import {
   RampAlertStepModal,
   RampWidgetStepModal,
@@ -14,7 +14,7 @@ import { useWeb3ModalAccount } from '@/shared/lib';
 export const useRamp = () => {
   const { address, isConnected } = useWeb3ModalAccount();
 
-  const { handleCalculate, ...feeRest } = useRampCalculate();
+  const { handleCalculate, ...calculateRest } = useRampCalculate();
 
   const { rates } = useMunzenRates();
   const { currencies } = useMunzenCurrencies();
@@ -45,16 +45,24 @@ export const useRamp = () => {
         .catch(() => rampAlertModal.remove());
     },
     onChangeAmountIn: data => {
-      form.setFieldValue('amountOut', handleCalculate(data));
+      form.setFieldValue('amountOut', handleCalculate({ ...data, fee }));
     },
     rates: rates ?? [],
     initialCurrencies,
   });
 
-  const isDisabledAmount = !form.values.toCurrency || !form.values.fromCurrency;
+  const { fee, isLoading } = useMunzenCurrenciesFee(
+    `${form.values.fromCurrency?.tickerWithNetwork}_${form.values.toCurrency?.tickerWithNetwork}`,
+  );
+
+  const isDisabledAmount = !form.values.toCurrency || !form.values.fromCurrency || isLoading;
 
   const isDisabledSubmit =
-    form.isSubmitting || !form.isValid || !form.values.toCurrency || !form.values.fromCurrency;
+    form.isSubmitting ||
+    !form.isValid ||
+    !form.values.toCurrency ||
+    !form.values.fromCurrency ||
+    isLoading;
 
-  return { isConnected, ...feeRest, isDisabledAmount, isDisabledSubmit, form };
+  return { isConnected, ...calculateRest, isDisabledAmount, isDisabledSubmit, form };
 };

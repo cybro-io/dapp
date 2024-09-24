@@ -1,4 +1,4 @@
-import React from 'react';
+import { useGetPaymentLinkApiV1ProfileAddressPaymentLinkGet } from '@/shared/types';
 
 export interface UseRampProps {
   toWallet: string;
@@ -7,23 +7,15 @@ export interface UseRampProps {
   toAmount: number;
 }
 
-export const useRampWidget = (props: UseRampProps) => {
-  const [isLoading, setLoading] = React.useState(false);
-
-  const [rampLinkWidget, setRampLinkWidget] = React.useState<string | null>(null);
-
-  const fetchLink = async (data: UseRampProps) => {
-    setLoading(true);
-
-    setTimeout(() => {
-      setRampLinkWidget('https://widget.munzen.io/');
-      setLoading(false);
-    }, 1000);
-  };
-
-  React.useEffect(() => {
-    fetchLink(props);
-  }, [props]);
+export const useRampWidget = ({ toWallet }: UseRampProps) => {
+  const { data: rampLinkWidget, isLoading } = useGetPaymentLinkApiV1ProfileAddressPaymentLinkGet(
+    toWallet,
+    {
+      query: {
+        select: data => data.data.data.link,
+      },
+    },
+  );
 
   return { isLoading, rampLinkWidget };
 };

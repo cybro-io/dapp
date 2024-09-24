@@ -49,11 +49,9 @@ export const SelectRampCard = ({
 
         <div className="flex flex-col gap-px">
           <Text textView={isSmallScreen ? TextView.P3 : TextView.BP1}>{currency.viewedTicker}</Text>
-          {currency.isCrypto && (
-            <Text textView={isSmallScreen ? TextView.C4 : TextView.BP3}>
-              {currency.blockchainNetwork}
-            </Text>
-          )}
+          <Text textView={isSmallScreen ? TextView.C4 : TextView.BP3}>
+            {currency.isCrypto ? currency.blockchainNetwork : currency.name}
+          </Text>
         </div>
       </div>
       {!isSmallScreen && (

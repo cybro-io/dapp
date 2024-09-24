@@ -2,11 +2,10 @@ import React from 'react';
 
 import { BigNumber } from 'bignumber.js';
 
-import { useMunzenCurrenciesFee, useMunzenRates } from '@/entities/Munzen';
+import { MunzenFee, useMunzenRates } from '@/entities/Munzen';
 
 export const useRampCalculate = () => {
   const { rates } = useMunzenRates();
-  const { fee } = useMunzenCurrenciesFee();
 
   const [rampFee, setRampFee] = React.useState<number | null>(null);
   const [amountFromByUsd, setAmountFromByUsd] = React.useState<number | null>(null);
@@ -16,10 +15,12 @@ export const useRampCalculate = () => {
     amount,
     toCurrency,
     fromCurrency,
+    fee,
   }: {
     fromCurrency: string;
     toCurrency: string;
     amount: string;
+    fee?: MunzenFee | null;
   }) => {
     try {
       const usdRate = rates?.find(
@@ -51,7 +52,7 @@ export const useRampCalculate = () => {
         .find(item => item.type === 'percent');
 
       if (arrayFee) {
-        feeAmount = arrayFee.value;
+        feeAmount = amountBN.dividedBy(100).multipliedBy(arrayFee.value).toNumber();
         setRampFee(feeAmount);
       }
 
