@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import ReCAPTCHA from 'react-google-recaptcha';
 import { useForm } from 'react-hook-form';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { useToast } from '@/shared/hooks';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   ComponentWithProps,
   useCaptchaApiV1WaitlistCaptchaGet,
@@ -22,7 +22,9 @@ import styles from './SupportRequest.module.scss';
 
 type SupportRequestProps = {};
 
-export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ className }) => {
+export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({
+  className,
+}) => {
   const { isConnected, address } = useWeb3ModalAccount();
   const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
   const { triggerToast } = useToast();
@@ -40,35 +42,44 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
     mode: 'onBlur',
   });
 
-  const onSubmit = React.useCallback(async (formData: SupportRequestFormValues) => {
-    try {
-      const token = await capchaRef?.current?.executeAsync();
-      const email = formData?.email;
-      const text = formData?.details;
+  const onSubmit = React.useCallback(
+    async (formData: SupportRequestFormValues) => {
+      try {
+        const token = await capchaRef?.current?.executeAsync();
+        const email = formData?.email;
+        const text = formData?.details;
 
-      if (!token) {
-        throw new Error('Captcha token failed.');
+        if (!token) {
+          throw new Error('Captcha token failed.');
+        }
+
+        if (!address) {
+          throw new Error('No address found.');
+        }
+
+        mutate({ data: { email, address, text, captcha_answer: token } });
+
+        triggerToast({
+          message: 'Success',
+          description: 'Feedback have been sent!',
+        });
+        reset();
+      } catch (e) {
+        triggerToast({
+          message: 'Error',
+          description: 'Unexpected error. Contact support',
+          type: ToastType.Error,
+        });
       }
-
-      if (!address) {
-        throw new Error('No address found.');
-      }
-
-      mutate({ data: { email, address, text, captcha_answer: token } });
-
-      triggerToast({ message: 'Success', description: 'Feedback have been sent!' });
-      reset();
-    } catch (e) {
-      triggerToast({
-        message: 'Error',
-        description: 'Unexpected error. Contact support',
-        type: ToastType.Error,
-      });
-    }
-  }, []);
+    },
+    [],
+  );
 
   return (
-    <form className={clsx(styles.form, className)} onSubmit={handleSubmit(onSubmit)}>
+    <form
+      className={clsx(styles.form, className)}
+      onSubmit={handleSubmit(onSubmit)}
+    >
       <div className={styles.emailContainer}>
         <label>Your email:</label>
         <input
@@ -94,7 +105,9 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
             },
           })}
         />
-        {errors.details && <p className={styles.error}>{errors.details.message}</p>}
+        {errors.details && (
+          <p className={styles.error}>{errors.details.message}</p>
+        )}
       </div>
       <ConnectWallet
         className={styles.submitButton}
@@ -108,7 +121,9 @@ export const SupportRequest: ComponentWithProps<SupportRequestProps> = ({ classN
           </Button>
         }
       />
-      {capchaKey && <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />}
+      {capchaKey && (
+        <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />
+      )}
     </form>
   );
 };

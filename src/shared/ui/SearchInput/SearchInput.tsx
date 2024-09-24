@@ -22,10 +22,15 @@ export const SearchInput = ({
     <Input
       {...restProps}
       value={value}
-      onChange={event => onValueChange?.(event.target.value)}
+      onChange={(event) => onValueChange?.(event.target.value)}
       endContent={
         <div className="inline-flex gap-4">
-          {value && <IconButton icon={<CloseCircleIcon />} onClick={() => onValueChange?.('')} />}
+          {value && (
+            <IconButton
+              icon={<CloseCircleIcon />}
+              onClick={() => onValueChange?.('')}
+            />
+          )}
           {endContent}
         </div>
       }

@@ -6,8 +6,8 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { providers, ethers } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
-import { Maybe, Nullable, Token, Vault } from '@/shared/types';
 import { useWeb3ModalAccount } from '@/shared/lib';
+import { Maybe, Nullable, Token, Vault } from '@/shared/types';
 
 interface EthersContextProps {
   provider: Nullable<providers.Provider>;
@@ -22,16 +22,23 @@ interface EthersContextProps {
   createTokenInstance: (tokenAddress: string) => Token;
 }
 
-const EthersContext = React.createContext<EthersContextProps | undefined>(undefined);
+const EthersContext = React.createContext<EthersContextProps | undefined>(
+  undefined,
+);
 
-export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
   const { walletProvider } = useWeb3ModalProvider();
   const { isConnected } = useWeb3ModalAccount();
 
-  const [provider, setProvider] = React.useState<Nullable<providers.Provider>>(null);
+  const [provider, setProvider] =
+    React.useState<Nullable<providers.Provider>>(null);
   const [signer, setSigner] = React.useState<Nullable<ethers.Signer>>(null);
   const [vaults, setVaults] = React.useState<{ [address: string]: Vault }>({});
-  const [tokens, setTokens] = React.useState<{ [vaultAddress: string]: Token }>({});
+  const [tokens, setTokens] = React.useState<{ [vaultAddress: string]: Token }>(
+    {},
+  );
 
   React.useEffect(() => {
     const getValues = async () => {
@@ -48,7 +55,11 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
   }, [isConnected, walletProvider]);
 
   const createVaultInstance = React.useCallback(
-    async (vaultAddress: string, abi: any, vaultProvider: providers.StaticJsonRpcProvider) => {
+    async (
+      vaultAddress: string,
+      abi: any,
+      vaultProvider: providers.StaticJsonRpcProvider,
+    ) => {
       if (!isConnected) {
         throw new Error('Wallet is not connected');
       }
@@ -74,12 +85,12 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         vaultProvider,
       ) as unknown as Token;
 
-      setVaults(prevContracts => ({
+      setVaults((prevContracts) => ({
         ...prevContracts,
         [vaultAddress]: vaultInstance,
       }));
 
-      setTokens(prevTokens => ({
+      setTokens((prevTokens) => ({
         ...prevTokens,
         [tokenAddress]: tokenInstance,
       }));
@@ -103,8 +114,12 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
         return tokens[tokenAddress];
       }
 
-      const tokenInstance = new ethers.Contract(tokenAddress, TOKEN, signer) as unknown as Token;
-      setTokens(prevContracts => ({
+      const tokenInstance = new ethers.Contract(
+        tokenAddress,
+        TOKEN,
+        signer,
+      ) as unknown as Token;
+      setTokens((prevContracts) => ({
         ...prevContracts,
         [tokenAddress]: tokenInstance,
       }));
@@ -123,10 +138,21 @@ export const EthersProvider: React.FC<{ children: React.ReactNode }> = ({ childr
       createVaultInstance,
       createTokenInstance,
     }),
-    [provider, signer, vaults, tokens, createVaultInstance, createTokenInstance],
+    [
+      provider,
+      signer,
+      vaults,
+      tokens,
+      createVaultInstance,
+      createTokenInstance,
+    ],
   );
 
-  return <EthersContext.Provider value={contextValue}>{children}</EthersContext.Provider>;
+  return (
+    <EthersContext.Provider value={contextValue}>
+      {children}
+    </EthersContext.Provider>
+  );
 };
 
 export const useEthers = (): EthersContextProps => {

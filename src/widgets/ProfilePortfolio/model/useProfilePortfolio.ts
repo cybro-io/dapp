@@ -1,5 +1,4 @@
 import { useWeb3ModalAccount } from '@/shared/lib';
-
 import {
   GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe,
   useGetDashboardStatsApiV1DashboardAddressStatsGet,
@@ -14,14 +13,23 @@ export const useProfilePortfolio = () => {
       chain_id: chainId ?? 0,
       timeframe: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,
     },
-    { query: { enabled: Boolean(chainId) && Boolean(address), select: data => data.data?.data } },
+    {
+      query: {
+        enabled: Boolean(chainId) && Boolean(address),
+        select: (data) => data.data?.data,
+      },
+    },
   );
 
   const fields = [
-    { label: 'Total Deposit', value: data?.your_deposit ?? '' },
+    { label: 'Valuation', value: data?.your_deposit ?? '' },
     { label: 'APY', value: `${(Number(data?.apy) * 100).toFixed(2)}%` },
     { label: 'Monthly Yield', value: data?.accrued_yield ?? '' },
   ];
 
-  return { fields, isLoading: isLoading || !data, isPortfolioUnavailable: !isConnected };
+  return {
+    fields,
+    isLoading: isLoading || !data,
+    isPortfolioUnavailable: !isConnected,
+  };
 };

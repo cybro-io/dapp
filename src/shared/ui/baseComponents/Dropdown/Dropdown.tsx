@@ -37,10 +37,19 @@ type DropdownButtonProps = Pick<DropdownProps, 'viewType'> &
 
 export const DropdownButton = React.forwardRef(
   (
-    { children, viewType = DropdownView.Rounded, className, ...props }: DropdownButtonProps,
+    {
+      children,
+      viewType = DropdownView.Rounded,
+      className,
+      ...props
+    }: DropdownButtonProps,
     ref: React.ForwardedRef<HTMLButtonElement>,
   ) => (
-    <button {...props} className={clsx(className, styles.button, styles[viewType])} ref={ref}>
+    <button
+      {...props}
+      className={clsx(className, styles.button, styles[viewType])}
+      ref={ref}
+    >
       {children}
     </button>
   ),
@@ -73,10 +82,10 @@ export const Dropdown: ComponentWithProps<DropdownProps> = ({
         </DropdownButton>
       </DropdownTrigger>
       <DropdownMenu>
-        {items.map(item => (
+        {items.map((item) => (
           <NextUIDropdownItem
             key={item.key}
-            onClick={event => setSelected(item.key, event)}
+            onClick={(event) => setSelected(item.key, event)}
             className={clsx(selectedKey === item.key && styles.selected)}
           >
             {item.label}

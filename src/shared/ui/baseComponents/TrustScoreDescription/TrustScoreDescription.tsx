@@ -4,7 +4,10 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { ComponentWithProps, HistoryTrustScoreResponseData } from '@/shared/types';
+import {
+  ComponentWithProps,
+  HistoryTrustScoreResponseData,
+} from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
 import NegativeIcon from './assets/negative.svg';
@@ -16,12 +19,13 @@ type TrustScoreDescriptionProps = {
   details: HistoryTrustScoreResponseData;
 };
 
-export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProps> = ({
-  details,
-  className,
-}) => {
+export const TrustScoreDescription: ComponentWithProps<
+  TrustScoreDescriptionProps
+> = ({ details, className }) => {
   const variant = React.useMemo(() => {
-    return details.direction === '+' ? TrustScoreVariant.Positive : TrustScoreVariant.Negative;
+    return details.direction === '+'
+      ? TrustScoreVariant.Positive
+      : TrustScoreVariant.Negative;
   }, [details]);
 
   return (
@@ -36,7 +40,11 @@ export const TrustScoreDescription: ComponentWithProps<TrustScoreDescriptionProp
           <span className={styles.maxTrustScore}>/4</span>
         </p>
         <div className={styles.iconContainer}>
-          {variant === TrustScoreVariant.Negative ? <NegativeIcon /> : <PositiveIcon />}
+          {variant === TrustScoreVariant.Negative ? (
+            <NegativeIcon />
+          ) : (
+            <PositiveIcon />
+          )}
         </div>
       </div>
       <div className={styles.description}>

@@ -29,12 +29,14 @@ export const getEthTokensBalanceByChain = async (
     const multicall = new Multicall({
       ethersProvider: provider,
       tryAggregate: true,
-      multicallCustomContractAddress: multicallAddress ? multicallAddress : undefined,
+      multicallCustomContractAddress: multicallAddress
+        ? multicallAddress
+        : undefined,
     });
 
     const calls = tokens
-      .filter(token => token.address)
-      .map(token => ({
+      .filter((token) => token.address)
+      .map((token) => ({
         abi: erc20Abi,
         calls: [
           {
@@ -55,7 +57,10 @@ export const getEthTokensBalanceByChain = async (
 
         return [
           tokenAddress,
-          formatUnits(value.callsReturnContext[0].returnValues, token?.decimals),
+          formatUnits(
+            value.callsReturnContext[0].returnValues,
+            token?.decimals,
+          ),
         ];
       })
       .filter(([_, value]) => Number(value) > 0);
@@ -63,7 +68,10 @@ export const getEthTokensBalanceByChain = async (
     const gasBalance = await getEthGasBalanceByChain(chainId, walletAddress);
 
     return {
-      [chainId]: { ...Object.fromEntries(balances), '': gasBalance } as Record<string, string>,
+      [chainId]: { ...Object.fromEntries(balances), '': gasBalance } as Record<
+        string,
+        string
+      >,
     };
   } catch (error) {
     return { [chainId]: {} };

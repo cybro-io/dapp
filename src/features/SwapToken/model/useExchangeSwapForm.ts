@@ -5,8 +5,8 @@ import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 import * as yup from 'yup';
 
-import { useForm } from '@/shared/lib';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { useForm } from '@/shared/lib';
 
 type ExchangeSwapFormValues = {
   tokenIn: Token;
@@ -61,8 +61,14 @@ export const useExchangeSwapForm = ({
     },
   });
 
-  const [debouncedAmountIn, setDebouncedAmountIn] = useDebounceValue(form.values.amountIn, 1000);
-  const [debouncedAddress, setDebouncedAddress] = useDebounceValue(form.values.address, 1000);
+  const [debouncedAmountIn, setDebouncedAmountIn] = useDebounceValue(
+    form.values.amountIn,
+    1000,
+  );
+  const [debouncedAddress, setDebouncedAddress] = useDebounceValue(
+    form.values.address,
+    1000,
+  );
 
   const setTokenIn = (token: ExchangeSwapFormValues['tokenIn']) => {
     form.setFieldValue('tokenIn', token);
@@ -106,9 +112,14 @@ export const useExchangeSwapForm = ({
   };
 
   const handleSetPercent = (balance: number, percent: number) => {
-    Mixpanel.track(MixpanelEvent.ChangeSwapAmountPreset, { percent: `${percent * 100}%` });
+    Mixpanel.track(MixpanelEvent.ChangeSwapAmountPreset, {
+      percent: `${percent * 100}%`,
+    });
     setAmountIn(
-      new BigNumber(balance).multipliedBy(percent).dp(6, BigNumber.ROUND_DOWN).toString(),
+      new BigNumber(balance)
+        .multipliedBy(percent)
+        .dp(6, BigNumber.ROUND_DOWN)
+        .toString(),
     );
   };
 
@@ -119,7 +130,7 @@ export const useExchangeSwapForm = ({
     setToken(token);
     setAmountIn('');
     setAmountOut('');
-    getTokenPriceUsd(token).then(amount => {
+    getTokenPriceUsd(token).then((amount) => {
       setPrice(amount);
     });
     setAddress('');
@@ -127,14 +138,22 @@ export const useExchangeSwapForm = ({
     form.setTouched({});
   };
 
-  const handleChangeSettings = ({ deadline, slippage }: { slippage: number; deadline: number }) => {
+  const handleChangeSettings = ({
+    deadline,
+    slippage,
+  }: {
+    slippage: number;
+    deadline: number;
+  }) => {
     form.setFieldValue('slippage', slippage);
     form.setFieldValue('deadline', deadline);
     Mixpanel.track(MixpanelEvent.ChangeSwapSettings, { deadline, slippage });
   };
 
   React.useEffect(() => {
-    Mixpanel.track(MixpanelEvent.ChangeSwapFrom, { token: form.values.tokenIn });
+    Mixpanel.track(MixpanelEvent.ChangeSwapFrom, {
+      token: form.values.tokenIn,
+    });
   }, [form.values.tokenIn]);
 
   React.useEffect(() => {
@@ -143,7 +162,9 @@ export const useExchangeSwapForm = ({
 
   React.useEffect(() => {
     if (form.isValid && debouncedAmountIn) {
-      Mixpanel.track(MixpanelEvent.ChangeSwapAmount, { amount: debouncedAmountIn });
+      Mixpanel.track(MixpanelEvent.ChangeSwapAmount, {
+        amount: debouncedAmountIn,
+      });
 
       onCalculate?.(form.values);
     }

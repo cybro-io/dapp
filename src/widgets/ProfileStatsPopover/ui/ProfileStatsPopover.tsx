@@ -2,6 +2,7 @@
 
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
 import Image from 'next/image';
 
@@ -13,13 +14,14 @@ import { truncateMiddle } from '@/shared/lib';
 import { formatMoney } from '@/shared/utils';
 
 import { useUserToggle } from '../model/useUserToggle';
-import { Skeleton } from '@nextui-org/react';
 
 type ProfileStatsPopoverProps = {
   className?: string;
 };
 
-export const ProfileStatsPopover = ({ className }: ProfileStatsPopoverProps) => {
+export const ProfileStatsPopover = ({
+  className,
+}: ProfileStatsPopoverProps) => {
   const [isOpened, setOpen] = React.useState(false);
 
   const { address, userProfile, earnedYield, isLoading } = useUserToggle();
@@ -28,18 +30,26 @@ export const ProfileStatsPopover = ({ className }: ProfileStatsPopoverProps) => 
     <div className={clsx('user-toggle__wrapper', className)}>
       <button
         className={`user-toggle ${isOpened ? 'active' : ''}`}
-        onClick={() => setOpen(prevState => !prevState)}
+        onClick={() => setOpen((prevState) => !prevState)}
       >
         <div className={'user-toggle__profile'}>
-          <Image src={ProfileImage} alt="profile" className={'user-toggle__profile-icon'} />
+          <Image
+            src={ProfileImage}
+            alt="profile"
+            className={'user-toggle__profile-icon'}
+          />
         </div>
         <div className={'user-toggle__content'}>
           <div className="user-toggle__inner">
             {address ? (
-              <span className="user-toggle__name">{truncateMiddle(address, 3)}</span>
+              <span className="user-toggle__name">
+                {truncateMiddle(address, 3)}
+              </span>
             ) : (
               <Skeleton
-                classNames={{ base: 'w-11 h-[14px] rounded-lg dark:bg-background-tableRow' }}
+                classNames={{
+                  base: 'w-11 h-[14px] rounded-lg dark:bg-background-tableRow',
+                }}
               />
             )}
           </div>

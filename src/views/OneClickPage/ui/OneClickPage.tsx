@@ -23,7 +23,9 @@ type FormValues = {
   email: string;
 };
 
-export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className }) => {
+export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({
+  className,
+}) => {
   const { triggerToast } = useToast();
   const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
   const { mutate, isPending } = useAddToWaitlistApiV1WaitlistSignupPost();
@@ -56,7 +58,10 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
           },
         });
 
-        triggerToast({ message: 'Success', description: 'You have been added to waitlist' });
+        triggerToast({
+          message: 'Success',
+          description: 'You have been added to waitlist',
+        });
       } catch (e) {
         console.error(e, 'error');
         triggerToast({
@@ -82,20 +87,29 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
           Coming&nbsp;Soon This&nbsp;Year
         </Text>
         <Text className={styles.description} textView={TextView.P2}>
-          Get hyped for our upcoming One-Click Investing feature! We're cooking up some awesome,
-          user-friendly strategies to help you invest in our Pools and Vaults like a pro.
+          Get hyped for our upcoming One-Click Investing feature! We're cooking
+          up some awesome, user-friendly strategies to help you invest in our
+          Pools and Vaults like a pro.
         </Text>
         <Text className={styles.joinUs}>
           <span className={styles.accent}>Join our waiting list now </span>
-          and be the first to know when we launch. Just drop your email below, and we'll give you a
-          heads up when it's go-time.
+          and be the first to know when we launch. Just drop your email below,
+          and we'll give you a heads up when it's go-time.
         </Text>
       </div>
       <div className={styles.right}>
         <div className={styles.imageContainerDesktop}>
-          <Image src={'/oneClickBgDesktop.webp'} alt={''} height={530} width={620} />
+          <Image
+            src={'/oneClickBgDesktop.webp'}
+            alt={''}
+            height={530}
+            width={620}
+          />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className={styles.formContainer}
+        >
           <input
             className={styles.input}
             placeholder="Your email here"
@@ -118,10 +132,13 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
           </Button>
         </form>
         <Text className={styles.caption} textView={TextView.C3}>
-          <span className={styles.bold}>No spam.</span> Only updates and release announcements.
+          <span className={styles.bold}>No spam.</span> Only updates and release
+          announcements.
         </Text>
       </div>
-      {capchaKey && <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />}
+      {capchaKey && (
+        <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />
+      )}
     </section>
   );
 };

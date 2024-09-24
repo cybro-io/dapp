@@ -2,13 +2,13 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { VaultChips } from '@/entities/VaultChips';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
 import { Chip, Link, Text, TextView, TrustScore } from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
@@ -20,7 +20,11 @@ type VaultProps = {
   userBalance: number;
 };
 
-export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, className }) => {
+export const Vault: ComponentWithProps<VaultProps> = ({
+  vault,
+  userBalance,
+  className,
+}) => {
   const { isConnected } = useWeb3ModalAccount();
   const [componentWidth, setComponentWidth] = React.useState<number>(0);
   const rootRef = React.useRef<HTMLDivElement | null>(null);
@@ -44,7 +48,11 @@ export const Vault: ComponentWithProps<VaultProps> = ({ vault, userBalance, clas
   return (
     <Link className={clsx(styles.link)} href={`/vaults/${vault.id}`}>
       <div
-        className={clsx(styles.root, componentWidth > 390 && styles.large, className)}
+        className={clsx(
+          styles.root,
+          componentWidth > 390 && styles.large,
+          className,
+        )}
         ref={rootRef}
       >
         <div className={styles.titleContainer}>

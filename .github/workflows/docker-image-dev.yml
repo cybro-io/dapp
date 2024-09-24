@@ -4,6 +4,7 @@ on:
   push:
     branches:
       - dev
+  pull_request:
 
 jobs:
   docker:
@@ -24,7 +25,7 @@ jobs:
         uses: docker/build-push-action@v5
         with:
           file: Dockerfile
-          push: true
+          push: ${{ github.event_name == 'push' && github.ref == 'refs/heads/dev' }}
           tags: ghcr.io/${{ github.repository }}:unstable
           build-args: |
             NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID=${{ secrets.NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID }}

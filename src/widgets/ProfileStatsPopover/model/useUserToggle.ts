@@ -1,5 +1,4 @@
 import { useWeb3ModalAccount } from '@/shared/lib';
-
 import {
   useGetProfileApiV1ProfileAddressGet,
   useGetProfileEarnedYieldApiV1ProfileAddressEarnedYieldGet,
@@ -12,7 +11,7 @@ export const useUserToggle = () => {
     useGetProfileApiV1ProfileAddressGet(address!, {
       query: {
         enabled: Boolean(address),
-        select: data => data.data.data,
+        select: (data) => data.data.data,
       },
     });
 
@@ -20,7 +19,7 @@ export const useUserToggle = () => {
     useGetProfileEarnedYieldApiV1ProfileAddressEarnedYieldGet(address!, {
       query: {
         enabled: Boolean(address),
-        select: data => data.data.data,
+        select: (data) => data.data.data,
       },
     });
 

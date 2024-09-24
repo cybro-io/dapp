@@ -22,11 +22,9 @@ type HowTrustScoreCountsProps = {
   hasIcon?: boolean;
 };
 
-export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsProps> = ({
-  viewType = LinkView.Button,
-  hasIcon = true,
-  className,
-}) => {
+export const HowTrustScoreCountsButton: ComponentWithProps<
+  HowTrustScoreCountsProps
+> = ({ viewType = LinkView.Button, hasIcon = true, className }) => {
   const { openModal } = useModal();
 
   const onTooltipChange = React.useCallback((isOpen: boolean) => {
@@ -53,7 +51,9 @@ export const HowTrustScoreCountsButton: ComponentWithProps<HowTrustScoreCountsPr
         className={clsx(styles.link)}
         tooltipClassName={styles.tooltip}
         tooltipContent={
-          <HowTrustScoreCountsInfo viewType={HowTrustScoreCountsInfoViewType.Tooltip} />
+          <HowTrustScoreCountsInfo
+            viewType={HowTrustScoreCountsInfoViewType.Tooltip}
+          />
         }
         onTooltipChange={onTooltipChange}
       >

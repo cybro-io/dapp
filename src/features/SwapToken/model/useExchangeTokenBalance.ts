@@ -1,9 +1,9 @@
 import React, { useState } from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { Token } from 'symbiosis-js-sdk';
 
 import { useSwap } from '@/features/SwapToken';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { useGetTokenBalance, useSymbiosis } from '@/shared/lib';
 
 export const useExchangeTokenBalance = (token: Token | null) => {

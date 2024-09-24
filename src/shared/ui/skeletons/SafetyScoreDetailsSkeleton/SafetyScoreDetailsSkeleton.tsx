@@ -9,9 +9,9 @@ import { ComponentWithProps } from '@/shared/types';
 
 type VaultInfoSkeletonProps = {};
 
-export const SafetyScoreDetailsSkeleton: ComponentWithProps<VaultInfoSkeletonProps> = ({
-  className,
-}) => {
+export const SafetyScoreDetailsSkeleton: ComponentWithProps<
+  VaultInfoSkeletonProps
+> = ({ className }) => {
   return (
     <Card className="w-full p-4 space-y-5" radius="lg">
       <div className="flex items-center space-x-4">

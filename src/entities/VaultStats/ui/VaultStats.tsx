@@ -6,7 +6,14 @@ import clsx from 'clsx';
 import numeral from 'numeral';
 
 import { ComponentWithProps, Money, Nullable } from '@/shared/types';
-import { Chip, Link, LinkView, Text, TextView, VaultStatsSkeleton } from '@/shared/ui';
+import {
+  Chip,
+  Link,
+  LinkView,
+  Text,
+  TextView,
+  VaultStatsSkeleton,
+} from '@/shared/ui';
 import { formatUserMoney, isInvalid } from '@/shared/utils';
 
 import { VaultStatsView } from '../const';
@@ -63,7 +70,11 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
             {/* Dashed line element */}
             <Text
               textView={TextView.P3}
-              className={clsx(styles.detailsValue, styles.weeklyApyValue, styles.cardValue)}
+              className={clsx(
+                styles.detailsValue,
+                styles.weeklyApyValue,
+                styles.cardValue,
+              )}
             >
               {apy}%
             </Text>
@@ -76,7 +87,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
             </Text>
             <div className={styles.detailsLine}></div>
             {/* Dashed line element */}
-            <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+            <Text
+              textView={TextView.P3}
+              className={clsx(styles.detailsValue, styles.cardValue)}
+            >
               ${numeral(Math.floor(Number(tvl))).format('0.0a')}
             </Text>
           </div>
@@ -88,7 +102,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
             </Text>
             <div className={styles.detailsLine}></div>
             {/* Dashed line element */}
-            <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+            <Text
+              textView={TextView.P3}
+              className={clsx(styles.detailsValue, styles.cardValue)}
+            >
               {provider}
             </Text>
           </div>
@@ -101,7 +118,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               </Text>
               <div className={styles.detailsLine}></div>
               {/* Dashed line element */}
-              <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.cardValue)}>
+              <Text
+                textView={TextView.P3}
+                className={clsx(styles.detailsValue, styles.cardValue)}
+              >
                 ${formatUserMoney(overallVaultInvestment)}
               </Text>
             </div>
@@ -124,7 +144,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
               APY
             </Text>
           </Link>
-          <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.weeklyApyValue)}>
+          <Text
+            textView={TextView.P3}
+            className={clsx(styles.detailsValue, styles.weeklyApyValue)}
+          >
             {apy}%
           </Text>
         </div>
@@ -140,7 +163,10 @@ export const VaultStats: ComponentWithProps<VaultStatsProps> = ({
           <Text textView={TextView.C3} className={styles.detailsTitle}>
             Provider
           </Text>
-          <Text textView={TextView.P3} className={clsx(styles.detailsValue, styles.provider)}>
+          <Text
+            textView={TextView.P3}
+            className={clsx(styles.detailsValue, styles.provider)}
+          >
             {provider}
           </Text>
         </div>

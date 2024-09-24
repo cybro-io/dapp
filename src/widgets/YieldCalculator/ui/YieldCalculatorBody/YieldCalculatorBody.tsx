@@ -5,6 +5,7 @@ import React from 'react';
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 import { Token } from 'symbiosis-js-sdk';
+import { useDebounceValue } from 'usehooks-ts';
 
 import { DepositCalculator, PeriodTab } from '@/entities/DepositCalculator';
 import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
@@ -20,11 +21,15 @@ import {
   useWithdrawCalculator,
   useDepositCalculator,
 } from '@/shared/hooks';
-import { ComponentWithProps, Nullable, Token as TokenContract, Vault } from '@/shared/types';
+import {
+  ComponentWithProps,
+  Nullable,
+  Token as TokenContract,
+  Vault,
+} from '@/shared/types';
 import { debounce, formatMoney, VaultCurrency } from '@/shared/utils';
 
 import styles from './YieldCalculatorBody.module.scss';
-import { useDebounceValue } from 'usehooks-ts';
 
 type YieldCalculatorProps = {
   vaultId: number;
@@ -55,10 +60,14 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const [amount, setAmount] = React.useState<string>('0');
   const [debouncedAmount] = useDebounceValue(amount, 500);
   const [period, setPeriod] = React.useState<PeriodTab>(PeriodTab.Year);
-  const [selectedPercent, setSelectedPercent] = React.useState<number | null>(null);
+  const [selectedPercent, setSelectedPercent] = React.useState<number | null>(
+    null,
+  );
 
-  const { balance: selectedTokenBalance, isLoading: isLoadingSelectedTokenBalance } =
-    useExchangeTokenBalance(selectedToken);
+  const {
+    balance: selectedTokenBalance,
+    isLoading: isLoadingSelectedTokenBalance,
+  } = useExchangeTokenBalance(selectedToken);
 
   const { balance, refetchBalance, vaultDepositUsd, vaultDeposit } = useBalance(
     tokenContract,
@@ -72,12 +81,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     [selectedTokenBalance, selectedToken, balance],
   );
 
-  const { yourWithdraw, yourWithdrawUsd, currentRate, timer } = useWithdrawCalculator(
-    vaultContract,
-    amount,
-    currency,
-    chainId,
-  );
+  const { yourWithdraw, yourWithdrawUsd, currentRate, timer } =
+    useWithdrawCalculator(vaultContract, amount, currency, chainId);
 
   const {
     setButtonMessage,
@@ -110,7 +115,8 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     setAmount,
   );
 
-  const isSelectedToken = selectedToken && actionType === YieldSwitchOptions.Deposit;
+  const isSelectedToken =
+    selectedToken && actionType === YieldSwitchOptions.Deposit;
   const { swap, subscribeSuccessSwap, isLoadingSwap } = useSwap();
 
   const {
@@ -137,7 +143,9 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const getIsSubmitButtonDisabled = React.useCallback(() => {
     const availableBalance =
-      actionType === YieldSwitchOptions.Deposit ? Number(userBalance) : vaultDeposit;
+      actionType === YieldSwitchOptions.Deposit
+        ? Number(userBalance)
+        : vaultDeposit;
 
     if (availableBalance === null) {
       return true;
@@ -150,7 +158,14 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
       isDepositLoading ||
       isWithdrawLoading
     );
-  }, [actionType, userBalance, vaultDeposit, amount, isDepositLoading, isWithdrawLoading]);
+  }, [
+    actionType,
+    userBalance,
+    vaultDeposit,
+    amount,
+    isDepositLoading,
+    isWithdrawLoading,
+  ]);
 
   const isSubmitButtonDisabled =
     getIsSubmitButtonDisabled() ||
@@ -159,7 +174,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
     isLoadingSelectedTokenBalance;
 
   const debouncedTrackEvent = React.useMemo(
-    () => debounce(() => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually), 3000),
+    () =>
+      debounce(
+        () => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually),
+        3000,
+      ),
     [],
   );
 
@@ -181,9 +200,11 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         inputValue = inputValue.replace(/[^0-9.]/g, '');
 
         // Remove leading zeros and prevent multiple decimal points
-        const cleanedValue = inputValue.split('.').reduce((acc, part, index) => {
-          return index === 0 ? String(Number(part)) : acc + '.' + part;
-        }, '');
+        const cleanedValue = inputValue
+          .split('.')
+          .reduce((acc, part, index) => {
+            return index === 0 ? String(Number(part)) : acc + '.' + part;
+          }, '');
 
         debouncedTrackEvent();
         setSelectedPercent(null);

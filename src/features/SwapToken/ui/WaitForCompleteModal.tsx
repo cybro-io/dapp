@@ -27,7 +27,10 @@ export const WaitForCompleteModal = NiceModal.create(() => {
   const tokenOut = tokenAmountOut.token;
 
   return (
-    <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+    <Modal
+      classNames={{ base: 'w-[375px]' }}
+      onClose={() => currentModal.remove()}
+    >
       <Modal.Header>Waiting for completion</Modal.Header>
       <Modal.Body>
         <div className="flex flex-col gap-4 justify-center items-center rounded-[22px] bg-background-window p-4">
@@ -55,7 +58,7 @@ export const WaitForCompleteModal = NiceModal.create(() => {
             <Text textView={TextView.C1}>transaction status</Text>
             <div className="flex flex-col">
               {Object.values(SwapStatus)
-                .filter(value => typeof value === 'number')
+                .filter((value) => typeof value === 'number')
                 .map((value, index) => (
                   <div
                     key={value}
@@ -64,7 +67,9 @@ export const WaitForCompleteModal = NiceModal.create(() => {
                     <Text textView={TextView.C4} className="flex-1 opacity-60">
                       {getSwapStatus(value as SwapStatus, tokenIn, tokenOut)}
                     </Text>
-                    {typeof swapStatus === 'number' && swapStatus > index && <TickCircle />}
+                    {typeof swapStatus === 'number' && swapStatus > index && (
+                      <TickCircle />
+                    )}
                   </div>
                 ))}
             </div>

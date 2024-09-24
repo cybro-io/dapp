@@ -8,8 +8,6 @@ import { ComponentWithProps, useGetTvlApiV1CommonTvlGet } from '@/shared/types';
 import { Chip, ChipViewType, TvlSkeleton } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
-import styles from './Tvl.module.scss';
-
 type TvlProps = {};
 
 export const Tvl: ComponentWithProps<TvlProps> = ({ className }) => {
@@ -22,7 +20,7 @@ export const Tvl: ComponentWithProps<TvlProps> = ({ className }) => {
   }
 
   return (
-    <Chip viewType={ChipViewType.Outlined} className={clsx(styles.root, className)}>
+    <Chip viewType={ChipViewType.Outlined} className={clsx(className)}>
       Cybro TVL ${formatUserMoney(tvl)}
     </Chip>
   );

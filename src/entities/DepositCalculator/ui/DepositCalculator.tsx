@@ -4,13 +4,13 @@ import React, { Key } from 'react';
 
 import { Skeleton } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { PeriodTab } from '@/entities/DepositCalculator/const';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -65,7 +65,9 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
   const onTabChange = React.useCallback(
     (currentTab: Key) => {
       setPeriod(currentTab as PeriodTab);
-      Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, { period: currentTab });
+      Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, {
+        period: currentTab,
+      });
     },
     [setPeriod],
   );
@@ -74,7 +76,11 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
     <div className={clsx(styles.root, className)}>
       <div className={styles.projectedYield}>
         <div className={styles.tabsContainer}>
-          <Tabs className={styles.yieldTabs} size="sm" onSelectionChange={onTabChange}>
+          <Tabs
+            className={styles.yieldTabs}
+            size="sm"
+            onSelectionChange={onTabChange}
+          >
             {periods.map(({ key, title }) => (
               <Tab key={key} title={title} />
             ))}
@@ -92,7 +98,9 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
                 }}
               />
             ) : (
-              <Text className={styles.resultValue}>+ {formatUserMoney(profitTokens || 0)}</Text>
+              <Text className={styles.resultValue}>
+                + {formatUserMoney(profitTokens || 0)}
+              </Text>
             )}
             {isLoadingCalculate ? (
               <Skeleton
@@ -101,7 +109,9 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
                 }}
               />
             ) : (
-              <Text className={styles.resultActualValue}>≈ ${formatUserMoney(profitUsd)}</Text>
+              <Text className={styles.resultActualValue}>
+                ≈ ${formatUserMoney(profitUsd)}
+              </Text>
             )}
           </div>
           <div className={styles.yieldPercents}>
@@ -125,14 +135,20 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
             }}
           />
         ) : (
-          <span className={styles.balanceAfterValue}>{formatUserMoney(balanceAfter || 0, 8)}</span>
+          <span className={styles.balanceAfterValue}>
+            {formatUserMoney(balanceAfter || 0, 8)}
+          </span>
         )}
       </Text>
 
       <ConnectWallet
         className={styles.connectButton}
         whenConnectedComponent={
-          <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={deposit}>
+          <Button
+            disabled={isButtonDisabled}
+            className={styles.submitButton}
+            onClick={deposit}
+          >
             {buttonMessage || (withSwap ? 'Swap & Deposit' : 'Deposit')}
           </Button>
         }
