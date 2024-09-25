@@ -8,7 +8,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   output: 'standalone',
-  webpack: config => {
+  webpack: (config) => {
     config.externals.push('pino-pretty', 'lokijs', 'encoding');
 
     config.module.rules.push({
@@ -16,6 +16,8 @@ const nextConfig = {
       issuer: /\.[jt]sx?$/,
       use: ['@svgr/webpack'],
     });
+
+    config.optimization.minimize = process.env.DISABLE_MINIMIZE !== 'true';
 
     return config;
   },
@@ -61,6 +63,10 @@ const nextConfig = {
         hostname: 'taikoscan.io',
       },
     ],
+  },
+  eslint: {
+    // we run linters separately in CI
+    ignoreDuringBuilds: true,
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',

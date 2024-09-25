@@ -2,12 +2,13 @@
 
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { Tvl } from '@/entities/Tvl';
 import { QueryKey } from '@/shared/const';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   ComponentWithProps,
   SortValue,
@@ -16,7 +17,10 @@ import {
 import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
 import { Text, TextView } from '@/shared/ui';
 import { transformBalances } from '@/shared/utils';
-import { AvailableVaultsViewType, useAvailableVaultsView } from '@/widgets/AvailableVaults';
+import {
+  AvailableVaultsViewType,
+  useAvailableVaultsView,
+} from '@/widgets/AvailableVaults';
 import { AvailableVaultsGrid } from '@/widgets/AvailableVaults/ui/components';
 import { AvailableVaultsList } from '@/widgets/AvailableVaults/ui/components/AvailableVaultsList';
 import { ErrorMessage } from '@/widgets/ErrorMessage';
@@ -25,13 +29,14 @@ import GridIcon from '../assets/icons/grid.svg';
 import ListIcon from '../assets/icons/list.svg';
 
 import styles from './AvailableVaults.module.scss';
-import { Skeleton } from '@nextui-org/react';
 
 type AvailableVaultsProps = {};
 
 const skeletons = [1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12];
 
-const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }) => {
+const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({
+  className,
+}) => {
   const { viewType, setViewType } = useAvailableVaultsView();
 
   const [sort, setSort] = React.useState<[SortValue, boolean]>(() => {
@@ -39,7 +44,9 @@ const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }
     if (typeof window !== 'undefined') {
       const sortValue = sessionStorage.getItem('sortValue');
       const sortOrder = sessionStorage.getItem('sortOrder') === 'true'; // Convert to boolean
-      return sortValue ? [sortValue as SortValue, sortOrder] : [SortValue.apy, false];
+      return sortValue
+        ? [sortValue as SortValue, sortOrder]
+        : [SortValue.apy, false];
     }
     return [SortValue.apy, false];
   });
@@ -47,16 +54,21 @@ const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }
   const { address, chainId, isConnected } = useWeb3ModalAccount();
   const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
     { address, sort_by: sort[0], ascending: sort[1] },
-    { query: { queryKey: [QueryKey.AvailableVaults, address, sort[0], sort[1]] } },
-  );
-
-  const { data: balanceData } = useGetBalanceByAddressApiV1ProfileAddressBalanceGet(
-    address || '',
-    { chain_id: chainId || 0 },
     {
-      query: { queryKey: [QueryKey.UserBalance, address, chainId] },
+      query: {
+        queryKey: [QueryKey.AvailableVaults, address, sort[0], sort[1]],
+      },
     },
   );
+
+  const { data: balanceData } =
+    useGetBalanceByAddressApiV1ProfileAddressBalanceGet(
+      address || '',
+      { chain_id: chainId || 0 },
+      {
+        query: { queryKey: [QueryKey.UserBalance, address, chainId] },
+      },
+    );
 
   // Store sort in session storage whenever it changes
   React.useEffect(() => {
@@ -89,7 +101,7 @@ const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({ className }
           selectedKey={viewType}
           size="sm"
           defaultSelectedKey={AvailableVaultsViewType.Card}
-          onSelectionChange={key => {
+          onSelectionChange={(key) => {
             setViewType(key as AvailableVaultsViewType);
           }}
           classNames={{

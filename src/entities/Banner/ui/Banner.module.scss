@@ -66,7 +66,16 @@
   justify-content: start;
   padding: 55px 50% 36px 30px;
   align-items: start;
-  clip-path: polygon(5% 0%, 100% 0%, 100% 10%, 100% 90%, 95% 100%, 10% 100%, 0% 100%, 0% 10%);
+  clip-path: polygon(
+    5% 0%,
+    100% 0%,
+    100% 10%,
+    100% 90%,
+    95% 100%,
+    10% 100%,
+    0% 100%,
+    0% 10%
+  );
 
   .title {
     margin-bottom: 10px;
@@ -92,7 +101,16 @@
 
 .bigMobile {
   padding: 24px 34px;
-  clip-path: polygon(15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%);
+  clip-path: polygon(
+    15% 0%,
+    100% 0%,
+    100% 10%,
+    100% 90%,
+    85% 100%,
+    10% 100%,
+    0% 100%,
+    0% 10%
+  );
   background-position: center bottom 80px;
   background-size: 250px 248px;
 
@@ -122,7 +140,16 @@
 
 .small {
   padding: 12px 26px;
-  clip-path: polygon(10% 0%, 100% 0%, 100% 10%, 100% 90%, 90% 100%, 10% 100%, 0% 100%, 0% 10%);
+  clip-path: polygon(
+    10% 0%,
+    100% 0%,
+    100% 10%,
+    100% 90%,
+    90% 100%,
+    10% 100%,
+    0% 100%,
+    0% 10%
+  );
 }
 
 .mobile {
@@ -132,7 +159,16 @@
     background-position: center bottom 50px;
     background-size: 283px 263px;
     align-items: center;
-    clip-path: polygon(15% 0%, 100% 0%, 100% 10%, 100% 90%, 85% 100%, 10% 100%, 0% 100%, 0% 10%);
+    clip-path: polygon(
+      15% 0%,
+      100% 0%,
+      100% 10%,
+      100% 90%,
+      85% 100%,
+      10% 100%,
+      0% 100%,
+      0% 10%
+    );
 
     .title {
       margin-bottom: 8px;

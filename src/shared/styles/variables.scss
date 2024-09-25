@@ -11,7 +11,12 @@ $background-accentBold: #f9e727;
 $background-white: #ffffff;
 $background-tooltip: rgb(109 109 109);
 $background-header: rgba(255, 255, 255, 0.05);
-$background-accent-linear: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
+$background-accent-linear: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
 
 /** TEXT **/
 $text-white-heading: #ffffff;
@@ -40,8 +45,18 @@ $error-label: #ff3d6c;
 $error-bg: #5f192a;
 
 /** BUTTON PRIMARY **/
-$button-primary-defaultBg: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
-$button-primary-hoverBg: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
+$button-primary-defaultBg: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
+$button-primary-hoverBg: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
 $button-primary-defaultLabel: #0b0c1b;
 $button-primary-hoverLabel: #0b0c1b;
 $button-primary-disabledBg: #9b8e00;

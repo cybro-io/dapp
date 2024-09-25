@@ -7,7 +7,12 @@ import clsx from 'clsx';
 
 import ArrowIcon from '@/shared/assets/icons/chevron-up.svg';
 import { ComponentWithProps } from '@/shared/types';
-import { InfoBoxActionType, InfoBoxViewType, Text, TextView } from '@/shared/ui';
+import {
+  InfoBoxActionType,
+  InfoBoxViewType,
+  Text,
+  TextView,
+} from '@/shared/ui';
 
 import styles from './InfoBox.module.scss';
 
@@ -42,18 +47,38 @@ export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
   const isDropdown = actionType !== InfoBoxActionType.Pure;
 
   return (
-    <div className={clsx(styles.root, styles[viewType], styles[actionType], className)}>
+    <div
+      className={clsx(
+        styles.root,
+        styles[viewType],
+        styles[actionType],
+        className,
+      )}
+    >
       <div className={styles.mainContainer}>
-        <div className={clsx(styles.iconContainer, styles.iconContainerDesktop)}>{icon}</div>
+        <div
+          className={clsx(styles.iconContainer, styles.iconContainerDesktop)}
+        >
+          {icon}
+        </div>
         <div className={styles.content}>
           <div className={styles.top}>
             <div className={styles.titleContainer}>
-              <div className={clsx(styles.iconContainer, styles.iconContainerMobile)}>{icon}</div>
+              <div
+                className={clsx(
+                  styles.iconContainer,
+                  styles.iconContainerMobile,
+                )}
+              >
+                {icon}
+              </div>
               <Text className={styles.title} textView={TextView.C3}>
                 {title}
               </Text>
             </div>
-            {rightContent && <div className={styles.rightContent}>{rightContent}</div>}
+            {rightContent && (
+              <div className={styles.rightContent}>{rightContent}</div>
+            )}
           </div>
           {isLoading ? (
             <Skeleton className="flex rounded-lg w-24 h-8" />
@@ -84,7 +109,12 @@ export const InfoBox: ComponentWithProps<InfoBoxProps> = ({
           )}
           <button className={styles.dropdownButton} onClick={setIsOpened}>
             {dropdownButtonContent}
-            <div className={clsx(styles.arrowIconContainer, isOpened && styles.isOpened)}>
+            <div
+              className={clsx(
+                styles.arrowIconContainer,
+                isOpened && styles.isOpened,
+              )}
+            >
               <ArrowIcon />
             </div>
           </button>

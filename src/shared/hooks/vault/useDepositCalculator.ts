@@ -1,12 +1,12 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 
 import { PeriodTab } from '@/entities/DepositCalculator';
 import { useSwapTokens } from '@/entities/SwapToken';
 import { SwapCalculateResult, useSwapCalculate } from '@/features/SwapToken';
 import { useToast } from '@/shared/hooks';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Maybe,
   Money,
@@ -43,12 +43,15 @@ export const useDepositCalculator = (
   setButtonMessage: (message: string | null) => void,
   setAmount: (amount: string) => void,
 ): UseDepositCalculator => {
-  const { fetchCalculateSwap, isLoadingCalculate, calculate, error } = useSwapCalculate();
+  const { fetchCalculateSwap, isLoadingCalculate, calculate, error } =
+    useSwapCalculate();
 
-  const [selectedTokenPriceInUsd, setSelectedTokenPriceInUsd] = React.useState<number>(0);
+  const [selectedTokenPriceInUsd, setSelectedTokenPriceInUsd] =
+    React.useState<number>(0);
 
   React.useEffect(() => {
-    if (selectedToken) getTokenPriceUsd(selectedToken).then(setSelectedTokenPriceInUsd);
+    if (selectedToken)
+      getTokenPriceUsd(selectedToken).then(setSelectedTokenPriceInUsd);
   }, [selectedToken]);
 
   const { triggerToast } = useToast();
@@ -70,13 +73,17 @@ export const useDepositCalculator = (
   const [profitTokens, setProfitTokens] = React.useState<Money>(0);
   const [profitUsd, setProfitUsd] = React.useState<Money>(0);
   const [balanceAfter, setBalanceAfter] = React.useState<Money>(0);
-  const [balanceAfterText, setBalanceAfterText] = React.useState<string>('1 year');
+  const [balanceAfterText, setBalanceAfterText] =
+    React.useState<string>('1 year');
 
   React.useEffect(() => {
     const fetchData = async () => {
       if (balance) {
         const availableFundsUsd = convertToUsd(Number(balance), tokenPrice);
-        const entryAmountUsd = convertToUsd(Number(amountToDeposit), tokenPrice);
+        const entryAmountUsd = convertToUsd(
+          Number(amountToDeposit),
+          tokenPrice,
+        );
 
         setAvailableFundsUsd(availableFundsUsd);
         setEntryAmountUsd(entryAmountUsd);
@@ -86,13 +93,25 @@ export const useDepositCalculator = (
     if (!selectedToken) fetchData();
 
     if (selectedToken) {
-      const availableFundsUsd = convertToUsd(Number(balance), selectedTokenPriceInUsd);
-      const entryAmountUsd = convertToUsd(Number(amountToDeposit), selectedTokenPriceInUsd);
+      const availableFundsUsd = convertToUsd(
+        Number(balance),
+        selectedTokenPriceInUsd,
+      );
+      const entryAmountUsd = convertToUsd(
+        Number(amountToDeposit),
+        selectedTokenPriceInUsd,
+      );
 
       setAvailableFundsUsd(availableFundsUsd);
       setEntryAmountUsd(entryAmountUsd);
     }
-  }, [amountToDeposit, balance, tokenPrice, selectedTokenPriceInUsd, selectedToken]);
+  }, [
+    amountToDeposit,
+    balance,
+    tokenPrice,
+    selectedTokenPriceInUsd,
+    selectedToken,
+  ]);
 
   const clearValues = () => {
     setButtonMessage(null);

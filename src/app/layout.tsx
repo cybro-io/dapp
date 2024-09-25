@@ -77,8 +77,18 @@ export default function RootLayout({
               <NiceModalProvider>
                 <ModalProvider>
                   <WalletBalancesProvider>
-                    <body className={clsx(styles.root, unbounded.variable, poppins.variable)}>
-                      <NextTopLoader color="#F0D025" showSpinner={false} shadow={false} />
+                    <body
+                      className={clsx(
+                        styles.root,
+                        unbounded.variable,
+                        poppins.variable,
+                      )}
+                    >
+                      <NextTopLoader
+                        color="#F0D025"
+                        showSpinner={false}
+                        shadow={false}
+                      />
                       <ToastProvider>{children}</ToastProvider>
                       <ModalContainer />
                     </body>

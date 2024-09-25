@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { Skeleton } from '@nextui-org/react';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 
 import { QueryKey } from '@/shared/const';
 import { useToast } from '@/shared/hooks';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   ComponentWithProps,
   useGetProfileRefcodeApiV1ProfileAddressRefcodeGet,
@@ -20,19 +20,30 @@ import styles from './ReferralLink.module.scss';
 
 type ReferralLinkProps = {};
 
-export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className }) => {
+export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({
+  className,
+}) => {
   const { address } = useWeb3ModalAccount();
   const { triggerToast } = useToast();
-  const { data, isLoading } = useGetProfileRefcodeApiV1ProfileAddressRefcodeGet(address || '', {
-    query: { queryKey: [QueryKey.RefCode, address] },
-  });
+  const { data, isLoading } = useGetProfileRefcodeApiV1ProfileAddressRefcodeGet(
+    address || '',
+    {
+      query: { queryKey: [QueryKey.RefCode, address] },
+    },
+  );
 
   const presaleUrl = process.env.NEXT_PUBLIC_PRESALE_URL;
   const shortenUrl = presaleUrl?.replace(/^https?:\/\//, '');
   const refCode = data?.data?.data;
 
-  const fullLink = React.useMemo(() => `${presaleUrl}/?ref=${refCode}`, [presaleUrl, refCode]);
-  const shortLink = React.useMemo(() => `${shortenUrl}/?ref=${refCode}`, [refCode, shortenUrl]);
+  const fullLink = React.useMemo(
+    () => `${presaleUrl}/?ref=${refCode}`,
+    [presaleUrl, refCode],
+  );
+  const shortLink = React.useMemo(
+    () => `${shortenUrl}/?ref=${refCode}`,
+    [refCode, shortenUrl],
+  );
 
   const onCopyClick = React.useCallback(async () => {
     try {
@@ -65,7 +76,11 @@ export const ReferralLink: ComponentWithProps<ReferralLinkProps> = ({ className 
           <Text className={styles.link} textView={TextView.P2}>
             {shortLink}
           </Text>
-          <IconButton className={styles.button} icon={<CopyIcon />} onClick={onCopyClick} />
+          <IconButton
+            className={styles.button}
+            icon={<CopyIcon />}
+            onClick={onCopyClick}
+          />
         </div>
       )}
     </React.Fragment>

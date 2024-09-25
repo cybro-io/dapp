@@ -15,7 +15,11 @@ import ProfileImage from '@/shared/assets/icons/profile.png';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import UsdbIcon from '@/shared/assets/icons/usdb.svg';
 import { links, truncateMiddle } from '@/shared/lib';
-import { EarnedYieldResponseDataProperty, GetWalletResponseData, Maybe } from '@/shared/types';
+import {
+  EarnedYieldResponseDataProperty,
+  GetWalletResponseData,
+  Maybe,
+} from '@/shared/types';
 import { formatMoney } from '@/shared/utils';
 
 type ProfileStatsPanelProps = {
@@ -109,10 +113,16 @@ export const ProfileStatsPanel = ({
           </button>
         </div>
         <div className="user-menu__copy">
-          <Image src={ProfileImage} alt="profile" className={'user-menu__logo'} />
+          <Image
+            src={ProfileImage}
+            alt="profile"
+            className={'user-menu__logo'}
+          />
           {address ? (
             <React.Fragment>
-              <span className="user-menu__copy-text">{truncateMiddle(address, 3)}</span>
+              <span className="user-menu__copy-text">
+                {truncateMiddle(address, 3)}
+              </span>
               <div className="user-menu__copy-box">
                 <button
                   className="user-menu__copy-btn"
@@ -127,7 +137,9 @@ export const ProfileStatsPanel = ({
             </React.Fragment>
           ) : (
             <Skeleton
-              classNames={{ base: 'w-20 h-[22px] rounded-lg dark:bg-background-tableRow' }}
+              classNames={{
+                base: 'w-20 h-[22px] rounded-lg dark:bg-background-tableRow',
+              }}
             />
           )}
         </div>
@@ -137,7 +149,8 @@ export const ProfileStatsPanel = ({
           {data.list.map(
             (item, index) =>
               (!item.isNativeYieldInfo ||
-                (item.isNativeYieldInfo && profileData?.claimable_yield_enrolled)) && (
+                (item.isNativeYieldInfo &&
+                  profileData?.claimable_yield_enrolled)) && (
                 <div
                   key={'userMenuItem' + index}
                   className={`user-menu__item${item.label === null ? ' user-menu__item-compact' : ''}`}
@@ -171,7 +184,9 @@ export const ProfileStatsPanel = ({
         {!!userBalance && profileData?.claimable_yield_enrolled && (
           <p className="user-menu__desc">
             <span>{formattedDescription.firstPart}</span>
-            {formattedDescription.boldText ? <b>{formattedDescription.boldText}</b> : null}
+            {formattedDescription.boldText ? (
+              <b>{formattedDescription.boldText}</b>
+            ) : null}
             {formattedDescription.secondPart ? (
               <span>&nbsp;{formattedDescription.secondPart}</span>
             ) : null}
@@ -186,7 +201,9 @@ export const ProfileStatsPanel = ({
             <a
               href={`${links.preSale}/#form`}
               target="_blank"
-              className={'button button--yellow button--arrow user-menu__offer-btn'}
+              className={
+                'button button--yellow button--arrow user-menu__offer-btn'
+              }
               rel="noreferrer"
             >
               Top up cybro balance

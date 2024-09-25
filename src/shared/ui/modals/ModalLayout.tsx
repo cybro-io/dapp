@@ -26,7 +26,9 @@ export const ModalLayout: ComponentWithProps<ModalLayoutProps> = ({
   // Handling system buttons and search bars on mobile
   React.useEffect(() => {
     const adjustModalHeight = () => {
-      const modalElement = document.querySelector(`.${styles.root}`) as HTMLElement | null;
+      const modalElement = document.querySelector(
+        `.${styles.root}`,
+      ) as HTMLElement | null;
       if (modalElement) {
         modalElement.style.height = `${window.innerHeight}px`;
       }
@@ -49,7 +51,11 @@ export const ModalLayout: ComponentWithProps<ModalLayoutProps> = ({
       <div className={styles.content}>
         <div className={styles.top}>
           <Text className={styles.title}>{title}</Text>
-          <IconButton className={styles.closeButton} icon={<CloseIcon />} onClick={closeModal} />
+          <IconButton
+            className={styles.closeButton}
+            icon={<CloseIcon />}
+            onClick={closeModal}
+          />
         </div>
         {children}
       </div>

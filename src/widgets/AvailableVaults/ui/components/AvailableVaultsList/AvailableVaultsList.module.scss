@@ -70,11 +70,11 @@
 }
 
 .mobileSort {
-  margin-right: auto;
   display: flex;
+  margin-right: auto;
+  margin-bottom: 12px;
   align-items: center;
   gap: 10px;
-  margin-bottom: 12px;
 }
 
 @media screen and (width >= 826px) {

@@ -10,13 +10,13 @@ import { Token } from 'symbiosis-js-sdk';
 import { getUniqueTokenId } from '@/entities/SwapToken';
 import { useSelectTokenModal } from '@/features/SelectToken';
 import { SwapCalculateResult } from '@/features/SwapToken';
+import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Maybe, Money } from '@/shared/types';
 import { DropdownButton, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
 
 import styles from './DepositWithdrawInput.module.scss';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 
 type DepositWithdrawInputProps = {
   currency: string;
@@ -64,7 +64,9 @@ export const percentButtons = [
   },
 ];
 
-export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps> = ({
+export const DepositWithdrawInput: ComponentWithProps<
+  DepositWithdrawInputProps
+> = ({
   currency,
   tokenIcon,
   userValue,
@@ -119,17 +121,22 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
     Mixpanel.track(MixpanelEvent.ChangeZapInToken);
 
     openModal(
-      selectedToken ? getUniqueTokenId(selectedToken.address, selectedToken.chainId) : '',
-      token => {
+      selectedToken
+        ? getUniqueTokenId(selectedToken.address, selectedToken.chainId)
+        : '',
+      (token) => {
         Mixpanel.track(MixpanelEvent.ChangeZapInTokenSuccess);
         setSelectedToken(
-          tokenAddress === token.address && chainId === token.chainId ? null : token,
+          tokenAddress === token.address && chainId === token.chainId
+            ? null
+            : token,
         );
       },
     );
   };
 
-  const isSelectedToken = selectedToken && activeTab === YieldSwitchOptions.Deposit;
+  const isSelectedToken =
+    selectedToken && activeTab === YieldSwitchOptions.Deposit;
 
   return (
     <div className={clsx(styles.calculator, className)}>
@@ -152,7 +159,11 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           <div className={styles.value}>
             <div className={styles.iconContainer}>
               <Image
-                src={isSelectedToken ? String(selectedToken.icons?.small) : tokenIcon}
+                src={
+                  isSelectedToken
+                    ? String(selectedToken.icons?.small)
+                    : tokenIcon
+                }
                 alt={''}
                 height={24}
                 width={24}
@@ -188,7 +199,13 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
           </Text>
           {isSelectedToken && (
             <div className="flex flex-row gap-1 items-center">
-              <Image src={tokenIcon} alt={''} height={13} width={13} className="size-[13px]" />
+              <Image
+                src={tokenIcon}
+                alt={''}
+                height={13}
+                width={13}
+                className="size-[13px]"
+              />
 
               {isLoadingCalculate ? (
                 <Skeleton
@@ -198,7 +215,9 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
                 />
               ) : (
                 <Text textView={TextView.C4}>
-                  {formatUserMoney(swapCalculate?.tokenAmountOut.toSignificant())}
+                  {formatUserMoney(
+                    swapCalculate?.tokenAmountOut.toSignificant(),
+                  )}
                 </Text>
               )}
             </div>
@@ -215,7 +234,9 @@ export const DepositWithdrawInput: ComponentWithProps<DepositWithdrawInputProps>
             onWheel={numberInputOnWheelPreventChange}
             disabled={isLoadingCalculate}
           />
-          <span className={styles.equal}>≈ ${formatUserMoney(userValueUsd)}</span>
+          <span className={styles.equal}>
+            ≈ ${formatUserMoney(userValueUsd)}
+          </span>
         </div>
         <div className={styles.percentButtons}>
           {percentButtons.map(({ title, value }) => {

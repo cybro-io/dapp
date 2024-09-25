@@ -8,7 +8,7 @@ export const $swapChains = createStore(
   $symbiosis
     .getState()
     .chains()
-    .filter(chain => !isTronChainId(chain.id) && !isBtc(chain.id)),
+    .filter((chain) => !isTronChainId(chain.id) && !isBtc(chain.id)),
 );
 
 export const useSwapChains = () => {

@@ -8,7 +8,10 @@ type StarIconButtonProps = Omit<IconButtonProps, 'icon'> & {
   isActive?: boolean;
 };
 
-export const StarIconButton = ({ isActive, ...restProps }: StarIconButtonProps) => {
+export const StarIconButton = ({
+  isActive,
+  ...restProps
+}: StarIconButtonProps) => {
   return (
     <IconButton
       icon={

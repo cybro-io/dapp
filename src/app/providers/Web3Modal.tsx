@@ -3,17 +3,18 @@
 import React from 'react';
 
 import { createWeb3Modal, defaultConfig } from '@web3modal/ethers5/react';
-
-import { Chain } from '@/shared/const';
-import { $swapChains } from '@/entities/SwapToken';
 import { ChainId, GAS_TOKEN } from 'symbiosis-js-sdk';
+
+import { $swapChains } from '@/entities/SwapToken';
+import { Chain } from '@/shared/const';
 import { $symbiosis } from '@/shared/lib';
 
 type Web3ModalProps = {
   children: React.ReactNode;
 };
 
-const projectId = process.env.NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID as string;
+const projectId = process.env
+  .NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID as string;
 const anrkId = process.env.NEXT_PUBLIC_ANKR_ID as string;
 const type = process.env.NEXT_PUBLIC_TYPE as string;
 
@@ -27,7 +28,7 @@ const testChains = [
   },
 ];
 
-const mainChains = $swapChains.getState().map(chain => {
+const mainChains = $swapChains.getState().map((chain) => {
   const chainConfig = $symbiosis.getState().chainConfig(chain.id);
 
   return {
@@ -36,7 +37,9 @@ const mainChains = $swapChains.getState().map(chain => {
     currency: GAS_TOKEN[chain.id].symbol ?? 'Unknown',
     explorerUrl: chain.explorer,
     rpcUrl:
-      chain.id === ChainId.BLAST_MAINNET ? `https://rpc.ankr.com/blast/${anrkId}` : chainConfig.rpc,
+      chain.id === ChainId.BLAST_MAINNET
+        ? `https://rpc.ankr.com/blast/${anrkId}`
+        : chainConfig.rpc,
   };
 });
 

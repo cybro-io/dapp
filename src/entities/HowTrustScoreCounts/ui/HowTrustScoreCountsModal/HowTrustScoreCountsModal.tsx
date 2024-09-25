@@ -10,15 +10,19 @@ import styles from './HowTrustScoreCountsModal.module.scss';
 
 type HowTrustScoreCountsModalProps = {};
 
-export const HowTrustScoreCountsModal: ComponentWithProps<HowTrustScoreCountsModalProps> = ({
-  className,
-}) => {
+export const HowTrustScoreCountsModal: ComponentWithProps<
+  HowTrustScoreCountsModalProps
+> = ({ className }) => {
   const { closeModal } = useModal();
 
   return (
     <ModalLayout title={'Trust Score Calculation'}>
       <HowTrustScoreCountsInfo className={styles.modal} />
-      <Button onClick={closeModal} className={styles.button} view={ButtonView.Secondary}>
+      <Button
+        onClick={closeModal}
+        className={styles.button}
+        view={ButtonView.Secondary}
+      >
         Okay, got it
       </Button>
     </ModalLayout>

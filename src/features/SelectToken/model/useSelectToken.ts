@@ -1,10 +1,10 @@
 import NiceModal from '@ebay/nice-modal-react';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { Token } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
 import { useSwapFavoriteTokens } from '@/features/SelectToken';
 import { useSwapFilteredTokens } from '@/features/SelectToken/model/useSwapFilteredTokens';
+import { useWeb3ModalAccount } from '@/shared/lib';
 
 export const useSelectToken = (selectedTokenId: string) => {
   const currentModal = NiceModal.useModal();

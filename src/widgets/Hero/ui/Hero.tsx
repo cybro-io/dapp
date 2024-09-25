@@ -17,7 +17,9 @@ export const Hero = () => {
 const Title = ({ children }: React.PropsWithChildren) => {
   return (
     <Text className={clsx(styles.heading)} textView={TextView.H1}>
-      <span className={clsx(styles.headingBackground, styles.headingBackgroundTop)}>
+      <span
+        className={clsx(styles.headingBackground, styles.headingBackgroundTop)}
+      >
         {children}
       </span>
     </Text>

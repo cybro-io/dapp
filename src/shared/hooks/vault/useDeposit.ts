@@ -1,11 +1,17 @@
 import React from 'react';
 
-import { useSwitchNetwork, useWeb3ModalProvider } from '@web3modal/ethers5/react';
+import { MaxUint256 } from '@ethersproject/constants';
+import {
+  useSwitchNetwork,
+  useWeb3ModalProvider,
+} from '@web3modal/ethers5/react';
 import { BigNumber, ethers, utils } from 'ethers';
 
+import TOKEN from '@/app/abi/token.json';
 import { useEthers } from '@/app/providers';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Nullable,
   Token,
@@ -13,10 +19,11 @@ import {
   Vault,
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
-import { formatUserMoney, increaseGasLimit, VaultCurrency } from '@/shared/utils';
-import TOKEN from '@/app/abi/token.json';
-import { MaxUint256 } from '@ethersproject/constants';
-import { useWeb3ModalAccount } from '@/shared/lib';
+import {
+  formatUserMoney,
+  increaseGasLimit,
+  VaultCurrency,
+} from '@/shared/utils';
 
 export const useDeposit = (
   currency: VaultCurrency,
@@ -39,7 +46,13 @@ export const useDeposit = (
     async (amount: string) => {
       const vaultAddress = vaultContract?.address;
 
-      if (!tokenContract || !vaultAddress || !vaultContract || !isConnected || !address) {
+      if (
+        !tokenContract ||
+        !vaultAddress ||
+        !vaultContract ||
+        !isConnected ||
+        !address
+      ) {
         triggerToast({
           message: `Something went wrong`,
           description:
@@ -66,9 +79,16 @@ export const useDeposit = (
 
         const token = new ethers.Contract(tokenContract.address, TOKEN, signer);
 
-        const vault = new ethers.Contract(vaultAddress, vaultContract.interface, signer);
+        const vault = new ethers.Contract(
+          vaultAddress,
+          vaultContract.interface,
+          signer,
+        );
 
-        const allowance = (await token.allowance(address, vaultAddress)) as BigNumber;
+        const allowance = (await token.allowance(
+          address,
+          vaultAddress,
+        )) as BigNumber;
 
         if (allowance.lt(weiAmount)) {
           const approveTx = await token.approve(vaultAddress, MaxUint256);
@@ -76,19 +96,26 @@ export const useDeposit = (
           await approveTx.wait();
         }
 
-        const depositEstimatedGas = await vault.estimateGas.deposit(weiAmount, address);
+        const depositEstimatedGas = await vault.estimateGas.deposit(
+          weiAmount,
+          address,
+        );
         const gasLimit = increaseGasLimit(depositEstimatedGas, 1.2);
 
         const depositTx = await vault.deposit(weiAmount, address, { gasLimit });
         setButtonMessage('Depositing...');
         await depositTx.wait();
 
-        mutate({ vaultId, data: { tx_hash: depositTx.hash, address, action: 'deposit' } });
+        mutate({
+          vaultId,
+          data: { tx_hash: depositTx.hash, address, action: 'deposit' },
+        });
         Mixpanel.track(MixpanelEvent.DepositSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} deposited`,
-          description: 'Check your updated Vault Balance or explore the contract.',
+          description:
+            'Check your updated Vault Balance or explore the contract.',
         });
       } catch (error: any) {
         console.error('error deposit: ', error);
@@ -103,7 +130,16 @@ export const useDeposit = (
         setButtonMessage(null);
       }
     },
-    [vaultContract, tokenContract, isConnected, address, triggerToast, mutate, vaultId, currency],
+    [
+      vaultContract,
+      tokenContract,
+      isConnected,
+      address,
+      triggerToast,
+      mutate,
+      vaultId,
+      currency,
+    ],
   );
 
   return { deposit, isLoading, buttonMessage, setButtonMessage };

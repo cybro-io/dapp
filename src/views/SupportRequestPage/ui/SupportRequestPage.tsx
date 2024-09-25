@@ -8,7 +8,9 @@ import styles from './SupportRequestPage.module.scss';
 
 type SupportRequestPageProps = {};
 
-export const SupportRequestPage: ComponentWithProps<SupportRequestPageProps> = () => {
+export const SupportRequestPage: ComponentWithProps<
+  SupportRequestPageProps
+> = () => {
   return (
     <div className={styles.root}>
       <Text className={styles.title} textView={TextView.H2}>

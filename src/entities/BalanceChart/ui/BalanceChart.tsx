@@ -72,7 +72,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
   }, [chartRef.current?.offsetWidth]);
 
   // Process the data for the chart
-  const chartData = data.map(item => ({
+  const chartData = data.map((item) => ({
     x: formatChartDate(item.ts, period),
     y: parseFloat(item.balance_usd),
     tx: item,
@@ -93,7 +93,7 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
               domainPadding={{ x: 30, y: 10 }}
             >
               <VictoryAxis
-                tickFormat={t => t}
+                tickFormat={(t) => t}
                 tickCount={5}
                 style={{
                   axis: { stroke: 'transparent' },
@@ -103,9 +103,12 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
               />
               <VictoryAxis
                 dependentAxis
-                tickFormat={x => `$${formatUserMoney(x, 2)}`}
+                tickFormat={(x) => `$${formatUserMoney(x, 2)}`}
                 style={{
-                  grid: { stroke: 'rgba(255, 255, 255, 0.09)', strokeDasharray: '3,3' },
+                  grid: {
+                    stroke: 'rgba(255, 255, 255, 0.09)',
+                    strokeDasharray: '3,3',
+                  },
                   axis: { stroke: 'transparent' },
                   ticks: { stroke: 'transparent' },
                 }}
@@ -121,19 +124,23 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
                 size={5}
                 style={{
                   data: {
-                    fill: d =>
-                      hoveredTransaction && hoveredTransaction === d.datum?.tx.transaction_hash
+                    fill: (d) =>
+                      hoveredTransaction &&
+                      hoveredTransaction === d.datum?.tx.transaction_hash
                         ? '#FFD700'
                         : '#24252E',
-                    stroke: d =>
-                      hoveredTransaction && hoveredTransaction === d.datum?.tx.transaction_hash
+                    stroke: (d) =>
+                      hoveredTransaction &&
+                      hoveredTransaction === d.datum?.tx.transaction_hash
                         ? '#FFD700'
                         : '#F9E727',
                     strokeWidth: 3,
                   },
                 }}
                 labels={({ datum }) => ''}
-                labelComponent={<VictoryTooltip flyoutComponent={<CustomTooltip />} />}
+                labelComponent={
+                  <VictoryTooltip flyoutComponent={<CustomTooltip />} />
+                }
                 events={[
                   {
                     target: 'data',
@@ -141,8 +148,10 @@ export const BalanceChart: ComponentWithProps<BalanceChartProps> = ({
                       onMouseOver: () => [
                         {
                           target: 'data',
-                          mutation: props => {
-                            setHoveredTransaction(props.datum.tx.transaction_hash);
+                          mutation: (props) => {
+                            setHoveredTransaction(
+                              props.datum.tx.transaction_hash,
+                            );
                           },
                         },
                         {

@@ -1,7 +1,9 @@
+import React from 'react';
+
+import { useMediaQuery } from 'usehooks-ts';
+
 import { Text, TextView } from '@/shared/ui';
 import { formatMoney } from '@/shared/utils';
-import React from 'react';
-import { useMediaQuery } from 'usehooks-ts';
 
 type ExchangeTransactionTokenProps = {
   tokenName: string;

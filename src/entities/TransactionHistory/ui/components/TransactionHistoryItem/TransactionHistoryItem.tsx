@@ -8,7 +8,11 @@ import { ChainToExplorerUrl } from '@/shared/const';
 import { useToast } from '@/shared/hooks';
 import { ComponentWithProps, DashboardHistoryData } from '@/shared/types';
 import { IconButton, Text, TextView, ToastType } from '@/shared/ui';
-import { formatDate, formatUserMoney, shortenWalletAddress } from '@/shared/utils';
+import {
+  formatDate,
+  formatUserMoney,
+  shortenWalletAddress,
+} from '@/shared/utils';
 
 import TestIcon from '../../../assets/icons/arrow-score-up.svg';
 import CopyIcon from '../../../assets/icons/copy.svg';
@@ -24,7 +28,9 @@ type TransactionHistoryItemProps = {
   isHighlighted?: boolean;
 };
 
-export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemProps> = ({
+export const TransactionHistoryItem: ComponentWithProps<
+  TransactionHistoryItemProps
+> = ({
   chainId,
   transaction,
   onHover,
@@ -88,7 +94,7 @@ export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemPr
         <IconButton
           className={clsx(styles.downButton, isOpened && styles.isOpened)}
           icon={<DownIcon />}
-          onClick={() => setIsOpened(prev => !prev)}
+          onClick={() => setIsOpened((prev) => !prev)}
         />
       </div>
       {isOpened && (
@@ -101,7 +107,11 @@ export const TransactionHistoryItem: ComponentWithProps<TransactionHistoryItemPr
               <Text className={styles.address} textView={TextView.P2}>
                 {shortenWalletAddress(transaction.transaction_hash)}
               </Text>
-              <IconButton className={styles.copyButton} icon={<CopyIcon />} onClick={onCopyClick} />
+              <IconButton
+                className={styles.copyButton}
+                icon={<CopyIcon />}
+                onClick={onCopyClick}
+              />
             </div>
             <Link
               className={styles.explorerLink}

@@ -7,7 +7,10 @@ import { $symbiosis, formatUnits } from '@/shared/lib';
  * @param chainId
  * @param walletAddress
  */
-export const getEthGasBalanceByChain = async (chainId: ChainId, walletAddress: string) => {
+export const getEthGasBalanceByChain = async (
+  chainId: ChainId,
+  walletAddress: string,
+) => {
   try {
     const symbiosis = $symbiosis.getState();
     const provider = symbiosis.getProvider(chainId);

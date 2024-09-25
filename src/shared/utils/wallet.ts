@@ -15,7 +15,7 @@ export const shortenWalletAddress = (
 export const transformBalances = (balance: BalanceResponse[]) => {
   const balances: Record<string, number> = {};
 
-  balance.forEach(item => {
+  balance.forEach((item) => {
     balances[item.address] = item.balance_usd;
   });
 

@@ -10,5 +10,6 @@ export const statusError: Record<ErrorCode, string> = {
   [ErrorCode.AMOUNT_TOO_HIGH]: 'Amount too high',
   [ErrorCode.AMOUNT_TOO_LOW]: 'Amount too low',
   [ErrorCode.MIN_TON_AMOUNT_IN]: 'Min ton amount in',
-  [ErrorCode.THORCHAIN_NOT_SUPPORTED_ADDRESS]: 'Thorchain not supported address',
+  [ErrorCode.THORCHAIN_NOT_SUPPORTED_ADDRESS]:
+    'Thorchain not supported address',
 };

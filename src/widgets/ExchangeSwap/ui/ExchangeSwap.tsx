@@ -15,7 +15,12 @@ export const ExchangeSwap = () => {
     {
       key: 'swap',
       content: (
-        <SwapTokenForm features={{ connectWallet: <ConnectWallet />, selectToken: openModal }} />
+        <SwapTokenForm
+          features={{
+            connectWallet: <ConnectWallet />,
+            selectToken: openModal,
+          }}
+        />
       ),
       from: 'Crypto',
       to: 'Crypto',
@@ -30,7 +35,9 @@ export const ExchangeSwap = () => {
     },
   ];
 
-  const disabledKeys = items.filter(({ disabled }) => disabled).map(({ key }) => key);
+  const disabledKeys = items
+    .filter(({ disabled }) => disabled)
+    .map(({ key }) => key);
 
   return (
     <Card className="bg-transparent lg:bg-background-modal p-6 mt-5 lg:mt-0 max-w-[375px] mx-auto lg:mx-0 lg:w-[375px] lg:min-w-[375px] h-fit">
@@ -45,13 +52,15 @@ export const ExchangeSwap = () => {
         defaultSelectedKey="swap"
         disabledKeys={disabledKeys}
       >
-        {item => (
+        {(item) => (
           <Tab
             className="px-0"
             key={item.key}
             title={
               <div className="flex flex-col gap-0.5 items-center">
-                <span className="text-sm font-extrabold uppercase font-unbounded">{item.key}</span>
+                <span className="text-sm font-extrabold uppercase font-unbounded">
+                  {item.key}
+                </span>
                 <span className="inline-flex items-center gap-0.5 text-xs">
                   {item.from} <ArrowTransfer className="text-white" /> {item.to}
                 </span>

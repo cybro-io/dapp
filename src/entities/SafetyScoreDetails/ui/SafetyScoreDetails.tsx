@@ -16,7 +16,12 @@ import {
   Nullable,
   useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
 } from '@/shared/types';
-import { SafetyScoreDetailsSkeleton, Text, TextView, TrustScoreDescription } from '@/shared/ui';
+import {
+  SafetyScoreDetailsSkeleton,
+  Text,
+  TextView,
+  TrustScoreDescription,
+} from '@/shared/ui';
 
 import ArrowIcon from '../assets/icons/arrow.svg';
 
@@ -29,18 +34,17 @@ type SafetyScoreDetailsProps = {
   isLoading?: boolean;
 };
 
-export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = ({
-  auditor,
-  trustScore,
-  vaultId,
-  isLoading = false,
-  className,
-}) => {
+export const SafetyScoreDetails: ComponentWithProps<
+  SafetyScoreDetailsProps
+> = ({ auditor, trustScore, vaultId, isLoading = false, className }) => {
   const [isOpened, setIsOpened] = React.useState(false);
   const { data, isLoading: isDataLoading } =
-    useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId as number, {
-      query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
-    });
+    useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(
+      vaultId as number,
+      {
+        query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
+      },
+    );
 
   const trustScoreDetails = data?.data?.data;
 
@@ -53,7 +57,9 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
   const thirdSection = trustScoreDetails.slice(10, 12);
 
   return (
-    <section className={clsx(styles.root, isOpened && styles.opened, className)}>
+    <section
+      className={clsx(styles.root, isOpened && styles.opened, className)}
+    >
       <Text className={styles.heading} textView={TextView.H3}>
         Safety Score Details
       </Text>
@@ -68,7 +74,10 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
         <div className={styles.trustScoreBreakdown}>
           {!!firstSection.length && (
             <div className={styles.breakdownSection}>
-              <Text className={styles.breakdownSectionTitle} textView={TextView.H4}>
+              <Text
+                className={styles.breakdownSectionTitle}
+                textView={TextView.H4}
+              >
                 Protocol
                 <div className={styles.line} />
               </Text>
@@ -83,7 +92,10 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
           )}
           {!!secondSection.length && (
             <div className={styles.breakdownSection}>
-              <Text className={styles.breakdownSectionTitle} textView={TextView.H4}>
+              <Text
+                className={styles.breakdownSectionTitle}
+                textView={TextView.H4}
+              >
                 Pool
                 <div className={styles.line} />
               </Text>
@@ -98,7 +110,10 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
           )}
           {!!thirdSection.length && (
             <div className={styles.breakdownSection}>
-              <Text className={styles.breakdownSectionTitle} textView={TextView.H4}>
+              <Text
+                className={styles.breakdownSectionTitle}
+                textView={TextView.H4}
+              >
                 Asset
                 <div className={styles.line} />
               </Text>
@@ -117,7 +132,10 @@ export const SafetyScoreDetails: ComponentWithProps<SafetyScoreDetailsProps> = (
           viewType={HowTrustScoreCountsButtonViewType.Button}
           hasIcon
         />
-        <button className={styles.dropdownButton} onClick={() => setIsOpened(prev => !prev)}>
+        <button
+          className={styles.dropdownButton}
+          onClick={() => setIsOpened((prev) => !prev)}
+        >
           <ArrowIcon />
         </button>
       </div>

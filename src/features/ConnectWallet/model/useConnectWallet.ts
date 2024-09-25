@@ -13,7 +13,10 @@ type UseConnectWalletProps = {
   onWalletConnect?: (address: string, chainId: number) => void;
 };
 
-export const useConnectWallet = ({ isForm, onWalletConnect }: UseConnectWalletProps) => {
+export const useConnectWallet = ({
+  isForm,
+  onWalletConnect,
+}: UseConnectWalletProps) => {
   const { triggerToast } = useToast();
 
   const { open } = useWeb3Modal();

@@ -18,7 +18,9 @@ export const Heading = ({ children, isYellow }: HeadingProps) => {
     >
       <Text
         textView={TextView.H3}
-        className={isYellow ? '!text-text-accent-logoYellow' : '!text-text-white-heading'}
+        className={
+          isYellow ? '!text-text-accent-logoYellow' : '!text-text-white-heading'
+        }
       >
         {children}
       </Text>
