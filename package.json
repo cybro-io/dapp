@@ -37,6 +37,7 @@
     "@next/third-parties": "^14.2.5",
     "@nextui-org/react": "^2.3.6",
     "@sentry/nextjs": "^8.30.0",
+    "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.45.1",
     "@web3modal/ethers5": "^5.0.11",
     "autoprefixer": "^10.4.19",
@@ -71,7 +72,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@svgr/webpack": "^8.1.0",
     "@tanstack/eslint-plugin-query": "^5.43.1",
     "@typechain/ethers-v5": "^11.1.2",
     "@types/mixpanel-browser": "^2.49.0",
