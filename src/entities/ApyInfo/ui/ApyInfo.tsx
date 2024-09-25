@@ -75,7 +75,9 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
   }, []);
 
   const getValue = React.useCallback(() => {
-    const apyPercent = `${Number(apy).toFixed(2)}%`;
+    const notAvailable = 'n/a';
+    const apyPercent = apy ? `${Number(apy).toFixed(2)}%` : notAvailable;
+    const apyFiatUsd = apyFiat ? `$${formatUserMoney(apyFiat)}` : notAvailable;
 
     if (
       period === GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All
@@ -84,11 +86,11 @@ export const ApyInfo: ComponentWithProps<ApyInfoProps> = ({
     }
 
     if (viewType === InfoBoxViewType.Desktop) {
-      return `${apyPercent} • $${formatUserMoney(apyFiat)}`;
+      return apy && apyPercent ? `${apyPercent} • ${apyFiatUsd}` : notAvailable;
     }
 
     if (periodType === ApyPeriodType.Fiat) {
-      return `$${formatUserMoney(apyFiat)}`;
+      return apyFiatUsd;
     }
 
     return apyPercent;
