@@ -17,6 +17,8 @@ const nextConfig = {
       use: ['@svgr/webpack'],
     });
 
+    config.optimization.minimize = process.env.DISABLE_MINIMIZE !== 'true';
+
     return config;
   },
   sassOptions: {
@@ -68,9 +70,6 @@ const nextConfig = {
   },
   compiler: {
     removeConsole: process.env.NODE_ENV === 'production',
-  },
-  optimization: {
-    minimize: process.env.DISABLE_MINIMIZE !== 'true',
   },
   compress: false,
 };
