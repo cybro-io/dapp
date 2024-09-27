@@ -11,11 +11,13 @@ import styles from './BaseLayout.module.scss';
 type BaseLayoutProps = {
   hasFooter?: boolean;
   children: React.ReactNode;
+  withMainPadding?: boolean;
 };
 
 export const BaseLayout: React.FC<BaseLayoutProps> = ({
   hasFooter = true,
   children,
+  withMainPadding = true,
 }) => {
   return (
     <React.Fragment>
@@ -24,7 +26,9 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
         connectedComponent={<ProfileStatsPopover />}
       />
       <main className={clsx(styles.main, styles.noFooter)}>
-        <div className={styles.mainContent}>{children}</div>
+        <div className={clsx(withMainPadding && styles.mainContent)}>
+          {children}
+        </div>
       </main>
       {hasFooter && <Footer className={styles.footer} />}
     </React.Fragment>

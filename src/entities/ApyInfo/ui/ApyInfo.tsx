@@ -18,7 +18,7 @@ import { ApyPeriodType, dropdownData } from '../const';
 import styles from './ApyInfo.module.scss';
 
 type ApyInfoProps = {
-  apy: string | undefined;
+  apy: string | null | undefined;
   apyFiat: string | null | undefined;
   period: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe;
   setPeriod: Dispatch<

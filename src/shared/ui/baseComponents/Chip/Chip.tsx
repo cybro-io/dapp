@@ -17,7 +17,7 @@ type ChipProps = {
 };
 
 export const Chip: ComponentWithProps<ChipProps> = ({
-  size = ChipSize.Small,
+  size = ChipSize.Medium,
   viewType = ChipViewType.Default,
   children,
   className,

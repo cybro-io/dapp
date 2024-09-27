@@ -20,7 +20,7 @@ type WithdrawCalculatorProps = {
   amountToWithdraw: Money;
   amountToWithdrawUsd: Money;
   currentRate: Money;
-  withdraw: (amount: number) => Promise<void>;
+  withdraw: () => Promise<void>;
   isButtonDisabled: boolean;
   timer: string;
   buttonMessage: string | null;
