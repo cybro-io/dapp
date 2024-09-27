@@ -5,17 +5,16 @@ import {
 } from '@/shared/types';
 
 export const useProfilePortfolio = () => {
-  const { address, chainId, isConnected } = useWeb3ModalAccount();
+  const { address, isConnected } = useWeb3ModalAccount();
 
   const { data, isLoading } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
     address!,
     {
-      chain_id: chainId ?? 0,
       timeframe: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe.All,
     },
     {
       query: {
-        enabled: Boolean(chainId) && Boolean(address),
+        enabled: Boolean(address),
         select: (data) => data.data?.data,
       },
     },
