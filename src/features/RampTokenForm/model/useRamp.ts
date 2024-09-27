@@ -38,7 +38,7 @@ export const useRamp = () => {
           rampWidgetModal.show({
             toCurrency: data.toCurrency!.tickerWithNetwork,
             fromCurrency: data.fromCurrency!.tickerWithNetwork,
-            toAmount: Number(data.amountIn!),
+            fromAmount: Number(data.amountIn!),
             toWallet: address,
           }),
         )

@@ -53,6 +53,11 @@ limit?: number;
 offset?: number;
 };
 
+export type GetPostsApiV1DashboardPostsGetParams = {
+limit?: number;
+offset?: number;
+};
+
 export type GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe = typeof GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe[keyof typeof GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe];
 
 
@@ -66,7 +71,6 @@ export const GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe = {
 } as const;
 
 export type GetDashboardStatsApiV1DashboardAddressStatsGetParams = {
-chain_id: number;
 timeframe: GetDashboardStatsApiV1DashboardAddressStatsGetTimeframe;
 };
 
@@ -81,6 +85,12 @@ token: string;
 chain_id: number;
 };
 
+export type GetPaymentLinkApiV1ProfileAddressPaymentLinkGetParams = {
+to_currency: string;
+from_currency: string;
+from_amount: number;
+};
+
 export type GetBalanceByAddressApiV1ProfileAddressBalanceGetParams = {
 chain_id: number;
 };
@@ -91,6 +101,11 @@ chain_id: number;
 
 export type GetVaultApiV1VaultsVaultIdGetParams = {
 address?: string;
+};
+
+export type GetFeaturedVaultsApiV1VaultsFeaturedGetParams = {
+limit?: number;
+offset?: number;
 };
 
 export type GetVaultsApiV1VaultsGetParams = {
@@ -138,28 +153,6 @@ export interface VaultsResponse {
   ok: boolean;
 }
 
-export interface VaultResponseData {
-  abi: unknown;
-  address: string;
-  apy: number;
-  auditors: AuditorResponseData[];
-  badges: BadgeVaultsResponseData[];
-  balance: number;
-  chain: string;
-  chain_id: number;
-  description: string;
-  icon: string;
-  id: number;
-  name: string;
-  overall_investments: number;
-  overall_investments_usd: string;
-  points: number;
-  provider: ProviderVaultsResponseData;
-  token: TokenResponseData;
-  trust_score: number;
-  tvl: number;
-}
-
 export type VaultResponseError = string | null;
 
 export type VaultResponseDataProperty = VaultResponseData | null;
@@ -182,6 +175,28 @@ export interface TokenResponseData {
   address: string;
   decimals: number;
   name: string;
+}
+
+export interface VaultResponseData {
+  abi: unknown;
+  address: string;
+  apy: number;
+  auditors: AuditorResponseData[];
+  badges: BadgeVaultsResponseData[];
+  balance: number;
+  chain: string;
+  chain_id: number;
+  description: string;
+  icon: string;
+  id: number;
+  name: string;
+  overall_investments: number;
+  overall_investments_usd: string;
+  points: number;
+  provider: ProviderVaultsResponseData;
+  token: TokenResponseData;
+  trust_score: number;
+  tvl: number;
 }
 
 export type TVLResponseError = string | null;
@@ -253,6 +268,22 @@ export type PriceResponseData = PriceData | null;
 export interface PriceResponse {
   data?: PriceResponseData;
   error?: PriceResponseError;
+  ok: boolean;
+}
+
+export type PostsResponseError = string | null;
+
+export interface PostResponse {
+  link: string;
+  name: string;
+  short_description: string;
+}
+
+export type PostsResponseData = PostResponse[] | null;
+
+export interface PostsResponse {
+  data?: PostsResponseData;
+  error?: PostsResponseError;
   ok: boolean;
 }
 
@@ -388,6 +419,21 @@ export interface FeedbackBody {
   text: string;
 }
 
+export type FeaturedVaultsResponseError = string | null;
+
+export interface FeaturedVaultResponse {
+  sortable_rank: number;
+  vault_id: number;
+}
+
+export type FeaturedVaultsResponseData = FeaturedVaultResponse[] | null;
+
+export interface FeaturedVaultsResponse {
+  data?: FeaturedVaultsResponseData;
+  error?: FeaturedVaultsResponseError;
+  ok: boolean;
+}
+
 export interface ExchangeHistoryDataPoint {
   chain_id: number;
   size: string;
@@ -460,21 +506,23 @@ export interface DashboardStatsVaultsData {
 
 export type DashboardStatsResponseError = string | null;
 
-export interface DashboardStatsResponse {
-  data: DashboardStatsData;
-  error?: DashboardStatsResponseError;
-  ok: boolean;
-}
-
 export type DashboardStatsDataFutureBalanceUsd = string | null;
+
+export type DashboardStatsDataApy = string | null;
 
 export interface DashboardStatsData {
   accrued_yield: string;
-  apy: string;
+  apy: DashboardStatsDataApy;
   future_balance_usd?: DashboardStatsDataFutureBalanceUsd;
   my_vaults: DashboardStatsVaultsData[];
   my_vaults_number: number;
   your_deposit: string;
+}
+
+export interface DashboardStatsResponse {
+  data: DashboardStatsData;
+  error?: DashboardStatsResponseError;
+  ok: boolean;
 }
 
 export type DashboardHistoryResponseError = string | null;
@@ -696,6 +744,67 @@ export const useGetVaultsQuantityApiV1VaultsCountGet = <TData = Awaited<ReturnTy
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getGetVaultsQuantityApiV1VaultsCountGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get Featured Vaults
+ */
+export const getFeaturedVaultsApiV1VaultsFeaturedGet = (
+    params?: GetFeaturedVaultsApiV1VaultsFeaturedGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<FeaturedVaultsResponse>> => {
+    
+    return axios.get(
+      `https://dapp-api.cybro.io/api/v1/vaults/featured`,{
+    ...options,
+        params: {...params, ...options?.params},}
+    );
+  }
+
+
+export const getGetFeaturedVaultsApiV1VaultsFeaturedGetQueryKey = (params?: GetFeaturedVaultsApiV1VaultsFeaturedGetParams,) => {
+    return [`https://dapp-api.cybro.io/api/v1/vaults/featured`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetFeaturedVaultsApiV1VaultsFeaturedGetQueryOptions = <TData = Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>, TError = AxiosError<HTTPValidationError>>(params?: GetFeaturedVaultsApiV1VaultsFeaturedGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFeaturedVaultsApiV1VaultsFeaturedGetQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>> = ({ signal }) => getFeaturedVaultsApiV1VaultsFeaturedGet(params, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetFeaturedVaultsApiV1VaultsFeaturedGetQueryResult = NonNullable<Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>>
+export type GetFeaturedVaultsApiV1VaultsFeaturedGetQueryError = AxiosError<HTTPValidationError>
+
+/**
+ * @summary Get Featured Vaults
+ */
+export const useGetFeaturedVaultsApiV1VaultsFeaturedGet = <TData = Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>, TError = AxiosError<HTTPValidationError>>(
+ params?: GetFeaturedVaultsApiV1VaultsFeaturedGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeaturedVaultsApiV1VaultsFeaturedGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetFeaturedVaultsApiV1VaultsFeaturedGetQueryOptions(params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1422,30 +1531,35 @@ export const useGetProfileEarnedYieldApiV1ProfileAddressEarnedYieldGet = <TData 
  * @summary Get Payment Link
  */
 export const getPaymentLinkApiV1ProfileAddressPaymentLinkGet = (
-    address: string, options?: AxiosRequestConfig
+    address: string,
+    params: GetPaymentLinkApiV1ProfileAddressPaymentLinkGetParams, options?: AxiosRequestConfig
  ): Promise<AxiosResponse<PaymentLinkResponse>> => {
     
     return axios.get(
-      `https://dapp-api.cybro.io/api/v1/profile/${address}/payment-link`,options
+      `https://dapp-api.cybro.io/api/v1/profile/${address}/payment-link`,{
+    ...options,
+        params: {...params, ...options?.params},}
     );
   }
 
 
-export const getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryKey = (address: string,) => {
-    return [`https://dapp-api.cybro.io/api/v1/profile/${address}/payment-link`] as const;
+export const getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryKey = (address: string,
+    params: GetPaymentLinkApiV1ProfileAddressPaymentLinkGetParams,) => {
+    return [`https://dapp-api.cybro.io/api/v1/profile/${address}/payment-link`, ...(params ? [params]: [])] as const;
     }
 
     
-export const getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError = AxiosError<HTTPValidationError>>(address: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+export const getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryOptions = <TData = Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError = AxiosError<HTTPValidationError>>(address: string,
+    params: GetPaymentLinkApiV1ProfileAddressPaymentLinkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 ) => {
 
 const {query: queryOptions, axios: axiosOptions} = options ?? {};
 
-  const queryKey =  queryOptions?.queryKey ?? getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryKey(address);
+  const queryKey =  queryOptions?.queryKey ?? getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryKey(address,params);
 
   
 
-    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>> = ({ signal }) => getPaymentLinkApiV1ProfileAddressPaymentLinkGet(address, { signal, ...axiosOptions });
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>> = ({ signal }) => getPaymentLinkApiV1ProfileAddressPaymentLinkGet(address,params, { signal, ...axiosOptions });
 
       
 
@@ -1461,11 +1575,12 @@ export type GetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryError = AxiosErr
  * @summary Get Payment Link
  */
 export const useGetPaymentLinkApiV1ProfileAddressPaymentLinkGet = <TData = Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError = AxiosError<HTTPValidationError>>(
- address: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+ address: string,
+    params: GetPaymentLinkApiV1ProfileAddressPaymentLinkGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPaymentLinkApiV1ProfileAddressPaymentLinkGet>>, TError, TData>>, axios?: AxiosRequestConfig}
 
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
-  const queryOptions = getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryOptions(address,options)
+  const queryOptions = getGetPaymentLinkApiV1ProfileAddressPaymentLinkGetQueryOptions(address,params,options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
@@ -1897,6 +2012,67 @@ export const useGetDashboardStatsApiV1DashboardAddressStatsGet = <TData = Awaite
 
 
 /**
+ * @summary Get Posts
+ */
+export const getPostsApiV1DashboardPostsGet = (
+    params?: GetPostsApiV1DashboardPostsGetParams, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<PostsResponse>> => {
+    
+    return axios.get(
+      `https://dapp-api.cybro.io/api/v1/dashboard/posts`,{
+    ...options,
+        params: {...params, ...options?.params},}
+    );
+  }
+
+
+export const getGetPostsApiV1DashboardPostsGetQueryKey = (params?: GetPostsApiV1DashboardPostsGetParams,) => {
+    return [`https://dapp-api.cybro.io/api/v1/dashboard/posts`, ...(params ? [params]: [])] as const;
+    }
+
+    
+export const getGetPostsApiV1DashboardPostsGetQueryOptions = <TData = Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>, TError = AxiosError<HTTPValidationError>>(params?: GetPostsApiV1DashboardPostsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetPostsApiV1DashboardPostsGetQueryKey(params);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>> = ({ signal }) => getPostsApiV1DashboardPostsGet(params, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetPostsApiV1DashboardPostsGetQueryResult = NonNullable<Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>>
+export type GetPostsApiV1DashboardPostsGetQueryError = AxiosError<HTTPValidationError>
+
+/**
+ * @summary Get Posts
+ */
+export const useGetPostsApiV1DashboardPostsGet = <TData = Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>, TError = AxiosError<HTTPValidationError>>(
+ params?: GetPostsApiV1DashboardPostsGetParams, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getPostsApiV1DashboardPostsGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetPostsApiV1DashboardPostsGetQueryOptions(params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
  * @summary Get Transactions
  */
 export const getTransactionsApiV1ExchangeAddressTransactionsGet = (
@@ -2071,6 +2247,183 @@ export const useCreateTransactionApiV1ExchangeAddressCountGet = <TData = Awaited
   ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
 
   const queryOptions = getCreateTransactionApiV1ExchangeAddressCountGetQueryOptions(address,params,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get Currencies
+ */
+export const getCurrenciesApiV1MunzenCurrenciesGet = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<unknown>> => {
+    
+    return axios.get(
+      `https://dapp-api.cybro.io/api/v1/munzen/currencies`,options
+    );
+  }
+
+
+export const getGetCurrenciesApiV1MunzenCurrenciesGetQueryKey = () => {
+    return [`https://dapp-api.cybro.io/api/v1/munzen/currencies`] as const;
+    }
+
+    
+export const getGetCurrenciesApiV1MunzenCurrenciesGetQueryOptions = <TData = Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetCurrenciesApiV1MunzenCurrenciesGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>> = ({ signal }) => getCurrenciesApiV1MunzenCurrenciesGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetCurrenciesApiV1MunzenCurrenciesGetQueryResult = NonNullable<Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>>
+export type GetCurrenciesApiV1MunzenCurrenciesGetQueryError = AxiosError<unknown>
+
+/**
+ * @summary Get Currencies
+ */
+export const useGetCurrenciesApiV1MunzenCurrenciesGet = <TData = Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getCurrenciesApiV1MunzenCurrenciesGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetCurrenciesApiV1MunzenCurrenciesGetQueryOptions(options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get Fees
+ */
+export const getFeesApiV1MunzenCurrenciesFeesInstrumentGet = (
+    instrument: string, options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<unknown>> => {
+    
+    return axios.get(
+      `https://dapp-api.cybro.io/api/v1/munzen/currencies/fees/${instrument}`,options
+    );
+  }
+
+
+export const getGetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryKey = (instrument: string,) => {
+    return [`https://dapp-api.cybro.io/api/v1/munzen/currencies/fees/${instrument}`] as const;
+    }
+
+    
+export const getGetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryOptions = <TData = Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>, TError = AxiosError<HTTPValidationError>>(instrument: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryKey(instrument);
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>> = ({ signal }) => getFeesApiV1MunzenCurrenciesFeesInstrumentGet(instrument, { signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, enabled: !!(instrument), ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryResult = NonNullable<Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>>
+export type GetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryError = AxiosError<HTTPValidationError>
+
+/**
+ * @summary Get Fees
+ */
+export const useGetFeesApiV1MunzenCurrenciesFeesInstrumentGet = <TData = Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>, TError = AxiosError<HTTPValidationError>>(
+ instrument: string, options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getFeesApiV1MunzenCurrenciesFeesInstrumentGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetFeesApiV1MunzenCurrenciesFeesInstrumentGetQueryOptions(instrument,options)
+
+  const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
+
+  query.queryKey = queryOptions.queryKey ;
+
+  return query;
+}
+
+
+
+
+/**
+ * @summary Get Rates
+ */
+export const getRatesApiV1MunzenCurrenciesRatesGet = (
+     options?: AxiosRequestConfig
+ ): Promise<AxiosResponse<unknown>> => {
+    
+    return axios.get(
+      `https://dapp-api.cybro.io/api/v1/munzen/currencies/rates`,options
+    );
+  }
+
+
+export const getGetRatesApiV1MunzenCurrenciesRatesGetQueryKey = () => {
+    return [`https://dapp-api.cybro.io/api/v1/munzen/currencies/rates`] as const;
+    }
+
+    
+export const getGetRatesApiV1MunzenCurrenciesRatesGetQueryOptions = <TData = Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>, TError = AxiosError<unknown>>( options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+) => {
+
+const {query: queryOptions, axios: axiosOptions} = options ?? {};
+
+  const queryKey =  queryOptions?.queryKey ?? getGetRatesApiV1MunzenCurrenciesRatesGetQueryKey();
+
+  
+
+    const queryFn: QueryFunction<Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>> = ({ signal }) => getRatesApiV1MunzenCurrenciesRatesGet({ signal, ...axiosOptions });
+
+      
+
+      
+
+   return  { queryKey, queryFn, ...queryOptions} as UseQueryOptions<Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>, TError, TData> & { queryKey: QueryKey }
+}
+
+export type GetRatesApiV1MunzenCurrenciesRatesGetQueryResult = NonNullable<Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>>
+export type GetRatesApiV1MunzenCurrenciesRatesGetQueryError = AxiosError<unknown>
+
+/**
+ * @summary Get Rates
+ */
+export const useGetRatesApiV1MunzenCurrenciesRatesGet = <TData = Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>, TError = AxiosError<unknown>>(
+  options?: { query?:Partial<UseQueryOptions<Awaited<ReturnType<typeof getRatesApiV1MunzenCurrenciesRatesGet>>, TError, TData>>, axios?: AxiosRequestConfig}
+
+  ):  UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+
+  const queryOptions = getGetRatesApiV1MunzenCurrenciesRatesGetQueryOptions(options)
 
   const query = useQuery(queryOptions) as  UseQueryResult<TData, TError> & { queryKey: QueryKey };
 
