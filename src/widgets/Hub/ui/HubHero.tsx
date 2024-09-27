@@ -30,8 +30,8 @@ export const HubHero = () => {
           {'Find Your Ideal\nInvestment vault'}
         </Text>
         <Text textView={TextView.BP2} className="!text-white/80 text-center">
-          Discover a range of investment options tailored to your needs, from automated solutions to
-          customizable strategies
+          Discover a range of investment options tailored to your needs, from
+          automated solutions to customizable strategies
         </Text>
       </div>
     </section>

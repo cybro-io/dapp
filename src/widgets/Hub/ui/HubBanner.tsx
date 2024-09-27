@@ -19,7 +19,10 @@ export const HubBanner = () => {
         )}
       >
         <div
-          className={clsx(blogStyles.blog, 'relative w-full h-full bg-black pt-[86px] pl-[90px]')}
+          className={clsx(
+            blogStyles.blog,
+            'relative w-full h-full bg-black pt-[86px] pl-[90px]',
+          )}
         >
           <div className="absolute flex flex-col max-w-[490px] z-[60]">
             <Text
@@ -28,14 +31,21 @@ export const HubBanner = () => {
             >
               {'join the\npoints hunt'}
             </Text>
-            <Text textView={TextView.H4} className="mt-2 !font-normal !font-poppins">
-              To start racking up CYBRO Points by getting friends onboard, you'll need to grab some
-              CYBRO tokens
+            <Text
+              textView={TextView.H4}
+              className="mt-2 !font-normal !font-poppins"
+            >
+              To start racking up CYBRO Points by getting friends onboard,
+              you'll need to grab some CYBRO tokens
             </Text>
-            <a href={links.preSale} target={'_blank'}>
+            <a href={links.preSale} target={'_blank'} rel="noreferrer">
               <Button className="w-fit my-[26px]">Buy cybro tokens</Button>
             </a>
-            <Link viewType={LinkView.Link} href={links.docCybroPoints} target={'_blank'}>
+            <Link
+              viewType={LinkView.Link}
+              href={links.docCybroPoints}
+              target={'_blank'}
+            >
               watch our detailed Cybro points faq
             </Link>
           </div>
@@ -58,10 +68,10 @@ export const HubBanner = () => {
           {'join the\npoints hunt'}
         </Text>
         <Text textView={TextView.P3} className="mt-2.5 max-w-[241px]">
-          To start racking up CYBRO Points by getting friends onboard, you'll need to grab some
-          CYBRO tokens
+          To start racking up CYBRO Points by getting friends onboard, you'll
+          need to grab some CYBRO tokens
         </Text>
-        <a href={links.preSale} target={'_blank'}>
+        <a href={links.preSale} target={'_blank'} rel="noreferrer">
           <Button className="w-fit mt-[271px] mb-4">Buy cybro tokens</Button>
         </a>
         <Link

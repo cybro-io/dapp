@@ -22,7 +22,10 @@ export const Button = ({
   ...props
 }: ButtonProps) => {
   return (
-    <button className={clsx(styles.root, styles[view], styles[size], className)} {...props}>
+    <button
+      className={clsx(styles.root, styles[view], styles[size], className)}
+      {...props}
+    >
       {startIcon && <div className={styles.iconContainer}>{startIcon}</div>}
       <span>{children}</span>
       {endIcon && <div className={styles.iconContainer}>{endIcon}</div>}

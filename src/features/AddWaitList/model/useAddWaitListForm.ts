@@ -1,21 +1,29 @@
-import { useForm } from 'react-hook-form';
-import { yupResolver } from '@hookform/resolvers/yup';
-import * as yup from 'yup';
 import React from 'react';
+
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import * as yup from 'yup';
 
 type FormValues = {
   email: string;
 };
 
 const schema = yup.object().shape({
-  email: yup.string().required('Email is required').email('Enter a valid email address'),
+  email: yup
+    .string()
+    .required('Email is required')
+    .email('Enter a valid email address'),
 });
 
-export const useAddWaitListForm = (onSubmit: (formData: FormValues) => Promise<unknown>) => {
-  const { handleSubmit: handleSubmitVendor, ...restForm } = useForm<FormValues>({
-    mode: 'onBlur',
-    resolver: yupResolver(schema),
-  });
+export const useAddWaitListForm = (
+  onSubmit: (formData: FormValues) => Promise<unknown>,
+) => {
+  const { handleSubmit: handleSubmitVendor, ...restForm } = useForm<FormValues>(
+    {
+      mode: 'onBlur',
+      resolver: yupResolver(schema),
+    },
+  );
 
   const handleSubmit = handleSubmitVendor(onSubmit);
 

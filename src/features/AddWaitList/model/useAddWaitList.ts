@@ -1,22 +1,25 @@
+import React from 'react';
+
+import ReCAPTCHA from 'react-google-recaptcha';
+
+import { useToast } from '@/shared/hooks';
 import {
   useAddToWaitlistApiV1WaitlistSignupPost,
   useCaptchaApiV1WaitlistCaptchaGet,
 } from '@/shared/types';
-import React from 'react';
-import ReCAPTCHA from 'react-google-recaptcha';
 import { ToastType } from '@/shared/ui';
-import { useToast } from '@/shared/hooks';
 
 export const useAddWaitList = () => {
   const { triggerToast } = useToast();
 
   const recaptchaRef = React.useRef<ReCAPTCHA>(null);
 
-  const { data: captchaKey, isLoading: isLoadingCaptcha } = useCaptchaApiV1WaitlistCaptchaGet({
-    query: {
-      select: data => data.data.data.sitekey,
-    },
-  });
+  const { data: captchaKey, isLoading: isLoadingCaptcha } =
+    useCaptchaApiV1WaitlistCaptchaGet({
+      query: {
+        select: (data) => data.data.data.sitekey,
+      },
+    });
   const { mutateAsync } = useAddToWaitlistApiV1WaitlistSignupPost();
 
   const handleAddWaitList = async (email: string) => {
@@ -33,7 +36,10 @@ export const useAddWaitList = () => {
       },
     })
       .then(() => {
-        triggerToast({ message: 'Success', description: 'You have been added to waitlist' });
+        triggerToast({
+          message: 'Success',
+          description: 'You have been added to waitlist',
+        });
       })
       .catch(() => {
         triggerToast({

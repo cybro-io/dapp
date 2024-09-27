@@ -1,20 +1,22 @@
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
+import ReCAPTCHA from 'react-google-recaptcha';
 
+import { ArticleCard, useHubArticles } from '@/entities/Hub';
+import { useAddWaitList, useAddWaitListForm } from '@/features/AddWaitList';
 import { links, useMediaQuery } from '@/shared/lib';
 import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
-import { ArticleCard, useHubArticles } from '@/entities/Hub';
 
 import blogStyles from './Blog.module.scss';
-import { useAddWaitList, useAddWaitListForm } from '@/features/AddWaitList';
-import ReCAPTCHA from 'react-google-recaptcha';
-import { Skeleton } from '@nextui-org/react';
 
 export const HubBlog = () => {
-  const { articles, isLoading, isNoArticles, articleSkeletons } = useHubArticles();
+  const { articles, isLoading, isNoArticles, articleSkeletons } =
+    useHubArticles();
 
-  const { handleAddWaitList, isLoadingCaptcha, captchaKey, recaptchaRef } = useAddWaitList();
+  const { handleAddWaitList, isLoadingCaptcha, captchaKey, recaptchaRef } =
+    useAddWaitList();
 
   const {
     register,
@@ -42,11 +44,13 @@ export const HubBlog = () => {
             Latest Crypto News & Insights
           </Text>
           <Text textView={TextView.BP2} className="mt-2 !text-white/80">
-            Stay updated with the most important trends and developments in the world of
-            cryptocurrency. From market movements to regulatory changes.
+            Stay updated with the most important trends and developments in the
+            world of cryptocurrency. From market movements to regulatory
+            changes.
           </Text>
           <Text textView={TextView.BU2}>
-            Explore expert analysis and predictions to make informed investment decisions.
+            Explore expert analysis and predictions to make informed investment
+            decisions.
           </Text>
         </div>
 
@@ -72,7 +76,9 @@ export const HubBlog = () => {
           </form>
           <Text textView={TextView.C4}>
             {'No spam. '}
-            <span className="text-white/80">Only updates and release announcements.</span>
+            <span className="text-white/80">
+              Only updates and release announcements.
+            </span>
           </Text>
         </div>
       </div>
@@ -90,7 +96,7 @@ export const HubBlog = () => {
                   }}
                 />
               ))
-            : articles?.map(article => (
+            : articles?.map((article) => (
                 <ArticleCard
                   key={article.name}
                   href={article.link}
@@ -101,14 +107,16 @@ export const HubBlog = () => {
         </div>
 
         {!isNoArticles && (
-          <a target="_blank" href={links.medium}>
+          <a target="_blank" href={links.medium} rel="noreferrer">
             <Button view={ButtonView.Secondary} className="w-full md:w-fit">
               Read more articles
             </Button>
           </a>
         )}
       </div>
-      {captchaKey && <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={captchaKey} />}
+      {captchaKey && (
+        <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={captchaKey} />
+      )}
     </section>
   );
 };

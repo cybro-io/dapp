@@ -1,22 +1,24 @@
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
+import Link from 'next/link';
 
 import { useFeaturedVaults, Vault } from '@/entities/Vault';
 import { Button, ButtonView } from '@/shared/ui';
-import Link from 'next/link';
-import { Skeleton } from '@nextui-org/react';
 
 export const HubVaults = () => {
   const { vaults, isLoading, vaultSkeletons } = useFeaturedVaults();
 
   return (
     <div
-      className={clsx('flex items-center flex-col gap-6 mt-auto md:mt-[-217px] px-6 md:px-0 z-10')}
+      className={clsx(
+        'flex items-center flex-col gap-6 mt-auto md:mt-[-217px] px-6 md:px-0 z-10',
+      )}
     >
       <div className="flex flex-row flex-wrap gap-5 justify-center">
         {!isLoading &&
-          vaults?.map(vault => (
+          vaults?.map((vault) => (
             <Vault
               key={vault.vault_id}
               vault={vault.vault}
