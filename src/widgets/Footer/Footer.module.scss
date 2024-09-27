@@ -1,7 +1,19 @@
 .root {
+  z-index: 1;
+  padding-top: 50px;
+}
+
+.footerWrapper {
+  margin-top: 0;
   padding: 32px 24px;
   color: $text-white-body100;
   background-color: $background-modal;
+}
+
+@include desktop {
+  .footerWrapper {
+    margin-top: -51px;
+  }
 }
 
 .footerContainer {

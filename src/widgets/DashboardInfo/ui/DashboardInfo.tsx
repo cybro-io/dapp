@@ -3,7 +3,6 @@
 import React, { useEffect, useState } from 'react';
 
 import clsx from 'clsx';
-import { ChainId } from 'symbiosis-js-sdk';
 
 import { ApyInfo } from '@/entities/ApyInfo';
 import { MyVaultsInfo } from '@/entities/MyVaultsInfo';
@@ -50,7 +49,6 @@ export const DashboardInfo: ComponentWithProps<DashboardInfoProps> = ({
   } = useGetDashboardStatsApiV1DashboardAddressStatsGet(
     localStorageAddress || userAddress || '',
     {
-      chain_id: ChainId.BLAST_MAINNET,
       timeframe: period,
     },
     {

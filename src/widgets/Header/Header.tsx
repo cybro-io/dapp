@@ -36,7 +36,7 @@ type HeaderProps = {
 const menuItems = [
   {
     title: 'Vaults',
-    href: '/',
+    href: '/vaults',
   },
   {
     title: 'One-click',
@@ -112,7 +112,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({
         {/*</NavbarItem>*/}
         <ConnectWallet
           className={styles.connectWallet}
-          buttonSize={ButtonSize.Small}
+          size={ButtonSize.Small}
           whenConnectedComponent={connectedComponent}
         />
       </div>

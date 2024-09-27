@@ -18,7 +18,7 @@ import { formatUserMoney } from '@/shared/utils';
 import styles from './DepositCalculator.module.scss';
 
 type DepositCalculatorProps = {
-  deposit: (amount: number) => Promise<void>;
+  deposit: () => Promise<void>;
   apy: number;
   setPeriod: React.Dispatch<React.SetStateAction<PeriodTab>>;
   buttonMessage: string | null;

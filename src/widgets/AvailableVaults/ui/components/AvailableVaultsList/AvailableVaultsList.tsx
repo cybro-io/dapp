@@ -7,7 +7,7 @@ import clsx from 'clsx';
 import {
   ComponentWithProps,
   SortValue,
-  VaultsResponseData,
+  VaultResponseData,
 } from '@/shared/types';
 import { Dropdown, DropdownView, Loader, Text, TextView } from '@/shared/ui';
 
@@ -19,7 +19,7 @@ import { VaultListCompactItem } from './VaultListCompactItem';
 import { VaultListItem } from './VaultListItem';
 
 type AvailableVaultsGridProps = {
-  vaults: VaultsResponseData[];
+  vaults: VaultResponseData[];
   skeletons: number[];
   sort: [SortValue, boolean];
   setSort: Dispatch<SetStateAction<[SortValue, boolean]>>;
