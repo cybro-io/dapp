@@ -3,7 +3,7 @@ import React, { Dispatch, SetStateAction } from 'react';
 
 import clsx from 'clsx';
 
-import { ComponentWithProps, SortValue, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, SortValue, VaultResponseData } from '@/shared/types';
 import { Dropdown, DropdownView, Loader, Text, TextView } from '@/shared/ui';
 
 import DownIcon from '../../../assets/icons/down.svg';
@@ -15,7 +15,7 @@ import { VaultListItem } from './VaultListItem';
 import { Skeleton } from '@nextui-org/react';
 
 type AvailableVaultsGridProps = {
-  vaults: VaultsResponseData[];
+  vaults: VaultResponseData[];
   skeletons: number[];
   sort: [SortValue, boolean];
   setSort: Dispatch<SetStateAction<[SortValue, boolean]>>;

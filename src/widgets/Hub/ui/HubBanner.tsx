@@ -2,7 +2,7 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { useMediaQuery } from '@/shared/lib';
+import { links, useMediaQuery } from '@/shared/lib';
 import { Button, Link, LinkView, Text, TextView } from '@/shared/ui';
 
 import blogStyles from './Blog.module.scss';
@@ -32,8 +32,10 @@ export const HubBanner = () => {
               To start racking up CYBRO Points by getting friends onboard, you'll need to grab some
               CYBRO tokens
             </Text>
-            <Button className="w-fit my-[26px]">Buy cybro tokens</Button>
-            <Link viewType={LinkView.Link} target={'_blank'}>
+            <a href={links.preSale} target={'_blank'}>
+              <Button className="w-fit my-[26px]">Buy cybro tokens</Button>
+            </a>
+            <Link viewType={LinkView.Link} href={links.docCybroPoints} target={'_blank'}>
               watch our detailed Cybro points faq
             </Link>
           </div>
@@ -59,8 +61,15 @@ export const HubBanner = () => {
           To start racking up CYBRO Points by getting friends onboard, you'll need to grab some
           CYBRO tokens
         </Text>
-        <Button className="w-fit mt-[271px] mb-4">Buy cybro tokens</Button>
-        <Link viewType={LinkView.Link} target={'_blank'} className="max-w-[173px]">
+        <a href={links.preSale} target={'_blank'}>
+          <Button className="w-fit mt-[271px] mb-4">Buy cybro tokens</Button>
+        </a>
+        <Link
+          viewType={LinkView.Link}
+          href={links.docCybroPoints}
+          target={'_blank'}
+          className="max-w-[173px]"
+        >
           watch our detailed Cybro points faq
         </Link>
       </div>

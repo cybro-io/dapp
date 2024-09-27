@@ -2,13 +2,28 @@ import React from 'react';
 
 import clsx from 'clsx';
 
-import { useMediaQuery } from '@/shared/lib';
+import { links, useMediaQuery } from '@/shared/lib';
 import { Button, ButtonSize, ButtonView, Text, TextView } from '@/shared/ui';
-import { ArticleCard } from '@/entities/Hub';
+import { ArticleCard, useHubArticles } from '@/entities/Hub';
 
 import blogStyles from './Blog.module.scss';
+import { useAddWaitList, useAddWaitListForm } from '@/features/AddWaitList';
+import ReCAPTCHA from 'react-google-recaptcha';
+import { Skeleton } from '@nextui-org/react';
 
 export const HubBlog = () => {
+  const { articles, isLoading, isNoArticles, articleSkeletons } = useHubArticles();
+
+  const { handleAddWaitList, isLoadingCaptcha, captchaKey, recaptchaRef } = useAddWaitList();
+
+  const {
+    register,
+    handleSubmit,
+    formState: { isValid, isSubmitting },
+  } = useAddWaitListForm(async ({ email }) => handleAddWaitList(email));
+
+  const isDisabledSubmit = !isValid || isLoadingCaptcha || isSubmitting;
+
   const isMediumScreen = useMediaQuery('md');
 
   return (
@@ -36,13 +51,18 @@ export const HubBlog = () => {
         </div>
 
         <div className="flex flex-col gap-[15px] text-center">
-          <form className="flex flex-col lg:flex-row gap-y-4 items-centerm rounded-[18px] bg-transparent lg:bg-background-chips p-0 lg:pr-1 lg:pl-[27px] lg:py-1">
+          <form
+            onSubmit={handleSubmit}
+            className="flex flex-col lg:flex-row gap-y-4 items-centerm rounded-[18px] bg-transparent lg:bg-background-chips p-0 lg:pr-1 lg:pl-[27px] lg:py-1"
+          >
             <input
               className="flex-1 bg-background-chips lg:bg-transparent outline-none py-[23px] pl-[23px] rounded-[18px] lg:p-0"
               placeholder="Your email here"
               type="email"
+              {...register('email')}
             />
             <Button
+              disabled={isDisabledSubmit}
               className="flex-1 w-full lg:max-w-[173px]"
               size={ButtonSize.Large}
               type="submit"
@@ -59,14 +79,36 @@ export const HubBlog = () => {
 
       <div className="flex-1 flex flex-col gap-6 justify-between">
         <div className="flex flex-col gap-3">
-          <ArticleCard href="/" title="Test" description="Desc" />
-          <ArticleCard href="/" title="Test" description="Desc" />
-          <ArticleCard href="/" title="Test" description="Desc" />
+          {isNoArticles && <Text textView={TextView.C4}>No articles</Text>}
+
+          {isLoading
+            ? articleSkeletons.map((_, index) => (
+                <Skeleton
+                  key={index}
+                  classNames={{
+                    base: 'w-full h-[130px] dark:bg-background-tableRow rounded-[10px]',
+                  }}
+                />
+              ))
+            : articles?.map(article => (
+                <ArticleCard
+                  key={article.name}
+                  href={article.link}
+                  title={article.name}
+                  description={article.short_description}
+                />
+              ))}
         </div>
-        <Button view={ButtonView.Secondary} className="w-full md:w-fit">
-          Read more articles
-        </Button>
+
+        {!isNoArticles && (
+          <a target="_blank" href={links.medium}>
+            <Button view={ButtonView.Secondary} className="w-full md:w-fit">
+              Read more articles
+            </Button>
+          </a>
+        )}
       </div>
+      {captchaKey && <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={captchaKey} />}
     </section>
   );
 };

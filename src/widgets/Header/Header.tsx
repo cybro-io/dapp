@@ -29,7 +29,7 @@ type HeaderProps = {
 const menuItems = [
   {
     title: 'Vaults',
-    href: '/',
+    href: '/vaults',
   },
   {
     title: 'One-click',

@@ -8,13 +8,13 @@ import { JoinCommunityBanner } from '@/entities/JoinCommunityBanner';
 import { Vault } from '@/entities/Vault';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { ReferralLink } from '@/features/ReferralLink';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Button, ButtonSize, ButtonView, LinkView, VaultSkeleton } from '@/shared/ui';
 
 import styles from './AvailableVaultsGrid.module.scss';
 
 type AvailableVaultsGridProps = {
-  vaults: VaultsResponseData[];
+  vaults: VaultResponseData[];
   skeletons: number[];
   balance: Record<string, number>;
   isConnected: boolean;

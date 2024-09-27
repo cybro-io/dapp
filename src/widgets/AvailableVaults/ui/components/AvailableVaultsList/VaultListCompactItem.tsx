@@ -6,13 +6,13 @@ import Link from 'next/link';
 
 import { VaultChips } from '@/entities/VaultChips';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
 import styles from './VaultListCompactItem.module.scss';
 
 type VaultListCompactItemProps = {
-  vault: VaultsResponseData;
+  vault: VaultResponseData;
   index: number;
 };
 

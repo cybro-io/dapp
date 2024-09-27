@@ -14,6 +14,7 @@ import { Button, ButtonSize, Logo } from '@/shared/ui';
 import CybroFooterImage from '@images/CybroFooter.png';
 
 import styles from './Footer.module.scss';
+import { links } from '@/shared/lib';
 
 type FooterProps = {};
 
@@ -30,9 +31,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
               <Logo height={17} width={138} />
             </div>
             <p className={styles.slogan}>Your AI copilot for yield farming</p>
-            <Button className={styles.buyButton} endIcon={<ArrowIcon />}>
-              Buy cybro tokens
-            </Button>
+            <a href={links.preSale} target={'_blank'}>
+              <Button className={styles.buyButton} endIcon={<ArrowIcon />}>
+                Buy cybro tokens
+              </Button>
+            </a>
           </div>
           <div className={clsx(styles.section)}>
             <p className={styles.sectionHeading}>Follow us</p>

@@ -6,13 +6,13 @@ import Link from 'next/link';
 import numeral from 'numeral';
 
 import { VaultChips } from '@/entities/VaultChips';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
 import styles from './VaultListItem.module.scss';
 
 type VaultItemProps = {
-  vault: VaultsResponseData;
+  vault: VaultResponseData;
   index: number;
 };
 

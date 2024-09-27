@@ -19,7 +19,7 @@ export const HubPage = () => {
         <HubHero />
         <HubVaults />
         <HubOneClick />
-        <HubInvestmentAcademy />
+        {/*<HubInvestmentAcademy />*/}
         <HubBlog />
         <HubBanner />
       </div>

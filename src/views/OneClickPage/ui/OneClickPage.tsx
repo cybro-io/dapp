@@ -5,69 +5,25 @@ import React from 'react';
 import clsx from 'clsx';
 import Image from 'next/image';
 import ReCAPTCHA from 'react-google-recaptcha';
-import { useForm } from 'react-hook-form';
 
-import { useToast } from '@/shared/hooks';
-import {
-  ComponentWithProps,
-  useAddToWaitlistApiV1WaitlistSignupPost,
-  useCaptchaApiV1WaitlistCaptchaGet,
-} from '@/shared/types';
-import { Button, ButtonSize, Text, TextView, ToastType } from '@/shared/ui';
+import { ComponentWithProps } from '@/shared/types';
+import { Button, ButtonSize, Text, TextView } from '@/shared/ui';
 
 import styles from './OneClickPage.module.scss';
+import { useAddWaitList, useAddWaitListForm } from '@/features/AddWaitList';
 
 type OneClickPageProps = {};
 
-type FormValues = {
-  email: string;
-};
-
 export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className }) => {
-  const { triggerToast } = useToast();
-  const { data, isLoading } = useCaptchaApiV1WaitlistCaptchaGet();
-  const { mutate, isPending } = useAddToWaitlistApiV1WaitlistSignupPost();
-  const capchaRef: any = React.useRef();
-
-  const capchaKey = data?.data?.data?.sitekey;
+  const { handleAddWaitList, isLoadingCaptcha, captchaKey, recaptchaRef } = useAddWaitList();
 
   const {
     register,
     handleSubmit,
-    formState: { errors, isValid, isSubmitting },
-  } = useForm<FormValues>({
-    mode: 'onBlur',
-  });
+    formState: { isValid, isSubmitting },
+  } = useAddWaitListForm(async ({ email }) => handleAddWaitList(email));
 
-  const onSubmit = React.useCallback(
-    async (formData: FormValues) => {
-      try {
-        const token = await capchaRef?.current?.executeAsync();
-        const email = formData?.email;
-
-        if (!token) {
-          throw new Error('Captcha token failed.');
-        }
-
-        mutate({
-          data: {
-            captcha_answer: token,
-            email,
-          },
-        });
-
-        triggerToast({ message: 'Success', description: 'You have been added to waitlist' });
-      } catch (e) {
-        console.error(e, 'error');
-        triggerToast({
-          message: 'Error',
-          description: 'Unexpected error. Contact support',
-          type: ToastType.Error,
-        });
-      }
-    },
-    [mutate, triggerToast],
-  );
+  const isDisabledSubmit = !isValid || isLoadingCaptcha || isSubmitting;
 
   return (
     <section className={clsx(styles.root, className)}>
@@ -95,24 +51,18 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
         <div className={styles.imageContainerDesktop}>
           <Image src={'/oneClickBgDesktop.webp'} alt={''} height={530} width={620} />
         </div>
-        <form onSubmit={handleSubmit(onSubmit)} className={styles.formContainer}>
+        <form onSubmit={handleSubmit} className={styles.formContainer}>
           <input
             className={styles.input}
             placeholder="Your email here"
             type="email"
-            {...register('email', {
-              required: 'Email is required',
-              pattern: {
-                value: /^[a-zA-Z0-9_.+-]+@[a-zA-Z0-9-]+\.[a-zA-Z0-9-.]+$/,
-                message: 'Enter a valid email address',
-              },
-            })}
+            {...register('email')}
           />
           <Button
             className={styles.submitButton}
             size={ButtonSize.Large}
             type="submit"
-            disabled={!isValid || isLoading || isSubmitting}
+            disabled={isDisabledSubmit}
           >
             Count me in
           </Button>
@@ -121,7 +71,7 @@ export const OneClickPage: ComponentWithProps<OneClickPageProps> = ({ className 
           <span className={styles.bold}>No spam.</span> Only updates and release announcements.
         </Text>
       </div>
-      {capchaKey && <ReCAPTCHA ref={capchaRef} size="invisible" sitekey={capchaKey} />}
+      {captchaKey && <ReCAPTCHA ref={recaptchaRef} size="invisible" sitekey={captchaKey} />}
     </section>
   );
 };

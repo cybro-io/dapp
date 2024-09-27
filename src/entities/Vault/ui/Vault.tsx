@@ -8,14 +8,14 @@ import Image from 'next/image';
 import { AvailableFunds } from '@/entities/AvailableFunds';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { useWeb3ModalAccount } from '@/shared/lib';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Chip, ChipViewType, Link, Text, TextView, TrustScore } from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
 
 type VaultProps = {
-  vault: VaultsResponseData;
+  vault: VaultResponseData;
   userBalance?: number;
   linkClassName?: string;
 };
@@ -71,7 +71,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({
 
           <div className={styles.chipsContainer}>
             {vault.badges.slice(0, 1).map(badge => (
-              <Chip key={badge.name} viewType={ChipViewType.Green}>
+              <Chip key={badge.name} viewType={ChipViewType.Blue}>
                 {badge.name}
               </Chip>
             ))}
