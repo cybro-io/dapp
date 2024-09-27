@@ -3,7 +3,6 @@
 import React, { useState, useEffect } from 'react';
 
 import { Tab, Tabs } from '@nextui-org/tabs';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import { ChainId } from 'symbiosis-js-sdk';
 
@@ -11,12 +10,16 @@ import { BalanceChart } from '@/entities/BalanceChart/ui';
 import { TransactionHistory } from '@/entities/TransactionHistory';
 import { HistoryViewType } from '@/entities/TransactionHistory/const';
 import { QueryKey } from '@/shared/const';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   ComponentWithProps,
   useGetDashboardHistoryApiV1DashboardAddressHistoryGet,
 } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
-import { getPeriodRange, groupTransactions } from '@/widgets/BalanceHistory/utils';
+import {
+  getPeriodRange,
+  groupTransactions,
+} from '@/widgets/BalanceHistory/utils';
 
 import { PeriodTab, periodTabs } from '../const';
 
@@ -24,13 +27,19 @@ import styles from './BalanceHistory.module.scss';
 
 type BalanceHistoryProps = {};
 
-export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ className }) => {
+export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({
+  className,
+}) => {
   const { address: userAddress } = useWeb3ModalAccount();
   const [period, setPeriod] = useState<PeriodTab>(PeriodTab.All);
   const [width, setWidth] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
-  const [hoveredTransaction, setHoveredTransaction] = useState<string | null>(null);
-  const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(null); // State to store address
+  const [hoveredTransaction, setHoveredTransaction] = useState<string | null>(
+    null,
+  );
+  const [localStorageAddress, setLocalStorageAddress] = useState<string | null>(
+    null,
+  ); // State to store address
 
   const { since, to } = getPeriodRange(period);
 
@@ -42,19 +51,26 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
     }
   }, []);
 
-  const { data, isLoading } = useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
-    localStorageAddress || userAddress || '',
-    {
-      chain_id: ChainId.BLAST_MAINNET,
-      since,
-      to,
-    },
-    {
-      query: {
-        queryKey: [QueryKey.DashboardHistory, localStorageAddress, userAddress, since, to],
+  const { data, isLoading } =
+    useGetDashboardHistoryApiV1DashboardAddressHistoryGet(
+      localStorageAddress || userAddress || '',
+      {
+        chain_id: ChainId.BLAST_MAINNET,
+        since,
+        to,
       },
-    },
-  );
+      {
+        query: {
+          queryKey: [
+            QueryKey.DashboardHistory,
+            localStorageAddress,
+            userAddress,
+            since,
+            to,
+          ],
+        },
+      },
+    );
 
   const historyData = data?.data?.data;
 
@@ -89,17 +105,23 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
     <div className={clsx(styles.root, className)}>
       <div className={styles.container}>
         <div className={styles.balanceOverview}>
-          <Text className={clsx(styles.title, styles.balanceTitle)} textView={TextView.H3}>
+          <Text
+            className={clsx(styles.title, styles.balanceTitle)}
+            textView={TextView.H3}
+          >
             Balance overview
           </Text>
           <Tabs
             items={periodTabs}
             selectedKey={period}
-            onSelectionChange={key => onTabChange(key as PeriodTab)}
+            onSelectionChange={(key) => onTabChange(key as PeriodTab)}
             classNames={{
               base: clsx(styles.historyTabs, styles.historyTabsMobile),
               tabList: styles.tabList,
-              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
+              tabContent: clsx(
+                styles.tabContent,
+                'group-data-[selected=true]:text-[#000000]',
+              ),
               panel: styles.panel,
             }}
           >
@@ -122,17 +144,23 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
           />
         </div>
         <div className={styles.history}>
-          <Text className={clsx(styles.title, styles.historyTitle)} textView={TextView.H3}>
+          <Text
+            className={clsx(styles.title, styles.historyTitle)}
+            textView={TextView.H3}
+          >
             History
           </Text>
           <Tabs
             items={periodTabs}
             selectedKey={period}
-            onSelectionChange={key => onTabChange(key as PeriodTab)}
+            onSelectionChange={(key) => onTabChange(key as PeriodTab)}
             classNames={{
               base: clsx(styles.historyTabs, styles.historyTabsDesktop),
               tabList: styles.tabList,
-              tabContent: clsx(styles.tabContent, 'group-data-[selected=true]:text-[#000000]'),
+              tabContent: clsx(
+                styles.tabContent,
+                'group-data-[selected=true]:text-[#000000]',
+              ),
               panel: styles.panel,
             }}
           >
@@ -152,7 +180,11 @@ export const BalanceHistory: ComponentWithProps<BalanceHistoryProps> = ({ classN
             setHoveredTransaction={setHoveredTransaction}
             data={historyData || []}
             className={styles.transactionHistory}
-            viewType={width >= 1100 ? HistoryViewType.Infinite : HistoryViewType.Pagination}
+            viewType={
+              width >= 1100
+                ? HistoryViewType.Infinite
+                : HistoryViewType.Pagination
+            }
             isLoading={isLoading}
           />
         </div>

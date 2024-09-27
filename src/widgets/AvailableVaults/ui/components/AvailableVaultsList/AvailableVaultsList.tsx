@@ -1,9 +1,14 @@
 'use client';
 import React, { Dispatch, SetStateAction } from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
 
-import { ComponentWithProps, SortValue, VaultResponseData } from '@/shared/types';
+import {
+  ComponentWithProps,
+  SortValue,
+  VaultResponseData,
+} from '@/shared/types';
 import { Dropdown, DropdownView, Loader, Text, TextView } from '@/shared/ui';
 
 import DownIcon from '../../../assets/icons/down.svg';
@@ -12,7 +17,6 @@ import UpIcon from '../../../assets/icons/up.svg';
 import styles from './AvailableVaultsList.module.scss';
 import { VaultListCompactItem } from './VaultListCompactItem';
 import { VaultListItem } from './VaultListItem';
-import { Skeleton } from '@nextui-org/react';
 
 type AvailableVaultsGridProps = {
   vaults: VaultResponseData[];
@@ -56,7 +60,9 @@ const headers = [
   },
 ];
 
-export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> = ({
+export const AvailableVaultsList: ComponentWithProps<
+  AvailableVaultsGridProps
+> = ({
   vaults,
   sort,
   setSort,
@@ -92,7 +98,7 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
 
   const handleSort = React.useCallback(
     (sortName: SortValue) => {
-      setCurrentSort(prevState => {
+      setCurrentSort((prevState) => {
         if (prevState.column !== sortName) {
           setSort([sortName, true]);
           return { column: sortName, direction: Sort.Ascending };
@@ -133,7 +139,7 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
     });
   }, [sort]);
 
-  const dropdownSortItems = headers.filter(item => !!item.key);
+  const dropdownSortItems = headers.filter((item) => !!item.key);
 
   return (
     <div className={clsx(styles.root, className)}>
@@ -155,13 +161,15 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
             <Dropdown
               items={dropdownSortItems}
               viewType={DropdownView.Flat}
-              selectedTitle={headers.find(({ key, label }) => sort[0] === key)?.label}
+              selectedTitle={
+                headers.find(({ key, label }) => sort[0] === key)?.label
+              }
               selectedKey={sort[0]}
               setSelected={handleDropdownSort}
             />
           </div>
           <div className={styles.tableHeader}>
-            {headers.map(header => {
+            {headers.map((header) => {
               if (!header.key) {
                 return (
                   <div key={header.label} className={styles.tableCell}>
@@ -179,7 +187,9 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
                   {header.label}
                   <div className={styles.sortButtonsContainer}>
                     {getSortIcons(
-                      currentSort.column === header.key ? currentSort.direction : Sort.Default,
+                      currentSort.column === header.key
+                        ? currentSort.direction
+                        : Sort.Default,
                     )}
                   </div>
                 </button>
@@ -188,8 +198,16 @@ export const AvailableVaultsList: ComponentWithProps<AvailableVaultsGridProps> =
           </div>
           {vaults.map((vault, index) => (
             <React.Fragment>
-              <VaultListItem className={styles.tableVault} index={index} vault={vault} />
-              <VaultListCompactItem className={styles.compactVault} index={index} vault={vault} />
+              <VaultListItem
+                className={styles.tableVault}
+                index={index}
+                vault={vault}
+              />
+              <VaultListCompactItem
+                className={styles.compactVault}
+                index={index}
+                vault={vault}
+              />
             </React.Fragment>
           ))}
         </div>

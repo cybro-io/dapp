@@ -9,8 +9,6 @@ import { Button, ButtonProps } from '@/shared/ui';
 
 import { useConnectWallet } from '../model/useConnectWallet';
 
-import styles from './ConnectWallet.module.scss';
-
 type ConnectWalletProps = Omit<ButtonProps, 'children' | 'type' | 'onClick'> & {
   whenConnectedComponent?: React.ReactNode;
   isForm?: boolean;
@@ -37,7 +35,7 @@ export const ConnectWallet = ({
     <Button
       type="button"
       onClick={handleConnect}
-      className={clsx(styles.root, className)}
+      className={clsx(className)}
       {...buttonProps}
     >
       Connect Wallet

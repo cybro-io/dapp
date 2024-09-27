@@ -7,7 +7,9 @@ import { ComponentWithProps } from '@/shared/types';
 
 type CalculatorSkeletonProps = {};
 
-export const CalculatorSkeleton: ComponentWithProps<CalculatorSkeletonProps> = ({ className }) => {
+export const CalculatorSkeleton: ComponentWithProps<
+  CalculatorSkeletonProps
+> = ({ className }) => {
   return (
     <Card className="w-full p-4 space-y-5" radius="lg">
       <Skeleton className="rounded-lg">

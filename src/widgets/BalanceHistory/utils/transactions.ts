@@ -41,7 +41,7 @@ export const groupTransactions = (
   );
 
   // Aggregate the grouped data
-  return Object.values(groupedData).map(group => {
+  return Object.values(groupedData).map((group) => {
     if (group.length === 1) {
       return group[0]; // If only one transaction, return it as is
     }

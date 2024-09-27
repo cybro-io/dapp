@@ -9,12 +9,12 @@ import ArrowIcon from '@/shared/assets/icons/arrow-left-bold.svg';
 import DiscordIcon from '@/shared/assets/socials/discord.svg';
 import TelegramIcon from '@/shared/assets/socials/telegram.svg';
 import TwitterIcon from '@/shared/assets/socials/twitter.svg';
+import { links } from '@/shared/lib';
 import { ComponentWithProps } from '@/shared/types';
 import { Button, ButtonSize, Logo } from '@/shared/ui';
 import CybroFooterImage from '@images/CybroFooter.png';
 
 import styles from './Footer.module.scss';
-import { links } from '@/shared/lib';
 
 type FooterProps = {};
 
@@ -31,7 +31,7 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
               <Logo height={17} width={138} />
             </div>
             <p className={styles.slogan}>Your AI copilot for yield farming</p>
-            <a href={links.preSale} target={'_blank'}>
+            <a href={links.preSale} target={'_blank'} rel="noreferrer">
               <Button className={styles.buyButton} endIcon={<ArrowIcon />}>
                 Buy cybro tokens
               </Button>
@@ -41,7 +41,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
             <p className={styles.sectionHeading}>Follow us</p>
             <ul className={clsx(styles.sectionList)}>
               <li className={clsx(styles.socialItem, styles.sectionItem)}>
-                <Link className={styles.socialLink} href="https://x.com/Cybro_io" target="_blank">
+                <Link
+                  className={styles.socialLink}
+                  href="https://x.com/Cybro_io"
+                  target="_blank"
+                >
                   <TwitterIcon />
                   <span>Twitter</span>
                 </Link>
@@ -57,7 +61,12 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
                 </Link>
               </li>
               <li className={clsx(styles.socialItem, styles.sectionItem)}>
-                <Link className={styles.socialLink} href="https://t.me/cybro_io" target="_blank">
+                <Link
+                  className={styles.socialLink}
+                  href="https://t.me/cybro_io"
+                  target="_blank"
+                >
+                  {' '}
                   <TelegramIcon />
                   <span>Telegram</span>
                 </Link>
@@ -68,7 +77,11 @@ export const Footer: ComponentWithProps<FooterProps> = ({ className }) => {
             <p className={styles.sectionHeading}>Legal</p>
             <ul className={clsx(styles.sectionList)}>
               <li className={styles.sectionItem}>
-                <a href={'/Cybro Blast L2 Terms.pdf'} target="_blank" rel="noreferrer">
+                <a
+                  href={'/Cybro Blast L2 Terms.pdf'}
+                  target="_blank"
+                  rel="noreferrer"
+                >
                   Terms and Conditions
                 </a>
               </li>

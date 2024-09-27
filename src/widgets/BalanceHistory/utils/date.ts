@@ -1,8 +1,18 @@
-import { endOfDay, format, startOfDay, startOfMonth, startOfWeek, startOfYear } from 'date-fns';
+import {
+  endOfDay,
+  format,
+  startOfDay,
+  startOfMonth,
+  startOfWeek,
+  startOfYear,
+} from 'date-fns';
 
 import { PeriodTab } from '@/widgets/BalanceHistory';
 
-export const formatChartDate = (dateString: string, period: PeriodTab): string => {
+export const formatChartDate = (
+  dateString: string,
+  period: PeriodTab,
+): string => {
   const date = new Date(dateString);
 
   switch (period) {
@@ -32,7 +42,9 @@ export const formatChartDate = (dateString: string, period: PeriodTab): string =
   }
 };
 
-export const getPeriodRange = (period: PeriodTab): { since: number; to: number } => {
+export const getPeriodRange = (
+  period: PeriodTab,
+): { since: number; to: number } => {
   const now = new Date();
   let since: Date;
   const to: Date = endOfDay(now);

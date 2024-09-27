@@ -5,7 +5,10 @@ import { BigNumberish, utils } from 'ethers';
  * @param value
  * @param unitName
  */
-export const formatUnits = (value: BigNumberish, unitName?: string | BigNumberish) => {
+export const formatUnits = (
+  value: BigNumberish,
+  unitName?: string | BigNumberish,
+) => {
   try {
     return utils.formatUnits(value, unitName);
   } catch (e) {

@@ -9,7 +9,13 @@ import { Vault } from '@/entities/Vault';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { ReferralLink } from '@/features/ReferralLink';
 import { ComponentWithProps, VaultResponseData } from '@/shared/types';
-import { Button, ButtonSize, ButtonView, LinkView, VaultSkeleton } from '@/shared/ui';
+import {
+  Button,
+  ButtonSize,
+  ButtonView,
+  LinkView,
+  VaultSkeleton,
+} from '@/shared/ui';
 
 import styles from './AvailableVaultsGrid.module.scss';
 
@@ -21,17 +27,12 @@ type AvailableVaultsGridProps = {
   isLoading: boolean;
 };
 
-export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> = ({
-  vaults,
-  skeletons,
-  balance,
-  isLoading,
-  isConnected,
-  className,
-}) => {
+export const AvailableVaultsGrid: ComponentWithProps<
+  AvailableVaultsGridProps
+> = ({ vaults, skeletons, balance, isLoading, isConnected, className }) => {
   return (
     <div className={clsx(styles.vaults, className)}>
-      {isLoading && skeletons.map(index => <VaultSkeleton key={index} />)}
+      {isLoading && skeletons.map((index) => <VaultSkeleton key={index} />)}
       {vaults.map((vault, index) => {
         if (index === 2) {
           return (
@@ -68,7 +69,9 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   )
                 }
                 linkText="Cybro points faq"
-                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                linkHref={
+                  'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'
+                }
               />
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
             </React.Fragment>
@@ -94,7 +97,9 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   </Button>
                 }
                 linkText="watch our detailed Cybro points faq"
-                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                linkHref={
+                  'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'
+                }
               />
 
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
@@ -122,7 +127,9 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
                   )
                 }
                 linkText="watch our detailed Cybro points faq"
-                linkHref={'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'}
+                linkHref={
+                  'https://docs.cybro.io/cybro/usdcybro-token/cybro-points'
+                }
               />
               <Vault vault={vault} userBalance={balance[vault.token.address]} />
             </React.Fragment>
@@ -138,7 +145,13 @@ export const AvailableVaultsGrid: ComponentWithProps<AvailableVaultsGridProps> =
           );
         }
 
-        return <Vault vault={vault} userBalance={balance[vault.token.address]} key={vault.id} />;
+        return (
+          <Vault
+            vault={vault}
+            userBalance={balance[vault.token.address]}
+            key={vault.id}
+          />
+        );
       })}
     </div>
   );

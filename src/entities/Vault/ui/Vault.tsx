@@ -9,7 +9,14 @@ import { AvailableFunds } from '@/entities/AvailableFunds';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, VaultResponseData } from '@/shared/types';
-import { Chip, ChipViewType, Link, Text, TextView, TrustScore } from '@/shared/ui';
+import {
+  Chip,
+  ChipViewType,
+  Link,
+  Text,
+  TextView,
+  TrustScore,
+} from '@/shared/ui';
 import { isInvalid } from '@/shared/utils';
 
 import styles from './Vault.module.scss';
@@ -47,9 +54,16 @@ export const Vault: ComponentWithProps<VaultProps> = ({
   }, []);
 
   return (
-    <Link className={clsx(styles.link, linkClassName)} href={`/vaults/${vault.id}`}>
+    <Link
+      className={clsx(styles.link, linkClassName)}
+      href={`/vaults/${vault.id}`}
+    >
       <div
-        className={clsx(styles.root, componentWidth > 390 && styles.large, className)}
+        className={clsx(
+          styles.root,
+          componentWidth > 390 && styles.large,
+          className,
+        )}
         ref={rootRef}
       >
         <div className={styles.titleContainer}>
@@ -70,7 +84,7 @@ export const Vault: ComponentWithProps<VaultProps> = ({
           </div>
 
           <div className={styles.chipsContainer}>
-            {vault.badges.slice(0, 1).map(badge => (
+            {vault.badges.slice(0, 1).map((badge) => (
               <Chip key={badge.name} viewType={ChipViewType.Blue}>
                 {badge.name}
               </Chip>

@@ -2,12 +2,12 @@
 
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Image from 'next/image';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -27,7 +27,9 @@ type WithdrawCalculatorProps = {
   tokenIcon: string;
 };
 
-export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = ({
+export const WithdrawCalculator: ComponentWithProps<
+  WithdrawCalculatorProps
+> = ({
   amountToWithdraw,
   amountToWithdrawUsd,
   currentRate,
@@ -84,7 +86,11 @@ export const WithdrawCalculator: ComponentWithProps<WithdrawCalculatorProps> = (
       <ConnectWallet
         className={styles.connectButton}
         whenConnectedComponent={
-          <Button disabled={isButtonDisabled} className={styles.submitButton} onClick={withdraw}>
+          <Button
+            disabled={isButtonDisabled}
+            className={styles.submitButton}
+            onClick={withdraw}
+          >
             {buttonMessage || 'Withdraw'}
           </Button>
         }

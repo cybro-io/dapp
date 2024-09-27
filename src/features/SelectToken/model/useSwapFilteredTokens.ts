@@ -4,10 +4,13 @@ import { Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
-import { useSelectChain } from '@/features/SelectToken';
 import { useWalletBalances } from '@/entities/WalletBalance';
+import { useSelectChain } from '@/features/SelectToken';
 
-export const useSwapFilteredTokens = (tokens: Token[], selectedTokenId: string) => {
+export const useSwapFilteredTokens = (
+  tokens: Token[],
+  selectedTokenId: string,
+) => {
   const { selectedChain } = useSelectChain();
 
   const { findBalanceByToken, walletBalances } = useWalletBalances();
@@ -24,14 +27,17 @@ export const useSwapFilteredTokens = (tokens: Token[], selectedTokenId: string) 
     );
 
   const withSortSelected = (tokens: Token[]) =>
-    tokens.sort(tokenA =>
-      getUniqueTokenId(tokenA.address, tokenA.chainId, tokenA.chainFromId) == selectedTokenId
+    tokens.sort((tokenA) =>
+      getUniqueTokenId(tokenA.address, tokenA.chainId, tokenA.chainFromId) ==
+      selectedTokenId
         ? -1
         : 0,
     );
 
   const withFilterByChain = (tokens: Token[]) =>
-    selectedChain ? tokens.filter(({ chainId }) => selectedChain === chainId) : tokens;
+    selectedChain
+      ? tokens.filter(({ chainId }) => selectedChain === chainId)
+      : tokens;
 
   const withFilterBySymbol = (tokens: Token[]) =>
     debouncedSearchToken
@@ -42,13 +48,22 @@ export const useSwapFilteredTokens = (tokens: Token[], selectedTokenId: string) 
 
   const filteredTokens = React.useMemo(() => {
     if (!debouncedSearchToken) {
-      return withFilterByChain(withSortSelected(withSortPositiveBalance(tokens)));
+      return withFilterByChain(
+        withSortSelected(withSortPositiveBalance(tokens)),
+      );
     }
 
     return withFilterByChain(withFilterBySymbol(withSortSelected(tokens)));
   }, [debouncedSearchToken, tokens, selectedChain, walletBalances]);
 
-  const isEmptyFilteredTokens = filteredTokens.length < 1 && debouncedSearchToken;
+  const isEmptyFilteredTokens =
+    filteredTokens.length < 1 && debouncedSearchToken;
 
-  return { filteredTokens, isEmptyFilteredTokens, setSearchToken, searchToken, withSortSelected };
+  return {
+    filteredTokens,
+    isEmptyFilteredTokens,
+    setSearchToken,
+    searchToken,
+    withSortSelected,
+  };
 };

@@ -4,7 +4,10 @@ import numeral from 'numeral';
 import { Money, Nullable, UserMoney } from '@/shared/types';
 import { isInvalid } from '@/shared/utils/utils';
 
-export const formatUserMoney = (value: Money | string | undefined, maxDecimals = 6): UserMoney => {
+export const formatUserMoney = (
+  value: Money | string | undefined,
+  maxDecimals = 6,
+): UserMoney => {
   if (isInvalid(value) || Number(value) === 0) return '0.00';
 
   let numericValue: number;
@@ -41,13 +44,18 @@ export const formatUserMoney = (value: Money | string | undefined, maxDecimals =
 
   // Remove trailing zeros after the decimal point, but not after commas
   if (formattedValue.includes('.')) {
-    formattedValue = formattedValue.replace(/(\.\d*?[1-9])0+$/, '$1').replace(/\.$/, '');
+    formattedValue = formattedValue
+      .replace(/(\.\d*?[1-9])0+$/, '$1')
+      .replace(/\.$/, '');
   }
 
   return formattedValue;
 };
 
-export const fromWei = (value: Nullable<BigNumberish>, decimals = 18): Money => {
+export const fromWei = (
+  value: Nullable<BigNumberish>,
+  decimals = 18,
+): Money => {
   if (typeof value === 'undefined' || value === null) return null;
 
   return Number(utils.formatUnits(value, decimals));

@@ -1,6 +1,5 @@
 import React from 'react';
 
-import { useWeb3ModalAccount } from '@/shared/lib';
 import clsx from 'clsx';
 import Link from 'next/link';
 
@@ -13,7 +12,14 @@ import { SafetyScoreDetails } from '@/entities/SafetyScoreDetails';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
 import { ChainToExplorerUrl, YieldSwitchOptions } from '@/shared/const';
 import { useBalance } from '@/shared/hooks';
-import { ComponentWithProps, Nullable, Token, Vault, VaultResponseData } from '@/shared/types';
+import { useWeb3ModalAccount } from '@/shared/lib';
+import {
+  ComponentWithProps,
+  Nullable,
+  Token,
+  Vault,
+  VaultResponseData,
+} from '@/shared/types';
 import {
   Button,
   ButtonSize,
@@ -49,7 +55,9 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
     vault?.chain_id,
     vault?.token?.name,
   );
-  const [activeTab, setActiveTab] = React.useState<any>(YieldSwitchOptions.Deposit);
+  const [activeTab, setActiveTab] = React.useState<any>(
+    YieldSwitchOptions.Deposit,
+  );
 
   const modalProps = React.useMemo(() => {
     return {
@@ -129,6 +137,21 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         />
       </section>
       <FeeBanner className={styles.feeBanner} />
+
+      {vault?.provider.description && (
+        <section className={styles.providerDescription}>
+          <Text
+            className={clsx(styles.title, styles.providerDescriptionTitle)}
+            textView={TextView.H3}
+          >
+            Provider Description
+          </Text>
+          <Text className={styles.description} textView={TextView.P2}>
+            {vault.provider.description}
+          </Text>
+        </section>
+      )}
+
       <SafetyScoreDetails
         vaultId={vault?.id}
         trustScore={vault?.trust_score}
@@ -140,19 +163,6 @@ export const VaultInfo: ComponentWithProps<VaultInfoProps> = ({
         <ExtendedVaultSkeleton />
       ) : (
         <React.Fragment>
-          {vault?.provider.description && (
-            <section className={styles.providerDescription}>
-              <Text
-                className={clsx(styles.title, styles.providerDescriptionTitle)}
-                textView={TextView.H3}
-              >
-                Provider Description
-              </Text>
-              <Text className={styles.description} textView={TextView.P2}>
-                {vault.provider.description}
-              </Text>
-            </section>
-          )}
           <section className={styles.extendedVaultDescription}>
             <Text className={styles.title} textView={TextView.H3}>
               Extended Vault Description

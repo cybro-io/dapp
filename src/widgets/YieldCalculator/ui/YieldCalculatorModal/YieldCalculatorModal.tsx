@@ -4,7 +4,13 @@ import React from 'react';
 
 import { useModal } from '@/app/providers';
 import { YieldSwitchOptions } from '@/shared/const';
-import { ComponentWithProps, Money, Nullable, Vault, Token } from '@/shared/types';
+import {
+  ComponentWithProps,
+  Money,
+  Nullable,
+  Vault,
+  Token,
+} from '@/shared/types';
 import { ModalLayout } from '@/shared/ui';
 import { VaultCurrency } from '@/shared/utils';
 import { YieldCalculatorBody } from '@/widgets/YieldCalculator';
@@ -23,7 +29,9 @@ export type YieldCalculatorModalProps = {
 };
 
 export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
-  const { props } = useModal() as unknown as { props: YieldCalculatorModalProps };
+  const { props } = useModal() as unknown as {
+    props: YieldCalculatorModalProps;
+  };
   const {
     activeTab,
     currency,
@@ -36,7 +44,10 @@ export const YieldCalculatorModal: ComponentWithProps<unknown> = () => {
     vaultId,
   } = props;
 
-  const title = activeTab === YieldSwitchOptions.Deposit ? 'Vault Deposit' : 'Vault Withdraw';
+  const title =
+    activeTab === YieldSwitchOptions.Deposit
+      ? 'Vault Deposit'
+      : 'Vault Withdraw';
 
   return (
     <ModalLayout title={title}>

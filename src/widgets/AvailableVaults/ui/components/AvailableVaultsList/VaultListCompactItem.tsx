@@ -16,11 +16,9 @@ type VaultListCompactItemProps = {
   index: number;
 };
 
-export const VaultListCompactItem: ComponentWithProps<VaultListCompactItemProps> = ({
-  vault,
-  index,
-  className,
-}) => {
+export const VaultListCompactItem: ComponentWithProps<
+  VaultListCompactItemProps
+> = ({ vault, index, className }) => {
   return (
     <Link
       className={clsx(styles.root, index % 2 === 0 && styles.dark, className)}

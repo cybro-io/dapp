@@ -21,9 +21,14 @@ export const BaseLayout: React.FC<BaseLayoutProps> = ({
 }) => {
   return (
     <React.Fragment>
-      <Header className={styles.header} connectedComponent={<ProfileStatsPopover />} />
+      <Header
+        className={styles.header}
+        connectedComponent={<ProfileStatsPopover />}
+      />
       <main className={clsx(styles.main, styles.noFooter)}>
-        <div className={clsx(withMainPadding && styles.mainContent)}>{children}</div>
+        <div className={clsx(withMainPadding && styles.mainContent)}>
+          {children}
+        </div>
       </main>
       {hasFooter && <Footer className={styles.footer} />}
     </React.Fragment>

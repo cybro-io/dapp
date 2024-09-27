@@ -18,7 +18,14 @@ import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
 import { ComponentWithProps } from '@/shared/types';
-import { Button, ButtonSize, ButtonView, Logo, MenuLink, Socials } from '@/shared/ui';
+import {
+  Button,
+  ButtonSize,
+  ButtonView,
+  Logo,
+  MenuLink,
+  Socials,
+} from '@/shared/ui';
 
 import styles from './Header.module.scss';
 
@@ -53,17 +60,27 @@ const menuItems = [
   },
 ];
 
-export const Header: ComponentWithProps<HeaderProps> = ({ className, connectedComponent }) => {
+export const Header: ComponentWithProps<HeaderProps> = ({
+  className,
+  connectedComponent,
+}) => {
   const { disconnect } = useDisconnect();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
-    <Navbar className={clsx(styles.navbar, className)} onMenuOpenChange={setIsMenuOpen}>
+    <Navbar
+      className={clsx(styles.navbar, className)}
+      onMenuOpenChange={setIsMenuOpen}
+    >
       <div className={styles.menuContainer}>
         <NavbarContent className={styles.leftContainer}>
           <NavbarMenuToggle
             icon={isMenuOpen ? CloseIcon : MenuIcon}
-            className={clsx(styles.burgerButton, isMenuOpen && styles.menuOpened, 'text-default')}
+            className={clsx(
+              styles.burgerButton,
+              isMenuOpen && styles.menuOpened,
+              'text-default',
+            )}
             aria-label={isMenuOpen ? 'Close menu' : 'Open menu'}
           />
           <NavbarBrand>

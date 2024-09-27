@@ -23,7 +23,9 @@ export const Chip: ComponentWithProps<ChipProps> = ({
   className,
 }) => {
   return (
-    <div className={clsx(styles.root, styles[size], styles[viewType], className)}>
+    <div
+      className={clsx(styles.root, styles[size], styles[viewType], className)}
+    >
       {viewType === ChipViewType.Warning && <IconWarning />}
       {children}
     </div>

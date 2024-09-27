@@ -9,9 +9,9 @@ import styles from './JoinCommunityBanner.module.scss';
 
 type JoinCommunityBannerProps = {};
 
-export const JoinCommunityBanner: ComponentWithProps<JoinCommunityBannerProps> = ({
-  className,
-}) => {
+export const JoinCommunityBanner: ComponentWithProps<
+  JoinCommunityBannerProps
+> = ({ className }) => {
   return (
     <div className={clsx(styles.root, className)}>
       <div className={styles.outerContainer}>

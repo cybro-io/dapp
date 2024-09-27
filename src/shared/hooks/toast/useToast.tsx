@@ -13,8 +13,20 @@ type ToastOptions = {
 };
 
 export const useToast = () => {
-  const triggerToast = ({ message, description, type, actions }: ToastOptions) => {
-    toast(<Toast message={message} description={description} type={type} actions={actions} />);
+  const triggerToast = ({
+    message,
+    description,
+    type,
+    actions,
+  }: ToastOptions) => {
+    toast(
+      <Toast
+        message={message}
+        description={description}
+        type={type}
+        actions={actions}
+      />,
+    );
   };
 
   return { triggerToast };

@@ -11,7 +11,12 @@ $background-accentBold: #f9e727;
 $background-white: #ffffff;
 $background-tooltip: rgb(109 109 109);
 $background-header: rgba(255, 255, 255, 0.05);
-$background-accent-linear: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
+$background-accent-linear: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
 
 /** TEXT **/
 $text-white-heading: #ffffff;
@@ -40,8 +45,18 @@ $error-label: #ff3d6c;
 $error-bg: #5f192a;
 
 /** BUTTON PRIMARY **/
-$button-primary-defaultBg: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
-$button-primary-hoverBg: linear-gradient(90deg, #f0d025 0%, #fff627 50.42%, #f0d025 100%);
+$button-primary-defaultBg: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
+$button-primary-hoverBg: linear-gradient(
+  90deg,
+  #f0d025 0%,
+  #fff627 50.42%,
+  #f0d025 100%
+);
 $button-primary-defaultLabel: #0b0c1b;
 $button-primary-hoverLabel: #0b0c1b;
 $button-primary-disabledBg: #9b8e00;
@@ -87,10 +102,10 @@ $desktop-width-default: 1024px;
 $app-max-width: 1560px;
 
 /** CHIPS **/
-$chips-blue-dark: #1B1A5A;
-$chips-blue-light: #B7B6FF;
-$chips-green-dark: #1F3E1C;
-$chips-green-light: #83FF81;
+$chips-blue-dark: #1b1a5a;
+$chips-blue-light: #b7b6ff;
+$chips-green-dark: #1f3e1c;
+$chips-green-light: #83ff81;
 
 @mixin laptop {
   @media (min-width: #{$laptop-width}) {

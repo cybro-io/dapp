@@ -18,7 +18,12 @@ import { IconButton, Text, TextView } from '@/shared/ui';
 
 type ModalProps = Pick<
   NextUIModalProps,
-  'children' | 'shouldBlockScroll' | 'hideCloseButton' | 'scrollBehavior' | 'onClose' | 'classNames'
+  | 'children'
+  | 'shouldBlockScroll'
+  | 'hideCloseButton'
+  | 'scrollBehavior'
+  | 'onClose'
+  | 'classNames'
 >;
 
 export const Modal = ({ children, classNames, ...restProps }: ModalProps) => {
@@ -28,7 +33,10 @@ export const Modal = ({ children, classNames, ...restProps }: ModalProps) => {
       closeButton={<IconButton icon={<CloseIcon />} />}
       classNames={{
         backdrop: clsx(classNames?.backdrop, 'bg-transparent z-[1001]'),
-        wrapper: clsx(classNames?.wrapper, 'backdrop-blur-[32px] bg-background-bgBlur z-[1001]'),
+        wrapper: clsx(
+          classNames?.wrapper,
+          'backdrop-blur-[32px] bg-background-bgBlur z-[1001]',
+        ),
         base: clsx(
           classNames?.base,
           'rounded-b-none rounded-t-[30px] md:rounded-[30px] bg-background-modal',

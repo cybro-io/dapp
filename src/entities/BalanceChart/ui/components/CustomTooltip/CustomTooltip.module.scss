@@ -1,6 +1,6 @@
 .root {
-  background-color: $background-tooltip;
   padding: 8px 12px;
+  background-color: $background-tooltip;
   border-radius: 8px;
   backdrop-filter: blur(32.5px);
 }
@@ -20,19 +20,19 @@
 }
 
 .title {
-  color: $text-white-body100;
   font-family: $unbounded-font;
   font-size: 16px;
   font-weight: 300;
   line-height: 150%;
   text-transform: capitalize;
+  color: $text-white-body100;
 }
 
 .value {
-  color: $text-white-body60;
   font-family: $poppins-font;
   font-size: 14px;
   font-weight: 500;
   line-height: 120%;
   text-transform: uppercase;
+  color: $text-white-body60;
 }

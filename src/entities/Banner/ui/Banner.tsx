@@ -38,7 +38,15 @@ export const Banner: ComponentWithProps<BannerProps> = ({
   const [firstLineTitle, secondLineTitle] = title.split(/\\n|\n/);
 
   return (
-    <div className={clsx(styles.root, styles[viewType], styles[color], styles[size], className)}>
+    <div
+      className={clsx(
+        styles.root,
+        styles[viewType],
+        styles[color],
+        styles[size],
+        className,
+      )}
+    >
       <Text textView={TextView.H3} className={styles.title}>
         {firstLineTitle}
         {secondLineTitle && (

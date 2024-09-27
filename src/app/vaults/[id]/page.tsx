@@ -24,7 +24,8 @@ export default async function Vault({ params }: { params: { id: string } }) {
 
   await queryClient.prefetchQuery({
     queryKey: [QueryKey.TrustScoreDetails, vaultId],
-    queryFn: () => getVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId),
+    queryFn: () =>
+      getVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(vaultId),
   });
 
   return (
