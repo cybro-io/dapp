@@ -10,7 +10,6 @@ import { PeriodTab } from '@/entities/DepositCalculator/const';
 import { ConnectWallet } from '@/features/ConnectWallet';
 import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
 import { formatUserMoney } from '@/shared/utils';
@@ -18,7 +17,7 @@ import { formatUserMoney } from '@/shared/utils';
 import styles from './DepositCalculator.module.scss';
 
 type DepositCalculatorProps = {
-  deposit: () => Promise<void>;
+  deposit: (event: React.MouseEvent<HTMLButtonElement>) => Promise<void>;
   apy: number;
   setPeriod: React.Dispatch<React.SetStateAction<PeriodTab>>;
   buttonMessage: string | null;
