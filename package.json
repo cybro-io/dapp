@@ -16,6 +16,8 @@
     "lint:staged": "lint-staged",
     "lint:all": "npm run prettier:fix && npm run linter:fix && npm run stylelint:fix",
     "test": "npm run prettier && npm run linter && npm run stylelint",
+    "test:types": "tsc --noEmit",
+    "test:types:watch": "tsc --noEmit --watch",
     "codegen-sc": "typechain --target ethers-v5 --out-dir src/shared/types/__generated/contracts './src/app/abi/*.json'",
     "codegen-api": "npx orval",
     "generate-index": "node src/shared/script/generate-index.mjs",
