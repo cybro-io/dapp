@@ -10,7 +10,7 @@ export const useSwapTokens = () => {
   const swapChains = useSwapChains();
 
   const tokens = React.useMemo(() => {
-    const symbiosisTokens = symbiosis.tokens().map(token => new Token(token));
+    const symbiosisTokens = symbiosis.tokens().map((token) => new Token(token));
 
     const allTokens = Object.values(GAS_TOKEN).concat(
       symbiosisTokens,
@@ -20,13 +20,16 @@ export const useSwapTokens = () => {
     return allTokens.filter(
       (token, index) =>
         swapChains.findIndex(({ id }) => id === token.chainId) !== -1 &&
-        allTokens.findIndex(findToken => tokenEquals(findToken, token)) === index,
+        allTokens.findIndex((findToken) => tokenEquals(findToken, token)) ===
+          index,
     );
   }, []);
 
   const findToken = (address: string, chainId: ChainId) =>
     tokens.find(
-      token => token.address.toLowerCase() === address.toLowerCase() && token.chainId === chainId,
+      (token) =>
+        token.address.toLowerCase() === address.toLowerCase() &&
+        token.chainId === chainId,
     );
 
   return { tokens, findToken };

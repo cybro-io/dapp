@@ -19,14 +19,18 @@
     font-size: 62px;
     font-weight: 600;
     line-height: 120%;
-    text-transform: uppercase;
     text-align: center;
+    text-transform: uppercase;
   }
 
   .headingBackground {
     padding-right: 10px;
     padding-left: 10px;
-    background: linear-gradient(148deg, rgb(255 255 255 / 10%) 3.15%, rgb(107 109 121 / 7%) 96.78%);
+    background: linear-gradient(
+      148deg,
+      rgb(255 255 255 / 10%) 3.15%,
+      rgb(107 109 121 / 7%) 96.78%
+    );
     border-radius: 10px;
     backdrop-filter: blur(45px);
   }
@@ -35,16 +39,16 @@
     position: relative;
 
     &::before {
-      content: '';
       position: absolute;
-      width: 411px;
-      height: 113px;
       right: 0;
       left: 0;
+      width: 411px;
+      height: 113px;
       margin: 0 auto;
       background-color: $text-accent-logoYellow;
       opacity: 0.2;
       filter: blur(65px);
+      content: '';
     }
   }
 }

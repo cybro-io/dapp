@@ -28,15 +28,15 @@
   display: flex;
   flex-direction: column;
   height: 100%;
-  font-family: $poppins-font;
-  justify-content: center;
-  text-align: right;
   padding: 15px 0;
+  font-family: $poppins-font;
+  text-align: right;
   color: $text-white-body80;
   border-top: 2px solid;
   border-top: 2px solid transparent;
   border-bottom: 2px solid transparent;
   transition: all 0.3s ease-in-out;
+  justify-content: center;
 
   &:first-child {
     padding-left: 15px;
@@ -54,9 +54,9 @@
 }
 
 .vaultName {
+  margin-right: 16px;
   margin-bottom: 6px !important;
   text-align: left;
-  margin-right: 16px;
 }
 
 .chips {

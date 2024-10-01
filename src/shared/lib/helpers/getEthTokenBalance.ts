@@ -17,12 +17,18 @@ export const getEthTokenBalance = async (
 
     // Native token
     if (token.isNative) {
-      const balance = fromWei(await provider.getBalance(walletAddress, 'latest'), token.decimals);
+      const balance = fromWei(
+        await provider.getBalance(walletAddress, 'latest'),
+        token.decimals,
+      );
       return String(balance);
     }
 
     const contract = new ethers.Contract(token.address, TOKEN, provider);
-    const balance = fromWei(await contract.balanceOf(walletAddress), token.decimals);
+    const balance = fromWei(
+      await contract.balanceOf(walletAddress),
+      token.decimals,
+    );
 
     return String(balance);
   } catch (error) {

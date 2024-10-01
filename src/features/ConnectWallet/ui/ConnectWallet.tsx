@@ -5,27 +5,21 @@ import React from 'react';
 import clsx from 'clsx';
 
 import { useAuthWallet } from '@/entities/Auth';
-import { ComponentWithProps } from '@/shared/types';
-import { Button, ButtonSize, ButtonView } from '@/shared/ui';
+import { Button, ButtonProps } from '@/shared/ui';
 
 import { useConnectWallet } from '../model/useConnectWallet';
 
-import styles from './ConnectWallet.module.scss';
-
-type ConnectWalletProps = {
+type ConnectWalletProps = Omit<ButtonProps, 'children' | 'type' | 'onClick'> & {
   whenConnectedComponent?: React.ReactNode;
-  buttonSize?: ButtonSize;
-  viewType?: ButtonView;
   isForm?: boolean;
 };
 
-export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
+export const ConnectWallet = ({
   whenConnectedComponent,
-  buttonSize,
-  viewType,
   isForm = false,
   className,
-}) => {
+  ...buttonProps
+}: ConnectWalletProps) => {
   const { authWallet } = useAuthWallet();
 
   const { handleConnect, isConnected } = useConnectWallet({
@@ -41,9 +35,8 @@ export const ConnectWallet: ComponentWithProps<ConnectWalletProps> = ({
     <Button
       type="button"
       onClick={handleConnect}
-      className={clsx(styles.root, className)}
-      size={buttonSize}
-      view={viewType}
+      className={clsx(className)}
+      {...buttonProps}
     >
       Connect Wallet
     </Button>

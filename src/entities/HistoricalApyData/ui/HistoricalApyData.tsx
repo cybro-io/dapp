@@ -53,15 +53,31 @@ const CustomDotWithLine: ScatterProps['shape'] = (props: any) => {
         strokeWidth={1}
         strokeDasharray="3 3"
       />
-      <circle cx={cx} cy={cy} r={6} stroke={strokeColor} strokeWidth={3} fill={fillColor} />
-      <text x={cx} y={cy - 15} textAnchor="middle" fill="#fff" fontSize={10} fontWeight={600}>
+      <circle
+        cx={cx}
+        cy={cy}
+        r={6}
+        stroke={strokeColor}
+        strokeWidth={3}
+        fill={fillColor}
+      />
+      <text
+        x={cx}
+        y={cy - 15}
+        textAnchor="middle"
+        fill="#fff"
+        fontSize={10}
+        fontWeight={600}
+      >
         {payload.percent}
       </text>
     </g>
   );
 };
 
-export const HistoricalApyData: ComponentWithProps<HistoricalApyDataProps> = ({ className }) => {
+export const HistoricalApyData: ComponentWithProps<HistoricalApyDataProps> = ({
+  className,
+}) => {
   const yAxisTickFormatter = (value: number) => `$${value / 1000}K`;
 
   return (
@@ -70,10 +86,15 @@ export const HistoricalApyData: ComponentWithProps<HistoricalApyDataProps> = ({ 
         Historical APY Data
       </Text>
       <Text className={styles.description} textView={TextView.P3}>
-        This section shows the historical APY for our High Yield BTC Strategy vault, highlighting
-        its success in leveraging market trends to enhance returns for Vault investors.
+        This section shows the historical APY for our High Yield BTC Strategy
+        vault, highlighting its success in leveraging market trends to enhance
+        returns for Vault investors.
       </Text>
-      <ResponsiveContainer className={styles.chartContainer} width="100%" height={265}>
+      <ResponsiveContainer
+        className={styles.chartContainer}
+        width="100%"
+        height={265}
+      >
         <ScatterChart margin={{ top: 20, bottom: 10 }}>
           <CartesianGrid vertical={false} stroke="rgba(255, 255, 255, 0.09)" />
           <XAxis dataKey="x" name="Month" axisLine={false} tickLine={false} />

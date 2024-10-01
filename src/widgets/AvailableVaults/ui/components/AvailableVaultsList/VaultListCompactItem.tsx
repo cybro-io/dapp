@@ -6,21 +6,19 @@ import Link from 'next/link';
 
 import { VaultChips } from '@/entities/VaultChips';
 import { VaultStats, VaultStatsView } from '@/entities/VaultStats';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
 import styles from './VaultListCompactItem.module.scss';
 
 type VaultListCompactItemProps = {
-  vault: VaultsResponseData;
+  vault: VaultResponseData;
   index: number;
 };
 
-export const VaultListCompactItem: ComponentWithProps<VaultListCompactItemProps> = ({
-  vault,
-  index,
-  className,
-}) => {
+export const VaultListCompactItem: ComponentWithProps<
+  VaultListCompactItemProps
+> = ({ vault, index, className }) => {
   return (
     <Link
       className={clsx(styles.root, index % 2 === 0 && styles.dark, className)}

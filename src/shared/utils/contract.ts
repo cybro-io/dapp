@@ -6,7 +6,9 @@ export const increaseGasLimit = (
 ): bigint => {
   try {
     return (
-      (estimatedGasLimit.toBigInt() * BigInt(Math.ceil(increasePercentage * 100))) / BigInt(100)
+      (estimatedGasLimit.toBigInt() *
+        BigInt(Math.ceil(increasePercentage * 100))) /
+      BigInt(100)
     );
   } catch (error) {
     console.error('Error estimating gas limit:', error);

@@ -6,20 +6,28 @@ import Link from 'next/link';
 import numeral from 'numeral';
 
 import { VaultChips } from '@/entities/VaultChips';
-import { ComponentWithProps, VaultsResponseData } from '@/shared/types';
+import { ComponentWithProps, VaultResponseData } from '@/shared/types';
 import { Text, TextView, TrustScore, TrustScoreViewType } from '@/shared/ui';
 
 import styles from './VaultListItem.module.scss';
 
 type VaultItemProps = {
-  vault: VaultsResponseData;
+  vault: VaultResponseData;
   index: number;
 };
 
-export const VaultListItem: ComponentWithProps<VaultItemProps> = ({ vault, index, className }) => {
+export const VaultListItem: ComponentWithProps<VaultItemProps> = ({
+  vault,
+  index,
+  className,
+}) => {
   return (
     <Link
-      className={clsx(styles.tableRow, index % 2 === 0 && styles.dark, className)}
+      className={clsx(
+        styles.tableRow,
+        index % 2 === 0 && styles.dark,
+        className,
+      )}
       href={`/vaults/${vault.id}`}
       key={vault.id}
     >
@@ -39,9 +47,14 @@ export const VaultListItem: ComponentWithProps<VaultItemProps> = ({ vault, index
       <div className={clsx(styles.tableCell, styles.tvlCell)}>
         {numeral(Math.floor(Number(vault.tvl))).format('0.0a')}
       </div>
-      <div className={clsx(styles.tableCell, styles.providerCell)}>{vault.provider.name}</div>
+      <div className={clsx(styles.tableCell, styles.providerCell)}>
+        {vault.provider.name}
+      </div>
       <div className={clsx(styles.tableCell, styles.trustScoreCell)}>
-        <TrustScore value={vault.trust_score} viewType={TrustScoreViewType.Small} />
+        <TrustScore
+          value={vault.trust_score}
+          viewType={TrustScoreViewType.Small}
+        />
       </div>
     </Link>
   );

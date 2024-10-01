@@ -48,7 +48,7 @@ COPY . .
 # Next.js collects completely anonymous telemetry data about general usage.
 # Learn more here: https://nextjs.org/telemetry
 # Uncomment the following line in case you want to disable telemetry during the build.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 ARG NEXT_PUBLIC_API_URL
 ARG NEXT_PUBLIC_WALLET_CONNECT_CLOUD_PROJECT_ID
@@ -71,6 +71,13 @@ ENV NEXT_PUBLIC_SENTRY_DSN=${NEXT_PUBLIC_SENTRY_DSN}
 ENV SENTRY_AUTH_TOKEN=${SENTRY_AUTH_TOKEN}
 
 RUN \
+  if [ -f yarn.lock ]; then yarn run test; \
+  elif [ -f package-lock.json ]; then npm run test; \
+  elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run test; \
+  else echo "Lockfile not found." && exit 1; \
+  fi
+
+RUN \
   if [ -f yarn.lock ]; then yarn run build; \
   elif [ -f package-lock.json ]; then npm run build; \
   elif [ -f pnpm-lock.yaml ]; then corepack enable pnpm && pnpm run build; \
@@ -83,7 +90,7 @@ WORKDIR /app
 
 ENV NODE_ENV production
 # Uncomment the following line in case you want to disable telemetry during runtime.
-# ENV NEXT_TELEMETRY_DISABLED 1
+ENV NEXT_TELEMETRY_DISABLED 1
 
 RUN addgroup --system --gid 1001 nodejs
 RUN adduser --system --uid 1001 nextjs

@@ -17,7 +17,11 @@ export const IconButton: ComponentWithProps<IconButtonProps> = ({
   ...props
 }) => {
   return (
-    <button onClick={onClick} className={clsx(styles.root, className)} {...props}>
+    <button
+      onClick={onClick}
+      className={clsx(styles.root, className)}
+      {...props}
+    >
       {icon}
     </button>
   );

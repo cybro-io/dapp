@@ -46,7 +46,10 @@ export const SentSuccessModal = NiceModal.create(
     };
 
     return (
-      <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+      <Modal
+        classNames={{ base: 'w-[375px]' }}
+        onClose={() => currentModal.remove()}
+      >
         <Modal.Header>{title || 'Sent'}</Modal.Header>
         <div
           className={
@@ -75,7 +78,9 @@ export const SentSuccessModal = NiceModal.create(
                 {secondaryActionName}
               </Button>
             )}
-            {primaryActionName && <Button onClick={handlePrimary}>{primaryActionName}</Button>}
+            {primaryActionName && (
+              <Button onClick={handlePrimary}>{primaryActionName}</Button>
+            )}
           </div>
         </Modal.Body>
       </Modal>

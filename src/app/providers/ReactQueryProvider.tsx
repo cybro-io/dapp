@@ -2,7 +2,11 @@
 
 import React from 'react';
 
-import { isServer, QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import {
+  isServer,
+  QueryClient,
+  QueryClientProvider,
+} from '@tanstack/react-query';
 
 import { ComponentWithProps } from '@/shared/types';
 
@@ -10,7 +14,9 @@ type QueryClientProviderProps = {
   children: React.ReactNode;
 };
 
-export const ReactQueryProvider: ComponentWithProps<QueryClientProviderProps> = ({ children }) => {
+export const ReactQueryProvider: ComponentWithProps<
+  QueryClientProviderProps
+> = ({ children }) => {
   let browserQueryClient: QueryClient | undefined = undefined;
 
   const getQueryClient = () => {
@@ -37,5 +43,7 @@ export const ReactQueryProvider: ComponentWithProps<QueryClientProviderProps> = 
 
   const queryClient = getQueryClient();
 
-  return <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>;
+  return (
+    <QueryClientProvider client={queryClient}>{children}</QueryClientProvider>
+  );
 };

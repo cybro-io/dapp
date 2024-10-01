@@ -1,4 +1,6 @@
 /** @type {import('tailwindcss').Config} */
+// because we can't use ES modules here
+/* eslint @typescript-eslint/no-var-requires: "off" */
 const { nextui } = require('@nextui-org/react');
 
 module.exports = {
@@ -23,6 +25,7 @@ module.exports = {
   },
   darkMode: 'class',
   plugins: [
+    require('tailwindcss-animated'),
     nextui({
       themes: {
         light: {

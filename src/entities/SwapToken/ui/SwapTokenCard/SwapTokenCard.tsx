@@ -2,14 +2,15 @@
 
 import React from 'react';
 
+import { Skeleton } from '@nextui-org/react';
 import Image from 'next/image';
 
+import { useWeb3ModalAccount } from '@/shared/lib';
 import { DropdownButton, Text, TextView } from '@/shared/ui';
 
 import { Balance } from './Balance';
 import styles from './SwapTokenCard.module.scss';
 import { Title } from './Title';
-import { Skeleton } from '@nextui-org/react';
 
 export type SwapTokenCardProps = React.PropsWithChildren & {
   tokenName?: string;
@@ -48,12 +49,17 @@ export const SwapTokenCard = ({
           <SwapTokenCard.Balance>{balance}</SwapTokenCard.Balance>
         </div>
         <div className={styles.content}>
-          <Skeleton isLoaded={Boolean(tokenIcon)} classNames={{ base: 'rounded-full' }}>
+          <Skeleton
+            isLoaded={Boolean(tokenIcon)}
+            classNames={{ base: 'rounded-full' }}
+          >
             <Image src={tokenIcon!} width={32} height={32} alt={tokenName!} />
           </Skeleton>
-
           <div className="flex flex-col gap-px">
-            <Skeleton isLoaded={Boolean(tokenName)} classNames={{ base: 'rounded-lg' }}>
+            <Skeleton
+              isLoaded={Boolean(tokenName)}
+              classNames={{ base: 'rounded-lg' }}
+            >
               <Text textView={TextView.BU1}>{tokenName ?? 'Token'}</Text>
             </Skeleton>
             {chainIcon && chainName && (

@@ -12,10 +12,15 @@ interface ModalContextType {
   props: Record<string, any>;
 }
 
-const ModalContext = React.createContext<ModalContextType | undefined>(undefined);
+const ModalContext = React.createContext<ModalContextType | undefined>(
+  undefined,
+);
 
-export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
-  const [currentModal, setCurrentModal] = React.useState<Maybe<ModalId>>(undefined);
+export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({
+  children,
+}) => {
+  const [currentModal, setCurrentModal] =
+    React.useState<Maybe<ModalId>>(undefined);
   const [props, setProps] = React.useState<Record<string, any>>({});
 
   const openModal = (id: ModalId, props?: Record<string, any>) => {
@@ -42,7 +47,11 @@ export const ModalProvider: React.FC<{ children: React.ReactNode }> = ({ childre
     [currentModal, props],
   );
 
-  return <ModalContext.Provider value={contextValues}>{children}</ModalContext.Provider>;
+  return (
+    <ModalContext.Provider value={contextValues}>
+      {children}
+    </ModalContext.Provider>
+  );
 };
 
 export const useModal = () => {
