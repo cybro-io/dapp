@@ -4,12 +4,15 @@ import { Card } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
+import { RampTokenForm } from '@/features/RampTokenForm';
+import { useSelectRampCurrencyModal } from '@/features/SelectRampCurrency';
 import { useSelectTokenModal } from '@/features/SelectToken';
 import { SwapTokenForm } from '@/features/SwapToken';
 import ArrowTransfer from '@/shared/assets/icons/arrow-transfer.svg';
 
 export const ExchangeSwap = () => {
   const { openModal } = useSelectTokenModal();
+  const { openModalSelectRampCurrency } = useSelectRampCurrencyModal();
 
   const items = [
     {
@@ -28,10 +31,17 @@ export const ExchangeSwap = () => {
     },
     {
       key: 'exchange',
-      content: <ConnectWallet />,
+      content: (
+        <RampTokenForm
+          features={{
+            connectWallet: <ConnectWallet />,
+            selectCurrency: openModalSelectRampCurrency,
+          }}
+        />
+      ),
       from: 'Fiat',
       to: 'Crypto',
-      disabled: true,
+      disabled: false,
     },
   ];
 
