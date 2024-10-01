@@ -11,7 +11,6 @@ import {
 
 import { useSwapTokens } from '@/entities/SwapToken';
 import { useWeb3ModalAccount } from '@/shared/lib';
-import { useWeb3ModalAccount } from '@/shared/lib';
 import { SentSuccessModal } from '@/shared/ui';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
