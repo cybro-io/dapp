@@ -7,31 +7,35 @@ import { MunzenCurrency } from '@/entities/Munzen/model/types';
 const FAVORITE_RAMP_CURRENCIES_KEY = 'ramp-favorite-currencies';
 
 export const useRampFavoriteCurrencies = (currencies: MunzenCurrency[]) => {
-  const [favoriteRampCurrencies, setFavoriteRampCurrencies] = useLocalStorage<string[]>(
-    FAVORITE_RAMP_CURRENCIES_KEY,
-    [],
-  );
+  const [favoriteRampCurrencies, setFavoriteRampCurrencies] = useLocalStorage<
+    string[]
+  >(FAVORITE_RAMP_CURRENCIES_KEY, []);
 
   const { value: onlyFavorite, toggle: toggleOnlyFavorite } = useBoolean(false);
-  const isFavoriteCurrency = (currencyId: string) => favoriteRampCurrencies.includes(currencyId);
+  const isFavoriteCurrency = (currencyId: string) =>
+    favoriteRampCurrencies.includes(currencyId);
 
   const favoriteCurrencies = React.useMemo(
     () =>
       currencies.filter(
-        currency => !onlyFavorite || isFavoriteCurrency(currency.tickerWithNetwork),
+        (currency) =>
+          !onlyFavorite || isFavoriteCurrency(currency.tickerWithNetwork),
       ),
     [currencies, onlyFavorite, favoriteRampCurrencies],
   );
 
   const removeFavoriteCurrency = (currencyId: string) => {
-    setFavoriteRampCurrencies(prevState => prevState.filter(currency => currency !== currencyId));
+    setFavoriteRampCurrencies((prevState) =>
+      prevState.filter((currency) => currency !== currencyId),
+    );
   };
 
   const addFavoriteCurrency = (currencyId: string) => {
-    setFavoriteRampCurrencies(prevState => [...prevState, currencyId]);
+    setFavoriteRampCurrencies((prevState) => [...prevState, currencyId]);
   };
 
-  const isEmptyFavoriteCurrencies = favoriteCurrencies.length < 1 && onlyFavorite;
+  const isEmptyFavoriteCurrencies =
+    favoriteCurrencies.length < 1 && onlyFavorite;
 
   return {
     favoriteCurrencies,

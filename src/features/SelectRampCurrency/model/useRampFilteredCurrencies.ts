@@ -13,10 +13,12 @@ export const useRampFilteredCurrencies = (
   const [debouncedSearchCurrency] = useDebounceValue(searchCurrency, 500);
 
   const withFilteredByCrypto = (currencies: MunzenCurrency[]) =>
-    currencies.filter(currency => currency.isCrypto === isCrypto);
+    currencies.filter((currency) => currency.isCrypto === isCrypto);
 
   const withSortSelected = (currencies: MunzenCurrency[]) =>
-    currencies.sort(currencyA => (currencyA.tickerWithNetwork == selectedCurrencyId ? -1 : 0));
+    currencies.sort((currencyA) =>
+      currencyA.tickerWithNetwork == selectedCurrencyId ? -1 : 0,
+    );
 
   const withFilterBySymbol = (currencies: MunzenCurrency[]) =>
     debouncedSearchCurrency
@@ -30,7 +32,9 @@ export const useRampFilteredCurrencies = (
       return withFilteredByCrypto(withSortSelected(currencies));
     }
 
-    return withFilteredByCrypto(withFilterBySymbol(withSortSelected(currencies)));
+    return withFilteredByCrypto(
+      withFilterBySymbol(withSortSelected(currencies)),
+    );
   }, [debouncedSearchCurrency, currencies]);
 
   const isEmptyFilteredCurrencies =

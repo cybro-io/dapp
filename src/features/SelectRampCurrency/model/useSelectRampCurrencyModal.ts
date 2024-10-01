@@ -14,7 +14,7 @@ export const useSelectRampCurrencyModal = () => {
   ) => {
     modalSelectRampCurrency
       .show({ selectedCurrencyId, isCrypto })
-      .then(currency => callback(currency as MunzenCurrency));
+      .then((currency) => callback(currency as MunzenCurrency));
   };
 
   return { openModalSelectRampCurrency };

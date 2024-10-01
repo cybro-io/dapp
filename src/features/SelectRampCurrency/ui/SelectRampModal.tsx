@@ -6,7 +6,13 @@ import { FixedSizeList } from 'react-window';
 import { useMediaQuery } from 'usehooks-ts';
 
 import { useSelectRampCurrency } from '@/features/SelectRampCurrency';
-import { Modal, SearchInput, StarIconButton, Text, TextView } from '@/shared/ui';
+import {
+  Modal,
+  SearchInput,
+  StarIconButton,
+  Text,
+  TextView,
+} from '@/shared/ui';
 
 import { SelectRampCard } from './SelectRampCard';
 
@@ -65,7 +71,7 @@ export const SelectRampModal = NiceModal.create<SelectRampCurrencyProps>(
 
               {!isEmptyFilteredCurrencies && !isEmptyFavoriteCurrencies && (
                 <AutoSize>
-                  {size => (
+                  {(size) => (
                     <FixedSizeList
                       height={size.height}
                       width={size.width}
@@ -80,7 +86,9 @@ export const SelectRampModal = NiceModal.create<SelectRampCurrencyProps>(
                             <SelectRampCard
                               key={index}
                               currency={currency}
-                              onClickFavorite={state => handleToggleFavorite(state, uniqueId)}
+                              onClickFavorite={(state) =>
+                                handleToggleFavorite(state, uniqueId)
+                              }
                               isFavorite={isFavoriteCurrency(uniqueId)}
                               isActive={selectedCurrencyId === uniqueId}
                               onSelectCurrency={handleSelectCurrency}

@@ -8,13 +8,15 @@ import { MunzenCurrency } from './types';
 
 const $munzenCurrencies = createStore<MunzenCurrency[] | null>(null);
 
-const fetchMunzenCurrenciesFx = createEffect<void, MunzenCurrency[], null>(async () => {
-  return (
-    (await getCurrenciesApiV1MunzenCurrenciesGet()) as AxiosResponse<{
-      result: MunzenCurrency[];
-    }>
-  ).data.result;
-});
+const fetchMunzenCurrenciesFx = createEffect<void, MunzenCurrency[], null>(
+  async () => {
+    return (
+      (await getCurrenciesApiV1MunzenCurrenciesGet()) as AxiosResponse<{
+        result: MunzenCurrency[];
+      }>
+    ).data.result;
+  },
+);
 
 sample({
   clock: fetchMunzenCurrenciesFx.doneData,

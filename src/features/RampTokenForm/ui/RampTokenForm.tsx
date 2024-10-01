@@ -46,8 +46,10 @@ const RampTokenForm = ({ features }: ExchangeTokenProps) => {
         tokenName={values.fromCurrency?.viewedTicker}
         tokenIcon={values.fromCurrency?.logoUrl}
         onActionClick={() =>
-          showSelectCurrencyModal(values.fromCurrency?.tickerWithNetwork ?? '', false, currency =>
-            form.handleChangeCurrency(currency, 'from'),
+          showSelectCurrencyModal(
+            values.fromCurrency?.tickerWithNetwork ?? '',
+            false,
+            (currency) => form.handleChangeCurrency(currency, 'from'),
           )
         }
         actionName="Change currency"
@@ -67,8 +69,10 @@ const RampTokenForm = ({ features }: ExchangeTokenProps) => {
         chainName={values.toCurrency?.blockchainNetwork ?? ''}
         chainIcon={values.toCurrency?.logoUrl ?? ''}
         onActionClick={() =>
-          showSelectCurrencyModal(values.toCurrency?.tickerWithNetwork ?? '', true, currency =>
-            form.handleChangeCurrency(currency, 'to'),
+          showSelectCurrencyModal(
+            values.toCurrency?.tickerWithNetwork ?? '',
+            true,
+            (currency) => form.handleChangeCurrency(currency, 'to'),
           )
         }
         title="To"

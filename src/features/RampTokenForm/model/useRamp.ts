@@ -2,7 +2,11 @@ import React from 'react';
 
 import NiceModal from '@ebay/nice-modal-react';
 
-import { useMunzenCurrencies, useMunzenCurrenciesFee, useMunzenRates } from '@/entities/Munzen';
+import {
+  useMunzenCurrencies,
+  useMunzenCurrenciesFee,
+  useMunzenRates,
+} from '@/entities/Munzen';
 import {
   RampAlertStepModal,
   RampWidgetStepModal,
@@ -24,14 +28,19 @@ export const useRamp = () => {
 
   const initialCurrencies = React.useMemo(
     () => ({
-      from: currencies?.find(currency => currency.tickerWithNetwork === 'USD') ?? null,
-      to: currencies?.find(currency => currency.tickerWithNetwork === 'USDT-BEP20') ?? null,
+      from:
+        currencies?.find((currency) => currency.tickerWithNetwork === 'USD') ??
+        null,
+      to:
+        currencies?.find(
+          (currency) => currency.tickerWithNetwork === 'USDT-BEP20',
+        ) ?? null,
     }),
     [currencies],
   );
 
   const form = useRampForm({
-    onSubmit: data => {
+    onSubmit: (data) => {
       rampAlertModal
         .show()
         .then(() =>
@@ -44,7 +53,7 @@ export const useRamp = () => {
         )
         .catch(() => rampAlertModal.remove());
     },
-    onChangeAmountIn: data => {
+    onChangeAmountIn: (data) => {
       form.setFieldValue('amountOut', handleCalculate({ ...data, fee }));
     },
     rates: rates ?? [],
@@ -55,7 +64,8 @@ export const useRamp = () => {
     `${form.values.fromCurrency?.tickerWithNetwork}_${form.values.toCurrency?.tickerWithNetwork}`,
   );
 
-  const isDisabledAmount = !form.values.toCurrency || !form.values.fromCurrency || isLoading;
+  const isDisabledAmount =
+    !form.values.toCurrency || !form.values.fromCurrency || isLoading;
 
   const isDisabledSubmit =
     form.isSubmitting ||
@@ -64,5 +74,11 @@ export const useRamp = () => {
     !form.values.fromCurrency ||
     isLoading;
 
-  return { isConnected, ...calculateRest, isDisabledAmount, isDisabledSubmit, form };
+  return {
+    isConnected,
+    ...calculateRest,
+    isDisabledAmount,
+    isDisabledSubmit,
+    form,
+  };
 };

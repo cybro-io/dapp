@@ -8,7 +8,9 @@ export const useRampCalculate = () => {
   const { rates } = useMunzenRates();
 
   const [rampFee, setRampFee] = React.useState<number | null>(null);
-  const [amountFromByUsd, setAmountFromByUsd] = React.useState<number | null>(null);
+  const [amountFromByUsd, setAmountFromByUsd] = React.useState<number | null>(
+    null,
+  );
   const [amountToByUsd, setAmountToByUsd] = React.useState<number | null>(null);
 
   const handleCalculate = ({
@@ -24,7 +26,7 @@ export const useRampCalculate = () => {
   }) => {
     try {
       const usdRate = rates?.find(
-        rate => rate.fromCurrency === 'USD' && rate.toCurrency === toCurrency,
+        (rate) => rate.fromCurrency === 'USD' && rate.toCurrency === toCurrency,
       );
 
       if (!usdRate) {
@@ -32,7 +34,8 @@ export const useRampCalculate = () => {
       }
 
       const rate = rates?.find(
-        rate => rate.fromCurrency === fromCurrency && rate.toCurrency === toCurrency,
+        (rate) =>
+          rate.fromCurrency === fromCurrency && rate.toCurrency === toCurrency,
       );
 
       if (!rate) {
@@ -41,18 +44,24 @@ export const useRampCalculate = () => {
 
       const amountBN = new BigNumber(amount);
 
-      if (amountBN.isGreaterThan(rate.maxAmount) || amountBN.isLessThan(rate.minAmount)) {
+      if (
+        amountBN.isGreaterThan(rate.maxAmount) ||
+        amountBN.isLessThan(rate.minAmount)
+      ) {
         throw new Error('Amount out of range');
       }
 
       let feeAmount = 0;
 
       const arrayFee = fee?.providerFee.value
-        .flatMap(item => item)
-        .find(item => item.type === 'percent');
+        .flatMap((item) => item)
+        .find((item) => item.type === 'percent');
 
       if (arrayFee) {
-        feeAmount = amountBN.dividedBy(100).multipliedBy(arrayFee.value).toNumber();
+        feeAmount = amountBN
+          .dividedBy(100)
+          .multipliedBy(arrayFee.value)
+          .toNumber();
         setRampFee(feeAmount);
       }
 
@@ -65,9 +74,14 @@ export const useRampCalculate = () => {
         .multipliedBy(rate.exchangeRate.multiplier)
         .dp(rate.roundOff);
 
-      setAmountFromByUsd(BigNumber(usdPrice).multipliedBy(amountBN).dp(2).toNumber());
+      setAmountFromByUsd(
+        BigNumber(usdPrice).multipliedBy(amountBN).dp(2).toNumber(),
+      );
       setAmountToByUsd(
-        BigNumber(usdRate.exchangeRate.divisor).multipliedBy(receiveBN).dp(2).toNumber(),
+        BigNumber(usdRate.exchangeRate.divisor)
+          .multipliedBy(receiveBN)
+          .dp(2)
+          .toNumber(),
       );
 
       return receiveBN.toNumber();

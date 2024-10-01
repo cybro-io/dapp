@@ -30,7 +30,8 @@ export const SelectRampCard = ({
       className={clsx(
         'p-2 xl:p-4 inline-flex flex-row gap-4 items-center rounded-[14px] w-[calc(100%-4px)] xl:w-[calc(100%-6px)] cursor-pointer',
         isActive ? 'bg-background-chips' : 'bg-transparent',
-        !isActive && 'hover:border-stroke-tableBorder hover:border-[1px] hover:border-solid',
+        !isActive &&
+          'hover:border-stroke-tableBorder hover:border-[1px] hover:border-solid',
       )}
       onClick={() => onSelectCurrency?.(currency)}
     >
@@ -48,7 +49,9 @@ export const SelectRampCard = ({
         </div>
 
         <div className="flex flex-col gap-px">
-          <Text textView={isSmallScreen ? TextView.P3 : TextView.BP1}>{currency.viewedTicker}</Text>
+          <Text textView={isSmallScreen ? TextView.P3 : TextView.BP1}>
+            {currency.viewedTicker}
+          </Text>
           <Text textView={isSmallScreen ? TextView.C4 : TextView.BP3}>
             {currency.isCrypto ? currency.blockchainNetwork : currency.name}
           </Text>
@@ -57,7 +60,7 @@ export const SelectRampCard = ({
       {!isSmallScreen && (
         <StarIconButton
           isActive={isFavorite}
-          onClick={event => {
+          onClick={(event) => {
             event.stopPropagation();
             onClickFavorite(!isFavorite);
           }}

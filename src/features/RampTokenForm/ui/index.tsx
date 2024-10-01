@@ -6,7 +6,9 @@ export const RampTokenForm = dynamic(() => import('./RampTokenForm'), {
   loading: () => (
     <Skeleton
       disableAnimation
-      classNames={{ base: 'rounded-lg w-full h-[737px] dark:bg-background-tableRow' }}
+      classNames={{
+        base: 'rounded-lg w-full h-[737px] dark:bg-background-tableRow',
+      }}
     />
   ),
 });

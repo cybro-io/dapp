@@ -14,7 +14,13 @@ interface UnknownSwapModalProps {
 }
 
 export const UnknownSwapModal = NiceModal.create<UnknownSwapModalProps>(
-  ({ title, onSecondaryAction, onPrimaryAction, secondaryActionName, primaryActionName }) => {
+  ({
+    title,
+    onSecondaryAction,
+    onPrimaryAction,
+    secondaryActionName,
+    primaryActionName,
+  }) => {
     const currentModal = NiceModal.useModal();
 
     const handleSecondaryAction = () => {
@@ -28,7 +34,10 @@ export const UnknownSwapModal = NiceModal.create<UnknownSwapModalProps>(
     };
 
     return (
-      <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+      <Modal
+        classNames={{ base: 'w-[375px]' }}
+        onClose={() => currentModal.remove()}
+      >
         <Modal.Header>{title || 'Error'}</Modal.Header>
         <div
           className={
@@ -38,7 +47,10 @@ export const UnknownSwapModal = NiceModal.create<UnknownSwapModalProps>(
         <Modal.Body className="pt-4 gap-4 relative">
           <div className="flex flex-col gap-2">
             {secondaryActionName && (
-              <Button view={ButtonView.Secondary} onClick={handleSecondaryAction}>
+              <Button
+                view={ButtonView.Secondary}
+                onClick={handleSecondaryAction}
+              >
                 {secondaryActionName}
               </Button>
             )}

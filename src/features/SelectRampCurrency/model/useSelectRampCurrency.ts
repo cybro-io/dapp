@@ -7,7 +7,10 @@ import { MunzenCurrency, useMunzenCurrencies } from '@/entities/Munzen';
 import { useRampFavoriteCurrencies } from './useRampFavoriteCurrencies';
 import { useRampFilteredCurrencies } from './useRampFilteredCurrencies';
 
-export const useSelectRampCurrency = (selectedTokenId: string, isCrypto: boolean) => {
+export const useSelectRampCurrency = (
+  selectedTokenId: string,
+  isCrypto: boolean,
+) => {
   const currentModal = NiceModal.useModal();
 
   const { currencies } = useMunzenCurrencies();
@@ -22,8 +25,12 @@ export const useSelectRampCurrency = (selectedTokenId: string, isCrypto: boolean
     isEmptyFavoriteCurrencies,
   } = useRampFavoriteCurrencies(currencies ?? []);
 
-  const { searchCurrency, setSearchCurrency, filteredCurrencies, isEmptyFilteredCurrencies } =
-    useRampFilteredCurrencies(favoriteCurrencies, selectedTokenId, isCrypto);
+  const {
+    searchCurrency,
+    setSearchCurrency,
+    filteredCurrencies,
+    isEmptyFilteredCurrencies,
+  } = useRampFilteredCurrencies(favoriteCurrencies, selectedTokenId, isCrypto);
 
   const handleToggleFavorite = (state: boolean, uniqueId: string) => {
     state ? addFavoriteCurrency(uniqueId) : removeFavoriteCurrency(uniqueId);

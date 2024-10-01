@@ -13,18 +13,22 @@ export const RampAlertStepModal = NiceModal.create(() => {
   };
 
   return (
-    <Modal classNames={{ base: 'w-[375px]' }} onClose={() => currentModal.remove()}>
+    <Modal
+      classNames={{ base: 'w-[375px]' }}
+      onClose={() => currentModal.remove()}
+    >
       <Modal.Header>Munzen Widget Step</Modal.Header>
       <Modal.Body className="pt-6 px-0 gap-4 relative">
         <div className="px-6 flex flex-col gap-2.5">
           <Text textView={TextView.H5} className="opacity-60 text-center">
-            In a moment, the Munzen widget will open to handle your transaction securely and
-            maintain the integrity of your smart contracts. Rest assured, your information is
-            protected.
+            In a moment, the Munzen widget will open to handle your transaction
+            securely and maintain the integrity of your smart contracts. Rest
+            assured, your information is protected.
           </Text>
 
           <Text textView={TextView.H5} className="text-center">
-            Once the widget appears, simply complete the form to finalize your transaction.
+            Once the widget appears, simply complete the form to finalize your
+            transaction.
           </Text>
         </div>
 

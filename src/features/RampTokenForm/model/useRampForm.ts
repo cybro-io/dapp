@@ -28,7 +28,7 @@ const validationSchema = (rates: MunzenRate[]) =>
         const toCurrency = context.parent.toCurrency;
 
         const rate = rates.find(
-          rate =>
+          (rate) =>
             rate.fromCurrency === fromCurrency?.tickerWithNetwork &&
             rate.toCurrency === toCurrency?.tickerWithNetwork,
         );
@@ -47,7 +47,7 @@ const validationSchema = (rates: MunzenRate[]) =>
         const toCurrency = context.parent.toCurrency;
 
         const rate = rates.find(
-          rate =>
+          (rate) =>
             rate.fromCurrency === fromCurrency?.tickerWithNetwork &&
             rate.toCurrency === toCurrency?.tickerWithNetwork,
         );
@@ -108,7 +108,11 @@ export const useRampForm = ({
   const [debouncedAmountIn] = useDebounceValue(form.values.amountIn, 500);
 
   React.useEffect(() => {
-    if (form.values.fromCurrency && form.values.toCurrency && Number(debouncedAmountIn) > 0) {
+    if (
+      form.values.fromCurrency &&
+      form.values.toCurrency &&
+      Number(debouncedAmountIn) > 0
+    ) {
       onChangeAmountIn?.({
         fromCurrency: form.values.fromCurrency.tickerWithNetwork,
         toCurrency: form.values.toCurrency.tickerWithNetwork,
@@ -117,7 +121,10 @@ export const useRampForm = ({
     }
   }, [debouncedAmountIn, form.values.fromCurrency, form.values.toCurrency]);
 
-  const handleChangeCurrency = (currency: MunzenCurrency, side: 'from' | 'to') => {
+  const handleChangeCurrency = (
+    currency: MunzenCurrency,
+    side: 'from' | 'to',
+  ) => {
     form.setFieldValue(side + 'Currency', currency);
 
     form.setFieldValue('amountIn', '');
