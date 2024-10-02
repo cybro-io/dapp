@@ -3,13 +3,35 @@ import React from 'react';
 import NiceModal from '@ebay/nice-modal-react';
 import { Skeleton } from '@nextui-org/react';
 
+import { MunzenEventType, useMunzenEvent } from '@/entities/Munzen';
 import { useRampWidget, UseRampProps } from '@/features/RampTokenForm';
-import { Modal } from '@/shared/ui';
+import { Modal, SentSuccessModal, UnknownSwapModal } from '@/shared/ui';
 
 export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
   const currentModal = NiceModal.useModal();
 
   const { rampLinkWidget, isLoading } = useRampWidget(props);
+
+  useMunzenEvent((data) => {
+    if (data.type === MunzenEventType.OnError) {
+      currentModal.remove();
+      NiceModal.show(UnknownSwapModal, {
+        title: 'Exchange',
+        primaryActionName: 'Try again',
+        secondaryActionName: 'To home page',
+      }).then();
+    } else if (data.type === MunzenEventType.OnOperationSuccess) {
+      currentModal.remove();
+      NiceModal.show(SentSuccessModal, {
+        sentSymbol: 'SYMBOL',
+        sentAmount: 'SYMBOL',
+        receivedSymbol: 'SYMBOL',
+        receivedAmount: 'SYMBOL',
+        primaryActionName: 'To home page',
+        title: 'Swap',
+      }).then();
+    }
+  });
 
   return (
     <Modal
