@@ -78,9 +78,9 @@ export interface MunzenFee {
   networkFeeFiat: MunzenFeeMoney;
 }
 
-export interface MunzenWidgetMessageEventData {
+export interface MunzenWidgetMessageEventData<T = MunzenEventPayload> {
   source: 'nearpay_widget';
-  data: MunzenWidgetEvent;
+  data: MunzenWidgetEvent<T>;
 }
 
 export interface MunzenWidgetEvent<T = MunzenEventPayload> {
@@ -116,11 +116,18 @@ export enum MunzenEventType {
 }
 
 type MunzenEventPayload =
-  | MunzenResizePayload
-  | MunzenErrorPayload
-  | MunzenOrderCreatedPayload
-  | MunzenOrderPayload
-  | MunzenUnsupportedPayload;
+  | OnOperationSuccess
+  | OnErrorEvent
+  | OnOperationPending
+  | OnOperationFail
+  | OnUnsupported
+  | OnForceContinue
+  | OnOperationCreated
+  | OnResizeEvent
+  | OnExitEvent
+  | OnLoadedEvent
+  | OnPaymentSent
+  | OnStartedEvent;
 
 interface MunzenResizePayload {
   size: { width: number; height: number };
@@ -213,4 +220,26 @@ export interface OnUnsupported
 export interface OnForceContinue
   extends MunzenWidgetEvent<MunzenUnsupportedPayload> {
   type: MunzenEventType.OnForceContinue;
+}
+
+export interface MunzenOrder {
+  orderId: string;
+  merchantOrderId: string;
+  customerId: string;
+  fromCurrency: string;
+  fromAmount: 100;
+  fromAmountWithoutFees: number;
+  toCurrency: string;
+  toAmount: number;
+  toWallet: string;
+  exchangeRate: number;
+  providerFee: number;
+  networkFee: number;
+  networkFeeFiat: number;
+  status: string;
+  failureCode: string;
+  failurePayload: {
+    some: string;
+  };
+  createdAt: string;
 }

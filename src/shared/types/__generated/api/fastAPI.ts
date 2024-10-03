@@ -235,17 +235,17 @@ export interface ProfilePointsResponse {
 
 export type PriceResponseError = string | null;
 
-export interface PriceData {
-  price: string;
-}
-
-export type PriceResponseData = PriceData | null;
-
 export interface PriceResponse {
   data?: PriceResponseData;
   error?: PriceResponseError;
   ok: boolean;
 }
+
+export interface PriceData {
+  price: string;
+}
+
+export type PriceResponseData = PriceData | null;
 
 export type PostsResponseError = string | null;
 
@@ -273,6 +273,37 @@ export interface PaymentLinkResponse {
   data: PaymentLinkData;
   error?: PaymentLinkResponseError;
   ok: boolean;
+}
+
+export type MunzenOrderTransactionsDataError = string | null;
+
+export type MunzenOrderTransactionsDataData =
+  | MunzenOrderTransactionData[]
+  | null;
+
+export interface MunzenOrderTransactionsData {
+  data?: MunzenOrderTransactionsDataData;
+  error?: MunzenOrderTransactionsDataError;
+  ok: boolean;
+}
+
+export type MunzenOrderTransactionDataToCurrency = CurrencyData | null;
+
+export type MunzenOrderTransactionDataToAmount = number | null;
+
+export type MunzenOrderTransactionDataFromCurrency = CurrencyData | null;
+
+export type MunzenOrderTransactionDataFromAmount = number | null;
+
+export interface MunzenOrderTransactionData {
+  created: string;
+  from_amount: MunzenOrderTransactionDataFromAmount;
+  from_currency: MunzenOrderTransactionDataFromCurrency;
+  id: number;
+  merchant_order_id: string;
+  status: string;
+  to_amount: MunzenOrderTransactionDataToAmount;
+  to_currency: MunzenOrderTransactionDataToCurrency;
 }
 
 export interface MunzenCurrencyData {
@@ -399,6 +430,12 @@ export interface FeedbackBody {
 
 export type FeaturedVaultsResponseError = string | null;
 
+export interface FeaturedVaultsResponse {
+  data?: FeaturedVaultsResponseData;
+  error?: FeaturedVaultsResponseError;
+  ok: boolean;
+}
+
 export interface FeaturedVaultResponse {
   sortable_rank: number;
   vault: VaultResponseData;
@@ -406,12 +443,6 @@ export interface FeaturedVaultResponse {
 }
 
 export type FeaturedVaultsResponseData = FeaturedVaultResponse[] | null;
-
-export interface FeaturedVaultsResponse {
-  data?: FeaturedVaultsResponseData;
-  error?: FeaturedVaultsResponseError;
-  ok: boolean;
-}
 
 export interface ExchangeHistoryDataPoint {
   chain_id: number;
@@ -466,18 +497,18 @@ export interface EarnedYieldResponseData {
 
 export type EarnedYieldResponseError = string | null;
 
-export interface EarnedYieldResponse {
-  data?: EarnedYieldResponseDataProperty;
-  error?: EarnedYieldResponseError;
-  ok: boolean;
-}
-
 export type EarnedYieldResponseDataPropertyAnyOf = {
   [key: string]: EarnedYieldResponseData;
 };
 
 export type EarnedYieldResponseDataProperty =
   EarnedYieldResponseDataPropertyAnyOf | null;
+
+export interface EarnedYieldResponse {
+  data?: EarnedYieldResponseDataProperty;
+  error?: EarnedYieldResponseError;
+  ok: boolean;
+}
 
 export interface DashboardStatsVaultsData {
   balance: string;
@@ -525,6 +556,11 @@ export interface DashboardHistoryResponse {
   data: DashboardHistoryData[];
   error?: DashboardHistoryResponseError;
   ok: boolean;
+}
+
+export interface CurrencyData {
+  description: string;
+  ticker: string;
 }
 
 export interface CaptchaResponseData {
@@ -3653,6 +3689,120 @@ export const useGetRatesApiV1MunzenCurrenciesRatesGet = <
 }): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
   const queryOptions =
     getGetRatesApiV1MunzenCurrenciesRatesGetQueryOptions(options);
+
+  const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
+    queryKey: QueryKey;
+  };
+
+  query.queryKey = queryOptions.queryKey;
+
+  return query;
+};
+
+/**
+ * @summary Get Transactions
+ */
+export const getTransactionsApiV1MunzenAddressTransactionsGet = (
+  address: string,
+  options?: AxiosRequestConfig,
+): Promise<AxiosResponse<MunzenOrderTransactionsData>> => {
+  return axios.get(
+    `https://dapp-api.cybro.io/api/v1/munzen/${address}/transactions`,
+    options,
+  );
+};
+
+export const getGetTransactionsApiV1MunzenAddressTransactionsGetQueryKey = (
+  address: string,
+) => {
+  return [
+    `https://dapp-api.cybro.io/api/v1/munzen/${address}/transactions`,
+  ] as const;
+};
+
+export const getGetTransactionsApiV1MunzenAddressTransactionsGetQueryOptions = <
+  TData = Awaited<
+    ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  address: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+) => {
+  const { query: queryOptions, axios: axiosOptions } = options ?? {};
+
+  const queryKey =
+    queryOptions?.queryKey ??
+    getGetTransactionsApiV1MunzenAddressTransactionsGetQueryKey(address);
+
+  const queryFn: QueryFunction<
+    Awaited<ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>>
+  > = ({ signal }) =>
+    getTransactionsApiV1MunzenAddressTransactionsGet(address, {
+      signal,
+      ...axiosOptions,
+    });
+
+  return {
+    queryKey,
+    queryFn,
+    enabled: !!address,
+    ...queryOptions,
+  } as UseQueryOptions<
+    Awaited<
+      ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>
+    >,
+    TError,
+    TData
+  > & { queryKey: QueryKey };
+};
+
+export type GetTransactionsApiV1MunzenAddressTransactionsGetQueryResult =
+  NonNullable<
+    Awaited<ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>>
+  >;
+export type GetTransactionsApiV1MunzenAddressTransactionsGetQueryError =
+  AxiosError<HTTPValidationError>;
+
+/**
+ * @summary Get Transactions
+ */
+export const useGetTransactionsApiV1MunzenAddressTransactionsGet = <
+  TData = Awaited<
+    ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>
+  >,
+  TError = AxiosError<HTTPValidationError>,
+>(
+  address: string,
+  options?: {
+    query?: Partial<
+      UseQueryOptions<
+        Awaited<
+          ReturnType<typeof getTransactionsApiV1MunzenAddressTransactionsGet>
+        >,
+        TError,
+        TData
+      >
+    >;
+    axios?: AxiosRequestConfig;
+  },
+): UseQueryResult<TData, TError> & { queryKey: QueryKey } => {
+  const queryOptions =
+    getGetTransactionsApiV1MunzenAddressTransactionsGetQueryOptions(
+      address,
+      options,
+    );
 
   const query = useQuery(queryOptions) as UseQueryResult<TData, TError> & {
     queryKey: QueryKey;
