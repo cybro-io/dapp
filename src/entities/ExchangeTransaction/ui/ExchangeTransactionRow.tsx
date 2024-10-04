@@ -2,50 +2,33 @@ import React from 'react';
 
 import clsx from 'clsx';
 import dayjs from 'dayjs';
-import { utils } from 'ethers';
 import Link from 'next/link';
 import { useMediaQuery } from 'usehooks-ts';
 
-import { useSwapTokens } from '@/entities/SwapToken';
 import MaximizeIcon from '@/shared/assets/icons/maximize.svg';
-import { SymbiosisTransaction } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 
-import { ExchangeTransactionToken } from './ExchangeTransactionToken';
+import {
+  ExchangeTransactionToken,
+  ExchangeTransactionTokenProps,
+} from './ExchangeTransactionToken';
 
 type ExchangeTransactionRowProps = {
   isContained: boolean;
-  transaction: SymbiosisTransaction;
+  from: ExchangeTransactionTokenProps;
+  to: ExchangeTransactionTokenProps;
+  createdAt: string;
+  link?: string;
 };
-
-const preparedTokenAddress = (address: string) =>
-  address === '0x0000000000000000000000000000000000000000' ? '' : address;
 
 export const ExchangeTransactionRow = ({
   isContained,
-  transaction,
+  to,
+  from,
+  createdAt,
+  link,
 }: ExchangeTransactionRowProps) => {
   const isSmallScreen = useMediaQuery('(max-width: 1279px)');
-
-  const { from_route, to_route, created_at } = transaction;
-
-  const { findToken } = useSwapTokens();
-
-  const tokenIn = from_route?.at(0);
-  const tokenOut = to_route?.at(-1);
-
-  if (!tokenIn || !tokenOut) {
-    return null;
-  }
-
-  const findTokenIn = findToken(
-    preparedTokenAddress(tokenIn.token.address),
-    tokenIn.chain_id,
-  );
-  const findTokenOut = findToken(
-    preparedTokenAddress(tokenOut.token.address),
-    tokenOut.chain_id,
-  );
 
   if (isSmallScreen) {
     return (
@@ -57,49 +40,26 @@ export const ExchangeTransactionRow = ({
       >
         <div className="flex flex-col justify-between gap-2">
           <div className="flex flex-row gap-2 items-center flex-wrap">
-            <ExchangeTransactionToken
-              tokenName={tokenIn.token.symbol}
-              amount={Number(
-                utils.formatUnits(
-                  String(tokenIn.amount),
-                  tokenIn.token.decimals,
-                ),
-              )}
-              icon={String(findTokenIn?.icons?.small)}
-              chainIcon={String(findTokenIn?.chain?.icons?.small)}
-              directionName="You pay"
-            />
+            <ExchangeTransactionToken {...from} />
             <Text textView={TextView.BP3} className="opacity-60">
               for
             </Text>
-            <ExchangeTransactionToken
-              tokenName={tokenOut.token.symbol}
-              amount={Number(
-                utils.formatUnits(
-                  String(tokenOut.amount),
-                  tokenOut.token.decimals,
-                ),
-              )}
-              icon={String(findTokenOut?.icons?.small)}
-              chainIcon={String(findTokenOut?.chain?.icons?.small)}
-              directionName="You recieve"
-            />
+            <ExchangeTransactionToken {...to} />
           </div>
           <Text
             textView={TextView.C4}
             className="!font-unbounded !font-light opacity-50"
           >
-            {dayjs(created_at).format('DD MMM YYYY HH:mm')}
+            {dayjs(createdAt).format('DD MMM YYYY HH:mm')}
           </Text>
         </div>
 
-        <div className="flex justify-end items-center">
-          <Link
-            href={`https://explorer.symbiosis.finance/transactions/${transaction.from_chain_id}/${transaction.hash}`}
-            target="_blank"
-          >
-            <MaximizeIcon className="opacity-40" />
-          </Link>
+        <div className="flex justify-end">
+          {link && (
+            <Link href={link} target="_blank">
+              <MaximizeIcon className="opacity-40" />
+            </Link>
+          )}
         </div>
       </div>
     );
@@ -112,51 +72,28 @@ export const ExchangeTransactionRow = ({
         isContained && 'bg-background-tableRow',
       )}
     >
-      <ExchangeTransactionToken
-        tokenName={tokenIn.token.symbol}
-        amount={Number(
-          utils.formatUnits(
-            String(
-              Number(tokenIn.amount).toLocaleString('fullwide', {
-                useGrouping: false,
-              }),
-            ),
-            tokenIn.token.decimals,
-          ),
+      <ExchangeTransactionToken {...from} />
+      <ExchangeTransactionToken {...to} />
+      <div
+        className={clsx(
+          'flex flex-col items-end',
+          link ? 'justify-between' : 'justify-end',
         )}
-        icon={String(findTokenIn?.icons?.small)}
-        chainIcon={String(findTokenIn?.chain?.icons?.small)}
-        directionName="You pay"
-      />
-      <ExchangeTransactionToken
-        tokenName={tokenOut.token.symbol}
-        amount={Number(
-          utils.formatUnits(
-            String(
-              Number(tokenOut.amount).toLocaleString('fullwide', {
-                useGrouping: false,
-              }),
-            ),
-            tokenOut.token.decimals,
-          ),
+      >
+        {link && (
+          <Link
+            href={link}
+            target="_blank"
+            className="flex flex-row gap-[5px] items-center font-unbounded font-light"
+          >
+            <span>Transaction details</span> <MaximizeIcon />
+          </Link>
         )}
-        icon={String(findTokenOut?.icons?.small)}
-        chainIcon={String(findTokenOut?.chain?.icons?.small)}
-        directionName="You recieve"
-      />
-      <div className="flex flex-col justify-between items-end">
-        <Link
-          href={`https://explorer.symbiosis.finance/transactions/${transaction.from_chain_id}/${transaction.hash}`}
-          target="_blank"
-          className="flex flex-row gap-[5px] items-center font-unbounded font-light"
-        >
-          <span>Transaction details</span> <MaximizeIcon />
-        </Link>
         <Text
           textView={TextView.C4}
           className="!font-unbounded !font-light opacity-50"
         >
-          {dayjs(created_at).format('DD MMM YYYY HH:mm')}
+          {dayjs(createdAt).format('DD MMM YYYY HH:mm')}
         </Text>
       </div>
     </div>

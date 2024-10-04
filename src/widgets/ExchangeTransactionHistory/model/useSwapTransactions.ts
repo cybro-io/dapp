@@ -1,20 +1,12 @@
-import React, { Key } from 'react';
+import React from 'react';
 
 import { useQuery } from '@tanstack/react-query';
 import axios, { AxiosResponse } from 'axios';
 
 import { useWeb3ModalAccount } from '@/shared/lib';
-import {
-  GetTransactionsApiV1ExchangeAddressTransactionsGetType,
-  SymbiosisTransaction,
-} from '@/shared/types';
+import { SymbiosisTransaction } from '@/shared/types';
 
 export const useSwapTransactions = () => {
-  const [type, setType] =
-    React.useState<GetTransactionsApiV1ExchangeAddressTransactionsGetType>(
-      'All',
-    );
-
   const [page, setPage] = React.useState(1);
 
   const { address } = useWeb3ModalAccount();
@@ -25,7 +17,7 @@ export const useSwapTransactions = () => {
   const params = {
     limit,
     offset,
-    type,
+    type: 'all',
   };
 
   const { data, isLoading } = useQuery({
@@ -38,23 +30,21 @@ export const useSwapTransactions = () => {
       ) as unknown as AxiosResponse<SymbiosisTransaction[]>,
   });
 
-  const totalPages = Math.ceil((data?.data.length ?? 0) / params.limit);
+  const total = Math.ceil((data?.data.length ?? 0) / params.limit);
   const transactions = data?.data.slice(offset, offset + limit);
-  const isEmptyTransactions = transactions?.length === 0;
 
-  const registerTabs = () => ({
-    selectedKey: type,
-    onSelectionChange: (key: Key) =>
-      setType(key as GetTransactionsApiV1ExchangeAddressTransactionsGetType),
-  });
+  const isTransactionsNoResult = transactions?.length === 0;
+
+  const pagination = {
+    total,
+    page,
+    onChange: setPage,
+  };
 
   return {
     isLoading,
-    isEmptyTransactions,
-    totalPages,
-    page,
+    isTransactionsNoResult,
     transactions,
-    setPage,
-    registerTabs,
+    pagination,
   };
 };
