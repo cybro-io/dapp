@@ -103,7 +103,12 @@ export const useWithdraw = (
           vaultId,
           data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' },
         });
-        track.event(AnalyticsEvent.WithdrawalSuccess);
+        track.event(AnalyticsEvent.WithdrawalSuccess, {
+          walletAddress: address,
+          amount: Number(amount),
+          currency,
+          contractAddress: vaultAddress,
+        });
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} withdrawn`,
