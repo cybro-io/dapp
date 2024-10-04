@@ -12,7 +12,7 @@ import {
   HubVaults,
 } from '@/widgets/Hub';
 
-export const HubPage = () => {
+const HubPage = () => {
   return (
     <BaseLayout withMainPadding={false}>
       <div className="relative flex flex-col max-w-screen-xl mx-auto">
@@ -26,3 +26,5 @@ export const HubPage = () => {
     </BaseLayout>
   );
 };
+
+export default HubPage;

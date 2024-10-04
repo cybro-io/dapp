@@ -12,6 +12,7 @@ import {
 } from '@/entities/SwapToken';
 import { SwapSettingsButton } from '@/features/SwapSettings';
 import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
+import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Button,
   Chip,
@@ -45,6 +46,8 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
     calculateParams,
   } = useExchangeSwap();
 
+  const { address } = useWeb3ModalAccount();
+
   const { isLoadingCalculate, records, error } = calculateParams;
   const values = form.values;
 
@@ -69,7 +72,10 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
     <form className="flex flex-col gap-2" onSubmit={form.handleSubmit}>
       <SwapTokenCard
         isDisabled={isDisabledInputValue}
-        token={values.tokenIn}
+        tokenName={values.tokenIn.symbol ?? ''}
+        tokenIcon={values.tokenIn.icons?.small ?? ''}
+        chainName={values.tokenIn.chain?.name}
+        chainIcon={values.tokenIn.chain?.icons?.small}
         balance={
           isLoadingInBalance ? (
             <Skeleton className="rounded-lg">
@@ -79,7 +85,7 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
             balanceIn
           )
         }
-        onSelectTokenClick={() =>
+        onActionClick={() =>
           showSelectTokenModal(values.tokenIn, (token) =>
             form.handleChangeToken(token, 'in'),
           )
@@ -93,6 +99,7 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
             <Text textView={TextView.BP3}>Current Wallet</Text>
           </div>
         }
+        isShowFooter={Boolean(address)}
       >
         <AmountInput
           placeholder="0"
@@ -114,7 +121,10 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
       />
       <SwapTokenCard
         isDisabled={isDisabledInputValue}
-        token={values.tokenOut}
+        tokenName={values.tokenOut.symbol ?? ''}
+        tokenIcon={values.tokenOut.icons?.small ?? ''}
+        chainName={values.tokenOut.chain?.name}
+        chainIcon={values.tokenOut.chain?.icons?.small}
         balance={
           isLoadingOutBalance ? (
             <Skeleton className="rounded-lg">
@@ -124,7 +134,7 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
             balanceOut
           )
         }
-        onSelectTokenClick={() =>
+        onActionClick={() =>
           showSelectTokenModal(values.tokenOut, (token) =>
             form.handleChangeToken(token, 'out'),
           )
@@ -144,6 +154,7 @@ const SwapTokenForm = ({ features }: SwapTokenProps) => {
             </div>
           </div>
         }
+        isShowFooter={Boolean(address)}
       >
         <AmountInput
           label="You recieve"

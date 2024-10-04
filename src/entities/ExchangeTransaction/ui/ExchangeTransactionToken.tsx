@@ -5,10 +5,10 @@ import { useMediaQuery } from 'usehooks-ts';
 import { Text, TextView } from '@/shared/ui';
 import { formatMoney } from '@/shared/utils';
 
-type ExchangeTransactionTokenProps = {
-  tokenName: string;
+export type ExchangeTransactionTokenProps = {
+  name: string;
   icon: string;
-  chainIcon: string;
+  chainIcon?: string;
   amount: number;
   directionName: string;
 };
@@ -16,7 +16,7 @@ type ExchangeTransactionTokenProps = {
 export const ExchangeTransactionToken = ({
   icon,
   amount,
-  tokenName,
+  name,
   directionName,
   chainIcon,
 }: ExchangeTransactionTokenProps) => {
@@ -28,13 +28,15 @@ export const ExchangeTransactionToken = ({
         <img
           src={icon}
           className="size-5 xl:size-[46px] rounded-full bg-stroke-tableBorder"
-          alt={tokenName}
+          alt={name}
         />
-        <img
-          src={chainIcon}
-          className="size-[7px] xl:size-4 rounded-full absolute right-0 bottom-0 bg-stroke-tableBorder"
-          alt={`Chain icon ${tokenName}`}
-        />
+        {chainIcon && (
+          <img
+            src={chainIcon}
+            className="size-[7px] xl:size-4 rounded-full absolute right-0 bottom-0 bg-stroke-tableBorder"
+            alt={`Chain icon ${name}`}
+          />
+        )}
       </div>
 
       <div className="flex flex-col gap-1">
@@ -46,7 +48,7 @@ export const ExchangeTransactionToken = ({
             textView={isSmallScreen ? TextView.BP3 : TextView.C4}
             className="!font-unbounded !font-light opacity-50"
           >
-            {tokenName}
+            {name}
           </Text>
         </div>
 

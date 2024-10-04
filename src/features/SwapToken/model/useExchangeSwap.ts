@@ -10,8 +10,8 @@ import {
 } from 'symbiosis-js-sdk';
 
 import { useSwapTokens } from '@/entities/SwapToken';
-import { SuccessSwapModal } from '@/features/SwapToken/ui/SuccessSwapModal';
 import { useWeb3ModalAccount } from '@/shared/lib';
+import { SentSuccessModal } from '@/shared/ui';
 
 import { useExchangeSwapForm } from '../model/useExchangeSwapForm';
 
@@ -125,11 +125,13 @@ export const useExchangeSwap = () => {
 
     const subscription = subscribeSuccessSwap(
       ({ tokenAmountOut, tokenAmountIn }) => {
-        NiceModal.show(SuccessSwapModal, {
+        NiceModal.show(SentSuccessModal, {
           sentSymbol: tokenAmountIn.token.symbol,
           sentAmount: tokenAmountIn.toSignificant(),
           receivedSymbol: tokenAmountOut.token.symbol,
           receivedAmount: tokenAmountOut.toSignificant(),
+          primaryActionName: 'To home page',
+          title: 'Swap',
         }).then();
       },
     );

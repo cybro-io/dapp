@@ -13,13 +13,16 @@ export const useForm = <Values extends FormikValues = FormikValues>(
   const helperText = (name: keyof Values) =>
     touched[name] && errors[name] ? (errors[name] as string) : undefined;
 
-  const register = <T = unknown>(name: keyof Values) => ({
+  const register = <T = unknown>(
+    name: keyof Values,
+    withHelperText = true,
+  ) => ({
     id: name,
     name,
     value: values[name] as T,
     onChange: handleChange,
     onBlur: handleBlur,
-    helperText: helperText(name),
+    helperText: withHelperText ? helperText(name) : undefined,
   });
 
   return {
