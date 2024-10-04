@@ -20,103 +20,112 @@ type SwapInfo = SwapCalculateResult & { swapStatus: SwapStatus | null };
 const $swapInfo = createStore<SwapInfo | null>(null);
 const setSwapInfo = createEvent<SwapInfo>();
 const setSwapStatus = createEvent<SwapInfo['swapStatus']>();
-const swap = createEvent<SwapEvent>();
+const swap = createEvent<SwapCalculateResult>();
 
-type SwapEvent = SwapCalculateResult;
-
-const swapFx = createEffect<SwapEvent, void, void>(async (calculate) => {
-  const {
-    transactionRequest,
-    tokenAmountIn,
-    approveTo,
-    from,
-    transactionType,
-    kind,
-  } = calculate;
-
-  setSwapInfo({ ...calculate, swapStatus: null });
-
-  NiceModal.show(WaitForCompleteModal);
-
-  const symbiosis = $symbiosis.getState();
-
-  const walletProvider = web3Modal.getWalletProvider();
-
-  if (!walletProvider) {
-    throw new Error('Wallet not connected');
-  }
-
-  if (transactionType !== 'evm') {
-    throw new Error('Unsupported transaction type');
-  }
-
-  if (
-    !('chainId' in transactionRequest) ||
-    typeof transactionRequest.chainId !== 'number'
-  ) {
-    throw new Error("Don't found chain");
-  }
-
-  await web3Modal.switchNetwork(transactionRequest.chainId);
-
-  const provider = new ethers.providers.Web3Provider(walletProvider);
-  const signer = provider.getSigner(from);
-
-  // Approve token
-  if (!tokenAmountIn.token.isNative) {
-    const approveAmount = utils.parseUnits(
-      tokenAmountIn.toSignificant(),
-      tokenAmountIn.token.decimals,
-    );
-
-    const tokenContract = new ethers.Contract(
-      tokenAmountIn.token.address,
-      TOKEN,
-      signer,
-    );
-
-    const allowance = (await tokenContract.allowance(
-      from,
+const swapFx = createEffect<SwapCalculateResult, void, void>(
+  async (calculate) => {
+    const {
+      transactionRequest,
+      tokenAmountIn,
+      tokenAmountOut,
       approveTo,
-    )) as BigNumber;
+      from,
+      transactionType,
+      kind,
+    } = calculate;
 
-    if (allowance.lt(approveAmount)) {
-      const approveResponse = await tokenContract.approve(
-        approveTo,
-        MaxUint256,
-      );
-      await approveResponse.wait(1);
+    setSwapInfo({ ...calculate, swapStatus: null });
+
+    NiceModal.show(WaitForCompleteModal);
+
+    const symbiosis = $symbiosis.getState();
+
+    const walletProvider = web3Modal.getWalletProvider();
+
+    if (!walletProvider) {
+      throw new Error('Wallet not connected');
     }
 
-    setSwapStatus(SwapStatus.APPROVE_TRANSACTION);
-  }
+    if (transactionType !== 'evm') {
+      throw new Error('Unsupported transaction type');
+    }
 
-  // Send transaction to chain
-  const transactionResponse = await signer.sendTransaction(transactionRequest);
-  setSwapStatus(SwapStatus.SEND_TRANSACTION);
+    if (
+      !('chainId' in transactionRequest) ||
+      typeof transactionRequest.chainId !== 'number'
+    ) {
+      throw new Error("Don't found chain");
+    }
 
-  // Wait for transaction to be mined
-  const receipt = await transactionResponse.wait(12);
-  setSwapStatus(SwapStatus.MINED_TRANSACTION);
+    await web3Modal.switchNetwork(transactionRequest.chainId);
 
-  console.log('receipt:', receipt);
+    const provider = new ethers.providers.Web3Provider(walletProvider);
+    const signer = provider.getSigner(from);
 
-  // Wait for transaction to be completed on recipient chain
-  if (kind === 'onchain-swap') {
-    await provider.waitForTransaction(receipt.transactionHash);
-  } else {
-    await symbiosis.waitForComplete({
-      chainId: transactionRequest.chainId,
-      txId: transactionResponse.hash,
+    // Approve token
+    if (!tokenAmountIn.token.isNative) {
+      const approveAmount = utils.parseUnits(
+        tokenAmountIn.toSignificant(),
+        tokenAmountIn.token.decimals,
+      );
+
+      const tokenContract = new ethers.Contract(
+        tokenAmountIn.token.address,
+        TOKEN,
+        signer,
+      );
+
+      const allowance = (await tokenContract.allowance(
+        from,
+        approveTo,
+      )) as BigNumber;
+
+      if (allowance.lt(approveAmount)) {
+        const approveResponse = await tokenContract.approve(
+          approveTo,
+          MaxUint256,
+        );
+        await approveResponse.wait(1);
+      }
+
+      setSwapStatus(SwapStatus.APPROVE_TRANSACTION);
+    }
+
+    // Send transaction to chain
+    const transactionResponse =
+      await signer.sendTransaction(transactionRequest);
+    setSwapStatus(SwapStatus.SEND_TRANSACTION);
+
+    // Wait for transaction to be mined
+    const receipt = await transactionResponse.wait(12);
+    setSwapStatus(SwapStatus.MINED_TRANSACTION);
+
+    console.log('receipt:', receipt);
+
+    // Wait for transaction to be completed on recipient chain
+    if (kind === 'onchain-swap') {
+      await provider.waitForTransaction(receipt.transactionHash);
+    } else {
+      await symbiosis.waitForComplete({
+        chainId: transactionRequest.chainId,
+        txId: transactionResponse.hash,
+      });
+    }
+
+    setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
+
+    track.event(AnalyticsEvent.SuccessSwap, {
+      walletAddress: from,
+      fromAmount: Number(tokenAmountIn.toSignificant()),
+      fromCurrency: tokenAmountIn.token.name,
+      contractAddress: transactionRequest.to,
+      toAmount: Number(tokenAmountOut.toSignificant()),
+      toCurrency: transactionRequest.to,
     });
-  }
 
-  setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
-
-  track.event(AnalyticsEvent.SuccessSwap);
-
-  NiceModal.remove(WaitForCompleteModal);
-});
+    NiceModal.remove(WaitForCompleteModal);
+  },
+);
 
 swapFx.fail.watch(({ error }) => {
   console.error('Swap failed:', error);
@@ -149,8 +158,9 @@ export const useSwap = () => {
     swapInfo: $swapInfo,
   });
 
-  const subscribeSuccessSwap = (watcher?: (params: SwapEvent) => void) =>
-    swapFx.done.watch(({ params }) => watcher?.(params));
+  const subscribeSuccessSwap = (
+    watcher?: (params: SwapCalculateResult) => void,
+  ) => swapFx.done.watch(({ params }) => watcher?.(params));
 
   return { ...units, subscribeSuccessSwap };
 };
