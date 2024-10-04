@@ -6,7 +6,7 @@ import { BigNumber, ethers, utils } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
 import { web3Modal } from '@/app/providers';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { $symbiosis } from '@/shared/lib';
 import { UnknownSwapModal } from '@/shared/ui';
 
@@ -113,7 +113,7 @@ const swapFx = createEffect<SwapEvent, void, void>(async (calculate) => {
 
   setSwapStatus(SwapStatus.COMPLETED_TRANSACTION);
 
-  Mixpanel.track(MixpanelEvent.SuccessSwap);
+  track.event(AnalyticsEvent.SuccessSwap);
 
   NiceModal.remove(WaitForCompleteModal);
 });

@@ -12,7 +12,7 @@ import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { useSwap } from '@/features/SwapToken';
 import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import {
   useBalance,
@@ -176,7 +176,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const debouncedTrackEvent = React.useMemo(
     () =>
       debounce(
-        () => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually),
+        () => track.event(AnalyticsEvent.DepositAmountChangedManually),
         3000,
       ),
     [],
@@ -228,7 +228,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         setAmount(formatMoney(vaultDeposit * value, 8));
       }
 
-      Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);
+      track.event(AnalyticsEvent.DepositAmountChangedPreset);
       setSelectedPercent(value);
     },
     [actionType, userBalance, vaultDeposit],

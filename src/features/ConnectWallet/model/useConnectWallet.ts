@@ -3,7 +3,7 @@ import React from 'react';
 import * as Sentry from '@sentry/nextjs';
 import { useDisconnect, useWeb3Modal } from '@web3modal/ethers5/react';
 
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import { ToastType } from '@/shared/ui';
@@ -27,9 +27,9 @@ export const useConnectWallet = ({
 
   const handleConnect = React.useCallback(async () => {
     if (isForm) {
-      Mixpanel.track(MixpanelEvent.VaultConnectWalletClickForm);
+      track.event(AnalyticsEvent.VaultConnectWalletClickForm);
     } else {
-      Mixpanel.track(MixpanelEvent.ConnectWalletClick);
+      track.event(AnalyticsEvent.ConnectWalletClick);
     }
 
     setHasClickedConnect(true);
@@ -39,7 +39,7 @@ export const useConnectWallet = ({
   React.useEffect(() => {
     if (hasClickedConnect && isConnected && address) {
       onWalletConnect?.(address, chainId);
-      Mixpanel.track(MixpanelEvent.ConnectWalletSuccess);
+      track.event(AnalyticsEvent.ConnectWalletSuccess);
       setHasClickedConnect(false); // Reset the state after tracking
     }
   }, [isConnected, hasClickedConnect]);

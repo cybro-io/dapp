@@ -10,7 +10,7 @@ import {
   HowTrustScoreCountsInfo,
   HowTrustScoreCountsInfoViewType,
 } from '@/entities/HowTrustScoreCounts';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import InfoIcon from '@/shared/assets/icons/info.svg';
 import { ComponentWithProps } from '@/shared/types';
 import { Link, LinkView } from '@/shared/ui';
@@ -29,7 +29,7 @@ export const HowTrustScoreCountsButton: ComponentWithProps<
 
   const onTooltipChange = React.useCallback((isOpen: boolean) => {
     if (isOpen) {
-      Mixpanel.track(MixpanelEvent.TrustScoreHintOpen);
+      track.event(AnalyticsEvent.TrustScoreHintOpen);
     }
   }, []);
 

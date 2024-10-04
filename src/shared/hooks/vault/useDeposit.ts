@@ -9,7 +9,7 @@ import { BigNumber, ethers, utils } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
 import { useEthers } from '@/app/providers';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import {
@@ -110,7 +110,7 @@ export const useDeposit = (
           vaultId,
           data: { tx_hash: depositTx.hash, address, action: 'deposit' },
         });
-        Mixpanel.track(MixpanelEvent.DepositSuccess);
+        track.event(AnalyticsEvent.DepositSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} deposited`,

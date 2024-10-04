@@ -5,7 +5,7 @@ import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { BigNumber, ethers, utils } from 'ethers';
 
 import { useEthers } from '@/app/providers';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import {
@@ -103,7 +103,7 @@ export const useWithdraw = (
           vaultId,
           data: { tx_hash: withdrawTx.hash, address, action: 'withdraw' },
         });
-        Mixpanel.track(MixpanelEvent.WithdrawalSuccess);
+        track.event(AnalyticsEvent.WithdrawalSuccess);
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} withdrawn`,

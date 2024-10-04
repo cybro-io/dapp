@@ -2,8 +2,7 @@
 
 import { useLocalStorage } from 'usehooks-ts';
 
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
-import { useMediaQuery } from '@/shared/lib';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 
 import { AvailableVaultsViewType } from './types';
 
@@ -18,7 +17,7 @@ export const useAvailableVaultsView = () => {
 
   const setViewType = (viewType: AvailableVaultsViewType) => {
     setAvailableVaultsView(viewType);
-    Mixpanel.track(MixpanelEvent.ChangeVaultListStyle, { viewType });
+    track.event(AnalyticsEvent.ChangeVaultListStyle, { viewType });
   };
 
   return { viewType, setViewType };
