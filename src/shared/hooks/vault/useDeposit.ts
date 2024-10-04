@@ -8,7 +8,6 @@ import {
 import { BigNumber, ethers, utils } from 'ethers';
 
 import TOKEN from '@/app/abi/token.json';
-import { useEthers } from '@/app/providers';
 import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
 import { useWeb3ModalAccount } from '@/shared/lib';
@@ -37,7 +36,6 @@ export const useDeposit = (
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
-  const { tokens, signer, provider } = useEthers();
   const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
   const { switchNetwork } = useSwitchNetwork();
   const { walletProvider } = useWeb3ModalProvider();
@@ -110,14 +108,19 @@ export const useDeposit = (
           vaultId,
           data: { tx_hash: depositTx.hash, address, action: 'deposit' },
         });
-        track.event(AnalyticsEvent.DepositSuccess);
+        track.event(AnalyticsEvent.DepositSuccess, {
+          walletAddress: address,
+          amount: Number(amount),
+          currency,
+          contractAddress: vaultAddress,
+        });
 
         triggerToast({
           message: `${formatUserMoney(amount)} ${currency} deposited`,
           description:
             'Check your updated Vault Balance or explore the contract.',
         });
-      } catch (error: any) {
+      } catch (error: unknown) {
         console.error('error deposit: ', error);
         triggerToast({
           message: `Something went wrong`,
