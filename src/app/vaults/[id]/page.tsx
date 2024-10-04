@@ -7,11 +7,8 @@ import { QueryKey } from '@/shared/const';
 import {
   getVaultApiV1VaultsVaultIdGet,
   getVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
-  getVaultsApiV1VaultsGet,
 } from '@/shared/types';
 import { VaultPage } from '@/views/VaultPage';
-
-type pageProps = {};
 
 export default async function Vault({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
