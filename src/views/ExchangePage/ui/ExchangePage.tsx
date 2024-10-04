@@ -9,8 +9,8 @@ import { BaseLayout } from '@/app/layouts';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import { Text, TextView } from '@/shared/ui';
 import { ExchangeSwap } from '@/widgets/ExchangeSwap';
+import { ExchangeTransactionHistory } from '@/widgets/ExchangeTransactionHistory';
 import { Hero } from '@/widgets/Hero';
-import { SwapTransactions } from '@/widgets/SwapTransactions/ui/SwapTransactions';
 
 import styles from './ExchangePage.module.scss';
 
@@ -45,7 +45,7 @@ export const ExchangePage = () => {
           </div>
         )}
 
-        {isConnected && <SwapTransactions />}
+        {isConnected && <ExchangeTransactionHistory />}
 
         <Divider orientation="vertical" className="h-[766px] hidden lg:block" />
         <ExchangeSwap />

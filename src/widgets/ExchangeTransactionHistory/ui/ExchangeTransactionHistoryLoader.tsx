@@ -2,7 +2,7 @@ import React from 'react';
 
 import { Skeleton } from '@nextui-org/react';
 
-export const SwapTransactionsLoader = () => (
+export const ExchangeTransactionHistoryLoader = () => (
   <React.Fragment>
     {new Array(3).fill('').map((_, index) => (
       <Skeleton
