@@ -2,12 +2,7 @@
 
 import mixpanel, { Dict } from 'mixpanel-browser';
 
-import {
-  AnalyticsEvent,
-  specialSafaryEvents,
-  typeByEvent,
-} from '@/shared/analytics/events';
-import { Maybe } from '@/shared/types';
+import { AnalyticsEvent, typeByEvent } from '@/shared/analytics/events';
 
 const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
 
@@ -29,7 +24,7 @@ export const track = {
     // `window.safary.track` is available when `document.readyState === 'complete'`
     window.safary.track?.({
       eventType: typeByEvent[eventName],
-      eventName: specialSafaryEvents[eventName] ?? eventName,
+      eventName,
       parameters,
     });
   },

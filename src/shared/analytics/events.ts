@@ -22,12 +22,6 @@ export enum AnalyticsEvent {
   ChangeVaultListStyle = 'change_vault_list_style',
 }
 
-export const specialSafaryEvents: Partial<Record<AnalyticsEvent, string>> = {
-  [AnalyticsEvent.DepositSuccess]: 'deposit',
-  [AnalyticsEvent.WithdrawalSuccess]: 'withdrawal',
-  [AnalyticsEvent.SuccessSwap]: 'swap',
-};
-
 export const typeByEvent: Record<AnalyticsEvent, string> = {
   [AnalyticsEvent.ConnectWalletClick]: 'click',
   [AnalyticsEvent.ConnectWalletSuccess]: 'success',
@@ -36,8 +30,8 @@ export const typeByEvent: Record<AnalyticsEvent, string> = {
   [AnalyticsEvent.DepositAmountChangedManually]: 'change',
   [AnalyticsEvent.DepositAmountChangedPreset]: 'change',
   [AnalyticsEvent.CalculatorPeriodChange]: 'change',
-  [AnalyticsEvent.DepositSuccess]: 'success',
-  [AnalyticsEvent.WithdrawalSuccess]: 'success',
+  [AnalyticsEvent.DepositSuccess]: 'deposit',
+  [AnalyticsEvent.WithdrawalSuccess]: 'withdrawal',
 
   [AnalyticsEvent.ChangeSwapSettings]: 'change',
   [AnalyticsEvent.ChangeSwapFrom]: 'change',
