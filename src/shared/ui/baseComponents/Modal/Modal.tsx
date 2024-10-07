@@ -24,6 +24,7 @@ type ModalProps = Pick<
   | 'scrollBehavior'
   | 'onClose'
   | 'classNames'
+  | 'isDismissable'
 >;
 
 export const Modal = ({ children, classNames, ...restProps }: ModalProps) => {
