@@ -6,17 +6,16 @@ import {
   Navbar,
   NavbarBrand,
   NavbarContent,
-  NavbarItem,
   NavbarMenu,
   NavbarMenuItem,
   NavbarMenuToggle,
 } from '@nextui-org/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
 
 import { ConnectWallet } from '@/features/ConnectWallet';
 import CloseIcon from '@/shared/assets/icons/close.svg';
 import MenuIcon from '@/shared/assets/icons/menu.svg';
+import { useWeb3ModalDisconnect } from '@/shared/lib';
 import { ComponentWithProps } from '@/shared/types';
 import {
   Button,
@@ -64,7 +63,7 @@ export const Header: ComponentWithProps<HeaderProps> = ({
   className,
   connectedComponent,
 }) => {
-  const { disconnect } = useDisconnect();
+  const { disconnect } = useWeb3ModalDisconnect();
   const [isMenuOpen, setIsMenuOpen] = React.useState(false);
 
   return (
