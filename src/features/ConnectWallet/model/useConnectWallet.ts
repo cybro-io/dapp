@@ -54,7 +54,7 @@ export const useConnectWallet = ({
       });
 
       Sentry.captureMessage('Wallet is connected, but no address found');
-      disconnect().catch(() => {});
+      disconnect();
     }
   }, [isConnected, address]);
 
