@@ -13,6 +13,7 @@ export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
 
   return (
     <Modal
+      isDismissable={false}
       classNames={{ base: 'w-[375px]' }}
       onClose={() => currentModal.remove()}
     >
@@ -24,11 +25,12 @@ export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
         >
           <iframe
             id="inlineFrameWidget"
-            width="354"
+            width="375"
             height="609"
             allow="camera; microphone; geolocation"
             frameBorder="0"
             src={rampLinkWidget!}
+            className="rounded-[26px]"
           />
         </Skeleton>
       </Modal.Body>

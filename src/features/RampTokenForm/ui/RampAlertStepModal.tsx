@@ -14,6 +14,7 @@ export const RampAlertStepModal = NiceModal.create(() => {
 
   return (
     <Modal
+      isDismissable={false}
       classNames={{ base: 'w-[375px]' }}
       onClose={() => currentModal.remove()}
     >
