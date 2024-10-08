@@ -185,6 +185,12 @@
     top: 100px;
   }
 
+  @media (height <= 860px) {
+    .rightContentContainer {
+      top: -23px;
+    }
+  }
+
   .heroSection {
     padding-top: 32px;
     padding-bottom: 95px;
