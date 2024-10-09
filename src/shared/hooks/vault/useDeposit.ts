@@ -36,7 +36,6 @@ export const useDeposit = (
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
 
-  const { tokens, signer, provider } = useEthers();
   const { mutate } = useAddFundActionApiV1VaultsVaultIdActionPost();
   const { switchNetwork } = useSwitchNetwork();
   const { walletProvider } = useWeb3ModalProvider();
