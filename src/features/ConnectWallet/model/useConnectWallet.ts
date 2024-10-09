@@ -1,11 +1,11 @@
 import React from 'react';
 
 import * as Sentry from '@sentry/nextjs';
-import { useDisconnect, useWeb3Modal } from '@web3modal/ethers5/react';
+import { useWeb3Modal } from '@web3modal/ethers5/react';
 
 import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useToast } from '@/shared/hooks';
-import { useWeb3ModalAccount } from '@/shared/lib';
+import { useWeb3ModalAccount, useWeb3ModalDisconnect } from '@/shared/lib';
 import { ToastType } from '@/shared/ui';
 
 type UseConnectWalletProps = {
@@ -20,7 +20,7 @@ export const useConnectWallet = ({
   const { triggerToast } = useToast();
 
   const { open } = useWeb3Modal();
-  const { disconnect } = useDisconnect();
+  const { disconnect } = useWeb3ModalDisconnect();
 
   const { isConnected, address, chainId } = useWeb3ModalAccount();
   const [hasClickedConnect, setHasClickedConnect] = React.useState(false);
@@ -54,7 +54,7 @@ export const useConnectWallet = ({
       });
 
       Sentry.captureMessage('Wallet is connected, but no address found');
-      disconnect().catch(() => {});
+      disconnect();
     }
   }, [isConnected, address]);
 

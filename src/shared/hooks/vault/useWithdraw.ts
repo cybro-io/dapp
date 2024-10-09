@@ -11,7 +11,7 @@ import { useWeb3ModalAccount } from '@/shared/lib';
 import {
   Nullable,
   Token,
-  useAddVaultActionApiV1VaultsVaultIdActionPost,
+  useAddFundActionApiV1VaultsVaultIdActionPost,
   Vault,
 } from '@/shared/types';
 import { ToastType } from '@/shared/ui';
@@ -37,7 +37,7 @@ export const useWithdraw = (
   const [isLoading, setIsLoading] = React.useState(false);
   const [buttonMessage, setButtonMessage] = React.useState<string | null>(null);
   const { address, isConnected } = useWeb3ModalAccount();
-  const { mutate } = useAddVaultActionApiV1VaultsVaultIdActionPost();
+  const { mutate } = useAddFundActionApiV1VaultsVaultIdActionPost();
   const { tokens } = useEthers();
   const { walletProvider } = useWeb3ModalProvider();
 

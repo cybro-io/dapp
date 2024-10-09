@@ -13,10 +13,11 @@ export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
 
   return (
     <Modal
+      isDismissable={false}
       classNames={{ base: 'w-[375px]' }}
       onClose={() => currentModal.remove()}
     >
-      <Modal.Header>Munzen Widget Step</Modal.Header>
+      <Modal.Header>Buy With a Card</Modal.Header>
       <Modal.Body className="pt-6 px-0 gap-4 relative items-center">
         <Skeleton
           isLoaded={!isLoading && Boolean(rampLinkWidget)}
@@ -24,11 +25,12 @@ export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
         >
           <iframe
             id="inlineFrameWidget"
-            width="354"
+            width="375"
             height="609"
             allow="camera; microphone; geolocation"
             frameBorder="0"
             src={rampLinkWidget!}
+            className="rounded-[26px]"
           />
         </Skeleton>
       </Modal.Body>
