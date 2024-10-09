@@ -17,7 +17,7 @@ export const RampWidgetStepModal = NiceModal.create<UseRampProps>((props) => {
       classNames={{ base: 'w-[375px]' }}
       onClose={() => currentModal.remove()}
     >
-      <Modal.Header>Munzen Widget Step</Modal.Header>
+      <Modal.Header>Buy With a Card</Modal.Header>
       <Modal.Body className="pt-6 px-0 gap-4 relative items-center">
         <Skeleton
           isLoaded={!isLoading && Boolean(rampLinkWidget)}

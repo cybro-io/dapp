@@ -39,6 +39,8 @@ export const useRampWidget = ({
       {
         query: {
           select: (data) => data.data.data.link,
+          refetchOnWindowFocus: false,
+          refetchInterval: false,
         },
       },
     );
