@@ -2,7 +2,6 @@
 
 import React from 'react';
 
-import { Skeleton } from '@nextui-org/react';
 import { Tab, Tabs } from '@nextui-org/tabs';
 import clsx from 'clsx';
 
@@ -14,7 +13,7 @@ import {
   SortValue,
   useGetBalanceByAddressApiV1ProfileAddressBalanceGet,
 } from '@/shared/types';
-import { useGetVaultsApiV1VaultsGet } from '@/shared/types/__generated/api/fastAPI';
+import { useGetFundsApiV1VaultsGet } from '@/shared/types';
 import { Text, TextView } from '@/shared/ui';
 import { transformBalances } from '@/shared/utils';
 import {
@@ -52,7 +51,7 @@ const AvailableVaults: ComponentWithProps<AvailableVaultsProps> = ({
   });
 
   const { address, chainId, isConnected } = useWeb3ModalAccount();
-  const { data, isLoading, isError } = useGetVaultsApiV1VaultsGet(
+  const { data, isLoading, isError } = useGetFundsApiV1VaultsGet(
     { address, sort_by: sort[0], ascending: sort[1] },
     {
       query: {

@@ -17,7 +17,7 @@ import {
   ComponentWithProps,
   Nullable,
   Token,
-  useGetVaultApiV1VaultsVaultIdGet,
+  useGetFundApiV1VaultsVaultIdGet,
   Vault,
 } from '@/shared/types';
 import {
@@ -49,7 +49,7 @@ export const VaultPage: ComponentWithProps<DashboardPageProps> = ({
   const { createVaultInstance } = useEthers();
   const [vaultContract, setVaultContract] = React.useState<Nullable<Vault>>();
   const [tokenContract, setTokenContract] = React.useState<Nullable<Token>>();
-  const { data, isLoading, isError } = useGetVaultApiV1VaultsVaultIdGet(
+  const { data, isLoading, isError } = useGetFundApiV1VaultsVaultIdGet(
     vaultId,
     { address },
     {

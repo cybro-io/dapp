@@ -14,7 +14,7 @@ import {
   AuditorResponseData,
   ComponentWithProps,
   Nullable,
-  useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
+  useGetFundHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
 } from '@/shared/types';
 import {
   SafetyScoreDetailsSkeleton,
@@ -39,7 +39,7 @@ export const SafetyScoreDetails: ComponentWithProps<
 > = ({ auditor, trustScore, vaultId, isLoading = false, className }) => {
   const [isOpened, setIsOpened] = React.useState(false);
   const { data, isLoading: isDataLoading } =
-    useGetVaultHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(
+    useGetFundHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet(
       vaultId as number,
       {
         query: { queryKey: [QueryKey.TrustScoreDetails, vaultId] },
