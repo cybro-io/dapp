@@ -35,13 +35,6 @@
     "*.scss": "stylelint --fix"
   },
   "dependencies": {
-    "@types/mixpanel-browser": "^2.49.0",
-    "@types/numeral": "^2.0.5",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
-    "@types/react-google-recaptcha": "^2.1.9",
-    "@types/react-window": "^1.8.8",
-    "@types/recharts": "^1.8.29",
     "@ebay/nice-modal-react": "^1.2.13",
     "@hookform/resolvers": "^3.9.0",
     "@next/third-parties": "^14.2.5",
@@ -49,6 +42,13 @@
     "@sentry/nextjs": "^8.32.0",
     "@svgr/webpack": "^8.1.0",
     "@tanstack/react-query": "^5.45.1",
+    "@types/mixpanel-browser": "^2.49.0",
+    "@types/numeral": "^2.0.5",
+    "@types/react": "^18",
+    "@types/react-dom": "^18",
+    "@types/react-google-recaptcha": "^2.1.9",
+    "@types/react-window": "^1.8.8",
+    "@types/recharts": "^1.8.29",
     "@web3modal/ethers5": "^5.0.11",
     "autoprefixer": "^10.4.19",
     "axios": "^1.7.2",
@@ -85,8 +85,8 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@typechain/ethers-v5": "^11.1.2",
     "@tanstack/eslint-plugin-query": "^5.43.1",
+    "@typechain/ethers-v5": "^11.1.2",
     "@types/node": "^20",
     "@typescript-eslint/eslint-plugin": "^7.8.0",
     "eslint": "^8.57.0",
