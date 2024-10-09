@@ -57,12 +57,16 @@ const ethersConfig = defaultConfig({
   metadata,
 });
 
+const foxWalletId =
+  'c7708575a2c3c9e6a8ab493d56cdcc56748f03956051d021b8cd8d697d9a3fd2';
+
 export const web3Modal = createWeb3Modal({
   ethersConfig,
   chains,
   projectId,
   enableAnalytics: true,
   enableOnramp: true,
+  featuredWalletIds: [foxWalletId],
 });
 
 export const Web3Modal: React.FC<Web3ModalProps> = ({ children }) => {

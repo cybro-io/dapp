@@ -3,7 +3,6 @@
 import React, { useMemo } from 'react';
 
 import { Skeleton } from '@nextui-org/react';
-import { useDisconnect } from '@web3modal/ethers5/react';
 import Image from 'next/image';
 
 import './menu.scss';
@@ -14,7 +13,7 @@ import LogoIcon from '@/shared/assets/icons/logo-mini.svg';
 import ProfileImage from '@/shared/assets/icons/profile.png';
 import TetherIcon from '@/shared/assets/icons/tether.svg';
 import UsdbIcon from '@/shared/assets/icons/usdb.svg';
-import { links, truncateMiddle } from '@/shared/lib';
+import { links, truncateMiddle, useWeb3ModalDisconnect } from '@/shared/lib';
 import {
   EarnedYieldResponseDataProperty,
   GetWalletResponseData,
@@ -35,7 +34,7 @@ export const ProfileStatsPanel = ({
   address,
   isLoading,
 }: ProfileStatsPanelProps) => {
-  const { disconnect } = useDisconnect();
+  const { disconnect } = useWeb3ModalDisconnect();
 
   const data = useMemo(
     () => ({
