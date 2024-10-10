@@ -6,6 +6,7 @@ import { Divider } from '@nextui-org/react';
 import clsx from 'clsx';
 
 import { BaseLayout } from '@/app/layouts';
+import { PageViewAnalytics } from '@/shared/analytics/page-view-analytics';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import { Text, TextView } from '@/shared/ui';
 import { ExchangeSwap } from '@/widgets/ExchangeSwap';
@@ -19,6 +20,7 @@ export const ExchangePage = () => {
 
   return (
     <BaseLayout>
+      <PageViewAnalytics pageType="exchange" />
       <Hero />
       <div className="lg:px-[38px] mt-5 lg:-mt-[22px] flex flex-col-reverse lg:flex-row justify-center gap-5 lg:gap-[38px] relative">
         {!isConnected && (

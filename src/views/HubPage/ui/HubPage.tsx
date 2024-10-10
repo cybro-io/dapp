@@ -3,11 +3,11 @@
 import React from 'react';
 
 import { BaseLayout } from '@/app/layouts';
+import { PageViewAnalytics } from '@/shared/analytics/page-view-analytics';
 import {
   HubBanner,
   HubBlog,
   HubHero,
-  HubInvestmentAcademy,
   HubOneClick,
   HubVaults,
 } from '@/widgets/Hub';
@@ -15,11 +15,11 @@ import {
 const HubPage = () => {
   return (
     <BaseLayout withMainPadding={false}>
+      <PageViewAnalytics pageType="hub" />
       <div className="relative flex flex-col max-w-screen-xl mx-auto">
         <HubHero />
         <HubVaults />
         <HubOneClick />
-        {/*<HubInvestmentAcademy />*/}
         <HubBlog />
         <HubBanner />
       </div>

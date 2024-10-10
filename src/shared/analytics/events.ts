@@ -20,6 +20,8 @@ export enum AnalyticsEvent {
   ChangeZapInTokenSuccess = 'change_zap_in_token_success',
 
   ChangeVaultListStyle = 'change_vault_list_style',
+
+  PageLoad = 'page_load',
 }
 
 export const typeByEvent: Record<AnalyticsEvent, string> = {
@@ -44,4 +46,6 @@ export const typeByEvent: Record<AnalyticsEvent, string> = {
   [AnalyticsEvent.ChangeZapInTokenSuccess]: 'success',
 
   [AnalyticsEvent.ChangeVaultListStyle]: 'change',
+
+  [AnalyticsEvent.PageLoad]: 'page',
 };
