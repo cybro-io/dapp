@@ -1,10 +1,13 @@
 import React from 'react';
 
+import { LiFiStep } from '@lifi/sdk';
+import { utils } from 'ethers';
 import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 
 import { PeriodTab } from '@/entities/DepositCalculator';
 import { useSwapTokens } from '@/entities/SwapToken';
 import { SwapCalculateResult, useSwapCalculate } from '@/features/SwapToken';
+import { useZapInCalculate } from '@/features/ZapInToken/model/useZapInCalculate';
 import { useToast } from '@/shared/hooks';
 import { useWeb3ModalAccount } from '@/shared/lib';
 import {
@@ -27,7 +30,7 @@ type UseDepositCalculator = {
   balanceAfter: Money;
   balanceAfterText: string;
   isLoadingCalculate: boolean;
-  swapCalculate: SwapCalculateResult | undefined;
+  swapCalculate: LiFiStep | null;
   selectedTokenPriceInUsd: number;
 };
 
@@ -43,8 +46,11 @@ export const useDepositCalculator = (
   setButtonMessage: (message: string | null) => void,
   setAmount: (amount: string) => void,
 ): UseDepositCalculator => {
-  const { fetchCalculateSwap, isLoadingCalculate, calculate, error } =
-    useSwapCalculate();
+  const {
+    fetchCalculate,
+    isLoading: isLoadingCalculate,
+    result,
+  } = useZapInCalculate();
 
   const [selectedTokenPriceInUsd, setSelectedTokenPriceInUsd] =
     React.useState<number>(0);
@@ -125,7 +131,7 @@ export const useDepositCalculator = (
     async (apy: number) => {
       try {
         if (Number(amountToDeposit) <= 0) {
-          if (calculate) clearValues();
+          if (result) clearValues();
           return;
         }
 
@@ -145,24 +151,28 @@ export const useDepositCalculator = (
 
           setButtonMessage('Finding best rates...');
 
-          const result = await fetchCalculateSwap({
-            from: address,
-            to: address,
-            amount: Number(amountToDeposit).toString(),
-            deadline: 20,
-            slippage: 2,
-            tokenIn: selectedToken,
-            tokenOut,
+          const result = await fetchCalculate({
+            fromChain: selectedToken.chainId,
+            toChain: tokenOut.chainId,
+            fromToken: selectedToken.address,
+            toToken: tokenOut.address,
+            fromAmount: utils
+              .parseUnits(amountToDeposit, selectedToken.decimals)
+              .toString(),
+            fromAddress: address,
+            fee: 0.05,
           });
 
-          if (typeof result === 'string') {
-            throw new Error(result);
+          if (!result) {
+            throw new Error('Something went wrong');
           }
 
           setButtonMessage(null);
 
-          const receive = result?.calculate.tokenAmountOut.toSignificant() ?? 0;
-
+          const receive = utils.formatUnits(
+            result.estimate.toAmount,
+            tokenOut.decimals,
+          );
           profitTokens = Number(receive) * (apy / 100);
           balanceAfter = Number(receive) + profitTokens;
         }
@@ -236,7 +246,7 @@ export const useDepositCalculator = (
     balanceAfter,
     balanceAfterText,
     isLoadingCalculate,
-    swapCalculate: calculate,
+    swapCalculate: result,
     selectedTokenPriceInUsd,
   };
 };

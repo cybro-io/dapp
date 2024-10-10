@@ -12,22 +12,22 @@ type ToastOptions = {
   actions?: React.ReactNode;
 };
 
-export const useToast = () => {
-  const triggerToast = ({
-    message,
-    description,
-    type,
-    actions,
-  }: ToastOptions) => {
-    toast(
-      <Toast
-        message={message}
-        description={description}
-        type={type}
-        actions={actions}
-      />,
-    );
-  };
+export const triggerToast = ({
+  message,
+  description,
+  type,
+  actions,
+}: ToastOptions) => {
+  toast(
+    <Toast
+      message={message}
+      description={description}
+      type={type}
+      actions={actions}
+    />,
+  );
+};
 
+export const useToast = () => {
   return { triggerToast };
 };

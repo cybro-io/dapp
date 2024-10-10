@@ -10,6 +10,7 @@ import Script from 'next/script';
 import NextTopLoader from 'nextjs-toploader';
 
 import { poppins, unbounded } from '@/app/fonts';
+import { LiFiProvider } from '@/entities/LiFi';
 import icon from '@/shared/assets/icons/favicon.ico';
 
 import styles from './layout.module.scss';
@@ -77,22 +78,24 @@ export default function RootLayout({
               <NiceModalProvider>
                 <ModalProvider>
                   <WalletBalancesProvider>
-                    <body
-                      className={clsx(
-                        styles.root,
-                        unbounded.variable,
-                        poppins.variable,
-                      )}
-                    >
-                      <NextTopLoader
-                        color="#F0D025"
-                        showSpinner={false}
-                        shadow={false}
-                      />
-                      <ToastProvider>{children}</ToastProvider>
-                      <ModalContainer />
-                    </body>
-                    {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                    <LiFiProvider>
+                      <body
+                        className={clsx(
+                          styles.root,
+                          unbounded.variable,
+                          poppins.variable,
+                        )}
+                      >
+                        <NextTopLoader
+                          color="#F0D025"
+                          showSpinner={false}
+                          shadow={false}
+                        />
+                        <ToastProvider>{children}</ToastProvider>
+                        <ModalContainer />
+                      </body>
+                      {!!gaId && <GoogleAnalytics gaId={gaId} />}
+                    </LiFiProvider>
                   </WalletBalancesProvider>
                 </ModalProvider>
               </NiceModalProvider>
