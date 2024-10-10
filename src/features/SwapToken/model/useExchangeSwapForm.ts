@@ -5,7 +5,7 @@ import { getTokenPriceUsd, Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 import * as yup from 'yup';
 
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { useForm } from '@/shared/lib';
 
 type ExchangeSwapFormValues = {
@@ -112,7 +112,7 @@ export const useExchangeSwapForm = ({
   };
 
   const handleSetPercent = (balance: number, percent: number) => {
-    Mixpanel.track(MixpanelEvent.ChangeSwapAmountPreset, {
+    track.event(AnalyticsEvent.ChangeSwapAmountPreset, {
       percent: `${percent * 100}%`,
     });
     setAmountIn(
@@ -147,22 +147,22 @@ export const useExchangeSwapForm = ({
   }) => {
     form.setFieldValue('slippage', slippage);
     form.setFieldValue('deadline', deadline);
-    Mixpanel.track(MixpanelEvent.ChangeSwapSettings, { deadline, slippage });
+    track.event(AnalyticsEvent.ChangeSwapSettings, { deadline, slippage });
   };
 
   React.useEffect(() => {
-    Mixpanel.track(MixpanelEvent.ChangeSwapFrom, {
+    track.event(AnalyticsEvent.ChangeSwapFrom, {
       token: form.values.tokenIn,
     });
   }, [form.values.tokenIn]);
 
   React.useEffect(() => {
-    Mixpanel.track(MixpanelEvent.ChangeSwapTo, { token: form.values.tokenOut });
+    track.event(AnalyticsEvent.ChangeSwapTo, { token: form.values.tokenOut });
   }, [form.values.tokenOut]);
 
   React.useEffect(() => {
     if (form.isValid && debouncedAmountIn) {
-      Mixpanel.track(MixpanelEvent.ChangeSwapAmount, {
+      track.event(AnalyticsEvent.ChangeSwapAmount, {
         amount: debouncedAmountIn,
       });
 

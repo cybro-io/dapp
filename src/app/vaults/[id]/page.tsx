@@ -10,8 +10,6 @@ import {
 } from '@/shared/types';
 import { VaultPage } from '@/views/VaultPage';
 
-type pageProps = {};
-
 export default async function Vault({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
   const vaultId = Number(params.id);
