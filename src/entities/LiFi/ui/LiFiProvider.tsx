@@ -3,17 +3,74 @@
 import React from 'react';
 
 import EthereumProvider from '@walletconnect/ethereum-provider';
-import {
-  useSwitchNetwork,
-  useWeb3ModalProvider,
-} from '@web3modal/ethers5/react';
+import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import { Address, createWalletClient, custom, Chain } from 'viem';
-import { arbitrum, blast, bsc, mainnet, optimism, polygon } from 'viem/chains';
+import {
+  immutableZkEvm,
+  gravity,
+  taiko,
+  fraxtal,
+  rootstock,
+  celo,
+  mantle,
+  arbitrum,
+  blast,
+  bsc,
+  mainnet,
+  optimism,
+  polygon,
+  base,
+  avalanche,
+  scroll,
+  linea,
+  zksync,
+  polygonZkEvm,
+  gnosis,
+  fantom,
+  moonriver,
+  moonbeam,
+  fuse,
+  boba,
+  mode,
+  metis,
+  aurora,
+  sei,
+} from 'viem/chains';
 
 import { evmProvider } from '@/entities/LiFi';
 import { useWeb3ModalAccount } from '@/shared/lib';
 
-const chains = [arbitrum, mainnet, optimism, polygon, blast, bsc];
+const chains = [
+  immutableZkEvm,
+  gravity,
+  taiko,
+  fraxtal,
+  rootstock,
+  celo,
+  mantle,
+  arbitrum,
+  blast,
+  bsc,
+  mainnet,
+  optimism,
+  polygon,
+  base,
+  avalanche,
+  scroll,
+  linea,
+  zksync,
+  polygonZkEvm,
+  gnosis,
+  fantom,
+  moonriver,
+  moonbeam,
+  fuse,
+  boba,
+  mode,
+  metis,
+  aurora,
+  sei,
+];
 
 const getChain = (chainId: number) =>
   chains.find((chain) => (chain as Chain).id === chainId) as Chain;
