@@ -1,6 +1,6 @@
 import { createConfig, EVM } from '@lifi/sdk';
 
-const integrator = 'cybro-test';
+const integrator = 'cybro';
 
 export const evmProvider = EVM();
 export const liFiInstance = createConfig({
