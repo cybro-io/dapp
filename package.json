@@ -87,7 +87,6 @@
     "yup": "^1.4.0"
   },
   "devDependencies": {
-    "@esbuild/win32-x64": "^0.24.0",
     "@tanstack/eslint-plugin-query": "^5.43.1",
     "@typechain/ethers-v5": "^11.1.2",
     "@types/node": "^20",
