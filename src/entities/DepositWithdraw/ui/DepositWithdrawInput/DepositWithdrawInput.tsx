@@ -11,7 +11,7 @@ import { Token } from 'symbiosis-js-sdk';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
 import { useSelectTokenModal } from '@/features/SelectToken';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Maybe, Money } from '@/shared/types';
 import { DropdownButton, Text, TextView } from '@/shared/ui';
@@ -121,14 +121,14 @@ export const DepositWithdrawInput: ComponentWithProps<
   const { openModal } = useSelectTokenModal();
 
   const handleSelectToken = () => {
-    Mixpanel.track(MixpanelEvent.ChangeZapInToken);
+    track.event(AnalyticsEvent.ChangeZapInToken);
 
     openModal(
       selectedToken
         ? getUniqueTokenId(selectedToken.address, selectedToken.chainId)
         : '',
       (token) => {
-        Mixpanel.track(MixpanelEvent.ChangeZapInTokenSuccess);
+        track.event(AnalyticsEvent.ChangeZapInTokenSuccess);
         setSelectedToken(
           tokenAddress === token.address && chainId === token.chainId
             ? null

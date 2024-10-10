@@ -8,7 +8,7 @@ import clsx from 'clsx';
 
 import { PeriodTab } from '@/entities/DepositCalculator/const';
 import { ConnectWallet } from '@/features/ConnectWallet';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import ScoreUpIcon from '@/shared/assets/icons/arrow-score-up.svg';
 import { ComponentWithProps, Money } from '@/shared/types';
 import { Button, Text, TextView } from '@/shared/ui';
@@ -64,7 +64,7 @@ export const DepositCalculator: ComponentWithProps<DepositCalculatorProps> = ({
   const onTabChange = React.useCallback(
     (currentTab: Key) => {
       setPeriod(currentTab as PeriodTab);
-      Mixpanel.track(MixpanelEvent.CalculatorPeriodChange, {
+      track.event(AnalyticsEvent.CalculatorPeriodChange, {
         period: currentTab,
       });
     },
