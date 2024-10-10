@@ -21,8 +21,9 @@ if (typeof window !== 'undefined') {
 export const track = {
   event: (eventName: AnalyticsEvent, parameters?: Dict) => {
     mixpanel.track(eventName, parameters);
+
     // `window.safary.track` is available when `document.readyState === 'complete'`
-    window.safary.track?.({
+    window?.safary?.track?.({
       eventType: typeByEvent[eventName],
       eventName,
       parameters,
