@@ -6,7 +6,7 @@ export function SafaryAnalytics() {
   return (
     <Script
       id="ext-script"
-      data-product-id="https://app.cybro.io/"
+      data-product-id="prd_q0lrii7klv"
       data-name="safary-sdk"
       async
     >
