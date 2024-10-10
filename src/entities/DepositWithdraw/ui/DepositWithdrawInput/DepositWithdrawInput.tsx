@@ -2,15 +2,16 @@
 
 import React from 'react';
 
+import { LiFiStep } from '@lifi/sdk';
 import { Skeleton } from '@nextui-org/react';
 import clsx from 'clsx';
+import { utils } from 'ethers';
 import Image from 'next/image';
 import { Token } from 'symbiosis-js-sdk';
 
 import { getUniqueTokenId } from '@/entities/SwapToken';
 import { useSelectTokenModal } from '@/features/SelectToken';
-import { SwapCalculateResult } from '@/features/SwapToken';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import { ComponentWithProps, Maybe, Money } from '@/shared/types';
 import { DropdownButton, Text, TextView } from '@/shared/ui';
@@ -34,7 +35,8 @@ type DepositWithdrawInputProps = {
   selectedToken: Token | null;
   setSelectedToken: (token: Token | null) => void;
   isLoadingCalculate: boolean;
-  swapCalculate: SwapCalculateResult | undefined;
+  isLoadingSwap: boolean;
+  swapCalculate: LiFiStep | null;
   chainId: number;
   tokenAddress: string;
 };
@@ -86,6 +88,7 @@ export const DepositWithdrawInput: ComponentWithProps<
   isLoadingCalculate,
   chainId,
   tokenAddress,
+  isLoadingSwap,
 }) => {
   const getData = React.useCallback(() => {
     if (activeTab === YieldSwitchOptions.Deposit) {
@@ -118,14 +121,14 @@ export const DepositWithdrawInput: ComponentWithProps<
   const { openModal } = useSelectTokenModal();
 
   const handleSelectToken = () => {
-    Mixpanel.track(MixpanelEvent.ChangeZapInToken);
+    track.event(AnalyticsEvent.ChangeZapInToken);
 
     openModal(
       selectedToken
         ? getUniqueTokenId(selectedToken.address, selectedToken.chainId)
         : '',
       (token) => {
-        Mixpanel.track(MixpanelEvent.ChangeZapInTokenSuccess);
+        track.event(AnalyticsEvent.ChangeZapInTokenSuccess);
         setSelectedToken(
           tokenAddress === token.address && chainId === token.chainId
             ? null
@@ -185,7 +188,7 @@ export const DepositWithdrawInput: ComponentWithProps<
               className="w-fit absolute right-0 left-0 mx-auto bottom-[-22px]"
               type="button"
               onClick={handleSelectToken}
-              disabled={isLoadingCalculate}
+              disabled={isLoadingCalculate || isLoadingSwap}
             >
               Change
             </DropdownButton>
@@ -216,7 +219,7 @@ export const DepositWithdrawInput: ComponentWithProps<
               ) : (
                 <Text textView={TextView.C4}>
                   {formatUserMoney(
-                    swapCalculate?.tokenAmountOut.toSignificant(),
+                    utils.formatUnits(swapCalculate?.estimate.toAmount ?? '0'),
                   )}
                 </Text>
               )}
@@ -232,7 +235,7 @@ export const DepositWithdrawInput: ComponentWithProps<
             onChange={setUserValue}
             placeholder={'0'}
             onWheel={numberInputOnWheelPreventChange}
-            disabled={isLoadingCalculate}
+            disabled={isLoadingCalculate || isLoadingSwap}
           />
           <span className={styles.equal}>
             ≈ ${formatUserMoney(userValueUsd)}
@@ -247,7 +250,7 @@ export const DepositWithdrawInput: ComponentWithProps<
                   styles.percentButton,
                   value === selectedPercent && styles.percentButtonSelected,
                 )}
-                disabled={isLoadingCalculate}
+                disabled={isLoadingCalculate || isLoadingSwap}
                 onClick={() => setSelectedPercent(value)}
               >
                 {title}

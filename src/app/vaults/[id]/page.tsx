@@ -3,14 +3,13 @@ import React from 'react';
 import { QueryClient } from '@tanstack/react-query';
 
 import { BaseLayout } from '@/app/layouts';
+import { PageViewAnalytics } from '@/shared/analytics/page-view-analytics';
 import { QueryKey } from '@/shared/const';
 import {
   getFundApiV1VaultsVaultIdGet,
   getFundHistoryTrustScoreApiV1VaultsVaultIdHistoryTrustScoreGet,
 } from '@/shared/types';
 import { VaultPage } from '@/views/VaultPage';
-
-type pageProps = {};
 
 export default async function Vault({ params }: { params: { id: string } }) {
   const queryClient = new QueryClient();
@@ -29,6 +28,7 @@ export default async function Vault({ params }: { params: { id: string } }) {
 
   return (
     <BaseLayout>
+      <PageViewAnalytics pageType="vault" pageId={vaultId} />
       <VaultPage vaultId={vaultId} />
     </BaseLayout>
   );

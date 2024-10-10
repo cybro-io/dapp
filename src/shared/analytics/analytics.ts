@@ -2,8 +2,7 @@
 
 import mixpanel, { Dict } from 'mixpanel-browser';
 
-import { MixpanelEvent } from '@/shared/analytics/events';
-import { Maybe } from '@/shared/types';
+import { AnalyticsEvent, typeByEvent } from '@/shared/analytics/events';
 
 const MIXPANEL_ID = process.env.NEXT_PUBLIC_MIXPANEL_ID;
 
@@ -19,9 +18,15 @@ if (typeof window !== 'undefined') {
   });
 }
 
-export const Mixpanel = {
-  track: (name: MixpanelEvent, props?: Maybe<Dict>) => {
-    mixpanel.track(name, props);
+export const track = {
+  event: (eventName: AnalyticsEvent, parameters?: Dict) => {
+    mixpanel.track(eventName, parameters);
+    // `window.safary.track` is available when `document.readyState === 'complete'`
+    window.safary.track?.({
+      eventType: typeByEvent[eventName],
+      eventName,
+      parameters,
+    });
   },
   identify: (id: string) => {
     mixpanel.identify(id);

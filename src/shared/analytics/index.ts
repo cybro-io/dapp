@@ -1,2 +1,2 @@
-export * from './mixpanel';
-export * from './events';
+export { track } from './analytics';
+export { AnalyticsEvent } from './events';

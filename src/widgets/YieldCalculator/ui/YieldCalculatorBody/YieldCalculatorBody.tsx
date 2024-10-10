@@ -4,6 +4,7 @@ import React from 'react';
 
 import { useWeb3ModalProvider } from '@web3modal/ethers5/react';
 import clsx from 'clsx';
+import { utils } from 'ethers';
 import { Token } from 'symbiosis-js-sdk';
 import { useDebounceValue } from 'usehooks-ts';
 
@@ -12,7 +13,8 @@ import { DepositWithdrawInput } from '@/entities/DepositWithdraw';
 import { WithdrawCalculator } from '@/entities/WithdrawCalculator';
 import { useSwap } from '@/features/SwapToken';
 import { useExchangeTokenBalance } from '@/features/SwapToken/model/useExchangeTokenBalance';
-import { Mixpanel, MixpanelEvent } from '@/shared/analytics';
+import { useZapIn } from '@/features/ZapInToken/model/useZapIn';
+import { track, AnalyticsEvent } from '@/shared/analytics';
 import { YieldSwitchOptions } from '@/shared/const';
 import {
   useBalance,
@@ -117,7 +119,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
   const isSelectedToken =
     selectedToken && actionType === YieldSwitchOptions.Deposit;
-  const { swap, subscribeSuccessSwap, isLoadingSwap } = useSwap();
+  const { executeZapIn, isLoading: isLoadingSwap } = useZapIn();
 
   const {
     withdraw,
@@ -176,7 +178,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
   const debouncedTrackEvent = React.useMemo(
     () =>
       debounce(
-        () => Mixpanel.track(MixpanelEvent.DepositAmountChangedManually),
+        () => track.event(AnalyticsEvent.DepositAmountChangedManually),
         3000,
       ),
     [],
@@ -228,7 +230,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         setAmount(formatMoney(vaultDeposit * value, 8));
       }
 
-      Mixpanel.track(MixpanelEvent.DepositAmountChangedPreset);
+      track.event(AnalyticsEvent.DepositAmountChangedPreset);
       setSelectedPercent(value);
     },
     [actionType, userBalance, vaultDeposit],
@@ -241,23 +243,21 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
 
     try {
       if (swapCalculate && isSelectedToken) {
-        const depAmount = swapCalculate.tokenAmountOut.toSignificant();
+        const depAmount = utils.formatUnits(swapCalculate.estimate.toAmount);
 
-        swap(swapCalculate);
+        setButtonMessage('Swapping...');
+        await executeZapIn(swapCalculate);
 
-        const subscription = subscribeSuccessSwap(async () => {
-          subscription.unsubscribe();
-
-          await deposit(depAmount);
-          setAmount('0');
-          refetchBalance();
-        });
+        await deposit(depAmount);
+        setAmount('0');
+        refetchBalance();
       } else {
         await deposit(debouncedAmount);
         setAmount('0');
         refetchBalance();
       }
     } catch (error) {
+      setButtonMessage(null);
       console.error(error);
     }
   }, [debouncedAmount, deposit, refetchBalance]);
@@ -283,6 +283,7 @@ export const YieldCalculatorBody: ComponentWithProps<YieldCalculatorProps> = ({
         chainId={chainId}
         swapCalculate={swapCalculate}
         isLoadingCalculate={isLoadingCalculate}
+        isLoadingSwap={isLoadingSwap}
         setSelectedToken={setSelectedToken}
         selectedToken={selectedToken}
         currency={currency}
